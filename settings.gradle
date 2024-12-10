@@ -9,5 +9,5 @@ pluginManagement {
 rootProject.name = 'barlow'
 
 include 'core:core-api'
-include 'core:core-enum'
+include 'core:core-domain'
 include 'storage:db-core'
