@@ -3,12 +3,15 @@ package com.barlow.notification;
 import java.util.Collections;
 import java.util.Map;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 public record BillNotificationPayload(
-	NotificationType type,
-	String topic,
-	String representationBill,
-	int totalCount,
-	Map<String, Integer> topicsWithCount
+	@NotNull NotificationType type,
+	@Nullable String topic,
+	@Nullable String representationBill,
+	@Nullable Integer totalCount,
+	@NotNull Map<String, Integer> topicsWithCount
 ) implements NotificationPayload {
 	/**
 	 * 법안 알림 : 법안 알림에 관한 기본 전송 알림에 사용한다
@@ -18,7 +21,15 @@ public record BillNotificationPayload(
 	 * @param totalCount [topic]에 조건에 해당하는 법안의 총 개수
 	 * @see NotificationType
 	 */
-	public static BillNotificationPayload of(String type, String topic, String representationBill, int totalCount) {
+	public static BillNotificationPayload defaultOf(
+		String type,
+		String topic,
+		String representationBill,
+		Integer totalCount
+	) {
+		if (type == null || topic == null || representationBill == null || totalCount == null) {
+			throw new IllegalArgumentException("null 파라미터는 들어올 수 없습니다");
+		}
 		return new BillNotificationPayload(
 			NotificationType.valueOf(type),
 			topic,
@@ -34,12 +45,15 @@ public record BillNotificationPayload(
 	 * @param topicsWithCount {key:소관위원회명 value:입법갯수}
 	 * @see NotificationType
 	 */
-	public static BillNotificationPayload of(String type, Map<String, Integer> topicsWithCount) {
+	public static BillNotificationPayload standingCommitteeOf(String type, Map<String, Integer> topicsWithCount) {
+		if (type == null || topicsWithCount == null) {
+			throw new IllegalArgumentException("null 파라미터는 들어올 수 없습니다");
+		}
 		return new BillNotificationPayload(
 			NotificationType.valueOf(type),
 			null,
 			null,
-			0,
+			null,
 			topicsWithCount
 		);
 	}
