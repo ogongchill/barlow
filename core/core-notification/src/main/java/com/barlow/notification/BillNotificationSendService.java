@@ -14,14 +14,14 @@ import com.barlow.notification.worker.NotificationSendWorker;
 @Component
 public class BillNotificationSendService implements NotificationSendPort {
 
-	private final NotificationInfoReaderStrategyFactory notificationInfoReaderStrategyFactory;
+	private final NotificationInfoReaderFactory notificationInfoReaderFactory;
 	private final NotificationSendWorker notificationSendWorker;
 
 	public BillNotificationSendService(
-		NotificationInfoReaderStrategyFactory notificationInfoReaderStrategyFactory,
+		NotificationInfoReaderFactory notificationInfoReaderFactory,
 		NotificationSendWorker notificationSendWorker
 	) {
-		this.notificationInfoReaderStrategyFactory = notificationInfoReaderStrategyFactory;
+		this.notificationInfoReaderFactory = notificationInfoReaderFactory;
 		this.notificationSendWorker = notificationSendWorker;
 	}
 
@@ -29,7 +29,7 @@ public class BillNotificationSendService implements NotificationSendPort {
 	public void sendCall(NotificationPayload payload) {
 		BillNotificationPayload notificationPayload = checkAndConvert(payload);
 		MessageTemplate messageTemplate = MessageTemplateFactory.getBy(notificationPayload.type());
-		NotificationInfoReader reader = notificationInfoReaderStrategyFactory.getBy(notificationPayload.type());
+		NotificationInfoReader reader = notificationInfoReaderFactory.getBy(notificationPayload.type());
 		Map<Topic, List<SubscriberDevice>> topicsWithSubscribers = reader.readNotificationInfos(notificationPayload)
 			.stream()
 			.collect(Collectors.groupingBy(
