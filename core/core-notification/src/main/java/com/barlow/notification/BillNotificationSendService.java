@@ -1,6 +1,6 @@
 package com.barlow.notification;
 
-import static com.barlow.notification.NotificationInfo.SubscriberDevice;
+import static com.barlow.notification.NotificationInfo.Subscriber;
 import static com.barlow.notification.NotificationInfo.Topic;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class BillNotificationSendService implements NotificationSendPort {
 		BillNotificationPayload notificationPayload = checkAndConvert(payload);
 		MessageTemplate messageTemplate = MessageTemplateFactory.getBy(notificationPayload.type());
 		NotificationInfoReader reader = notificationInfoReaderFactory.getBy(notificationPayload.type());
-		Map<Topic, List<SubscriberDevice>> topicsWithSubscribers = reader.readNotificationInfos(notificationPayload)
+		Map<Topic, List<Subscriber>> topicsWithSubscribers = reader.readNotificationInfos(notificationPayload)
 			.stream()
 			.collect(Collectors.groupingBy(
 				NotificationInfo::getTopic,

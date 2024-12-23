@@ -2,36 +2,36 @@ package com.barlow.notification;
 
 public class NotificationInfo {
 
-	private static final int INITIAL_COUNT = 0;
-
-	private final Long memberNo;
 	private final Topic topic;
-	private final SubscriberDevice subscriberDevice;
+	private final Subscriber subscriber;
 
-	public NotificationInfo(Long memberNo, Topic topic, SubscriberDevice subscriberDevice) {
-		this.memberNo = memberNo;
+	public NotificationInfo(Topic topic, Subscriber subscriber) {
 		this.topic = topic;
-		this.subscriberDevice = subscriberDevice;
+		this.subscriber = subscriber;
 	}
 
-	public NotificationInfo(Long memberNo, String topic, String deviceOs, String deviceToken) {
-		this(memberNo, new Topic(topic, INITIAL_COUNT), new SubscriberDevice(deviceOs, deviceToken));
+	private NotificationInfo(Long memberNo, String topic, String deviceOs, String deviceToken) {
+		this(new Topic(topic, null, null), new Subscriber(memberNo, deviceOs, deviceToken));
+	}
+
+	public static NotificationInfo initialize(Long memberNo, String topic, String deviceOs, String deviceToken) {
+		return new NotificationInfo(memberNo, topic, deviceOs, deviceToken);
 	}
 
 	boolean isSameTopic(String topic) {
 		return this.topic.isSame(topic);
 	}
 
-	Long getMemberNo() {
-		return memberNo;
-	}
-
 	Topic getTopic() {
 		return topic;
 	}
 
-	SubscriberDevice getSubscriberDevice() {
-		return subscriberDevice;
+	Subscriber getSubscriberDevice() {
+		return subscriber;
+	}
+
+	void setRepresentation(String representation) {
+		this.topic.representation = representation;
 	}
 
 	void setTopicCount(int count) {
@@ -41,10 +41,12 @@ public class NotificationInfo {
 	public static class Topic {
 
 		private final String name;
-		private int count;
+		private String representation;
+		private Integer count;
 
-		public Topic(String name, int count) {
+		public Topic(String name, String representation, Integer count) {
 			this.name = name;
+			this.representation = representation;
 			this.count = count;
 		}
 
@@ -52,7 +54,11 @@ public class NotificationInfo {
 			return name;
 		}
 
-		public int getCount() {
+		public String getRepresentation() {
+			return representation;
+		}
+
+		public Integer getCount() {
 			return count;
 		}
 
@@ -61,7 +67,7 @@ public class NotificationInfo {
 		}
 	}
 
-	public record SubscriberDevice(String os, String token) {
+	public record Subscriber(Long memberNo, String os, String token) {
 		private static final String IOS = "IOS";
 		private static final String ANDROID = "ANDROID";
 
