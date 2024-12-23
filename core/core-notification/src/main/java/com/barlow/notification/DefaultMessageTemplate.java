@@ -7,13 +7,17 @@ public class DefaultMessageTemplate implements MessageTemplate {
 	private static final String MESSAGE_TITLE_FORMAT = "바로에서 바로 알려드려요";
 
 	@Override
-	public String getMessageTitleFormat() {
+	public String getMessageTitleFormat(NotificationInfo.Topic topic) {
 		return MESSAGE_TITLE_FORMAT;
 	}
 
 	@Override
-	public String getMessageBodyFormat(String topicName) {
-		return Default.findByValue(topicName).bodyFormat;
+	public String getMessageBodyFormat(NotificationInfo.Topic topic) {
+		return String.format(
+			Default.findByValue(topic.getName()).bodyFormat,
+			topic.getRepresentation(),
+			topic.getCount()
+		);
 	}
 
 	enum Default {
