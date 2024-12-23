@@ -1,4 +1,4 @@
-package com.barlow.notification;
+package com.barlow.notification.config;
 
 import java.io.IOException;
 
