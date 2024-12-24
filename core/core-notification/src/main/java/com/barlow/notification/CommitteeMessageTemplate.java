@@ -6,12 +6,12 @@ public class CommitteeMessageTemplate implements MessageTemplate {
 	private static final String MESSAGE_BODY_FORMAT = "%s에서 %d 개의 법안을 새롭게 검토하고 있어요.";
 
 	@Override
-	public String getMessageTitleFormat() {
-		return MESSAGE_TITLE_FORMAT;
+	public String getMessageTitleFormat(NotificationInfo.Topic topic) {
+		return String.format(MESSAGE_TITLE_FORMAT, topic.getName());
 	}
 
 	@Override
-	public String getMessageBodyFormat(String topicName) {
-		return MESSAGE_BODY_FORMAT;
+	public String getMessageBodyFormat(NotificationInfo.Topic topic) {
+		return String.format(MESSAGE_BODY_FORMAT, topic.getName(), topic.getCount());
 	}
 }

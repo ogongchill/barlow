@@ -22,7 +22,7 @@ public class NotificationInfoRepositoryImpl implements NotificationInfoRepositor
 	public List<NotificationInfo> retrieveNotificationInfosByTopic(String topic) {
 		return notificationConfigJpaRepository.findAllByEnableTrueAndTopic(NotificationTopic.valueOf(topic))
 			.stream()
-			.map(projection -> new NotificationInfo(
+			.map(projection -> NotificationInfo.initialize(
 				projection.getMemberNo(),
 				projection.getTopic().getValue(),
 				projection.getDeviceOs().name(),
@@ -39,7 +39,7 @@ public class NotificationInfoRepositoryImpl implements NotificationInfoRepositor
 		List<NotificationInfoProjection> projections
 			= notificationConfigJpaRepository.findAllByEnableTrueAndTopicIn(notificationTopics);
 		return projections.stream()
-			.map(projection -> new NotificationInfo(
+			.map(projection -> NotificationInfo.initialize(
 				projection.getMemberNo(),
 				projection.getTopic().getValue(),
 				projection.getDeviceOs().name(),

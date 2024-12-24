@@ -1,6 +1,6 @@
 package com.barlow.notification;
 
-import static com.barlow.notification.NotificationInfo.SubscriberDevice;
+import static com.barlow.notification.NotificationInfo.Subscriber;
 import static com.barlow.notification.NotificationInfo.Topic;
 
 import java.util.List;
@@ -27,23 +27,14 @@ public class BillNotificationSendService implements NotificationSendPort {
 
 	@Override
 	public void sendCall(NotificationPayload payload) {
-		BillNotificationPayload notificationPayload = checkAndConvert(payload);
-		MessageTemplate messageTemplate = MessageTemplateFactory.getBy(notificationPayload.type());
-		NotificationInfoReader reader = notificationInfoReaderFactory.getBy(notificationPayload.type());
-		Map<Topic, List<SubscriberDevice>> topicsWithSubscribers = reader.readNotificationInfos(notificationPayload)
+		MessageTemplate messageTemplate = MessageTemplateFactory.getBy(payload.type());
+		NotificationInfoReader reader = notificationInfoReaderFactory.getBy(payload.type());
+		Map<Topic, List<Subscriber>> topicsWithSubscribers = reader.readNotificationInfos(payload)
 			.stream()
 			.collect(Collectors.groupingBy(
 				NotificationInfo::getTopic,
-				Collectors.mapping(NotificationInfo::getSubscriberDevice, Collectors.toList())
+				Collectors.mapping(NotificationInfo::getSubscriber, Collectors.toList())
 			));
 		notificationSendWorker.invoke(messageTemplate, topicsWithSubscribers);
-	}
-
-	private BillNotificationPayload checkAndConvert(NotificationPayload payload) {
-		if (payload instanceof BillNotificationPayload) {
-			return (BillNotificationPayload)payload;
-		} else {
-			throw new IllegalArgumentException("Payload must be BillNotificationPayload");
-		}
 	}
 }

@@ -14,9 +14,21 @@ public class DefaultNotificationInfoReader implements NotificationInfoReader {
 	}
 
 	@Override
-	public List<NotificationInfo> readNotificationInfos(BillNotificationPayload payload) {
-		List<NotificationInfo> notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopic(payload.topic());
-		notificationInfos.forEach(info -> info.setTopicCount(payload.totalCount()));
+	public List<NotificationInfo> readNotificationInfos(NotificationPayload payload) {
+		DefaultBillNotificationPayload notificationPayload = checkAndConvert(payload);
+		List<NotificationInfo> notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopic(notificationPayload.topic());
+		notificationInfos.forEach(info -> {
+			info.setRepresentation(notificationPayload.representationBill());
+			info.setTopicCount(notificationPayload.totalCount());
+		});
 		return notificationInfos;
+	}
+
+	private DefaultBillNotificationPayload checkAndConvert(NotificationPayload payload) {
+		if (payload instanceof DefaultBillNotificationPayload) {
+			return (DefaultBillNotificationPayload)payload;
+		} else {
+			throw new IllegalArgumentException("Payload must be DefaultBillNotificationPayload");
+		}
 	}
 }
