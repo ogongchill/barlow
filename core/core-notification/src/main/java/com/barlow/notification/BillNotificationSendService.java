@@ -33,7 +33,7 @@ public class BillNotificationSendService implements NotificationSendPort {
 			.stream()
 			.collect(Collectors.groupingBy(
 				NotificationInfo::getTopic,
-				Collectors.mapping(NotificationInfo::getSubscriberDevice, Collectors.toList())
+				Collectors.mapping(NotificationInfo::getSubscriber, Collectors.toList())
 			));
 		notificationSendWorker.invoke(messageTemplate, topicsWithSubscribers);
 	}

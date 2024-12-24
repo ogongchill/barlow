@@ -26,7 +26,7 @@ public class NotificationInfo {
 		return topic;
 	}
 
-	Subscriber getSubscriberDevice() {
+	Subscriber getSubscriber() {
 		return subscriber;
 	}
 
