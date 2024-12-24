@@ -10,11 +10,11 @@ import com.barlow.notification.NotificationInfo;
 import com.barlow.notification.NotificationInfoRepository;
 
 @Component
-public class NotificationInfoRepositoryImpl implements NotificationInfoRepository {
+public class NotificationInfoRepositoryAdapter implements NotificationInfoRepository {
 
 	private final NotificationConfigJpaRepository notificationConfigJpaRepository;
 
-	public NotificationInfoRepositoryImpl(NotificationConfigJpaRepository notificationConfigJpaRepository) {
+	public NotificationInfoRepositoryAdapter(NotificationConfigJpaRepository notificationConfigJpaRepository) {
 		this.notificationConfigJpaRepository = notificationConfigJpaRepository;
 	}
 

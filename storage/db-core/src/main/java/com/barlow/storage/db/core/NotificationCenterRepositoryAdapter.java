@@ -15,11 +15,11 @@ import com.barlow.notification.NotificationCenterRepository;
 import com.barlow.notification.worker.NotificationCenterInfo;
 
 @Component
-public class NotificationCenterRepositoryImpl implements NotificationCenterRepository {
+public class NotificationCenterRepositoryAdapter implements NotificationCenterRepository {
 
 	private final SimpleJdbcInsert simpleJdbcInsert;
 
-	public NotificationCenterRepositoryImpl(DataSource dataSource) {
+	public NotificationCenterRepositoryAdapter(DataSource dataSource) {
 		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
 			.withTableName("notification_center")
 			.usingGeneratedKeyColumns("notification_center_no");
