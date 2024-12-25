@@ -35,6 +35,17 @@ public class DeviceJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "device_status", nullable = false)
 	private Status status;
 
+	protected DeviceJpaEntity() {
+	}
+
+	public DeviceJpaEntity(String deviceId, DeviceOs deviceOs, String token, Long memberNo, Status status) {
+		this.deviceId = deviceId;
+		this.deviceOs = deviceOs;
+		this.token = token;
+		this.memberNo = memberNo;
+		this.status = status;
+	}
+
 	enum Status {
 		ACTIVE, INACTIVE;
 	}

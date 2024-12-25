@@ -33,4 +33,7 @@ public class NotificationCenterJpaEntity extends BaseTimeJpaEntity {
 
 	@Column(name = "body", nullable = false)
 	private String body;
+
+	protected NotificationCenterJpaEntity() {
+	}
 }
