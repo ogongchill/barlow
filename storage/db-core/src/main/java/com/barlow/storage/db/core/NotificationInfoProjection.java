@@ -1,8 +1,9 @@
 package com.barlow.storage.db.core;
 
-public interface NotificationInfoProjection {
-	Long getMemberNo();
-	NotificationTopic getTopic();
-	DeviceOs getDeviceOs();
-	String getDeviceToken();
+public record NotificationInfoProjection(
+	Long memberNo,
+	NotificationTopic topic,
+	DeviceOs deviceOs,
+	String deviceToken
+) {
 }

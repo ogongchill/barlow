@@ -23,10 +23,10 @@ public class NotificationInfoRepositoryAdapter implements NotificationInfoReposi
 		return notificationConfigJpaRepository.findAllByEnableTrueAndTopic(NotificationTopic.valueOf(topic))
 			.stream()
 			.map(projection -> NotificationInfo.initialize(
-				projection.getMemberNo(),
-				projection.getTopic().getValue(),
-				projection.getDeviceOs().name(),
-				projection.getDeviceToken()
+				projection.memberNo(),
+				projection.topic().getValue(),
+				projection.deviceOs().name(),
+				projection.deviceToken()
 			))
 			.toList();
 	}
@@ -40,10 +40,10 @@ public class NotificationInfoRepositoryAdapter implements NotificationInfoReposi
 			= notificationConfigJpaRepository.findAllByEnableTrueAndTopicIn(notificationTopics);
 		return projections.stream()
 			.map(projection -> NotificationInfo.initialize(
-				projection.getMemberNo(),
-				projection.getTopic().getValue(),
-				projection.getDeviceOs().name(),
-				projection.getDeviceToken()
+				projection.memberNo(),
+				projection.topic().getValue(),
+				projection.deviceOs().name(),
+				projection.deviceToken()
 			))
 			.toList();
 	}
