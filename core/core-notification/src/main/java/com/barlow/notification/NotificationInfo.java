@@ -1,5 +1,7 @@
 package com.barlow.notification;
 
+import java.util.Objects;
+
 public class NotificationInfo {
 
 	private final Topic topic;
@@ -38,6 +40,21 @@ public class NotificationInfo {
 		this.topic.count = count;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		NotificationInfo that = (NotificationInfo)o;
+		return Objects.equals(topic, that.topic) && Objects.equals(subscriber, that.subscriber);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(topic, subscriber);
+	}
+
 	public static class Topic {
 
 		private final String name;
@@ -64,6 +81,22 @@ public class NotificationInfo {
 
 		public boolean isSame(String topic) {
 			return name.equals(topic);
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o)
+				return true;
+			if (o == null || getClass() != o.getClass())
+				return false;
+			Topic topic = (Topic)o;
+			return Objects.equals(name, topic.name) && Objects.equals(representation, topic.representation)
+				&& Objects.equals(count, topic.count);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(name, representation, count);
 		}
 	}
 
