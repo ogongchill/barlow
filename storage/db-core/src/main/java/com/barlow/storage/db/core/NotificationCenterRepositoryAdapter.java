@@ -37,7 +37,7 @@ public class NotificationCenterRepositoryAdapter implements NotificationCenterRe
 		NotificationTopic topic = NotificationTopic.valueOf(notificationCenterInfo.topic());
 		return new MapSqlParameterSource()
 			.addValue("member_no", notificationCenterInfo.memberNo())
-			.addValue("notification_topic", topic)
+			.addValue("notification_topic", topic.name())
 			.addValue("icon_url", topic.getIconUrl())
 			.addValue("title", notificationCenterInfo.title())
 			.addValue("body", notificationCenterInfo.body())
