@@ -15,11 +15,11 @@ import com.barlow.notification.NotificationCenterRepository;
 import com.barlow.notification.worker.NotificationCenterInfo;
 
 @Component
-public class NotificationCenterRepositoryImpl implements NotificationCenterRepository {
+public class NotificationCenterRepositoryAdapter implements NotificationCenterRepository {
 
 	private final SimpleJdbcInsert simpleJdbcInsert;
 
-	public NotificationCenterRepositoryImpl(DataSource dataSource) {
+	public NotificationCenterRepositoryAdapter(DataSource dataSource) {
 		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
 			.withTableName("notification_center")
 			.usingGeneratedKeyColumns("notification_center_no");
@@ -37,7 +37,7 @@ public class NotificationCenterRepositoryImpl implements NotificationCenterRepos
 		NotificationTopic topic = NotificationTopic.valueOf(notificationCenterInfo.topic());
 		return new MapSqlParameterSource()
 			.addValue("member_no", notificationCenterInfo.memberNo())
-			.addValue("notification_topic", topic)
+			.addValue("notification_topic", topic.name())
 			.addValue("icon_url", topic.getIconUrl())
 			.addValue("title", notificationCenterInfo.title())
 			.addValue("body", notificationCenterInfo.body())

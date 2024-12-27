@@ -41,7 +41,7 @@ public class DefaultMessageTemplate implements MessageTemplate {
 			return Arrays.stream(Default.values())
 				.filter(v -> v.value.equals(topicName))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException(""));
+				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Default 법안 알림 주제입니다"));
 		}
 	}
 }

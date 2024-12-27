@@ -21,4 +21,7 @@ public class SubscribeJpaEntity extends BaseTimeJpaEntity {
 
 	@Column(name = "subscriber_no", nullable = false)
 	private Long memberNo;
+
+	protected SubscribeJpaEntity() {
+	}
 }

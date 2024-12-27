@@ -10,11 +10,11 @@ import com.barlow.notification.NotificationInfo;
 import com.barlow.notification.NotificationInfoRepository;
 
 @Component
-public class NotificationInfoRepositoryImpl implements NotificationInfoRepository {
+public class NotificationInfoRepositoryAdapter implements NotificationInfoRepository {
 
 	private final NotificationConfigJpaRepository notificationConfigJpaRepository;
 
-	public NotificationInfoRepositoryImpl(NotificationConfigJpaRepository notificationConfigJpaRepository) {
+	public NotificationInfoRepositoryAdapter(NotificationConfigJpaRepository notificationConfigJpaRepository) {
 		this.notificationConfigJpaRepository = notificationConfigJpaRepository;
 	}
 
@@ -23,10 +23,10 @@ public class NotificationInfoRepositoryImpl implements NotificationInfoRepositor
 		return notificationConfigJpaRepository.findAllByEnableTrueAndTopic(NotificationTopic.valueOf(topic))
 			.stream()
 			.map(projection -> NotificationInfo.initialize(
-				projection.getMemberNo(),
-				projection.getTopic().getValue(),
-				projection.getDeviceOs().name(),
-				projection.getDeviceToken()
+				projection.memberNo(),
+				projection.topic().getValue(),
+				projection.deviceOs().name(),
+				projection.deviceToken()
 			))
 			.toList();
 	}
@@ -40,10 +40,10 @@ public class NotificationInfoRepositoryImpl implements NotificationInfoRepositor
 			= notificationConfigJpaRepository.findAllByEnableTrueAndTopicIn(notificationTopics);
 		return projections.stream()
 			.map(projection -> NotificationInfo.initialize(
-				projection.getMemberNo(),
-				projection.getTopic().getValue(),
-				projection.getDeviceOs().name(),
-				projection.getDeviceToken()
+				projection.memberNo(),
+				projection.topic().getValue(),
+				projection.deviceOs().name(),
+				projection.deviceToken()
 			))
 			.toList();
 	}

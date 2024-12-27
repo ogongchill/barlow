@@ -28,6 +28,15 @@ public class NotificationConfigJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "member_no", nullable = false)
 	private Long memberNo;
 
+	protected NotificationConfigJpaEntity() {
+	}
+
+	public NotificationConfigJpaEntity(NotificationTopic topic, Boolean enable, Long memberNo) {
+		this.topic = topic;
+		this.enable = enable;
+		this.memberNo = memberNo;
+	}
+
 	public NotificationTopic getTopic() {
 		return topic;
 	}
