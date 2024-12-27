@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### core:core-notification ###
+core/core-notification/src/main/resources/firebase/*.json
