@@ -6,6 +6,8 @@ import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.MessagingErrorCode;
@@ -75,7 +77,7 @@ public class FailureMessageRetryQueue {
 		}
 
 		@Override
-		public int compareTo(Delayed other) {
+		public int compareTo(@NotNull Delayed other) {
 			if (other instanceof RetryBatchMessages retryBatchMessages) {
 				return Long.compare(this.delayUntil, retryBatchMessages.delayUntil);
 			}
