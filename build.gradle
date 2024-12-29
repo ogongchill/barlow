@@ -32,6 +32,13 @@ subprojects {
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
 
+    configurations {
+        configureEach {
+            exclude group:'org.springframework.boot', module: 'spring-boot-starter-logging'
+            exclude group: 'commons-logging', module: 'commons-logging'
+        }
+    }
+
     bootJar.enabled = false
     jar.enabled = true
 
