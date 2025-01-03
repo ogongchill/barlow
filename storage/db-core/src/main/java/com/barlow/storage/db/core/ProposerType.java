@@ -13,4 +13,8 @@ public enum ProposerType {
 	ProposerType(String value) {
 		this.value = value;
 	}
+
+	String getValue() {
+		return value;
+	}
 }
