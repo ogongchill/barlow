@@ -33,4 +33,24 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 
 	protected LegislationAccountJpaEntity() {
 	}
+
+	public Long getNo() {
+		return no;
+	}
+
+	public LegislationType getLegislationType() {
+		return legislationType;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Integer getPostCount() {
+		return postCount;
+	}
+
+	public Integer getSubscriberCount() {
+		return subscriberCount;
+	}
 }

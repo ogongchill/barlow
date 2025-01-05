@@ -32,4 +32,12 @@ public enum LegislationType {
 		this.value = value;
 		this.iconUrl = iconUrl;
 	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public String getIconUrl() {
+		return iconUrl;
+	}
 }
