@@ -30,6 +30,7 @@ public class RecentBillPostsApiSpecComposer {
 			.stream()
 			.filter(filterCondition)
 			.map(recentBillPost -> new RecentBillPostThumbnail(
+				recentBillPost.getBillId(),
 				recentBillPost.getBillName(),
 				recentBillPost.getProposers(),
 				recentBillPost.getLegislationProcessStatus(),

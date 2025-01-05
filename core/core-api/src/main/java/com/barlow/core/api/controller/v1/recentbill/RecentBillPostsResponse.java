@@ -8,6 +8,7 @@ public record RecentBillPostsResponse(
 	boolean isLastPage
 ) {
 	record RecentBillPostThumbnail(
+		String billId,
 		String billName,
 		String proposers,
 		String legislationProcess,

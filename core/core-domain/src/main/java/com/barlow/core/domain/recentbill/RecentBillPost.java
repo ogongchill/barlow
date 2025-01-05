@@ -25,6 +25,10 @@ public class RecentBillPost {
 		this.viewCount = viewCount;
 	}
 
+	public String getBillId() {
+		return billInfo.billId;
+	}
+
 	public String getBillName() {
 		return billInfo.billName;
 	}
