@@ -1,6 +1,7 @@
 package com.barlow.core.domain.recentbill;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class RecentBillPost {
 
@@ -11,6 +12,7 @@ public class RecentBillPost {
 	private final String detail;
 	private final LocalDateTime createdAt;
 	private final int viewCount;
+	private List<BillProposer> billProposers;
 
 	public RecentBillPost(
 		BillInfo billInfo, ProposerInfo proposerInfo, LegislationInfo legislationInfo,
@@ -23,6 +25,10 @@ public class RecentBillPost {
 		this.detail = detail;
 		this.createdAt = createdAt;
 		this.viewCount = viewCount;
+	}
+
+	public void setBillProposers(List<BillProposer> billProposers) {
+		this.billProposers = billProposers;
 	}
 
 	public String getBillId() {
@@ -41,12 +47,24 @@ public class RecentBillPost {
 		return legislationInfo.legislationProcessStatus;
 	}
 
+	public String getSummary() {
+		return summary;
+	}
+
+	public String getDetail() {
+		return detail;
+	}
+
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
 	public int getViewCount() {
 		return viewCount;
+	}
+
+	public List<BillProposer> getBillProposers() {
+		return billProposers;
 	}
 
 	public static class BillInfo {
