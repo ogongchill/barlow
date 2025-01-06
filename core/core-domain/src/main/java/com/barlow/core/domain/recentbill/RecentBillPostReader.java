@@ -14,4 +14,12 @@ public class RecentBillPostReader {
 	public RecentBillPostsStatus readRecentBillPosts(BillPostQuery query) {
 		return recentBillPostRepository.retrieveRecentBillPosts(query);
 	}
+
+	public RecentBillPost readRecentBillPostDetail(BillPostDetailQuery query) {
+		RecentBillPost recentBillPost = recentBillPostRepository.retrieveRecentBillPost(query);
+		if (recentBillPost == null) {
+			throw RecentBillPostDomainException.notFound(query.billId());
+		}
+		return recentBillPost;
+	}
 }

@@ -14,4 +14,8 @@ public class RecentBillPostRetrieveService {
 	public RecentBillPostsStatus readRecentBillPosts(BillPostQuery query) {
 		return recentBillPostReader.readRecentBillPosts(query);
 	}
+
+	public RecentBillPost readRecentBillPostDetail(BillPostDetailQuery query) {
+		return recentBillPostReader.readRecentBillPostDetail(query);
+	}
 }
