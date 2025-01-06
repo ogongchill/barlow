@@ -35,4 +35,6 @@ public interface RecentBillPostJpaRepository extends JpaRepository<RecentBillPos
 		Set<PartyName> parties,
 		Pageable pageable
 	);
+
+	RecentBillPostJpaEntity findByBillId(String billId);
 }

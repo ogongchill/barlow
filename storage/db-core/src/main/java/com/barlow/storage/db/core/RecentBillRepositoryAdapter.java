@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
 
+import com.barlow.core.domain.recentbill.BillPostDetailQuery;
 import com.barlow.core.domain.recentbill.BillPostQuery;
+import com.barlow.core.domain.recentbill.BillProposer;
 import com.barlow.core.domain.recentbill.RecentBillPost;
 import com.barlow.core.domain.recentbill.RecentBillPostRepository;
 import com.barlow.core.domain.recentbill.RecentBillPostsStatus;
@@ -16,9 +18,14 @@ import com.barlow.core.domain.recentbill.RecentBillPostsStatus;
 public class RecentBillRepositoryAdapter implements RecentBillPostRepository {
 
 	private final RecentBillPostJpaRepository recentBillPostJpaRepository;
+	private final BillProposerJpaRepository billProposerJpaRepository;
 
-	public RecentBillRepositoryAdapter(RecentBillPostJpaRepository recentBillPostJpaRepository) {
+	public RecentBillRepositoryAdapter(
+		RecentBillPostJpaRepository recentBillPostJpaRepository,
+		BillProposerJpaRepository billProposerJpaRepository
+	) {
 		this.recentBillPostJpaRepository = recentBillPostJpaRepository;
+		this.billProposerJpaRepository = billProposerJpaRepository;
 	}
 
 	@Override
@@ -47,5 +54,16 @@ public class RecentBillRepositoryAdapter implements RecentBillPostRepository {
 			.map(RecentBillPostJpaEntity::toRecentBillPost)
 			.toList();
 		return new RecentBillPostsStatus(recentBillPosts, billPostJpaEntities.isLast());
+	}
+
+	@Override
+	public RecentBillPost retrieveRecentBillPost(BillPostDetailQuery query) {
+		RecentBillPost recentBillPost = recentBillPostJpaRepository.findByBillId(query.billId()).toRecentBillPost();
+		List<BillProposer> billProposers = billProposerJpaRepository.findAllByBillId(query.billId())
+			.stream()
+			.map(BillProposerJpaEntity::toBillProposer)
+			.toList();
+		recentBillPost.setBillProposers(billProposers);
+		return recentBillPost;
 	}
 }
