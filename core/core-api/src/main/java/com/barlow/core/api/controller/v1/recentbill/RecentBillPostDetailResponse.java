@@ -9,6 +9,8 @@ import com.barlow.core.support.response.Constant;
 public record RecentBillPostDetailResponse(
 	String title,
 	String proposerSummary,
+	String proposerType,
+	String legislativeBody,
 	LocalDateTime createdAt,
 	int viewCount,
 	String detail,

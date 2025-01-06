@@ -39,8 +39,16 @@ public class RecentBillPost {
 		return billInfo.billName;
 	}
 
+	public String getProposerType() {
+		return proposerInfo.proposerType;
+	}
+
 	public String getProposers() {
 		return proposerInfo.proposers;
+	}
+
+	public String getLegislativeBody() {
+		return legislationInfo.legislativeBody;
 	}
 
 	public String getLegislationProcessStatus() {
@@ -86,10 +94,10 @@ public class RecentBillPost {
 	}
 
 	public static class LegislationInfo {
-		private final String legislationType;
+		private final String legislativeBody;
 		private final String legislationProcessStatus;
 		public LegislationInfo(String legislationType, String legislationProcessStatus) {
-			this.legislationType = legislationType;
+			this.legislativeBody = legislationType;
 			this.legislationProcessStatus = legislationProcessStatus;
 		}
 	}
