@@ -1,95 +1,68 @@
 package com.barlow.core.domain.account;
 
-public class LegislationAccount {
+import org.jetbrains.annotations.NotNull;
 
-    private Long accountNo;
-    private String name;
-    private String iconUrl;
-    private String description;
-    private Integer postCount;
-    private Integer subscriberCount;
-
-    protected LegislationAccount(Builder builder){
-        this.accountNo = builder.accountNo;
-        this.name = builder.name;
-        this.iconUrl = builder.iconUrl;
-        this.description = builder.description;
-        this.postCount = builder.postCount;
-        this.subscriberCount = builder.subscriberCount;
-    }
+public record LegislationAccount(
+        @NotNull Long no,
+        @NotNull String name,
+        @NotNull String iconUrl,
+        @NotNull String description,
+        @NotNull Integer postCount,
+        @NotNull Integer subscriberCount
+) {
 
     public static Builder builder() {
         return new Builder();
     }
 
-    public static class Builder<T extends Builder<T>> {
-        private Long accountNo;
+    public static class Builder {
+
+        private Long no;
         private String name;
         private String iconUrl;
         private String description;
-        private Integer postCount;
         private Integer subscriberCount;
+        private Integer postCount;
 
-        public T accountNo(Long accountNo) {
-            this.accountNo = accountNo;
-            return self();
+        public Builder no(Long no) {
+            this.no = no;
+            return this;
         }
 
-        public T name(String name) {
+        public Builder name(String name) {
             this.name = name;
-            return self();
+            return this;
         }
 
-        public T iconUrl(String url) {
-            this.iconUrl = url;
-            return self();
+        public Builder iconUrl(String iconUrl) {
+            this.iconUrl = iconUrl;
+            return this;
         }
 
-        public T description(String description) {
+        public Builder description(String description) {
             this.description = description;
-            return self();
+            return this;
         }
 
-        public T postCount(Integer postCount) {
-            this.postCount = postCount;
-            return self();
-        }
-
-        public T subscriberCount(Integer subscriberCount) {
+        public Builder subscriberCount(Integer subscriberCount) {
             this.subscriberCount = subscriberCount;
-            return self();
+            return this;
         }
 
-        protected T self() {
-            return (T) this;
+        public Builder postCount(Integer postCount) {
+            this.postCount = postCount;
+            return this;
         }
 
         public LegislationAccount build() {
-            return new LegislationAccount(this);
+            return new LegislationAccount(
+                    this.no,
+                    this.name,
+                    this.iconUrl,
+                    this.description,
+                    this.subscriberCount,
+                    this.postCount
+            );
         }
-    }
-
-    public Long getAccountNo() {
-        return accountNo;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getIconUrl() {
-        return iconUrl;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Integer getPostCount() {
-        return postCount;
-    }
-
-    public Integer getSubscriberCount() {
-        return subscriberCount;
     }
 }

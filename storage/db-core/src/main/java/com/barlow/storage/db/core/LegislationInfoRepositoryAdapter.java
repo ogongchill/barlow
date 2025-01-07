@@ -1,0 +1,26 @@
+package com.barlow.storage.db.core;
+
+import com.barlow.core.domain.account.LegislationAccount;
+import com.barlow.core.domain.account.LegislationAccountRepository;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Component
+public class LegislationInfoRepositoryAdapter implements LegislationAccountRepository {
+
+    private final LegislationAccountJpaRepository legislationAccountJpaRepository;
+
+    public LegislationInfoRepositoryAdapter(LegislationAccountJpaRepository legislationAccountJpaRepository) {
+        this.legislationAccountJpaRepository = legislationAccountJpaRepository;
+    }
+
+    @Override
+    public List<LegislationAccount> retrieveCommitteeAccount() {
+        return legislationAccountJpaRepository.findAll()
+                .stream()
+                .filter(LegislationAccountJpaEntity::isCommittee)
+                .map(LegislationAccountJpaEntity::toLegislationAccount)
+                .toList();
+    }
+}
