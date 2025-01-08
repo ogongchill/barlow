@@ -33,8 +33,7 @@ public class RecentBillPostsApiSpecComposer {
 				recentBillPost.getBillId(),
 				recentBillPost.getBillName(),
 				recentBillPost.getProposers(),
-				recentBillPost.getLegislationProcessStatus(),
-				recentBillPost.getViewCount()
+				recentBillPost.getLegislationProcessStatus()
 			))
 			.toList();
 	}

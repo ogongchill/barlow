@@ -12,7 +12,6 @@ public record RecentBillPostDetailResponse(
 	String proposerType,
 	String legislativeBody,
 	LocalDateTime createdAt,
-	int viewCount,
 	String detail,
 	SummarySection summarySection,
 	ProposerSection proposerSection

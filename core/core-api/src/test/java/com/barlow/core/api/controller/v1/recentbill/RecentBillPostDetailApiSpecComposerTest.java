@@ -11,7 +11,6 @@ import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture
 import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.PROPOSER_TYPE;
 import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.RECENT_BILL_POST;
 import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.SUMMARY;
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.VIEW_COUNT;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -66,7 +65,6 @@ class RecentBillPostDetailApiSpecComposerTest {
 			() -> assertThat(result.proposerSummary()).isEqualTo(PROPOSERS_SUMMARY),
 			() -> assertThat(result.proposerType()).isEqualTo(PROPOSER_TYPE),
 			() -> assertThat(result.legislativeBody()).isEqualTo(LEGISLATION_TYPE),
-			() -> assertThat(result.viewCount()).isEqualTo(VIEW_COUNT),
 			() -> assertThat(result.detail()).isEqualTo(DETAIL),
 			() -> assertThat(result.summarySection().summaryDetail()).isEqualTo(SUMMARY),
 			() -> assertThat(result.proposerSection().proposerPartyRate()).isEqualTo(expectProposerPartyRate),

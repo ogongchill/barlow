@@ -11,8 +11,7 @@ public record RecentBillPostsResponse(
 		String billId,
 		String billName,
 		String proposers,
-		String legislationProcess,
-		int viewCount
+		String legislationProcess
 	) {
 	}
 }

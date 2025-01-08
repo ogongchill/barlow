@@ -23,7 +23,6 @@ public class RecentBillPostDetailApiSpecComposer {
 			recentBillPost.getProposerType(),
 			recentBillPost.getLegislativeBody(),
 			recentBillPost.getCreatedAt(),
-			recentBillPost.getViewCount(),
 			recentBillPost.getDetail(),
 			new RecentBillPostDetailResponse.SummarySection(recentBillPost.getSummary()),
 			new RecentBillPostDetailResponse.ProposerSection(
