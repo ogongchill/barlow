@@ -23,6 +23,31 @@ import org.junit.jupiter.api.Test;
 
 class RecentBillPostDetailApiSpecComposerTest {
 
+	@DisplayName("법안발의자 정보를 받아, 해당 발의자들의 정당명:의원수 비율을 반환한다")
+	@Test
+	void getProposerPartyRate() {
+		RecentBillPostDetailApiSpecComposer.BillProposers billProposers
+			= new RecentBillPostDetailApiSpecComposer.BillProposers(List.of(PROPOSER));
+
+		Map<String, Integer> actual = billProposers.getProposerPartyRate();
+
+		assertThat(actual).isEqualTo(Map.of(PARTY_NAME, 1));
+	}
+
+	@DisplayName("법안발의자 정보를 받아, 발의자 정보들을 응답 형식에 맞도록 매핑한다")
+	@Test
+	void mapToProposerResponse() {
+		RecentBillPostDetailApiSpecComposer.BillProposers billProposers
+			= new RecentBillPostDetailApiSpecComposer.BillProposers(List.of(PROPOSER));
+
+		List<RecentBillPostDetailResponse.ProposerResponse> actual= billProposers.mapToProposerResponse();
+
+		List<RecentBillPostDetailResponse.ProposerResponse> expect = List.of(
+			new RecentBillPostDetailResponse.ProposerResponse(PROPOSER_NAME, PROFILE_IMAGE_PATH, PARTY_NAME)
+		);
+		assertThat(actual).isEqualTo(expect);
+	}
+
 	@DisplayName("최근법안게시글의 상세 내용을 받아 api 스펙에 맞게 구성한다")
 	@Test
 	void compose() {
