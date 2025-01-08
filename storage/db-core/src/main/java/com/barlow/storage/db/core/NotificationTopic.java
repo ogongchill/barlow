@@ -1,5 +1,7 @@
 package com.barlow.storage.db.core;
 
+import com.barlow.core.domain.notification.NotifiableTopic;
+
 public enum NotificationTopic {
 	/**
 	 * 법안 알림 : default 로 5개 전부 동의된 알림 (수정가능)
@@ -53,5 +55,9 @@ public enum NotificationTopic {
 
 	public String getIconUrl() {
 		return iconUrl;
+	}
+
+	public NotifiableTopic toNotifiableTopic() {
+		return new NotifiableTopic(this.name(), this.value, this.iconUrl);
 	}
 }

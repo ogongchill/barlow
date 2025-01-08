@@ -22,4 +22,10 @@ public interface NotificationConfigJpaRepository extends JpaRepository<Notificat
 		INNER JOIN DeviceJpaEntity d ON nc.memberNo = d.memberNo
 		WHERE nc.topic IN :topics AND nc.enable = true AND d.status = 'ACTIVE'""")
 	List<NotificationInfoProjection> findAllByEnableTrueAndTopicIn(@Param("topics") Set<NotificationTopic> topics);
+
+	@Query("""
+		SELECT NotificationConfigJpaEntity d 
+		FROM NotificationConfigJpaEntity nc
+		WHERE nc.memberNo = :memberNo""")
+	List<NotificationConfigJpaEntity> findAllByMemberNo(Long memberNo);
 }
