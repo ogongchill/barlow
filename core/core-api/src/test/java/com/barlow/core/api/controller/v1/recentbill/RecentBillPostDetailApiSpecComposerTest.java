@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 
 class RecentBillPostDetailApiSpecComposerTest {
 
+
 	@DisplayName("법안발의자 정보를 받아, 해당 발의자들의 정당명:의원수 비율을 반환한다")
 	@Test
 	void getProposerPartyRate() {
