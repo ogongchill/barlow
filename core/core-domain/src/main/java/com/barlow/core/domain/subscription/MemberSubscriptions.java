@@ -19,4 +19,9 @@ public class MemberSubscriptions {
             throw new IllegalArgumentException("has different member no");
         }
     }
+
+    public boolean hasSubscription(Long targetLegislationAccountNo) {
+        return subscriptions.stream()
+                .anyMatch(subscription -> subscription.legislationAccountNo().equals(targetLegislationAccountNo));
+    }
 }
