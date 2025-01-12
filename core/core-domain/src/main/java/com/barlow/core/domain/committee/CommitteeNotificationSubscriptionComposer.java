@@ -5,12 +5,10 @@ import com.barlow.core.domain.notification.MemberNotificationConfig;
 import com.barlow.core.domain.notification.NotificationConfig;
 import com.barlow.core.domain.subscription.MemberSubscriptions;
 
-import java.util.function.Consumer;
-
 public class CommitteeNotificationSubscriptionComposer {
 
     private final LegislationAccount legislationAccount;
-    private final CommitteeNotificationSubscription.Builder builder;
+    private CommitteeNotificationSubscription.Builder builder;
 
     public CommitteeNotificationSubscriptionComposer(LegislationAccount legislationAccount) {
         this.legislationAccount = legislationAccount;
@@ -20,27 +18,22 @@ public class CommitteeNotificationSubscriptionComposer {
                 .iconUrl(legislationAccount.iconUrl());
     }
 
-    public <T> CommitteeNotificationSubscriptionComposer accept(Consumer<CommitteeNotificationSubscription.Builder> composeConsumer) {
-        composeConsumer.accept(builder);
-        return this;
-    }
-
     public CommitteeNotificationSubscription compose() {
         return builder.build();
     }
 
     public CommitteeNotificationSubscriptionComposer setSubscription(MemberSubscriptions memberSubscriptions) {
         if (memberSubscriptions.hasSubscription(legislationAccount.no())) {
-            builder.isSubscriptionEnable(true);
+            builder = builder.isSubscriptionEnable(true);
             return this;
         }
-        builder.isSubscriptionEnable(false);
+        builder = builder.isSubscriptionEnable(false);
         return this;
     }
 
     public CommitteeNotificationSubscriptionComposer setNotification(MemberNotificationConfig memberNotificationConfig) {
         NotificationConfig targetNotificationConfig = memberNotificationConfig.findByTopicName(legislationAccount.name());
-        builder.isNotificationEnable(targetNotificationConfig.isEnable());
+        builder = builder.isNotificationEnable(targetNotificationConfig.isEnable());
         return this;
     }
 }
