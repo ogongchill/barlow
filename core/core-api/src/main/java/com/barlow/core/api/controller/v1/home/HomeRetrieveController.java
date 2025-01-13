@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.home.HomeRetrieveService;
 import com.barlow.core.domain.home.HomeStatus;
+import com.barlow.core.domain.home.notificationcenter.NotificationCenterItemRetrieveService;
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
@@ -16,9 +18,14 @@ import com.barlow.core.support.response.ApiResponse;
 public class HomeRetrieveController {
 
 	private final HomeRetrieveService homeRetrieveService;
+	private final NotificationCenterItemRetrieveService notificationCenterItemRetrieveService;
 
-	public HomeRetrieveController(HomeRetrieveService homeRetrieveService) {
+	public HomeRetrieveController(
+		HomeRetrieveService homeRetrieveService,
+		NotificationCenterItemRetrieveService notificationCenterItemRetrieveService
+	) {
 		this.homeRetrieveService = homeRetrieveService;
+		this.notificationCenterItemRetrieveService = notificationCenterItemRetrieveService;
 	}
 
 	@GetMapping
@@ -37,5 +44,16 @@ public class HomeRetrieveController {
 			HomeResponse.SubscribeSection.from(subscribeLegislationBodies)
 		);
 		return ApiResponse.success(homeResponse);
+	}
+
+	@GetMapping("/notification-center")
+	public ApiResponse<NotificationCenterResponse> retrieveNotificationCenter(
+		User user,
+		@RequestParam(name = "filterTopic", required = false) String filterTopic
+	) {
+		NotificationCenterApiSpecComposer notificationCenterApiSpecComposer = new NotificationCenterApiSpecComposer(
+			notificationCenterItemRetrieveService.retrieveNotificationCenterItems(user)
+		);
+		return ApiResponse.success(notificationCenterApiSpecComposer.compose(filterTopic));
 	}
 }
