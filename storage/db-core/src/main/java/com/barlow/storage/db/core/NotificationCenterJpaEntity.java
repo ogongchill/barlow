@@ -1,5 +1,7 @@
 package com.barlow.storage.db.core;
 
+import com.barlow.core.domain.home.notificationcenter.NotificationCenterItem;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -35,5 +37,16 @@ public class NotificationCenterJpaEntity extends BaseTimeJpaEntity {
 	private String body;
 
 	protected NotificationCenterJpaEntity() {
+	}
+
+	NotificationCenterItem toNotificationItem() {
+		return new NotificationCenterItem(
+			"biiId",
+			notificationTopic.getValue(),
+			notificationTopic.getIconUrl(),
+			title,
+			body,
+			getCreatedAt()
+		);
 	}
 }
