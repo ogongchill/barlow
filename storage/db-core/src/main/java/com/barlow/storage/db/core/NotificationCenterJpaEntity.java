@@ -27,9 +27,6 @@ public class NotificationCenterJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "notification_topic", nullable = false)
 	private NotificationTopic notificationTopic;
 
-	@Column(name = "icon_url", nullable = false)
-	private String iconUrl;
-
 	@Column(name = "title", nullable = false)
 	private String title;
 
