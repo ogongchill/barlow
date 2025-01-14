@@ -72,15 +72,15 @@ public class NotificationInfo {
 			return new Topic(topic, null, null);
 		}
 
-		public String getName() {
+		String getName() {
 			return name;
 		}
 
-		public String getRepresentation() {
+		String getRepresentation() {
 			return representation;
 		}
 
-		public Integer getCount() {
+		Integer getCount() {
 			return count;
 		}
 

@@ -1,17 +1,20 @@
 package com.barlow.notification;
 
-public record NotificationCenterInfo(
+import java.util.List;
+
+public record NotificationCenterItemInfo(
 	Long memberNo,
 	String topic,
-	String title,
-	String body
+	List<BillItemInfo> items
 ) {
-	public NotificationCenterInfo(
-		NotificationInfo.Subscriber subscriber,
-		NotificationInfo.Topic topic,
-		String title,
-		String body
-	) {
-		this(subscriber.memberNo(), topic.getName(), title, body);
+
+	static NotificationCenterItemInfo of(Long memberNo, String topic, List<NotificationPayload.BillInfo> billInfos) {
+		List<BillItemInfo> billItemInfos = billInfos.stream()
+			.map(info -> new BillItemInfo(info.billId(), info.billName()))
+			.toList();
+		return new NotificationCenterItemInfo(memberNo, topic, billItemInfos);
+	}
+
+	public record BillItemInfo(String billId, String billName) {
 	}
 }

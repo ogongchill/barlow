@@ -32,4 +32,12 @@ public record DefaultBillNotificationPayload(
 			billInfos.size()
 		);
 	}
+
+	@Override
+	public List<BillInfo> billInfosByTopic(String topic) {
+		if (!this.topic.equals(topic)) {
+			throw new IllegalArgumentException("잘못된 topic 입니다");
+		}
+		return billInfos;
+	}
 }

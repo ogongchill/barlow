@@ -1,10 +1,8 @@
-package com.barlow.notification.worker;
+package com.barlow.notification;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
-
-import com.barlow.notification.NotificationCenterRepository;
 
 @Component
 public class NotificationCenterRegistrar {
@@ -15,7 +13,19 @@ public class NotificationCenterRegistrar {
 		this.notificationCenterRepository = notificationCenterRepository;
 	}
 
-	public void registerAll(List<NotificationCenterInfo> notificationCenterInfos) {
-		notificationCenterRepository.registerAll(notificationCenterInfos);
+	public void register(NotificationInfo notificationInfo, NotificationPayload payload) {
+		List<NotificationCenterItemInfo> notificationCenterItemInfos = notificationInfo.getInfos()
+			.entrySet()
+			.stream()
+			.flatMap(entry -> entry.getValue()
+				.stream()
+				.map(subscriber -> NotificationCenterItemInfo.of(
+					subscriber.memberNo(),
+					entry.getKey().getName(),
+					payload.billInfosByTopic(entry.getKey().getName())
+				))
+			)
+			.toList();
+		notificationCenterRepository.registerAll(notificationCenterItemInfos);
 	}
 }

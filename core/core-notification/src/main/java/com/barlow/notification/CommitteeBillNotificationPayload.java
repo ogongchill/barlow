@@ -15,10 +15,15 @@ public record CommitteeBillNotificationPayload(
 	@NotNull Map<String, List<BillInfo>> topicsWithBillInfos
 ) implements NotificationPayload {
 
-	public static CommitteeBillNotificationPayload from(Map<String, List<BillInfo>> topicsWithCount) {
-		if (topicsWithCount == null) {
+	public static CommitteeBillNotificationPayload from(Map<String, List<BillInfo>> topicsWithBillInfos) {
+		if (topicsWithBillInfos == null) {
 			throw new IllegalArgumentException("null 파라미터는 들어올 수 없습니다");
 		}
-		return new CommitteeBillNotificationPayload(NotificationType.STANDING_COMMITTEE, topicsWithCount);
+		return new CommitteeBillNotificationPayload(NotificationType.STANDING_COMMITTEE, topicsWithBillInfos);
+	}
+
+	@Override
+	public List<BillInfo> billInfosByTopic(String topic) {
+		return topicsWithBillInfos.get(topic);
 	}
 }
