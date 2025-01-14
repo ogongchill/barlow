@@ -12,22 +12,22 @@ public class DefaultNotificationInfoReader implements NotificationInfoReader {
 	}
 
 	@Override
-	public NotificationInfo readNotificationInfos(NotificationPayload payload) {
-		DefaultBillNotificationPayload notificationPayload = checkAndConvert(payload);
+	public NotificationInfo readNotificationInfos(NotificationRequest request) {
+		DefaultBillNotificationRequest notificationRequest = checkAndConvert(request);
 		NotificationInfo notificationInfo = notificationInfoRepository
-			.retrieveNotificationInfosByTopic(notificationPayload.topic());
+			.retrieveNotificationInfosByTopic(notificationRequest.topic());
 		notificationInfo.assignRepresentationBillAndTotalCount(
-			notificationPayload.representationBill(),
-			notificationPayload.totalCount()
+			notificationRequest.representationBill(),
+			notificationRequest.totalCount()
 		);
 		return notificationInfo;
 	}
 
-	private DefaultBillNotificationPayload checkAndConvert(NotificationPayload payload) {
-		if (payload instanceof DefaultBillNotificationPayload defaultBillNotificationPayload) {
-			return defaultBillNotificationPayload;
+	private DefaultBillNotificationRequest checkAndConvert(NotificationRequest request) {
+		if (request instanceof DefaultBillNotificationRequest defaultBillNotificationRequest) {
+			return defaultBillNotificationRequest;
 		} else {
-			throw new IllegalArgumentException("Payload must be DefaultBillNotificationPayload");
+			throw new IllegalArgumentException("request must be DefaultBillNotificationRequest");
 		}
 	}
 }

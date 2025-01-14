@@ -2,7 +2,8 @@ package com.barlow.notification;
 
 import java.util.List;
 
-public interface NotificationPayload {
+public interface NotificationRequest {
+
 	NotificationType type();
 
 	List<BillInfo> billInfosByTopic(String topic);

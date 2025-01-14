@@ -10,16 +10,16 @@ import org.jetbrains.annotations.NotNull;
  * @param topicsWithBillInfos {key:소관위원회명 value:[key]에 해당하는 {법안 ID, 법안 이름} 리스트}
  * @see NotificationType
  */
-public record CommitteeBillNotificationPayload(
+public record CommitteeBillNotificationRequest(
 	@NotNull NotificationType type,
 	@NotNull Map<String, List<BillInfo>> topicsWithBillInfos
-) implements NotificationPayload {
+) implements NotificationRequest {
 
-	public static CommitteeBillNotificationPayload from(Map<String, List<BillInfo>> topicsWithBillInfos) {
+	public static CommitteeBillNotificationRequest from(Map<String, List<BillInfo>> topicsWithBillInfos) {
 		if (topicsWithBillInfos == null) {
 			throw new IllegalArgumentException("null 파라미터는 들어올 수 없습니다");
 		}
-		return new CommitteeBillNotificationPayload(NotificationType.STANDING_COMMITTEE, topicsWithBillInfos);
+		return new CommitteeBillNotificationRequest(NotificationType.STANDING_COMMITTEE, topicsWithBillInfos);
 	}
 
 	@Override

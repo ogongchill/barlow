@@ -13,7 +13,7 @@ public class NotificationCenterRegistrar {
 		this.notificationCenterRepository = notificationCenterRepository;
 	}
 
-	public void register(NotificationInfo notificationInfo, NotificationPayload payload) {
+	public void register(NotificationInfo notificationInfo, NotificationRequest request) {
 		List<NotificationCenterItemInfo> notificationCenterItemInfos = notificationInfo.getInfos()
 			.entrySet()
 			.stream()
@@ -22,7 +22,7 @@ public class NotificationCenterRegistrar {
 				.map(subscriber -> NotificationCenterItemInfo.of(
 					subscriber.memberNo(),
 					entry.getKey().getName(),
-					payload.billInfosByTopic(entry.getKey().getName())
+					request.billInfosByTopic(entry.getKey().getName())
 				))
 			)
 			.toList();

@@ -12,19 +12,19 @@ import org.jetbrains.annotations.NotNull;
  * @param totalCount [topic] 조건에 해당하는 법안의 총 개수
  * @see NotificationType
  */
-public record DefaultBillNotificationPayload(
+public record DefaultBillNotificationRequest(
 	@NotNull NotificationType type,
 	@NotNull String topic,
 	@NotNull String representationBill,
 	@NotNull List<BillInfo> billInfos,
 	@NotNull Integer totalCount
-) implements NotificationPayload {
+) implements NotificationRequest {
 
-	public static DefaultBillNotificationPayload of(String topic, List<BillInfo> billInfos) {
+	public static DefaultBillNotificationRequest of(String topic, List<BillInfo> billInfos) {
 		if (topic == null) {
 			throw new IllegalArgumentException("topic 은 null 이 될 수 없습니다");
 		}
-		return new DefaultBillNotificationPayload(
+		return new DefaultBillNotificationRequest(
 			NotificationType.DEFAULT,
 			topic,
 			billInfos.getFirst().billName(),

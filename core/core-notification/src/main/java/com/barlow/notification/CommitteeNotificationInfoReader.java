@@ -1,6 +1,6 @@
 package com.barlow.notification;
 
-import static com.barlow.notification.NotificationPayload.BillInfo;
+import static com.barlow.notification.NotificationRequest.BillInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -18,9 +18,9 @@ public class CommitteeNotificationInfoReader implements NotificationInfoReader {
 	}
 
 	@Override
-	public NotificationInfo readNotificationInfos(NotificationPayload payload) {
-		CommitteeBillNotificationPayload notificationPayload = checkAndConvert(payload);
-		Map<String, List<BillInfo>> topicsWithBillInfos = notificationPayload.topicsWithBillInfos();
+	public NotificationInfo readNotificationInfos(NotificationRequest request) {
+		CommitteeBillNotificationRequest notificationRequest = checkAndConvert(request);
+		Map<String, List<BillInfo>> topicsWithBillInfos = notificationRequest.topicsWithBillInfos();
 		Set<String> topics = topicsWithBillInfos.keySet();
 		NotificationInfo notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopics(topics);
 		topicsWithBillInfos.forEach((topic, billInfos) ->
@@ -28,11 +28,11 @@ public class CommitteeNotificationInfoReader implements NotificationInfoReader {
 		return notificationInfos;
 	}
 
-	private CommitteeBillNotificationPayload checkAndConvert(NotificationPayload payload) {
-		if (payload instanceof CommitteeBillNotificationPayload committeeBillNotificationPayload) {
+	private CommitteeBillNotificationRequest checkAndConvert(NotificationRequest request) {
+		if (request instanceof CommitteeBillNotificationRequest committeeBillNotificationPayload) {
 			return committeeBillNotificationPayload;
 		} else {
-			throw new IllegalArgumentException("Payload must be CommitteeBillNotificationPayload");
+			throw new IllegalArgumentException("request must be CommitteeBillNotificationRequest");
 		}
 	}
 }

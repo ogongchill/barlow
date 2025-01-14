@@ -22,11 +22,11 @@ public class BillNotificationSendService implements NotificationSendPort {
 	}
 
 	@Override
-	public void sendCall(NotificationPayload payload) {
-		MessageTemplate messageTemplate = MessageTemplateFactory.getBy(payload.type());
-		NotificationInfoReader reader = notificationInfoReaderFactory.getBy(payload.type());
-		NotificationInfo notificationInfo = reader.readNotificationInfos(payload);
+	public void sendCall(NotificationRequest request) {
+		MessageTemplate messageTemplate = MessageTemplateFactory.getBy(request.type());
+		NotificationInfoReader reader = notificationInfoReaderFactory.getBy(request.type());
+		NotificationInfo notificationInfo = reader.readNotificationInfos(request);
 		notificationSendWorker.invoke(messageTemplate, notificationInfo.getInfos());
-		notificationCenterRegistrar.register(notificationInfo, payload);
+		notificationCenterRegistrar.register(notificationInfo, request);
 	}
 }

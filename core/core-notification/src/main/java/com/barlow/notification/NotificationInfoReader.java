@@ -1,5 +1,5 @@
 package com.barlow.notification;
 
 public interface NotificationInfoReader {
-	NotificationInfo readNotificationInfos(NotificationPayload payload);
+	NotificationInfo readNotificationInfos(NotificationRequest request);
 }
