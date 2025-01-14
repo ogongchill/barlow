@@ -26,7 +26,7 @@ public record NotificationConfig(
         }
 
         public Builder memberNo(Long memberNo) {
-            this.memberNo = no;
+            this.memberNo = memberNo;
             return this;
         }
 

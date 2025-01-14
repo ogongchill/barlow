@@ -1,11 +1,11 @@
-package com.barlow.core.domain.notification;
+    package com.barlow.core.domain.notification;
 
-import org.springframework.stereotype.Repository;
+    import org.springframework.stereotype.Repository;
 
-import java.util.List;
+    import java.util.List;
 
-@Repository
-public interface NotificationConfigRepository {
+    @Repository
+    public interface NotificationConfigRepository {
 
-    List<NotificationConfig> retrieveByMemberNo(Long memberNo);
-}
+        List<NotificationConfig> retrieveByMemberNo(Long memberNo);
+    }

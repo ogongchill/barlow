@@ -24,8 +24,8 @@ public interface NotificationConfigJpaRepository extends JpaRepository<Notificat
 	List<NotificationInfoProjection> findAllByEnableTrueAndTopicIn(@Param("topics") Set<NotificationTopic> topics);
 
 	@Query("""
-		SELECT NotificationConfigJpaEntity d
-		FROM NotificationConfigJpaEntity nc
-		WHERE nc.memberNo = :memberNo""")
-	List<NotificationConfigJpaEntity> findAllByMemberNo(Long memberNo);
+		SELECT d
+		FROM NotificationConfigJpaEntity d
+		WHERE d.memberNo = :memberNo""")
+	List<NotificationConfigJpaEntity> findAllByMemberNo(@Param("memberNo")Long memberNo);
 }

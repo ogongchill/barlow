@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class LegislationInfoRepositoryAdapter implements LegislationAccountRepository {
+public class LegislationRepositoryAdapter implements LegislationAccountRepository {
 
     private final LegislationAccountJpaRepository legislationAccountJpaRepository;
 
-    public LegislationInfoRepositoryAdapter(LegislationAccountJpaRepository legislationAccountJpaRepository) {
+    public LegislationRepositoryAdapter(LegislationAccountJpaRepository legislationAccountJpaRepository) {
         this.legislationAccountJpaRepository = legislationAccountJpaRepository;
     }
 

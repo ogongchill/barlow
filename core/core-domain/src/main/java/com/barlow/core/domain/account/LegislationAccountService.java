@@ -7,8 +7,8 @@ public class LegislationAccountService {
 
     private final LegislationAccountRepository legislationAccountInfoRepository;
 
-    public LegislationAccountService(LegislationAccountRepository legislationAccountInfoRepository) {
-        this.legislationAccountInfoRepository = legislationAccountInfoRepository;
+    public LegislationAccountService(LegislationAccountRepository legislationAccountRepository) {
+        this.legislationAccountInfoRepository = legislationAccountRepository;
     }
 
     public LegislationAccounts retrieveCommitteeAccount() {
