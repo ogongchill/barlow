@@ -1,7 +1,5 @@
 package com.barlow.notification;
 
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,19 +12,20 @@ public class DefaultNotificationInfoReader implements NotificationInfoReader {
 	}
 
 	@Override
-	public List<NotificationInfo> readNotificationInfos(NotificationPayload payload) {
+	public NotificationInfo readNotificationInfos(NotificationPayload payload) {
 		DefaultBillNotificationPayload notificationPayload = checkAndConvert(payload);
-		List<NotificationInfo> notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopic(notificationPayload.topic());
-		notificationInfos.forEach(info -> {
-			info.setRepresentation(notificationPayload.representationBill());
-			info.setTopicCount(notificationPayload.totalCount());
-		});
-		return notificationInfos;
+		NotificationInfo notificationInfo = notificationInfoRepository
+			.retrieveNotificationInfosByTopic(notificationPayload.topic());
+		notificationInfo.assignRepresentationBillAndTotalCount(
+			notificationPayload.representationBill(),
+			notificationPayload.totalCount()
+		);
+		return notificationInfo;
 	}
 
 	private DefaultBillNotificationPayload checkAndConvert(NotificationPayload payload) {
-		if (payload instanceof DefaultBillNotificationPayload) {
-			return (DefaultBillNotificationPayload)payload;
+		if (payload instanceof DefaultBillNotificationPayload defaultBillNotificationPayload) {
+			return defaultBillNotificationPayload;
 		} else {
 			throw new IllegalArgumentException("Payload must be DefaultBillNotificationPayload");
 		}
