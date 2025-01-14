@@ -4,6 +4,8 @@ spring.profiles.active: local
 spring:
   config:
     import:
+      - db-core.yml
+      - notification.yml
       - logging.yml
   web.resources.add-mappings: false
 
