@@ -1,6 +1,4 @@
-package com.barlow.notification.worker;
-
-import com.barlow.notification.NotificationInfo;
+package com.barlow.notification;
 
 public record NotificationCenterInfo(
 	Long memberNo,

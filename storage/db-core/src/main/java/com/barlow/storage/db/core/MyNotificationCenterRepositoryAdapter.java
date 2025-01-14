@@ -32,7 +32,7 @@ public class MyNotificationCenterRepositoryAdapter implements MyNotificationCent
 	public List<NotificationCenterItem> retrieveNotificationItems(User user) {
 		return notificationCenterJpaRepository.findByMemberNo(user.getUserNo())
 			.stream()
-			.map(NotificationCenterJpaEntity::toNotificationItem)
+			.map(NotificationCenterItemJpaEntity::toNotificationItem)
 			.toList();
 	}
 }

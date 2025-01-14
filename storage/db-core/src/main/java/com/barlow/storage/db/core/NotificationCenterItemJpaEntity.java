@@ -12,16 +12,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "notification_center")
-public class NotificationCenterJpaEntity extends BaseTimeJpaEntity {
+@Table(name = "notification_center_item")
+public class NotificationCenterItemJpaEntity extends BaseTimeJpaEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "notification_center_no")
+	@Column(name = "notification_center_item_no")
 	private Long no;
 
 	@Column(name = "member_no", nullable = false)
 	private Long memberNo;
+
+	@Column(name = "bill_id", nullable = false)
+	private String billId;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "notification_topic", nullable = false)
@@ -33,13 +36,13 @@ public class NotificationCenterJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "body", nullable = false)
 	private String body;
 
-	protected NotificationCenterJpaEntity() {
+	protected NotificationCenterItemJpaEntity() {
 	}
 
 	NotificationCenterItem toNotificationItem() {
 		return new NotificationCenterItem(
-			"biiId",
-			notificationTopic.getValue(),
+			billId,
+			notificationTopic.name(),
 			notificationTopic.getIconUrl(),
 			title,
 			body,
