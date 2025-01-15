@@ -20,6 +20,9 @@ public class LawmakerJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "lawmaker_no")
 	private Long no;
 
+	@Column(name = "profile_image_path")
+	private String profileImagePath;
+
 	@Column(name = "lawmaker_code", nullable = false)
 	private String lawmakerCode;
 
