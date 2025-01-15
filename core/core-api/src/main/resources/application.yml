@@ -4,6 +4,8 @@ spring.profiles.active: local
 spring:
   config:
     import:
+      - notification.yml # batch 애플리케이션에서 돌아가야 할 것 같은데 좀 더 생각해봐야함
+      - db-core.yml
       - logging.yml
   web.resources.add-mappings: false
 

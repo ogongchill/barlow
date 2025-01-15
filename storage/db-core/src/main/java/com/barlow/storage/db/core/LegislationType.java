@@ -23,6 +23,8 @@ public enum LegislationType {
 	INTELLIGENCE("정보위원회", "default/icon-image-url"),
 	GENDER_EQUALITY_FAMILY("여성가족위원회", "default/icon-image-url"),
 	SPECIAL_COMMITTEE_ON_BUDGET_ACCOUNTS("예산결산특별위원회", "default/icon-image-url"),
+
+	EMPTY("소관위미접수상태", "default/icon-image-url"),
 	;
 
 	private final String value;
@@ -31,5 +33,13 @@ public enum LegislationType {
 	LegislationType(String value, String iconUrl) {
 		this.value = value;
 		this.iconUrl = iconUrl;
+	}
+
+	String getValue() {
+		return value;
+	}
+
+	String getIconUrl() {
+		return iconUrl;
 	}
 }

@@ -1,5 +1,7 @@
 package com.barlow.notification;
 
+import static com.barlow.notification.NotificationRequest.BillInfo;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,24 +18,21 @@ public class CommitteeNotificationInfoReader implements NotificationInfoReader {
 	}
 
 	@Override
-	public List<NotificationInfo> readNotificationInfos(NotificationPayload payload) {
-		CommitteeBillNotificationPayload notificationPayload = checkAndConvert(payload);
-		Map<String, Integer> topicsWithCount = notificationPayload.topicsWithCount();
-		Set<String> topics = topicsWithCount.keySet();
-		List<NotificationInfo> notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopics(topics);
-		for (String topic : topics) {
-			notificationInfos.stream()
-				.filter(info -> info.isSameTopic(topic))
-				.forEach(info -> info.setTopicCount(topicsWithCount.get(topic)));
-		}
+	public NotificationInfo readNotificationInfos(NotificationRequest request) {
+		CommitteeBillNotificationRequest notificationRequest = checkAndConvert(request);
+		Map<String, List<BillInfo>> topicsWithBillInfos = notificationRequest.topicsWithBillInfos();
+		Set<String> topics = topicsWithBillInfos.keySet();
+		NotificationInfo notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopics(topics);
+		topicsWithBillInfos.forEach((topic, billInfos) ->
+			notificationInfos.assignBillTotalCountPerTopic(topic, billInfos.size()));
 		return notificationInfos;
 	}
 
-	private CommitteeBillNotificationPayload checkAndConvert(NotificationPayload payload) {
-		if (payload instanceof CommitteeBillNotificationPayload) {
-			return (CommitteeBillNotificationPayload)payload;
+	private CommitteeBillNotificationRequest checkAndConvert(NotificationRequest request) {
+		if (request instanceof CommitteeBillNotificationRequest committeeBillNotificationPayload) {
+			return committeeBillNotificationPayload;
 		} else {
-			throw new IllegalArgumentException("Payload must be CommitteeBillNotificationPayload");
+			throw new IllegalArgumentException("request must be CommitteeBillNotificationRequest");
 		}
 	}
 }

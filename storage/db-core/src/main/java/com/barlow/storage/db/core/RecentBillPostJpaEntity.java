@@ -1,5 +1,7 @@
 package com.barlow.storage.db.core;
 
+import com.barlow.core.domain.recentbill.RecentBillPost;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,12 +23,19 @@ public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "bill_id", nullable = false, length = 100)
 	private String billId;
 
+	@Column(name = "bill_name", nullable = false)
+	private String billName;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "proposer_type")
 	private ProposerType proposerType;
 
 	@Column(name = "proposers", nullable = false, length = 50)
 	private String proposers;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "legislation_type", nullable = false)
+	private LegislationType legislationType;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "legislation_status")
@@ -42,5 +51,14 @@ public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
 	private Integer viewCount;
 
 	protected RecentBillPostJpaEntity() {
+	}
+
+	RecentBillPost toRecentBillPost() {
+		return new RecentBillPost(
+			new RecentBillPost.BillInfo(billId, billName),
+			new RecentBillPost.ProposerInfo(proposerType.getValue(), proposers),
+			new RecentBillPost.LegislationInfo(legislationType.getValue(), legislationStatus.getValue()),
+			summary, detail, getCreatedAt(), viewCount
+		);
 	}
 }

@@ -19,32 +19,38 @@ public class NotificationInfoRepositoryAdapter implements NotificationInfoReposi
 	}
 
 	@Override
-	public List<NotificationInfo> retrieveNotificationInfosByTopic(String topic) {
-		return notificationConfigJpaRepository.findAllByEnableTrueAndTopic(NotificationTopic.valueOf(topic))
-			.stream()
-			.map(projection -> NotificationInfo.initialize(
-				projection.memberNo(),
-				projection.topic().getValue(),
-				projection.deviceOs().name(),
-				projection.deviceToken()
-			))
-			.toList();
+	public NotificationInfo retrieveNotificationInfosByTopic(String topic) {
+		return new NotificationInfo(
+			notificationConfigJpaRepository.findAllByEnableTrueAndTopic(NotificationTopic.valueOf(topic))
+				.stream()
+				.collect(Collectors.groupingBy(
+					projection -> NotificationInfo.Topic.initialize(projection.topic().getValue()),
+					Collectors.mapping(projection -> new NotificationInfo.Subscriber(
+						projection.memberNo(),
+						projection.deviceOs().name(),
+						projection.deviceToken()
+					), Collectors.toList())
+				))
+		);
 	}
 
 	@Override
-	public List<NotificationInfo> retrieveNotificationInfosByTopics(Set<String> topics) {
+	public NotificationInfo retrieveNotificationInfosByTopics(Set<String> topics) {
 		Set<NotificationTopic> notificationTopics = topics.stream()
 			.map(NotificationTopic::valueOf)
 			.collect(Collectors.toUnmodifiableSet());
-		List<NotificationInfoProjection> projections
-			= notificationConfigJpaRepository.findAllByEnableTrueAndTopicIn(notificationTopics);
-		return projections.stream()
-			.map(projection -> NotificationInfo.initialize(
-				projection.memberNo(),
-				projection.topic().getValue(),
-				projection.deviceOs().name(),
-				projection.deviceToken()
-			))
-			.toList();
+		List<NotificationInfoProjection> projections = notificationConfigJpaRepository
+			.findAllByEnableTrueAndTopicIn(notificationTopics);
+		return new NotificationInfo(
+			projections.stream()
+				.collect(Collectors.groupingBy(
+					projection -> NotificationInfo.Topic.initialize(projection.topic().getValue()),
+					Collectors.mapping(projection -> new NotificationInfo.Subscriber(
+						projection.memberNo(),
+						projection.deviceOs().name(),
+						projection.deviceToken()
+					), Collectors.toList())
+				))
+		);
 	}
 }
