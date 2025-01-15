@@ -1,7 +1,10 @@
 package com.barlow.storage.db.core;
 
+import static com.barlow.notification.NotificationCenterItemInfo.BillItemInfo;
+
 import java.sql.Types;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -12,7 +15,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import com.barlow.notification.NotificationCenterRepository;
-import com.barlow.notification.worker.NotificationCenterInfo;
+import com.barlow.notification.NotificationCenterItemInfo;
 
 @Component
 public class NotificationCenterRepositoryAdapter implements NotificationCenterRepository {
@@ -26,21 +29,33 @@ public class NotificationCenterRepositoryAdapter implements NotificationCenterRe
 	}
 
 	@Override
-	public void registerAll(List<NotificationCenterInfo> notificationCenterInfos) {
-		SqlParameterSource[] sqlParameterSources = notificationCenterInfos.stream()
-			.map(this::createSqlParameterSource)
+	public void registerAll(List<NotificationCenterItemInfo> notificationCenterItemInfos) {
+		SqlParameterSource[] sqlParameterSources = notificationCenterItemInfos.stream()
+			.map(this::toSqlParameterSources)
+			.flatMap(Arrays::stream)
 			.toArray(SqlParameterSource[]::new);
 		simpleJdbcInsert.executeBatch(sqlParameterSources);
 	}
 
-	private MapSqlParameterSource createSqlParameterSource(NotificationCenterInfo notificationCenterInfo) {
-		NotificationTopic topic = NotificationTopic.valueOf(notificationCenterInfo.topic());
+	private MapSqlParameterSource[] toSqlParameterSources(NotificationCenterItemInfo notificationCenterItemInfo) {
+		Long memberNo = notificationCenterItemInfo.memberNo();
+		NotificationTopic topic = NotificationTopic.valueOf(notificationCenterItemInfo.topic());
+		return notificationCenterItemInfo.items().stream()
+			.map(billItemInfo -> createSqlParameterSource(memberNo, topic, billItemInfo))
+			.toArray(MapSqlParameterSource[]::new);
+	}
+
+	private MapSqlParameterSource createSqlParameterSource(
+		Long memberNo,
+		NotificationTopic topic,
+		BillItemInfo billItemInfo
+	) {
 		return new MapSqlParameterSource()
-			.addValue("member_no", notificationCenterInfo.memberNo())
+			.addValue("member_no", memberNo)
 			.addValue("notification_topic", topic.name())
-			.addValue("icon_url", topic.getIconUrl())
-			.addValue("title", notificationCenterInfo.title())
-			.addValue("body", notificationCenterInfo.body())
+			.addValue("title", topic.getValue())
+			.addValue("body", billItemInfo.billName())
+			.addValue("bill_id", billItemInfo.billId())
 			.addValue("created_at", LocalDateTime.now(), Types.TIMESTAMP)
 			.addValue("updated_at", LocalDateTime.now(), Types.TIMESTAMP);
 	}

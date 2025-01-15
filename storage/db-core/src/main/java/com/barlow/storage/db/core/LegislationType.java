@@ -38,4 +38,8 @@ public enum LegislationType {
 	String getValue() {
 		return value;
 	}
+
+	String getIconUrl() {
+		return iconUrl;
+	}
 }

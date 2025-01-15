@@ -9,7 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.barlow.notification.worker.NotificationCenterInfo;
+import com.barlow.notification.NotificationCenterItemInfo;
 import com.barlow.storage.db.CoreDbContextTest;
 
 @Transactional
@@ -30,8 +30,8 @@ class NotificationCenterRepositoryAdapterTest extends CoreDbContextTest {
 	@Test
 	void registerAll() {
 		notificationCenterRepositoryAdapter.registerAll(List.of(
-			new NotificationCenterInfo(1L, HOUSE_STEERING.name(), "title", "body"),
-			new NotificationCenterInfo(2L, HOUSE_STEERING.name(), "title", "body")
+			new NotificationCenterItemInfo(1L, HOUSE_STEERING.name(), "title", "body"),
+			new NotificationCenterItemInfo(2L, HOUSE_STEERING.name(), "title", "body")
 		));
 
 		assertThat(notificationCenterJpaRepository.findAll()).hasSize(2);

@@ -1,43 +1,32 @@
 package com.barlow.notification;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class NotificationInfo {
 
-	private final Topic topic;
-	private final Subscriber subscriber;
+	private final Map<Topic, List<Subscriber>> infos;
 
-	public NotificationInfo(Topic topic, Subscriber subscriber) {
-		this.topic = topic;
-		this.subscriber = subscriber;
+	public NotificationInfo(Map<Topic, List<Subscriber>> infos) {
+		this.infos = infos;
 	}
 
-	private NotificationInfo(Long memberNo, String topic, String deviceOs, String deviceToken) {
-		this(new Topic(topic, null, null), new Subscriber(memberNo, deviceOs, deviceToken));
+	void assignBillTotalCountPerTopic(String topic, int totalCount) {
+		infos.keySet().stream()
+			.filter(info -> info.isSame(topic))
+			.forEach(info -> info.setTopicCount(totalCount));
 	}
 
-	public static NotificationInfo initialize(Long memberNo, String topic, String deviceOs, String deviceToken) {
-		return new NotificationInfo(memberNo, topic, deviceOs, deviceToken);
+	void assignRepresentationBillAndTotalCount(String representationBillName, int totalCount) {
+		infos.keySet().forEach(topic -> {
+			topic.setRepresentation(representationBillName);
+			topic.setTopicCount(totalCount);
+		});
 	}
 
-	boolean isSameTopic(String topic) {
-		return this.topic.isSame(topic);
-	}
-
-	Topic getTopic() {
-		return topic;
-	}
-
-	Subscriber getSubscriber() {
-		return subscriber;
-	}
-
-	void setRepresentation(String representation) {
-		this.topic.representation = representation;
-	}
-
-	void setTopicCount(int count) {
-		this.topic.count = count;
+	Map<Topic, List<Subscriber>> getInfos() {
+		return infos;
 	}
 
 	@Override
@@ -47,12 +36,12 @@ public class NotificationInfo {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		NotificationInfo that = (NotificationInfo)o;
-		return Objects.equals(topic, that.topic) && Objects.equals(subscriber, that.subscriber);
+		return Objects.equals(infos, that.infos);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(topic, subscriber);
+		return Objects.hashCode(infos);
 	}
 
 	public static class Topic {
@@ -61,26 +50,38 @@ public class NotificationInfo {
 		private String representation;
 		private Integer count;
 
-		public Topic(String name, String representation, Integer count) {
+		private Topic(String name, String representation, Integer count) {
 			this.name = name;
 			this.representation = representation;
 			this.count = count;
 		}
 
-		public String getName() {
+		boolean isSame(String topic) {
+			return name.equals(topic);
+		}
+
+		void setRepresentation(String representation) {
+			this.representation = representation;
+		}
+
+		void setTopicCount(int count) {
+			this.count = count;
+		}
+
+		public static Topic initialize(String topic) {
+			return new Topic(topic, null, null);
+		}
+
+		String getName() {
 			return name;
 		}
 
-		public String getRepresentation() {
+		String getRepresentation() {
 			return representation;
 		}
 
-		public Integer getCount() {
+		Integer getCount() {
 			return count;
-		}
-
-		public boolean isSame(String topic) {
-			return name.equals(topic);
 		}
 
 		@Override
@@ -90,13 +91,12 @@ public class NotificationInfo {
 			if (o == null || getClass() != o.getClass())
 				return false;
 			Topic topic = (Topic)o;
-			return Objects.equals(name, topic.name) && Objects.equals(representation, topic.representation)
-				&& Objects.equals(count, topic.count);
+			return Objects.equals(name, topic.name);
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(name, representation, count);
+			return Objects.hashCode(name);
 		}
 	}
 
