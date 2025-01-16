@@ -6,18 +6,19 @@ public class MemberSubscriptions {
 
     private final List<Subscription> subscriptions;
 
-    public MemberSubscriptions(List<Subscription> subscriptions) {
-        validate(subscriptions);
+    public MemberSubscriptions(Long memberNo, List<Subscription> subscriptions) {
+        validateMemberNoMismatch(memberNo, subscriptions);
         this.subscriptions = subscriptions;
     }
 
-    private void validate(List<Subscription> subscriptions) {
-        Long targetMemberNo = subscriptions.getFirst().memberNo();
-        boolean hasDifferentMemberNo = subscriptions.stream()
-                .anyMatch(subscription -> !subscription.memberNo().equals(targetMemberNo));
-        if(hasDifferentMemberNo) {
-            throw new IllegalArgumentException("has different member no");
-        }
+    private void validateMemberNoMismatch(Long memberNo, List<Subscription> subscriptions) {
+        subscriptions.stream()
+                .filter(subscription -> !subscription.memberNo().equals(memberNo))
+                .findAny()
+                .ifPresent(subscription -> {
+                    throw MemberSubscriptionException.memberMismatchException(
+                            String.format("유효하지 않은 사용지 %l이 조회됨", subscription.memberNo()));
+                });
     }
 
     public boolean hasSubscription(Long targetLegislationAccountNo) {

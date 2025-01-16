@@ -12,6 +12,6 @@ public class SubscriptionRetrieveService {
     }
 
     public MemberSubscriptions retrieveSubscriptionsByMemberNo(Long memberNo) {
-        return new MemberSubscriptions(subscriptionRepository.retrieveByMemberNo(memberNo));
+        return new MemberSubscriptions(memberNo, subscriptionRepository.retrieveByMemberNo(memberNo));
     }
 }

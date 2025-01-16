@@ -2,6 +2,8 @@ package com.barlow.core.domain.notification;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NotificationConfigRetrieveService {
 
@@ -12,6 +14,7 @@ public class NotificationConfigRetrieveService {
     }
 
     public MemberNotificationConfig retrieveMemberNotificationConfig(Long memberNo) {
-        return new MemberNotificationConfig(notificationConfigRepository.retrieveByMemberNo(memberNo));
+        List<NotificationConfig> notificationConfig = notificationConfigRepository.retrieveByMemberNo(memberNo);
+        return new MemberNotificationConfig(memberNo, notificationConfig);
     }
 }

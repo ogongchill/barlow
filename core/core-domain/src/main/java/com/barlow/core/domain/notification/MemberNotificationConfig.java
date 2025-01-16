@@ -1,30 +1,38 @@
 package com.barlow.core.domain.notification;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class MemberNotificationConfig {
 
     private final List<NotificationConfig> notificationConfigs;
 
-    public MemberNotificationConfig(List<NotificationConfig> notificationConfigs) {
-        validateSameMemberNo(notificationConfigs);
+    public MemberNotificationConfig(Long memberNo, List<NotificationConfig> notificationConfigs) {
+        validateNotEmpty(memberNo, notificationConfigs);
+        validateMemberNoMismatch(memberNo, notificationConfigs);
         this.notificationConfigs = notificationConfigs;
     }
 
-    private void validateSameMemberNo(List<NotificationConfig> notificationConfigs) {
-        Long targetMemberNo = notificationConfigs.getFirst().memberNo();
-        boolean hasDifferentMemberNo = notificationConfigs.stream()
-                .anyMatch(notificationConfig -> !notificationConfig.memberNo().equals(targetMemberNo));
-        if(hasDifferentMemberNo) {
-            throw new IllegalArgumentException("has differentMemberNo");
+    private void validateNotEmpty(Long memberNo, List<NotificationConfig> notificationConfigs) {
+        if(notificationConfigs.isEmpty()) {
+            throw MemberNotificationConfigException.emptyNotification(memberNo);
         }
     }
 
+    private void validateMemberNoMismatch(Long memberNo, List<NotificationConfig> notificationConfigs) {
+        notificationConfigs.stream()
+                .filter(notificationConfig -> !notificationConfig.memberNo().equals(memberNo))
+                .findAny()
+                .ifPresent(subscription -> {
+                    throw MemberNotificationConfigException.memberMismatchException(
+                            String.format("유효하지 않은 사용지 %l이 조회됨", subscription.memberNo()));
+                });
+    }
+
     public NotificationConfig findByTopicName(String targetName) {
-       return  notificationConfigs.stream()
+        return notificationConfigs.stream()
                 .filter(notificationConfig -> notificationConfig.topic().name().equals(targetName))
                 .findFirst()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> MemberNotificationConfigException.notFoundTopicName(
+                        notificationConfigs.getFirst().memberNo(), targetName));
     }
 }
