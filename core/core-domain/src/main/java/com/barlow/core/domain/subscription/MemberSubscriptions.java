@@ -17,7 +17,7 @@ public class MemberSubscriptions {
                 .findAny()
                 .ifPresent(subscription -> {
                     throw MemberSubscriptionException.memberMismatchException(
-                            String.format("유효하지 않은 사용지 %l이 조회됨", subscription.memberNo()));
+                            String.format("유효하지 않은 사용지 %d이 조회됨", subscription.memberNo()));
                 });
     }
 

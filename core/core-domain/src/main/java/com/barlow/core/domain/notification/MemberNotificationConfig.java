@@ -24,13 +24,13 @@ public class MemberNotificationConfig {
                 .findAny()
                 .ifPresent(subscription -> {
                     throw MemberNotificationConfigException.memberMismatchException(
-                            String.format("유효하지 않은 사용지 %l이 조회됨", subscription.memberNo()));
+                            String.format("유효하지 않은 사용지 %d 조회됨", subscription.memberNo()));
                 });
     }
 
     public NotificationConfig findByTopicName(String targetName) {
         return notificationConfigs.stream()
-                .filter(notificationConfig -> notificationConfig.topic().name().equals(targetName))
+                .filter(notificationConfig -> notificationConfig.topic().korName().equals(targetName))
                 .findFirst()
                 .orElseThrow(() -> MemberNotificationConfigException.notFoundTopicName(
                         notificationConfigs.getFirst().memberNo(), targetName));
