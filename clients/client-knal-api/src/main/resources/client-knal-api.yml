@@ -1,0 +1,37 @@
+knal:
+  api:
+    name: national-assembly-legislation-api
+    url: https://apis.data.go.kr/9710000/BillInfoService2/
+    service-key: 65WaXo9KJDUa1A450QOIciMPg9NhtrgjoL0F6nCq3OcV7LAU3drzD5P537sEJpxZLWxZq9tHHZfpAbIiaINjbQ==
+
+spring.cloud.openfeign:
+  client:
+    config:
+      national-assembly-legislation-api:
+        connectTimeout: 3000
+        readTimeout: 1000
+        loggerLevel: full
+  compression:
+    response:
+      enabled: false
+  httpclient:
+    max-connections: 2000
+    max-connections-per-route: 500
+
+---
+spring.config.activate.on-profile: local
+
+---
+spring.config.activate.on-profile:
+  - local-dev
+  - dev
+
+---
+spring.config.activate.on-profile:
+  - staging
+  - live
+
+knal:
+  api:
+    url: https://apis.data.go.kr/9710000/BillInfoService2
+    service-key: 65WaXo9KJDUa1A450QOIciMPg9NhtrgjoL0F6nCq3OcV7LAU3drzD5P537sEJpxZLWxZq9tHHZfpAbIiaINjbQ==
