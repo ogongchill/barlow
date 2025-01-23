@@ -14,18 +14,18 @@ public class BillPostFilterTag {
 	private static final String PARTY_NAME_TAG = "partyName";
 
 	private final Set<LegislationType> legislationTypeTags;
-	private final Set<LegislationStatus> legislationStatusTags;
+	private final Set<ProgressStatus> progressStatusTags;
 	private final Set<ProposerType> proposerTypeTags;
 	private final Set<PartyName> partyNameTags;
 
 	public BillPostFilterTag(
 		Set<LegislationType> legislationTypeTags,
-		Set<LegislationStatus> legislationStatusTags,
+		Set<ProgressStatus> progressStatusTags,
 		Set<ProposerType> proposerTypeTags,
 		Set<PartyName> partyNameTags
 	) {
 		this.legislationTypeTags = legislationTypeTags;
-		this.legislationStatusTags = legislationStatusTags;
+		this.progressStatusTags = progressStatusTags;
 		this.proposerTypeTags = proposerTypeTags;
 		this.partyNameTags = partyNameTags;
 	}
@@ -37,7 +37,7 @@ public class BillPostFilterTag {
 		}
 		Map<String, Function<String, Enum<?>>> tagMappers = Map.of(
 			LEGISLATION_TYPE_TAG, s -> LegislationType.valueOf(s.toUpperCase()),
-			LEGISLATION_STATUS_TAG, s -> LegislationStatus.valueOf(s.toUpperCase()),
+			LEGISLATION_STATUS_TAG, s -> ProgressStatus.valueOf(s.toUpperCase()),
 			PROPOSER_TYPE_TAG, s -> ProposerType.valueOf(s.toUpperCase()),
 			PARTY_NAME_TAG, s -> PartyName.valueOf(s.toUpperCase())
 		);
@@ -54,7 +54,7 @@ public class BillPostFilterTag {
 
 		return new BillPostFilterTag(
 			(Set<LegislationType>) results.getOrDefault(LEGISLATION_TYPE_TAG, Set.of()),
-			(Set<LegislationStatus>) results.getOrDefault(LEGISLATION_STATUS_TAG, Set.of()),
+			(Set<ProgressStatus>) results.getOrDefault(LEGISLATION_STATUS_TAG, Set.of()),
 			(Set<ProposerType>) results.getOrDefault(PROPOSER_TYPE_TAG, Set.of()),
 			(Set<PartyName>) results.getOrDefault(PARTY_NAME_TAG, Set.of())
 		);
@@ -68,8 +68,8 @@ public class BillPostFilterTag {
 		return legislationTypeTags;
 	}
 
-	Set<LegislationStatus> getLegislationStatusTags() {
-		return legislationStatusTags;
+	Set<ProgressStatus> getLegislationStatusTags() {
+		return progressStatusTags;
 	}
 
 	Set<ProposerType> getProposerTypeTags() {

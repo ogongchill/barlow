@@ -38,8 +38,8 @@ public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
 	private LegislationType legislationType;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "legislation_status")
-	private LegislationStatus legislationStatus;
+	@Column(name = "progress_status")
+	private ProgressStatus progressStatus;
 
 	@Column(columnDefinition = "text", name = "summary", nullable = false)
 	private String summary;
@@ -57,7 +57,7 @@ public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
 		return new RecentBillPost(
 			new RecentBillPost.BillInfo(billId, billName),
 			new RecentBillPost.ProposerInfo(proposerType.getValue(), proposers),
-			new RecentBillPost.LegislationInfo(legislationType.getValue(), legislationStatus.getValue()),
+			new RecentBillPost.LegislationInfo(legislationType.getValue(), progressStatus.getValue()),
 			summary, detail, getCreatedAt(), viewCount
 		);
 	}
