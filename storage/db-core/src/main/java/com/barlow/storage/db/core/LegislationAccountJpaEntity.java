@@ -21,7 +21,7 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 	private Long no;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "legislation_type", nullable = false)
+	@Column(columnDefinition = "varchar", name = "legislation_type", nullable = false)
 	private LegislationType legislationType;
 
 	@Column(name = "description", nullable = false, length = 500)

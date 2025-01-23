@@ -22,7 +22,7 @@ public class DeviceJpaEntity extends BaseTimeJpaEntity {
 	private String deviceId;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "device_os", nullable = false)
+	@Column(columnDefinition = "varchar", name = "device_os", nullable = false)
 	private DeviceOs deviceOs;
 
 	@Column(name = "token", nullable = false, length = 100)
