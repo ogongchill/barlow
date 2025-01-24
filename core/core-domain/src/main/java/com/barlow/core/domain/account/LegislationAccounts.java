@@ -8,12 +8,12 @@ public class LegislationAccounts {
     private final List<LegislationAccount> legislationAccounts;
 
     public LegislationAccounts(List<LegislationAccount> legislationAccounts) {
-        this.legislationAccounts = legislationAccounts;
+        this.legislationAccounts = List.copyOf(legislationAccounts);
     }
 
-    public <T> List<T> map(Function<LegislationAccount, T> mapperFunction) {
+    public <T> List<T> compose(Function<LegislationAccount, T> composeFunction) {
         return legislationAccounts.stream()
-                .map(mapperFunction)
+                .map(composeFunction)
                 .toList();
     }
 }

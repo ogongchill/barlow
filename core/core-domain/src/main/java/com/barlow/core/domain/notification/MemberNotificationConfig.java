@@ -4,35 +4,35 @@ import java.util.List;
 
 public class MemberNotificationConfig {
 
+    private final Long memberNo;
     private final List<NotificationConfig> notificationConfigs;
 
     public MemberNotificationConfig(Long memberNo, List<NotificationConfig> notificationConfigs) {
-        validateNotEmpty(memberNo, notificationConfigs);
-        validateMemberNoMismatch(memberNo, notificationConfigs);
-        this.notificationConfigs = notificationConfigs;
+        validateMemberMismatch(memberNo, notificationConfigs);
+        this.memberNo = memberNo;
+        this.notificationConfigs = List.copyOf(notificationConfigs);
     }
 
-    private void validateNotEmpty(Long memberNo, List<NotificationConfig> notificationConfigs) {
-        if(notificationConfigs.isEmpty()) {
-            throw MemberNotificationConfigException.emptyNotification(memberNo);
-        }
-    }
-
-    private void validateMemberNoMismatch(Long memberNo, List<NotificationConfig> notificationConfigs) {
+    private void validateMemberMismatch(Long memberNo, List<NotificationConfig> notificationConfigs) {
         notificationConfigs.stream()
                 .filter(notificationConfig -> !notificationConfig.memberNo().equals(memberNo))
                 .findAny()
-                .ifPresent(subscription -> {
-                    throw MemberNotificationConfigException.memberMismatchException(
-                            String.format("유효하지 않은 사용지 %d 조회됨", subscription.memberNo()));
-                });
+                .ifPresent(notificationConfig -> {
+                            throw MemberNotificationConfigException.memberMismatchException(
+                                    String.format("memberNo: %d(이)가 아닌 memberNo: %d에 대한 NotificationConfig이 포함되어 있습니다", memberNo, notificationConfig.memberNo()));
+                        }
+                );
+    }
+
+    public boolean hasTopicName(String targetName) {
+        return notificationConfigs.stream()
+                .anyMatch(notificationConfig -> notificationConfig.topic().korName().equals(targetName));
     }
 
     public NotificationConfig findByTopicName(String targetName) {
         return notificationConfigs.stream()
                 .filter(notificationConfig -> notificationConfig.topic().korName().equals(targetName))
                 .findFirst()
-                .orElseThrow(() -> MemberNotificationConfigException.notFoundTopicName(
-                        notificationConfigs.getFirst().memberNo(), targetName));
+                .orElseThrow(() -> MemberNotificationConfigException.notFoundTopicName(memberNo, targetName));
     }
 }
