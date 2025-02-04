@@ -1,0 +1,46 @@
+spring.application.name: batch-core
+spring.profiles.active: local
+
+file:
+  lawmaker-json: lawmaker/lawmaker-22.json
+
+spring:
+  config:
+    import:
+      - client-knal-api.yml
+      - notification.yml
+      - db-core.yml
+      - logging.yml
+
+---
+spring.config.activate.on-profile: local
+spring:
+  batch:
+    jdbc:
+      initialize-schema: always
+      schema:
+        - classpath:/org/springframework/batch/core/schema-drop-h2.sql
+        - classpath:/org/springframework/batch/core/schema-h2.sql
+  datasource:
+    batch:
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:mem:batch;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      pool-name: core-batch-pool
+      data-source-properties:
+        rewriteBatchedStatements: true
+
+---
+spring.config.activate.on-profile: local-dev
+
+
+---
+spring.config.activate.on-profile: dev
+
+
+---
+spring.config.activate.on-profile: staging
+
+
+---
+spring.config.activate.on-profile: live
