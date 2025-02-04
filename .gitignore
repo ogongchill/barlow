@@ -38,3 +38,6 @@ out/
 
 ### core:core-notification ###
 core/core-notification/src/main/resources/firebase/*.json
+
+### core:core-auth.crypto ###
+*.pem
