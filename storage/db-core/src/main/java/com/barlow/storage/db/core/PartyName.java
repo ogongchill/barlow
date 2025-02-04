@@ -1,5 +1,7 @@
 package com.barlow.storage.db.core;
 
+import java.util.Arrays;
+
 public enum PartyName {
 
 	PEOPLE_POWER("국민의힘"),
@@ -16,6 +18,15 @@ public enum PartyName {
 
 	PartyName(String value) {
 		this.value = value;
+	}
+
+	public static PartyName findByValue(String value) {
+		return Arrays.stream(PartyName.values())
+			.filter(proposerType -> proposerType.value.equals(value))
+			.findFirst()
+			.orElseThrow(() -> new IllegalArgumentException(
+				String.format("기존에 존재하지 않던 PartyName 입니다 : %s", value)
+			));
 	}
 
 	public String getValue() {

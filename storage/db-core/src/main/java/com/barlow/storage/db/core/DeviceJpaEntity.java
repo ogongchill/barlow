@@ -32,7 +32,7 @@ public class DeviceJpaEntity extends BaseTimeJpaEntity {
 	private Long memberNo;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "device_status", nullable = false)
+	@Column(columnDefinition = "varchar", name = "device_status", nullable = false)
 	private Status status;
 
 	protected DeviceJpaEntity() {

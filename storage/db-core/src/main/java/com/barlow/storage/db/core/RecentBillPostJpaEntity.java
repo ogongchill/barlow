@@ -6,8 +6,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -16,10 +14,6 @@ import jakarta.persistence.Table;
 public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "recent_bill_post_no")
-	private Long no;
-
 	@Column(name = "bill_id", nullable = false, length = 100)
 	private String billId;
 
@@ -27,7 +21,7 @@ public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
 	private String billName;
 
 	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar", name = "proposer_type")
+	@Column(columnDefinition = "varchar", name = "proposer_type", nullable = false)
 	private ProposerType proposerType;
 
 	@Column(name = "proposers", nullable = false, length = 50)
@@ -41,10 +35,10 @@ public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
 	@Column(columnDefinition = "varchar", name = "progress_status", nullable = false)
 	private ProgressStatus progressStatus;
 
-	@Column(columnDefinition = "text", name = "summary", nullable = false)
+	@Column(columnDefinition = "text", name = "summary")
 	private String summary;
 
-	@Column(columnDefinition = "text", name = "detail", nullable = false)
+	@Column(columnDefinition = "text", name = "detail")
 	private String detail;
 
 	@Column(name = "view_count", nullable = false)
