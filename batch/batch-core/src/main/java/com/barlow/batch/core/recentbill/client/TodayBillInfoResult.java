@@ -33,24 +33,29 @@ public record TodayBillInfoResult(
 		String progressStatusCode, // 심사진행상태: 접수,소관위접수 등
 		String summary // 주요내용
 	) {
-		private static final String REGEX_PATTERN_TRAILING_PARENTHESIS = "\\(([^)]+)\\)$";
+		private static final String REGEX_PATTERN_TRAILING_PARENTHESIS = "^(.*?)\\((.*?)\\)(?:\\((.*?)\\))?$";
+		private static final String DEFAULT_BILL_PROGRESS_STATUS = "접수";
 
 		static BillInfoItem from(BillInfoListItem listItem) {
 			Pattern pattern = Pattern.compile(REGEX_PATTERN_TRAILING_PARENTHESIS);
 			Matcher matcher = pattern.matcher(listItem.billName());
-			return new BillInfoItem(
-				listItem.billId(),
-				listItem.billNo(),
-				matcher.group(0),
-				listItem.generalResult(),
-				listItem.passGubn(),
-				listItem.proposerKind(),
-				matcher.group(1),
-				listItem.proposeDt(),
-				listItem.procDt(),
-				listItem.procStageCd(),
-				listItem.summary()
-			);
+			if (matcher.find() && listItem.procStageCd().equals(DEFAULT_BILL_PROGRESS_STATUS)) {
+				return new BillInfoItem(
+					listItem.billId(),
+					listItem.billNo(),
+					matcher.group(1),
+					listItem.generalResult(),
+					listItem.passGubn(),
+					listItem.proposerKind(),
+					matcher.group(2),
+					listItem.proposeDt(),
+					listItem.procDt(),
+					listItem.procStageCd(),
+					listItem.summary()
+				);
+			} else {
+				return null;
+			}
 		}
 	}
 }
