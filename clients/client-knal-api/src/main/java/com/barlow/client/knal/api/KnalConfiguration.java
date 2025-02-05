@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import feign.QueryMapEncoder;
 import feign.RequestInterceptor;
 import feign.Retryer;
 import feign.codec.Decoder;
@@ -28,5 +29,10 @@ class KnalConfiguration {
 	@Bean(name = "knalDecoder")
 	Decoder decoder() {
 		return new KnalDecoder();
+	}
+
+	@Bean(name = "knalQueryMapEncoder")
+	QueryMapEncoder queryMapEncoder() {
+		return new KnalEncoder();
 	}
 }
