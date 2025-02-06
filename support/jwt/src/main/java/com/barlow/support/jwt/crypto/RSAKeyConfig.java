@@ -1,4 +1,4 @@
-package com.barlow.core.auth.crypto;
+package com.barlow.support.jwt.crypto;
 
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.annotation.Bean;
@@ -12,9 +12,9 @@ public class RSAKeyConfig {
     @Bean
     PublicKeyAlgorithm publicKeyAlgorithm() {
         try {
-            return PublicKeyAlgorithm.from("");// 키 읽어서 가져오는기능 추가되어야 함
+            return PublicKeyAlgorithm.from("");
         } catch (InvalidKeySpecException e) {
-            throw new BeanCreationException("fail creating public key" ,e);
+            throw new BeanCreationException("fail during create publicKey", e);
         }
     }
 
@@ -23,7 +23,7 @@ public class RSAKeyConfig {
         try {
             return PrivateKeyAlgorithm.from("");
         } catch (InvalidKeySpecException e) {
-            throw new BeanCreationException("fail creating private key", e);
+            throw new BeanCreationException("fail during create privateKey", e);
         }
     }
 }

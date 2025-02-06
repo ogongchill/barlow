@@ -1,4 +1,4 @@
-package com.barlow.core.auth.crypto;
+package com.barlow.support.jwt.crypto;
 
 import com.auth0.jwt.algorithms.Algorithm;
 

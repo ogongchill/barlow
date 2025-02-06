@@ -1,4 +1,4 @@
-package com.barlow.core.auth.crypto;
+package com.barlow.support.jwt.crypto;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -19,7 +19,6 @@ public enum RSAKeyFactory {
     private static final String X509_FOOTER = "-----END PUBLIC KEY-----";
     private static final String SPACE = "\\s";
     private final KeyFactory keyFactory;
-
 
     RSAKeyFactory() {
         try {
