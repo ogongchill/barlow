@@ -1,11 +1,15 @@
 package com.barlow.core.auth.authentication;
 
-public class AuthenticationException extends RuntimeException{
+import com.barlow.core.auth.exception.CoreAuthException;
+import com.barlow.core.auth.exception.CoreAuthExceptionType;
 
-    private final AuthenticationResultType resultType;
+public class AuthenticationException extends CoreAuthException {
 
-    public AuthenticationException(AuthenticationResultType resultType, String message) {
-        super(message);
-        this.resultType = resultType;
+    public AuthenticationException(CoreAuthExceptionType type, String message) {
+        super(type, message);
+    }
+
+    public static AuthenticationException algorithmMismatch(String message) {
+        return new AuthenticationException(CoreAuthExceptionType.ALGORITHM_MISMATCH, message);
     }
 }

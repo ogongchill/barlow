@@ -1,8 +1,10 @@
 package com.barlow.core.auth.authentication;
 
+import com.barlow.core.auth.jwt.Payload;
+
 public record AuthenticationResult(
         AuthenticationResultType type,
-        String payload
+        Payload payload
 ) {
 
     public boolean isOk() {
@@ -11,12 +13,5 @@ public record AuthenticationResult(
 
     public boolean isExpired() {
         return type.equals(AuthenticationResultType.EXPIRED);
-    }
-
-    public String getPayload() {
-        if (!isOk()) {
-            throw new IllegalStateException();
-        }
-        return payload;
     }
 }

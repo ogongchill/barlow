@@ -2,9 +2,11 @@ package com.barlow.core.auth.authentication;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.exceptions.InvalidClaimException;
+import com.auth0.jwt.exceptions.AlgorithmMismatchException;
+import com.auth0.jwt.exceptions.IncorrectClaimException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.barlow.core.auth.crypto.PublicKeyAlgorithm;
+import com.barlow.core.auth.jwt.Payload;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -13,18 +15,21 @@ public class TokenAuthenticator {
 
     private final JWTVerifier verifier;
 
-    public TokenAuthenticator(JWTVerifier verifier) {
+    protected TokenAuthenticator(JWTVerifier verifier) {
         this.verifier = verifier;
     }
 
-    public AuthenticationResult verify(String token) {
+    public AuthenticationResult authenticate(String token) {
         try {
-            String decodedJson = getPayloadFrom(token);
-            return new AuthenticationResult(AuthenticationResultType.OK, decodedJson);
+            String payloadJson = getPayloadFrom(token);
+            Payload payload = Payload.fromJson(payloadJson);
+            return new AuthenticationResult(AuthenticationResultType.OK, payload);
+        } catch (IncorrectClaimException e) {
+            return new AuthenticationResult(AuthenticationResultType.INVALID_ClAIM, Payload.empty());
         } catch (TokenExpiredException e) {
-            return new AuthenticationResult(AuthenticationResultType.EXPIRED, "");
-        } catch (InvalidClaimException e) {
-            return new AuthenticationResult(AuthenticationResultType.INVALID_ClAIM, "");
+            return new AuthenticationResult(AuthenticationResultType.EXPIRED, Payload.empty());
+        } catch (AlgorithmMismatchException e) {
+            throw AuthenticationException.algorithmMismatch(e.getMessage());
         }
     }
 

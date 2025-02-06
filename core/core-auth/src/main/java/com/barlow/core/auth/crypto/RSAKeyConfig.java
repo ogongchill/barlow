@@ -12,7 +12,7 @@ public class RSAKeyConfig {
     @Bean
     PublicKeyAlgorithm publicKeyAlgorithm() {
         try {
-            return PublicKeyAlgorithm.from("");
+            return PublicKeyAlgorithm.from("");// 키 읽어서 가져오는기능 추가되어야 함
         } catch (InvalidKeySpecException e) {
             throw new BeanCreationException("fail creating public key" ,e);
         }
