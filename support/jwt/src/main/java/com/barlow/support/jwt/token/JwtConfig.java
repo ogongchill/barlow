@@ -3,19 +3,33 @@ package com.barlow.support.jwt.token;
 import com.barlow.support.jwt.crypto.PrivateKeyAlgorithm;
 import com.barlow.support.jwt.crypto.PublicKeyAlgorithm;
 import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.spec.InvalidKeySpecException;
 
 @Configuration
+@PropertySource(value = "classpath:crypto.properties") // 수동 등록
 public class JwtConfig {
+
+    @Value("${crypto.private}")
+    private String privateKeyPath;
+
+    @Value("${crypto.public}")
+    private String publicKeyPath;
 
     @Bean
     PublicKeyAlgorithm publicKeyAlgorithm() {
         try {
-            return PublicKeyAlgorithm.from("");
-        } catch (InvalidKeySpecException e) {
+            String keyString = FileReader.read(publicKeyPath);
+            return PublicKeyAlgorithm.from(keyString);
+        } catch (InvalidKeySpecException | IOException e) {
             throw new BeanCreationException("fail during create publicKey", e);
         }
     }
@@ -23,8 +37,9 @@ public class JwtConfig {
     @Bean
     PrivateKeyAlgorithm privateKeyAlgorithm() {
         try {
-            return PrivateKeyAlgorithm.from("");
-        } catch (InvalidKeySpecException e) {
+            String keyString = FileReader.read(privateKeyPath);
+            return PrivateKeyAlgorithm.from(keyString);
+        } catch (InvalidKeySpecException | IOException e) {
             throw new BeanCreationException("fail during create privateKey", e);
         }
     }
@@ -32,6 +47,15 @@ public class JwtConfig {
     @Bean
     Issuer issuer() {
         return new Issuer("issuer");
+    }
+
+    static class FileReader {
+        public static String read(String fileName) throws IOException {
+            ClassPathResource resource = new ClassPathResource(fileName);
+            InputStream inputStream = resource.getInputStream();
+            return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        }
+
     }
 
     record Issuer(String name) {}
