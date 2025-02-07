@@ -41,3 +41,4 @@ core/core-notification/src/main/resources/firebase/*.json
 
 ### support:jwt.crypto ###
 *.pem
+support/jwt/src/main/resources/*.properties
