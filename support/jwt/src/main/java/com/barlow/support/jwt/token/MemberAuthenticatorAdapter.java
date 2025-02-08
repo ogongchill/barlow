@@ -1,46 +1,55 @@
 package com.barlow.support.jwt.token;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.*;
-import com.barlow.core.auth.authentication.core.AuthenticationRequest;
-import com.barlow.core.auth.authentication.access.MemberPrincipal;
-import com.barlow.core.auth.authentication.access.MemberAccessTokenAuthenticator;
-import com.barlow.core.auth.authentication.access.Token;
-import com.barlow.core.auth.authentication.access.TokenAuthenticationResult;
-import com.barlow.core.auth.authentication.access.TokenVerificationResult;
+import com.barlow.core.auth.authentication.token.*;
+import com.barlow.support.jwt.crypto.PublicKeyAlgorithm;
 import com.barlow.support.jwt.exception.JwtException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
 @Component
-public class MemberAuthenticatorAdapter implements MemberAccessTokenAuthenticator {
+public class MemberAuthenticatorAdapter implements MemberTokenValidator {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private final MemberTokenProvider memberTokenProvider;
+    private final JWTVerifier verifier;
 
-    public MemberAuthenticatorAdapter(MemberTokenProvider memberTokenProvider) {
-        this.memberTokenProvider = memberTokenProvider;
+    public MemberAuthenticatorAdapter(PublicKeyAlgorithm publicKeyAlgorithm) {
+        this.verifier = JWT.require(publicKeyAlgorithm.getAlgorithm())
+                .withIssuer("barlow")
+                .build();
     }
 
-    public TokenAuthenticationResult<MemberPrincipal> authenticate(AuthenticationRequest<Token> request) {
+    @Override
+    public TokenValidationResult<MemberAccessPayload> validate(Token token) {
         try {
-            String payloadJson = memberTokenProvider.getPayload(request.getCredentials().getValue());
-            MemberPrincipal principal = MAPPER.readValue(payloadJson, MemberPrincipal.class);
-            return new TokenAuthenticationResult<>(principal, TokenVerificationResult.SUCCESS);
+            String encodedPayload = verifier.verify(token.getValue()).getPayload();
+            MemberAccessPayload payload = parse(encodedPayload);
+            return new TokenValidationResult<>(payload, TokenValidationResultType.SUCCESS);
         } catch (JWTVerificationException e) {
             return handleJWTVerificationException(e);
-        } catch (JsonProcessingException e) {
-            throw JwtException.cannotParsePayload(e);
         }
     }
 
-    private TokenAuthenticationResult<MemberPrincipal> handleJWTVerificationException(JWTVerificationException e) {
-        if (e instanceof AlgorithmMismatchException exception) {
-            throw JwtException.algorithmMismatch(exception);
+    private MemberAccessPayload parse(String encodedPayload) {
+        try {
+            byte[] decodedBytes = Base64.getUrlDecoder().decode(encodedPayload);
+            String payloadJson = new String(decodedBytes, StandardCharsets.UTF_8);
+            return MAPPER.readValue(payloadJson, MemberAccessPayload.class);
+        } catch (JsonProcessingException e) {
+                throw JwtException.cannotParsePayload(e);
         }
+    }
+
+    private TokenValidationResult<MemberAccessPayload> handleJWTVerificationException(JWTVerificationException e) {
         if (e instanceof TokenExpiredException) {
-            return new TokenAuthenticationResult<>(MemberPrincipal.notAuthenticated(), TokenVerificationResult.EXPIRED);
+            return new TokenValidationResult<>(MemberAccessPayload.invalid(), TokenValidationResultType.EXPIRED);
         }
-        return new TokenAuthenticationResult<>(MemberPrincipal.notAuthenticated(), TokenVerificationResult.FAILURE);
+        return new TokenValidationResult<>(MemberAccessPayload.invalid(), TokenValidationResultType.FAILURE);
     }
 }

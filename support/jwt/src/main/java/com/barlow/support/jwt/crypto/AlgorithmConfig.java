@@ -1,7 +1,5 @@
-package com.barlow.support.jwt.token;
+package com.barlow.support.jwt.crypto;
 
-import com.barlow.support.jwt.crypto.PrivateKeyAlgorithm;
-import com.barlow.support.jwt.crypto.PublicKeyAlgorithm;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.spec.InvalidKeySpecException;
 
 @Configuration
-@PropertySource(value = "classpath:crypto.properties") // 수동 등록
-public class JwtConfig {
+@PropertySource(value = "classpath:crypto.properties")
+public class AlgorithmConfig {
 
     @Value("${crypto.private}")
     private String privateKeyPath;
@@ -44,10 +42,6 @@ public class JwtConfig {
         }
     }
 
-    @Bean
-    Issuer issuer() {
-        return new Issuer("issuer");
-    }
 
     static class FileReader {
         public static String read(String fileName) throws IOException {
@@ -55,8 +49,5 @@ public class JwtConfig {
             InputStream inputStream = resource.getInputStream();
             return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
         }
-
     }
-
-    record Issuer(String name) {}
 }
