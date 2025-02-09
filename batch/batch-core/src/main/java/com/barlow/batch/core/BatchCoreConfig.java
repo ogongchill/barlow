@@ -11,13 +11,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@EnableBatchProcessing
+@EnableBatchProcessing(
+	dataSourceRef = "coreDataSource",
+	transactionManagerRef = "coreTransactionManager")
 public class BatchCoreConfig {
 
 	@Bean("batchCoreJobRepository")
 	public JobRepository jobRepository(
-		@Qualifier("dataSource") DataSource dataSource,
-		@Qualifier("transactionManager") PlatformTransactionManager transactionManager
+		@Qualifier("coreDataSource") DataSource dataSource,
+		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager
 	) throws Exception {
 		JobRepositoryFactoryBean factoryBean = new JobRepositoryFactoryBean();
 		factoryBean.setDataSource(dataSource);
