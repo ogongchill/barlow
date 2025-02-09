@@ -1,5 +1,6 @@
 package com.barlow.batch.core.recentbill.client;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,7 +11,7 @@ import com.barlow.client.knal.api.response.item.BillInfoListItem;
 public record TodayBillInfoResult(
 	int totalCount,
 	List<BillInfoItem> items
-) {
+) implements Serializable {
 	static TodayBillInfoResult from(ItemListPagingBody<BillInfoListItem> billInfoItems) {
 		return new TodayBillInfoResult(
 			billInfoItems.getTotalCount(),
@@ -32,7 +33,7 @@ public record TodayBillInfoResult(
 		String decisionDateStr,
 		String progressStatusCode, // 심사진행상태: 접수,소관위접수 등
 		String summary // 주요내용
-	) {
+	) implements Serializable {
 		private static final String REGEX_PATTERN_TRAILING_PARENTHESIS = "^(.*?)\\((.*?)\\)(?:\\((.*?)\\))?$";
 		private static final String DEFAULT_BILL_PROGRESS_STATUS = "접수";
 

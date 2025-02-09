@@ -1,9 +1,11 @@
 package com.barlow.batch.core.recentbill.client;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.barlow.client.knal.api.NationalAssemblyLegislationApi;
@@ -15,6 +17,8 @@ import com.barlow.client.knal.api.response.BillPetitionMemberListResponse;
 @Component
 public class NationalAssemblyLegislationClient {
 
+	private static final Logger log = LoggerFactory.getLogger(NationalAssemblyLegislationClient.class);
+
 	private final NationalAssemblyLegislationApi api;
 
 	public NationalAssemblyLegislationClient(NationalAssemblyLegislationApi api) {
@@ -23,9 +27,9 @@ public class NationalAssemblyLegislationClient {
 
 	public TodayBillInfoResult getTodayBillInfo(
 		LocalDate batchDate,
-		@Value("${start-ordinal:22}") Integer startOrdinal,
-		@Value("${end-ordinal:22}") Integer endOrdinal,
-		@Value("${num-of-rows:100}") Integer numOfRows
+		Integer startOrdinal,
+		Integer endOrdinal,
+		Integer numOfRows
 	) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String batchDateStr = batchDate.format(formatter);
@@ -37,7 +41,9 @@ public class NationalAssemblyLegislationClient {
 			.numOfRows(numOfRows)
 			.pageNo(1)
 			.build();
+		log.info("{} : 오늘 접수된 법안 호출", LocalDateTime.now());
 		BillInfoListResponse response = api.getBillInfoList(request);
+		log.info("{} : 오늘 접수된 법안 조회 완료", LocalDateTime.now());
 		return TodayBillInfoResult.from(response.getBody());
 	}
 
