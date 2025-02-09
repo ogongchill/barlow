@@ -1,10 +1,12 @@
 package com.barlow.storage.db.core;
 
+import java.util.Arrays;
+
 public enum NotificationTopic {
 	/**
 	 * 법안 알림 : default 로 5개 전부 동의된 알림 (수정가능)
 	 */
-	RECEIPT("접수의안", "default/icon-image-url"),
+	RECEIPT("접수", "default/icon-image-url"),
 	SUBMISSION_PLENARY_SESSION("본회의부의안건", "default/icon-image-url"),
 	RESOLUTION_PLENARY_SESSION("본회의의결", "default/icon-image-url"),
 	RECONSIDERATION_GOVERNMENT("재의요구", "default/icon-image-url"),
@@ -41,6 +43,15 @@ public enum NotificationTopic {
 
 	private final String value;
 	private final String iconUrl;
+
+	public static NotificationTopic findByValue(String value) {
+		return Arrays.stream(NotificationTopic.values())
+			.filter(notificationTopic -> notificationTopic.value.equals(value))
+			.findFirst()
+			.orElseThrow(() -> new IllegalArgumentException(
+				String.format("기존에 존재하지 않던 NotificationTopic 입니다 : %s", value)
+			));
+	}
 
 	NotificationTopic(String value, String iconUrl) {
 		this.value = value;

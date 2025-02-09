@@ -33,7 +33,7 @@ public class BillProposerJpaEntity extends BaseTimeJpaEntity {
 	private String proposerProfileImagePath;
 
 	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar", name = "party_name", nullable = false)
+	@Column(columnDefinition = "varchar(50)", name = "party_name", nullable = false)
 	private PartyName partyName;
 
 	protected BillProposerJpaEntity() {

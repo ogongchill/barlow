@@ -19,7 +19,7 @@ public class NotificationConfigJpaEntity extends BaseTimeJpaEntity {
 	private Long no;
 
 	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar", name = "topic", nullable = false)
+	@Column(columnDefinition = "varchar(100)", name = "topic", nullable = false)
 	private NotificationTopic topic;
 
 	@Column(name = "enable", nullable = false)

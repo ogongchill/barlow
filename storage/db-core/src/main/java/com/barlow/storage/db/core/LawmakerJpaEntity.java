@@ -30,7 +30,7 @@ public class LawmakerJpaEntity extends BaseTimeJpaEntity {
 	private String koreanName;
 
 	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar", name = "birth_calender_type", nullable = false)
+	@Column(columnDefinition = "varchar(10)", name = "birth_calender_type", nullable = false)
 	private BirthCalenderType birthCalenderType;
 
 	@Column(name = "birth_date", nullable = false)
@@ -58,7 +58,7 @@ public class LawmakerJpaEntity extends BaseTimeJpaEntity {
 	private String units; // 재선이면 여러 개의 대수 존재 : ex) 21대, 22대
 
 	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar", name = "gender", nullable = false)
+	@Column(columnDefinition = "varchar(10)", name = "gender", nullable = false)
 	private Gender gender;
 
 	@Column(name = "telephone_no", nullable = false)

@@ -21,7 +21,7 @@ public class NotificationInfoRepositoryAdapter implements NotificationInfoReposi
 	@Override
 	public NotificationInfo retrieveNotificationInfosByTopic(String topic) {
 		return new NotificationInfo(
-			notificationConfigJpaRepository.findAllByEnableTrueAndTopic(NotificationTopic.valueOf(topic))
+			notificationConfigJpaRepository.findAllByEnableTrueAndTopic(NotificationTopic.findByValue(topic))
 				.stream()
 				.collect(Collectors.groupingBy(
 					projection -> NotificationInfo.Topic.initialize(projection.topic().getValue()),

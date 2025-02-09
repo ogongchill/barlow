@@ -22,7 +22,7 @@ public class DeviceJpaEntity extends BaseTimeJpaEntity {
 	private String deviceId;
 
 	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar", name = "device_os", nullable = false)
+	@Column(columnDefinition = "varchar(10)", name = "device_os", nullable = false)
 	private DeviceOs deviceOs;
 
 	@Column(name = "token", nullable = false, length = 100)
@@ -32,7 +32,7 @@ public class DeviceJpaEntity extends BaseTimeJpaEntity {
 	private Long memberNo;
 
 	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar", name = "device_status", nullable = false)
+	@Column(columnDefinition = "varchar(10)", name = "device_status", nullable = false)
 	private Status status;
 
 	protected DeviceJpaEntity() {

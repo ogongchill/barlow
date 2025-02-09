@@ -12,6 +12,7 @@ public enum PartyName {
 	NEW_FUTURE("새로운미래"),
 	BASIC_INCOME("기본소득당"),
 	SOCIAL_DEMOCRATIC("사회민주당"),
+	INDEPENDENT("무소속")
 	;
 
 	private final String value;

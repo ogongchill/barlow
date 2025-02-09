@@ -21,18 +21,18 @@ public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
 	private String billName;
 
 	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar", name = "proposer_type", nullable = false)
+	@Column(columnDefinition = "varchar(20)", name = "proposer_type", nullable = false)
 	private ProposerType proposerType;
 
 	@Column(name = "proposers", nullable = false, length = 50)
 	private String proposers;
 
 	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar", name = "legislation_type", nullable = false)
+	@Column(columnDefinition = "varchar(100)", name = "legislation_type", nullable = false)
 	private LegislationType legislationType;
 
 	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar", name = "progress_status", nullable = false)
+	@Column(columnDefinition = "varchar(50)", name = "progress_status", nullable = false)
 	private ProgressStatus progressStatus;
 
 	@Column(columnDefinition = "text", name = "summary")
