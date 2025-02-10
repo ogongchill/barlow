@@ -8,11 +8,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record LawmakerProvider(
 	@JsonProperty("lawmakers") List<Lawmaker> lawmakers
 ) {
-	public LawmakerProvider provide(String name, String partyName) {
-		return new LawmakerProvider(lawmakers.stream()
+	public Lawmaker provide(String name, String partyName) {
+		return lawmakers.stream()
 			.filter(lawmaker -> lawmaker.name.equals(name) && lawmaker.partyName.equals(partyName))
-			.toList()
-		);
+			.findFirst()
+			.orElse(null);
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
