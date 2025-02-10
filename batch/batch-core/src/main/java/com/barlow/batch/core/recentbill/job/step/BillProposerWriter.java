@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -26,7 +27,7 @@ public class BillProposerWriter implements ItemWriter<BillProposer> {
 
 	private final SimpleJdbcInsert simpleJdbcInsert;
 
-	public BillProposerWriter(DataSource dataSource) {
+	public BillProposerWriter(@Qualifier("coreDataSource") DataSource dataSource) {
 		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
 			.withTableName(BILL_PROPOSER_TABLE_NAME)
 			.usingGeneratedKeyColumns(BILL_PROPOSER_PK);
@@ -50,7 +51,7 @@ public class BillProposerWriter implements ItemWriter<BillProposer> {
 			.addValue("propose_bill_id", billId)
 			.addValue("proposer_code", lawmaker.code())
 			.addValue("proposer_name", lawmaker.name())
-			.addValue("proposer_profile_image_path", lawmaker.profileImagePath())
+			.addValue("proposer_profile_image_path", "lawmaker.profileImagePath()") // FIXME : 수정 필요
 			.addValue("party_name", PartyName.findByValue(lawmaker.partyName()))
 			.addValue("created_at", LocalDateTime.now(), Types.TIMESTAMP)
 			.addValue("updated_at", LocalDateTime.now(), Types.TIMESTAMP);
