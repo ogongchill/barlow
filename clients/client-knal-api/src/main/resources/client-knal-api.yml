@@ -9,7 +9,7 @@ spring.cloud.openfeign:
     config:
       national-assembly-legislation-api:
         connectTimeout: 3000
-        readTimeout: 1000
+        readTimeout: 10000
         loggerLevel: full
   compression:
     response:
