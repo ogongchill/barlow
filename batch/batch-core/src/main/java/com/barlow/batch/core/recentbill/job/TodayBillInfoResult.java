@@ -1,7 +1,8 @@
-package com.barlow.batch.core.recentbill.client;
+package com.barlow.batch.core.recentbill.job;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,11 +13,17 @@ public record TodayBillInfoResult(
 	int totalCount,
 	List<BillInfoItem> items
 ) implements Serializable {
-	static TodayBillInfoResult from(ItemListPagingBody<BillInfoListItem> billInfoItems) {
+
+	public int itemSize() {
+		return items.size();
+	}
+
+	public static TodayBillInfoResult from(ItemListPagingBody<BillInfoListItem> billInfoItems) {
 		return new TodayBillInfoResult(
 			billInfoItems.getTotalCount(),
 			billInfoItems.getItems().stream()
 				.map(BillInfoItem::from)
+				.filter(Objects::nonNull)
 				.toList()
 		);
 	}

@@ -1,4 +1,4 @@
-package com.barlow.batch.core.recentbill.client;
+package com.barlow.batch.core.recentbill.job;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import com.barlow.client.knal.api.response.item.BillPetitionMemberListItem;
 public record BillProposerInfoResult(
 	List<BillProposerInfo> billProposerInfos
 ) {
-	static BillProposerInfoResult from(ItemListBody<BillPetitionMemberListItem> memberList) {
+	public static BillProposerInfoResult from(ItemListBody<BillPetitionMemberListItem> memberList) {
 		return new BillProposerInfoResult(memberList.getItems()
 			.stream()
 			.map(BillProposerInfo::from)
