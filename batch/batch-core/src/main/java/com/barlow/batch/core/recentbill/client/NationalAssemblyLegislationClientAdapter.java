@@ -6,8 +6,12 @@ import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.barlow.batch.core.recentbill.job.BillProposerInfoResult;
+import com.barlow.batch.core.recentbill.job.NationalAssemblyLegislationClient;
+import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
 import com.barlow.client.knal.api.NationalAssemblyLegislationApi;
 import com.barlow.client.knal.api.request.BillInfoListRequest;
 import com.barlow.client.knal.api.request.BillPetitionMemberListRequest;
@@ -15,29 +19,36 @@ import com.barlow.client.knal.api.response.BillInfoListResponse;
 import com.barlow.client.knal.api.response.BillPetitionMemberListResponse;
 
 @Component
-public class NationalAssemblyLegislationClient {
+public class NationalAssemblyLegislationClientAdapter implements NationalAssemblyLegislationClient {
 
-	private static final Logger log = LoggerFactory.getLogger(NationalAssemblyLegislationClient.class);
+	private static final Logger log = LoggerFactory.getLogger(NationalAssemblyLegislationClientAdapter.class);
 
 	private final NationalAssemblyLegislationApi api;
+	private final Integer startOrd;
+	private final Integer endOrd;
+	private final Integer numOfRows;
 
-	public NationalAssemblyLegislationClient(NationalAssemblyLegislationApi api) {
+	public NationalAssemblyLegislationClientAdapter(
+		NationalAssemblyLegislationApi api,
+		@Value("${start-ordinal:22}") Integer startOrd,
+		@Value("${end-ordinal:22}") Integer endOrd,
+		@Value("${num-of-rows:100}") Integer numOfRows
+	) {
 		this.api = api;
+		this.startOrd = startOrd;
+		this.endOrd = endOrd;
+		this.numOfRows = numOfRows;
 	}
 
-	public TodayBillInfoResult getTodayBillInfo(
-		LocalDate batchDate,
-		Integer startOrdinal,
-		Integer endOrdinal,
-		Integer numOfRows
-	) {
+	@Override
+	public TodayBillInfoResult getTodayBillInfo(LocalDate batchDate) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String batchDateStr = batchDate.format(formatter);
 		BillInfoListRequest request = BillInfoListRequest.builder()
 			.startProposeDate(batchDateStr)
 			.endProposeDate(batchDateStr)
-			.startOrdinal(startOrdinal)
-			.endOrdinal(endOrdinal)
+			.startOrdinal(startOrd)
+			.endOrdinal(endOrd)
 			.numOfRows(numOfRows)
 			.pageNo(1)
 			.build();
@@ -47,13 +58,16 @@ public class NationalAssemblyLegislationClient {
 		return TodayBillInfoResult.from(response.getBody());
 	}
 
+	@Override
 	public BillProposerInfoResult getBillProposerInfo(String billId) {
 		BillPetitionMemberListRequest request = BillPetitionMemberListRequest.builder()
 			.billId(billId)
 			.gbn1("bill")
 			.gbn2("reception")
 			.build();
+		log.info("{} 법안 발의자 조회", billId);
 		BillPetitionMemberListResponse response = api.getBillPetitionMemberList(request);
+		log.info("{} 법안 발의자 조회 완료", billId);
 		return BillProposerInfoResult.from(response.getBody());
 	}
 }
