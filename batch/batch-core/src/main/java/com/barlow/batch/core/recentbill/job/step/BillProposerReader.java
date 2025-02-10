@@ -1,5 +1,8 @@
 package com.barlow.batch.core.recentbill.job.step;
 
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
@@ -8,61 +11,66 @@ import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.recentbill.LawmakerProvider;
-import com.barlow.batch.core.recentbill.client.NationalAssemblyLegislationClient;
-import com.barlow.batch.core.recentbill.client.TodayBillInfoResult;
+import com.barlow.batch.core.recentbill.client.NationalAssemblyLegislationClientAdapter;
+import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
+import com.barlow.batch.core.recentbill.job.AbstractExecutionContextSharingManager;
+import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
 
 @Component
 @StepScope
-public class BillProposerReader implements ItemReader<BillProposer>, ItemStream {
+public class BillProposerReader
+	extends AbstractExecutionContextSharingManager
+	implements ItemReader<BillProposer>, ItemStream {
 
-	private static final String CURRENT_INDEX_KEY = "BillProposerReader.currentIndex";
+	private static final String BILL_PROPOSER_READER_INDEX_KEY = "BillProposerReader.currentIndex";
 
-	private final NationalAssemblyLegislationClient client;
-	private final TodayBillInfoResult todayBillInfo;
+	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
+	private final NationalAssemblyLegislationClientAdapter client;
 	private final LawmakerProvider lawmakerProvider;
 	private int currentIndex = 0;
 
 	public BillProposerReader(
-		NationalAssemblyLegislationClient client,
-		@Value("#{jobParameters['todayBillInfo']}") TodayBillInfoResult todayBillInfo,
-		LawmakerProvider lawmakerProvider
-	) {
-		this.client = client;
-		this.todayBillInfo = todayBillInfo;
+		RecentBillJobScopeShareRepository jobScopeShareRepository,
+		NationalAssemblyLegislationClientAdapter client, LawmakerProvider lawmakerProvider) {
+		super();
+		this.jobScopeShareRepository = jobScopeShareRepository;
 		this.lawmakerProvider = lawmakerProvider;
+		this.client = client;
 	}
 
 	@Override
-	public BillProposer read() throws UnexpectedInputException, ParseException, NonTransientResourceException {
-		if (currentIndex >= todayBillInfo.totalCount()) {
-			return null;
-		}
-		String billId = todayBillInfo.items().get(currentIndex).billId();
-		LawmakerProvider billProposeLawmakers = client.getBillProposerInfo(billId)
-			.billProposerInfos()
-			.stream()
-			.map(info -> lawmakerProvider.provide(info.name(), info.partyName()))
-			.findFirst()
-			.orElseThrow();
-		currentIndex++;
-		return new BillProposer(billId, billProposeLawmakers.lawmakers());
-	}
-
-	@Override
-	public void open(ExecutionContext executionContext) throws ItemStreamException {
-		if (executionContext.containsKey(CURRENT_INDEX_KEY)) {
-			currentIndex = executionContext.getInt(CURRENT_INDEX_KEY);
+	public void open(@NotNull ExecutionContext executionContext) throws ItemStreamException {
+		super.setCurrentExecutionContext(executionContext);
+		if (executionContext.containsKey(BILL_PROPOSER_READER_INDEX_KEY)
+			&& executionContext.containsKey(TODAY_BILL_INFO_JOB_KEY)) {
+			currentIndex = executionContext.getInt(BILL_PROPOSER_READER_INDEX_KEY);
 		} else {
 			currentIndex = 0; // 처음부터 시작
 		}
 	}
 
 	@Override
+	public BillProposer read() throws UnexpectedInputException, ParseException, NonTransientResourceException {
+		String hashKey = super.getDataFromJobExecutionContext(TODAY_BILL_INFO_JOB_KEY);
+		TodayBillInfoResult todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
+		if (currentIndex >= todayBillInfo.itemSize()) {
+			return null;
+		}
+		String billId = todayBillInfo.items().get(currentIndex).billId();
+		List<LawmakerProvider.Lawmaker> billProposeLawmakers = client.getBillProposerInfo(billId)
+			.billProposerInfos()
+			.stream()
+			.map(info -> lawmakerProvider.provide(info.name(), info.partyName()))
+			.toList();
+		currentIndex++;
+		return new BillProposer(billId, billProposeLawmakers);
+	}
+
+	@Override
 	public void update(ExecutionContext executionContext) throws ItemStreamException {
-		executionContext.putInt(CURRENT_INDEX_KEY, currentIndex);
+		executionContext.putInt(BILL_PROPOSER_READER_INDEX_KEY, currentIndex);
 	}
 }

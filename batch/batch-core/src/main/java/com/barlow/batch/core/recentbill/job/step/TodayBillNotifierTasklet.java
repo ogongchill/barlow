@@ -1,38 +1,43 @@
 package com.barlow.batch.core.recentbill.job.step;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.barlow.batch.core.recentbill.client.TodayBillInfoResult;
-import com.barlow.batch.core.recentbill.job.TodayBillInfoJobParameter;
+import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
+import com.barlow.batch.core.recentbill.job.AbstractExecutionContextSharingManager;
+import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
 import com.barlow.notification.DefaultBillNotificationRequest;
 import com.barlow.notification.NotificationRequest;
 import com.barlow.notification.NotificationSendPort;
 
 @Component
 @StepScope
-public class TodayBillNotifierTasklet implements Tasklet {
+public class TodayBillNotifierTasklet extends AbstractExecutionContextSharingManager implements Tasklet {
 
 	private static final String DEFAULT_BILL_STATUS = "접수";
 
-	private final TodayBillInfoResult todayBillInfo;
 	private final NotificationSendPort notificationSendPort;
+	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
 
 	public TodayBillNotifierTasklet(
-		@Value("#{jobParameters['todayBillInfo']}") String todayBillInfoStr,
-		NotificationSendPort notificationSendPort
+		NotificationSendPort notificationSendPort,
+		RecentBillJobScopeShareRepository jobScopeShareRepository
 	) {
-		this.todayBillInfo = TodayBillInfoJobParameter.fromString(todayBillInfoStr);
+		super();
 		this.notificationSendPort = notificationSendPort;
+		this.jobScopeShareRepository = jobScopeShareRepository;
 	}
 
 	@Override
-	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
+	public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) {
+		super.setCurrentExecutionContext(contribution.getStepExecution().getJobExecution().getExecutionContext());
+		String hashKey = super.getDataFromJobExecutionContext(TODAY_BILL_INFO_JOB_KEY);
+		TodayBillInfoResult todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
 		DefaultBillNotificationRequest notificationRequest = DefaultBillNotificationRequest.of(
 			DEFAULT_BILL_STATUS,
 			todayBillInfo.items()
