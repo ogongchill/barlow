@@ -1,4 +1,4 @@
-package com.barlow.support.jwt.crypto;
+package com.barlow.core.auth.support.crypto;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = AlgorithmConfig.class)
 class AlgorithmConfigTest {
