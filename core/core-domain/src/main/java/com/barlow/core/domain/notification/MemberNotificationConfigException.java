@@ -15,11 +15,4 @@ public class MemberNotificationConfigException extends CoreDomainException {
                 message
         );
     }
-
-    static MemberNotificationConfigException notFoundTopicName(Long memberNo, String topicName) {
-        return new MemberNotificationConfigException(
-                CoreDomainExceptionType.NOT_FOUND_EXCEPTION,
-                String.format("사용자 %d에 대한 \"%s\" 이라는 Topic 정보가 없습니다", memberNo, topicName)
-        );
-    }
 }

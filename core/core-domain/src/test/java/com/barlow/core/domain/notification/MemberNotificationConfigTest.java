@@ -14,20 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class MemberNotificationConfigTest {
 
-    @DisplayName("topic의 name항목을 통해 조회가 되지 않으면 MemberNotificationConfigException을 반환하는지 확인")
-    @Test
-    void testThrowMemberNotificationConfigException() {
-        MemberNotificationConfig memberNotificationConfig = new MemberNotificationConfig(1L, new ArrayList<>());
-        assertThatThrownBy(() -> memberNotificationConfig.findByTopicName("name"))
-                .isInstanceOf(MemberNotificationConfigException.class)
-                .satisfies(rawException -> {
-                    CoreDomainException coreDomainException = (CoreDomainException) rawException;
-                    assertThat(coreDomainException.getCode()).isEqualTo(CoreDomainExceptionType.NOT_FOUND_EXCEPTION.getCode());
-                    assertThat(coreDomainException.getLevel()).isEqualTo(CoreDomainExceptionType.NOT_FOUND_EXCEPTION.getLevel());
-                    System.out.println(coreDomainException.getMessage());
-                });
-    }
-
     @DisplayName("빈 항목으로 생성 시 예외처리 하지 않음 확인")
     @Test
     void testNotThrowExceptionWhenEmpty() {
@@ -51,5 +37,12 @@ class MemberNotificationConfigTest {
                     assertThat(coreDomainException.getLevel()).isEqualTo(CoreDomainExceptionType.ILLEGAL_STATE_EXCEPTION.getLevel());
                     System.out.println(coreDomainException.getMessage());
                 });
+    }
+
+    @DisplayName("")
+    @Test
+    void testEmpty() {
+        List<NotificationConfig> emptyConfig = new ArrayList<>();
+        assertDoesNotThrow(() -> new MemberNotificationConfig(1L, emptyConfig));
     }
 }

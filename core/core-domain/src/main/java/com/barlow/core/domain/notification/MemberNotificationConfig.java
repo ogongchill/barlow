@@ -24,15 +24,7 @@ public class MemberNotificationConfig {
                 );
     }
 
-    public boolean hasTopicName(String targetName) {
-        return notificationConfigs.stream()
-                .anyMatch(notificationConfig -> notificationConfig.topic().korName().equals(targetName));
-    }
-
-    public NotificationConfig findByTopicName(String targetName) {
-        return notificationConfigs.stream()
-                .filter(notificationConfig -> notificationConfig.topic().korName().equals(targetName))
-                .findFirst()
-                .orElseThrow(() -> MemberNotificationConfigException.notFoundTopicName(memberNo, targetName));
+    public List<NotificationConfig> getAll() {
+        return List.copyOf(notificationConfigs);
     }
 }

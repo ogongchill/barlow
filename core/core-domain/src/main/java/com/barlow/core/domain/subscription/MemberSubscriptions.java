@@ -23,8 +23,7 @@ public class MemberSubscriptions {
                 });
     }
 
-    public boolean hasSubscription(Long targetLegislationAccountNo) {
-        return subscriptions.stream()
-                .anyMatch(subscription -> subscription.legislationAccountNo().equals(targetLegislationAccountNo));
+    public final List<Subscription> getAll() {
+        return List.copyOf(subscriptions);
     }
 }

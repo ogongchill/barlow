@@ -53,7 +53,10 @@ public class CommitteeSubscriptionController {
         LegislationAccounts committeeAccount = legislationAccountService.retrieveCommitteeAccount();
         MemberSubscriptions subscriptions = subscriptionRetrieveService.retrieveSubscriptionsByMemberNo(memberNo);
         MemberNotificationConfig notificationConfig = notificationConfigRetrieveService.retrieveMemberNotificationConfig(memberNo);
-        return committeeAccount.compose(account -> compose(account, subscriptions, notificationConfig));
+        return committeeAccount.getAll()
+                .stream()
+                .map(account -> compose(account, subscriptions, notificationConfig))
+                .toList();
     }
 
     private CommitteeSubscriptionNotification compose(
