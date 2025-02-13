@@ -8,11 +8,4 @@ public class MemberNotificationConfigException extends CoreDomainException {
     MemberNotificationConfigException(CoreDomainExceptionType exceptionType, String message) {
         super(exceptionType, message);
     }
-
-    static MemberNotificationConfigException memberMismatchException(String message) {
-        return new MemberNotificationConfigException(
-                CoreDomainExceptionType.ILLEGAL_STATE_EXCEPTION,
-                message
-        );
-    }
 }

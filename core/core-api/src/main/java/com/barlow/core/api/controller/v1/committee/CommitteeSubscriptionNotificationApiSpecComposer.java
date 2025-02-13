@@ -22,7 +22,7 @@ public class CommitteeSubscriptionNotificationApiSpecComposer {
     }
 
     public CommitteeSubscriptionNotificationApiSpecComposer setSubscription(MemberSubscriptions memberSubscriptions) {
-        memberSubscriptions.getAll()
+        memberSubscriptions.retrieveAll()
                 .stream()
                 .filter(subscription -> subscription.legislationAccountNo().equals(legislationAccount.no()))
                 .findAny()
@@ -34,7 +34,7 @@ public class CommitteeSubscriptionNotificationApiSpecComposer {
     }
 
     public CommitteeSubscriptionNotificationApiSpecComposer setNotification(MemberNotificationConfig memberNotificationConfig) {
-        memberNotificationConfig.getAll()
+        memberNotificationConfig.retrieveAll()
                 .stream()
                 .filter(notificationConfig -> notificationConfig.topic().korName().equals(legislationAccount.name()))
                 .findAny()

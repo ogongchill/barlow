@@ -17,7 +17,7 @@ class MemberNotificationConfigTest {
     @DisplayName("빈 항목으로 생성 시 예외처리 하지 않음 확인")
     @Test
     void testNotThrowExceptionWhenEmpty() {
-        assertDoesNotThrow(() -> new MemberNotificationConfig(1L, new ArrayList<>()));
+        assertDoesNotThrow(() -> new MemberNotificationConfig(new ArrayList<>()));
     }
 
     @DisplayName("memberNo가 일치하지 않은 항목으로 생성시 MemberNotificationConfigException반환 확인")
@@ -29,7 +29,7 @@ class MemberNotificationConfigTest {
         List<NotificationConfig> notificationConfigs = List.of(
                 new NotificationConfig(1L, memberNo, true, sampleTopic),
                 new NotificationConfig(2L, 2L, false, sampleTopicAnother));
-        assertThatThrownBy(() -> new MemberNotificationConfig(memberNo, notificationConfigs))
+        assertThatThrownBy(() -> new MemberNotificationConfig(notificationConfigs))
                 .isInstanceOf(MemberNotificationConfigException.class)
                 .satisfies(rawException -> {
                     CoreDomainException coreDomainException = (CoreDomainException) rawException;
@@ -37,12 +37,5 @@ class MemberNotificationConfigTest {
                     assertThat(coreDomainException.getLevel()).isEqualTo(CoreDomainExceptionType.ILLEGAL_STATE_EXCEPTION.getLevel());
                     System.out.println(coreDomainException.getMessage());
                 });
-    }
-
-    @DisplayName("")
-    @Test
-    void testEmpty() {
-        List<NotificationConfig> emptyConfig = new ArrayList<>();
-        assertDoesNotThrow(() -> new MemberNotificationConfig(1L, emptyConfig));
     }
 }

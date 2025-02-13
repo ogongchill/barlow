@@ -70,7 +70,7 @@ class CommitteeSubscriptionNotificationApiSpecComposerTest {
     }
 
     private MemberSubscriptions createMemberSubscriptions() {
-        return new MemberSubscriptions(MEMBER_NO,
+        return new MemberSubscriptions(
                 List.of(
                         new Subscription(1L, MEMBER_NO, 1L),
                         new Subscription(1L, MEMBER_NO, 2L),
@@ -80,7 +80,7 @@ class CommitteeSubscriptionNotificationApiSpecComposerTest {
     }
 
     private MemberNotificationConfig createMemberNotificationConfig() {
-        return new MemberNotificationConfig(MEMBER_NO,
+        return new MemberNotificationConfig(
                 List.of(
                         new NotificationConfig(1L, MEMBER_NO, true, TOPIC_SAMPLES.get(0)),
                         new NotificationConfig(2L, MEMBER_NO, false, TOPIC_SAMPLES.get(1)),

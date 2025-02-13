@@ -15,6 +15,6 @@ public class NotificationConfigRetrieveService {
 
     public MemberNotificationConfig retrieveMemberNotificationConfig(Long memberNo) {
         List<NotificationConfig> notificationConfig = notificationConfigRepository.retrieveByMemberNo(memberNo);
-        return new MemberNotificationConfig(memberNo, notificationConfig);
+        return new MemberNotificationConfig(notificationConfig);
     }
 }
