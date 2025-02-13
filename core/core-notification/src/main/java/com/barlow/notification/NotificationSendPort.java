@@ -4,5 +4,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface NotificationSendPort {
-	void sendCall(NotificationPayload payload);
+	void sendCall(NotificationRequest request);
 }

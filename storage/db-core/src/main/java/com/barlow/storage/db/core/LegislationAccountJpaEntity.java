@@ -1,6 +1,8 @@
 package com.barlow.storage.db.core;
 
 import com.barlow.core.domain.account.LegislationAccount;
+import com.barlow.core.domain.home.MyLegislationAccount;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -50,4 +52,15 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
                 .postCount(postCount)
                 .build();
     }
+
+	MyLegislationAccount toMyLegislationAccount() {
+		return new MyLegislationAccount(
+			no,
+			legislationType.getValue(),
+			legislationType.getIconUrl(),
+			description,
+			postCount,
+			subscriberCount
+		);
+	}
 }

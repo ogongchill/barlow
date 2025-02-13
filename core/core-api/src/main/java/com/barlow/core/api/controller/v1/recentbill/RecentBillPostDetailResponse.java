@@ -12,7 +12,6 @@ public record RecentBillPostDetailResponse(
 	String proposerType,
 	String legislativeBody,
 	LocalDateTime createdAt,
-	int viewCount,
 	String detail,
 	SummarySection summarySection,
 	ProposerSection proposerSection
@@ -22,7 +21,7 @@ public record RecentBillPostDetailResponse(
 		String summaryTitle,
 		String summaryDetail
 	) {
-		private static final String SUMMARY_TITLE = "AI 가 요약했어요";
+		private static final String SUMMARY_TITLE = "AI가 요약했어요";
 
 		SummarySection(String summaryDetail) {
 			this(SUMMARY_TITLE, summaryDetail);
