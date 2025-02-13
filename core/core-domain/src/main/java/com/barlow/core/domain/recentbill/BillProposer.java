@@ -2,18 +2,18 @@ package com.barlow.core.domain.recentbill;
 
 public class BillProposer {
 
-	private final long proposerNo;
+	private final String proposerCode;
 	private final String proposerName;
 	private final String partyName;
 	private final String profileImagePath;
 
 	public BillProposer(
-		long proposerNo,
+		String proposerCode,
 		String proposerName,
 		String partyName,
 		String profileImagePath
 	) {
-		this.proposerNo = proposerNo;
+		this.proposerCode = proposerCode;
 		this.proposerName = proposerName;
 		this.partyName = partyName;
 		this.profileImagePath = profileImagePath;

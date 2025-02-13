@@ -16,42 +16,42 @@ import jakarta.persistence.Table;
 @Table(name = "legislation_account")
 public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "legislation_account_no")
-    private Long no;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "legislation_account_no")
+	private Long no;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "legislation_type", nullable = false)
-    private LegislationType legislationType;
+	@Enumerated(EnumType.STRING)
+	@Column(columnDefinition = "varchar(100)", name = "legislation_type", nullable = false)
+	private LegislationType legislationType;
 
-    @Column(name = "description", nullable = false, length = 500)
-    private String description;
+	@Column(name = "description", nullable = false, length = 500)
+	private String description;
 
-    @Column(name = "post_count", nullable = false)
-    private Integer postCount;
+	@Column(name = "post_count", nullable = false)
+	private Integer postCount;
 
-    @Column(name = "subscriber_count", nullable = false)
-    private Integer subscriberCount;
+	@Column(name = "subscriber_count", nullable = false)
+	private Integer subscriberCount;
 
-    protected LegislationAccountJpaEntity() {
-    }
+	protected LegislationAccountJpaEntity() {
+	}
 
-    public boolean isCommittee() {
-        return !legislationType.equals(LegislationType.GOVERNMENT)
-               && !legislationType.equals(LegislationType.SPEAKER);
-    }
+	public boolean isCommittee() {
+		return !legislationType.equals(LegislationType.GOVERNMENT)
+			&& !legislationType.equals(LegislationType.SPEAKER);
+	}
 
-    public LegislationAccount toLegislationAccount() {
-        return LegislationAccount.builder()
-                .no(no)
-                .name(legislationType.getValue())
-                .iconUrl(legislationType.getIconUrl())
-                .description(description)
-                .subscriberCount(subscriberCount)
-                .postCount(postCount)
-                .build();
-    }
+	public LegislationAccount toLegislationAccount() {
+		return LegislationAccount.builder()
+			.no(no)
+			.name(legislationType.getValue())
+			.iconUrl(legislationType.getIconUrl())
+			.description(description)
+			.subscriberCount(subscriberCount)
+			.postCount(postCount)
+			.build();
+	}
 
 	MyLegislationAccount toMyLegislationAccount() {
 		return new MyLegislationAccount(

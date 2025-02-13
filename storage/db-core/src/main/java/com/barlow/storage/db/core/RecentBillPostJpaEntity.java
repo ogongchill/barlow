@@ -6,8 +6,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -16,10 +14,6 @@ import jakarta.persistence.Table;
 public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "recent_bill_post_no")
-	private Long no;
-
 	@Column(name = "bill_id", nullable = false, length = 100)
 	private String billId;
 
@@ -27,24 +21,24 @@ public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
 	private String billName;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "proposer_type")
+	@Column(columnDefinition = "varchar(20)", name = "proposer_type", nullable = false)
 	private ProposerType proposerType;
 
 	@Column(name = "proposers", nullable = false, length = 50)
 	private String proposers;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "legislation_type", nullable = false)
+	@Column(columnDefinition = "varchar(100)", name = "legislation_type", nullable = false)
 	private LegislationType legislationType;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "legislation_status")
-	private LegislationStatus legislationStatus;
+	@Column(columnDefinition = "varchar(50)", name = "progress_status", nullable = false)
+	private ProgressStatus progressStatus;
 
-	@Column(columnDefinition = "text", name = "summary", nullable = false)
+	@Column(columnDefinition = "text", name = "summary")
 	private String summary;
 
-	@Column(columnDefinition = "text", name = "detail", nullable = false)
+	@Column(columnDefinition = "text", name = "detail")
 	private String detail;
 
 	@Column(name = "view_count", nullable = false)
@@ -57,7 +51,7 @@ public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
 		return new RecentBillPost(
 			new RecentBillPost.BillInfo(billId, billName),
 			new RecentBillPost.ProposerInfo(proposerType.getValue(), proposers),
-			new RecentBillPost.LegislationInfo(legislationType.getValue(), legislationStatus.getValue()),
+			new RecentBillPost.LegislationInfo(legislationType.getValue(), progressStatus.getValue()),
 			summary, detail, getCreatedAt(), viewCount
 		);
 	}

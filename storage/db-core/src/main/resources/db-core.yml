@@ -32,3 +32,40 @@ storage:
         rewriteBatchedStatements: true
 
 ---
+spring.config.activate.on-profile: local-dev
+spring:
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+storage:
+  datasource:
+    core:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://${storage.database.core-db.url}
+      username: ${storage.database.core-db.username}
+      password: ${storage.database.core-db.password}
+      pool-name: core-db-pool
+      data-source-properties:
+        socketTimeout: 3000
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+
+---
+spring.config.activate.on-profile: dev
+
+---
+spring.config.activate.on-profile: staging
+
+---
+spring.config.activate.on-profile: live

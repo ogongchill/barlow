@@ -62,7 +62,11 @@ public class NotificationSendWorker {
 					))
 				)
 				.toList();
-			notificationSender.send(messages);
+			NotificationResult notificationResult = notificationSender.send(messages);
+			if (notificationResult.hasFailure()) {
+				RetryWorker retryWorker = new RetryWorker(asyncThreadPoolExecutor, notificationSender);
+				retryWorker.start(notificationResult);
+			}
 		};
 	}
 }

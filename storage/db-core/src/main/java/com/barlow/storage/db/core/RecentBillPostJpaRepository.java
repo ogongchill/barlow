@@ -12,11 +12,11 @@ public interface RecentBillPostJpaRepository extends JpaRepository<RecentBillPos
 	@Query("""
 		SELECT rbp FROM RecentBillPostJpaEntity rbp
 		WHERE rbp.legislationType IN :legislationTypes
-		AND rbp.legislationStatus IN :legislationStatuses
+		AND rbp.progressStatus IN :progressStatuses
 		AND rbp.proposerType IN :proposerTypes""")
 	Slice<RecentBillPostJpaEntity> findAllBy(
 		Set<LegislationType> legislationTypes,
-		Set<LegislationStatus> legislationStatuses,
+		Set<ProgressStatus> progressStatuses,
 		Set<ProposerType> proposerTypes,
 		Pageable pageable
 	);
@@ -25,12 +25,12 @@ public interface RecentBillPostJpaRepository extends JpaRepository<RecentBillPos
 		SELECT rbp FROM RecentBillPostJpaEntity rbp
 		INNER JOIN BillProposerJpaEntity bp ON rbp.billId = bp.proposeBillId
 		WHERE rbp.legislationType IN :legislationTypes
-		AND rbp.legislationStatus IN :legislationStatuses
+		AND rbp.progressStatus IN :progressStatuses
 		AND rbp.proposerType IN :proposerTypes
 		AND bp.partyName IN :parties""")
 	Slice<RecentBillPostJpaEntity> findAllBy(
 		Set<LegislationType> legislationTypes,
-		Set<LegislationStatus> legislationStatuses,
+		Set<ProgressStatus> progressStatuses,
 		Set<ProposerType> proposerTypes,
 		Set<PartyName> parties,
 		Pageable pageable
