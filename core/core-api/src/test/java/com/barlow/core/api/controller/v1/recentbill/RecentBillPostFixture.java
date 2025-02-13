@@ -30,7 +30,6 @@ public class RecentBillPostFixture {
 	);
 
 	static final BillProposer PROPOSER = new BillProposer("code", PROPOSER_NAME, PARTY_NAME, PROFILE_IMAGE_PATH);
-
 	static final RecentBillPostsStatus RECENT_BILL_POSTS_STATUS = new RecentBillPostsStatus(
 		List.of(RECENT_BILL_POST),
 		true

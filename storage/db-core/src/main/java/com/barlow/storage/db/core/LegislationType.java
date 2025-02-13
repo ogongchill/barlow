@@ -15,7 +15,7 @@ public enum LegislationType {
 	NATIONAL_DEFENSE("국방위원회", "default/icon-image-url"),
 	PUBLIC_ADMINISTRATION_AND_SECURITY("행정안전위원회", "default/icon-image-url"),
 	CULTURE_SPORTS_AND_TOURISM("문화체육관광위원회", "default/icon-image-url"),
-	AGRICULTURE_FOOD_RURAL_AFFAIRS_OCEANS_AND_FISHERIES("농림축산식품해양수산위원", "default/icon-image-url"),
+	AGRICULTURE_FOOD_RURAL_AFFAIRS_OCEANS_AND_FISHERIES("농림축산식품해양수산위원회", "default/icon-image-url"),
 	TRADE_INDUSTRY_ENERGY_SMES_AND_STARTUPS("산업통상자원중소벤처기업위원회", "default/icon-image-url"),
 	HEALTH_AND_WELFARE("보건복지위원회", "default/icon-image-url"),
 	ENVIRONMENT_AND_LABOR("환경노동위원회", "default/icon-image-url"),
@@ -35,11 +35,11 @@ public enum LegislationType {
 		this.iconUrl = iconUrl;
 	}
 
-	String getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	String getIconUrl() {
+	public String getIconUrl() {
 		return iconUrl;
 	}
 }

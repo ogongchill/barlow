@@ -1,5 +1,6 @@
 package com.barlow.storage.db.core;
 
+import com.barlow.core.domain.subscription.Subscription;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,17 +12,21 @@ import jakarta.persistence.Table;
 @Table(name = "subscribe")
 public class SubscribeJpaEntity extends BaseTimeJpaEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "subscribe_no")
-	private Long no;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "subscribe_no")
+    private Long no;
 
-	@Column(name = "subscribe_legislation_account_no", nullable = false)
-	private Long subscribeLegislationAccountNo;
+    @Column(name = "subscribe_legislation_account_no", nullable = false)
+    private Long subscribeLegislationAccountNo;
 
-	@Column(name = "subscriber_no", nullable = false)
-	private Long memberNo;
+    @Column(name = "subscriber_no", nullable = false)
+    private Long memberNo;
 
-	protected SubscribeJpaEntity() {
-	}
+    protected SubscribeJpaEntity() {
+    }
+
+    public Subscription toSubscription() {
+        return new Subscription(no, memberNo, subscribeLegislationAccountNo);
+    }
 }

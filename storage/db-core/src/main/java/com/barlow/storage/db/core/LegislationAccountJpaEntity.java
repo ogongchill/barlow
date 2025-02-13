@@ -1,5 +1,6 @@
 package com.barlow.storage.db.core;
 
+import com.barlow.core.domain.account.LegislationAccount;
 import com.barlow.core.domain.home.MyLegislationAccount;
 
 import jakarta.persistence.Column;
@@ -34,6 +35,22 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 	private Integer subscriberCount;
 
 	protected LegislationAccountJpaEntity() {
+	}
+
+	public boolean isCommittee() {
+		return !legislationType.equals(LegislationType.GOVERNMENT)
+			&& !legislationType.equals(LegislationType.SPEAKER);
+	}
+
+	public LegislationAccount toLegislationAccount() {
+		return LegislationAccount.builder()
+			.no(no)
+			.name(legislationType.getValue())
+			.iconUrl(legislationType.getIconUrl())
+			.description(description)
+			.subscriberCount(subscriberCount)
+			.postCount(postCount)
+			.build();
 	}
 
 	MyLegislationAccount toMyLegislationAccount() {
