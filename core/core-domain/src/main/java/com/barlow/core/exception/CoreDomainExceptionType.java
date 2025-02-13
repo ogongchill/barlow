@@ -1,19 +1,13 @@
 package com.barlow.core.exception;
 
 import static com.barlow.core.exception.CoreDomainExceptionCode.E404;
-<<<<<<< HEAD
 import static com.barlow.core.exception.CoreDomainExceptionCode.E409;
-=======
->>>>>>> develop
 import static com.barlow.core.exception.CoreDomainExceptionLevel.IMPLEMENTATION;
 
 public enum CoreDomainExceptionType {
 
 	NOT_FOUND_EXCEPTION(E404, IMPLEMENTATION),
-<<<<<<< HEAD
 	ILLEGAL_STATE_EXCEPTION(E409, IMPLEMENTATION)
-=======
->>>>>>> develop
 	;
 
 	private final CoreDomainExceptionCode code;
