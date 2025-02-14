@@ -7,5 +7,5 @@ import java.util.List;
 @Repository
 public interface LegislationAccountRepository {
 
-    List<LegislationAccount> retrieveCommitteeAccount();
+	List<LegislationAccount> retrieveCommitteeAccount();
 }

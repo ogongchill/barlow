@@ -5,8 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public record CommitteeSubscriptionNotificationResponse(
-        @NotNull String title,
-        @NotNull String description,
-        @NotNull List<CommitteeSubscriptionNotification> legislations
+	@NotNull String title,
+	@NotNull String description,
+	@NotNull List<CommitteeSubscriptionNotification> legislations
 ) {
 }

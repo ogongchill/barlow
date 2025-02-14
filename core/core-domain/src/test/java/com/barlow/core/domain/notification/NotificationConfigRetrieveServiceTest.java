@@ -15,19 +15,19 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(classes = NotificationConfigRetrieveService.class)
 class NotificationConfigRetrieveServiceTest {
 
-    @Autowired
-    private NotificationConfigRetrieveService notificationConfigRetrieveService;
+	@Autowired
+	private NotificationConfigRetrieveService notificationConfigRetrieveService;
 
-    @MockitoBean
-    private NotificationConfigRepository notificationConfigRepository;
+	@MockitoBean
+	private NotificationConfigRepository notificationConfigRepository;
 
-    @DisplayName("알림 조회시 항목이 없으면 예외처리 하지 않고 빈 항목을 반환하는지 확인")
-    @Test
-    void retrieveMemberNotificationConfig() {
-        List<NotificationConfig> empty = new ArrayList<>();
-        Long memberNo = 1L;
-        when(notificationConfigRepository.retrieveByMemberNo(memberNo))
-                .thenReturn(empty);
-        assertDoesNotThrow(() -> notificationConfigRetrieveService.retrieveMemberNotificationConfig(memberNo));
-    }
+	@DisplayName("알림 조회시 항목이 없으면 예외처리 하지 않고 빈 항목을 반환하는지 확인")
+	@Test
+	void retrieveMemberNotificationConfig() {
+		List<NotificationConfig> empty = new ArrayList<>();
+		Long memberNo = 1L;
+		when(notificationConfigRepository.retrieveByMemberNo(memberNo))
+			.thenReturn(empty);
+		assertDoesNotThrow(() -> notificationConfigRetrieveService.retrieveMemberNotificationConfig(memberNo));
+	}
 }

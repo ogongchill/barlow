@@ -7,5 +7,5 @@ import java.util.List;
 @Repository
 public interface SubscriptionRepository {
 
-    List<Subscription> retrieveByMemberNo(Long memberNo);
+	List<Subscription> retrieveByMemberNo(Long memberNo);
 }

@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class LegislationAccountService {
 
-    private final LegislationAccountRepository legislationAccountInfoRepository;
+	private final LegislationAccountRepository legislationAccountInfoRepository;
 
-    public LegislationAccountService(LegislationAccountRepository legislationAccountRepository) {
-        this.legislationAccountInfoRepository = legislationAccountRepository;
-    }
+	public LegislationAccountService(LegislationAccountRepository legislationAccountRepository) {
+		this.legislationAccountInfoRepository = legislationAccountRepository;
+	}
 
-    public LegislationAccounts retrieveCommitteeAccount() {
-        return new LegislationAccounts(legislationAccountInfoRepository.retrieveCommitteeAccount());
-    }
+	public LegislationAccounts retrieveCommitteeAccount() {
+		return new LegislationAccounts(legislationAccountInfoRepository.retrieveCommitteeAccount());
+	}
 }

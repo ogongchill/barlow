@@ -5,7 +5,7 @@ import com.barlow.core.exception.CoreDomainExceptionType;
 
 public class MemberNotificationConfigException extends CoreDomainException {
 
-    MemberNotificationConfigException(CoreDomainExceptionType exceptionType, String message) {
-        super(exceptionType, message);
-    }
+	MemberNotificationConfigException(CoreDomainExceptionType exceptionType, String message) {
+		super(exceptionType, message);
+	}
 }

@@ -7,14 +7,14 @@ import java.util.List;
 @Service
 public class NotificationConfigRetrieveService {
 
-    private final NotificationConfigRepository notificationConfigRepository;
+	private final NotificationConfigRepository notificationConfigRepository;
 
-    public NotificationConfigRetrieveService(NotificationConfigRepository notificationConfigRepository) {
-        this.notificationConfigRepository = notificationConfigRepository;
-    }
+	public NotificationConfigRetrieveService(NotificationConfigRepository notificationConfigRepository) {
+		this.notificationConfigRepository = notificationConfigRepository;
+	}
 
-    public MemberNotificationConfig retrieveMemberNotificationConfig(Long memberNo) {
-        List<NotificationConfig> notificationConfig = notificationConfigRepository.retrieveByMemberNo(memberNo);
-        return new MemberNotificationConfig(notificationConfig);
-    }
+	public MemberNotificationConfig retrieveMemberNotificationConfig(Long memberNo) {
+		List<NotificationConfig> notificationConfig = notificationConfigRepository.retrieveByMemberNo(memberNo);
+		return new MemberNotificationConfig(notificationConfig);
+	}
 }

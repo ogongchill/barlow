@@ -5,7 +5,7 @@ import com.barlow.core.exception.CoreDomainExceptionType;
 
 public class MemberSubscriptionException extends CoreDomainException {
 
-    protected MemberSubscriptionException(CoreDomainExceptionType exceptionType, String message) {
-        super(exceptionType, message);
-    }
+	protected MemberSubscriptionException(CoreDomainExceptionType exceptionType, String message) {
+		super(exceptionType, message);
+	}
 }
