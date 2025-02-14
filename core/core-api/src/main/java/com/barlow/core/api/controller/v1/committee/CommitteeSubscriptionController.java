@@ -1,8 +1,8 @@
 package com.barlow.core.api.controller.v1.committee;
 
-import com.barlow.core.domain.account.LegislationAccount;
-import com.barlow.core.domain.account.LegislationAccountService;
-import com.barlow.core.domain.account.LegislationAccounts;
+import com.barlow.core.domain.legislationaccount.LegislationAccount;
+import com.barlow.core.domain.legislationaccount.LegislationAccountService;
+import com.barlow.core.domain.legislationaccount.LegislationAccounts;
 import com.barlow.core.domain.notification.MemberNotificationConfig;
 import com.barlow.core.domain.notification.NotificationConfigRetrieveService;
 import com.barlow.core.domain.subscription.MemberSubscriptions;

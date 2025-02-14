@@ -1,7 +1,7 @@
 package com.barlow.storage.db.core;
 
-import com.barlow.core.domain.account.LegislationAccount;
-import com.barlow.core.domain.account.LegislationAccountRepository;
+import com.barlow.core.domain.legislationaccount.LegislationAccount;
+import com.barlow.core.domain.legislationaccount.LegislationAccountRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

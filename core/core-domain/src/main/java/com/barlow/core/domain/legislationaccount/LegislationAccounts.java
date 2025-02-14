@@ -1,4 +1,4 @@
-package com.barlow.core.domain.account;
+package com.barlow.core.domain.legislationaccount;
 
 import java.util.List;
 

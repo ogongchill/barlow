@@ -1,4 +1,4 @@
-package com.barlow.core.domain.account.notificationsetting;
+package com.barlow.core.domain.legislationaccount.notificationsetting;
 
 import com.barlow.core.exception.CoreDomainException;
 import com.barlow.core.exception.CoreDomainExceptionCode;
