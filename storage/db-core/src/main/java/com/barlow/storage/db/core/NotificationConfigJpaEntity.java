@@ -1,5 +1,7 @@
 package com.barlow.storage.db.core;
 
+import com.barlow.core.domain.User;
+import com.barlow.core.domain.account.notificationsetting.NotificationSetting;
 import com.barlow.core.domain.notification.NotificationConfig;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,6 +46,15 @@ public class NotificationConfigJpaEntity extends BaseTimeJpaEntity {
 
 	public Long getMemberNo() {
 		return memberNo;
+	}
+
+	NotificationSetting toNotificationSetting(User user) {
+		return new NotificationSetting(
+			user,
+			topic.getValue(),
+			topic.getIconUrl(),
+			enable
+		);
 	}
 
 	public NotificationConfig toNotificationConfig() {
