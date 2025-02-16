@@ -1,6 +1,6 @@
 package com.barlow.storage.db.core;
 
-import com.barlow.core.domain.account.LegislationAccount;
+import com.barlow.core.domain.legislationaccount.LegislationAccount;
 import com.barlow.storage.db.CoreDbContextTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.jdbc.Sql;

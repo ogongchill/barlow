@@ -1,19 +1,11 @@
 package com.barlow.storage.db.core;
 
 import java.util.Arrays;
+import java.util.List;
 
 import com.barlow.core.domain.notification.NotifiableTopic;
 
 public enum NotificationTopic {
-	/**
-	 * 법안 알림 : default 로 5개 전부 동의된 알림 (수정가능)
-	 */
-	RECEIPT("접수", "default/icon-image-url"),
-	SUBMISSION_PLENARY_SESSION("본회의부의안건", "default/icon-image-url"),
-	RESOLUTION_PLENARY_SESSION("본회의의결", "default/icon-image-url"),
-	RECONSIDERATION_GOVERNMENT("재의요구", "default/icon-image-url"),
-	PROMULGATION("공포", "default/icon-image-url"),
-
 	/**
 	 * 법안 알림 : [소관위접수] 의안에 한하여 알림
 	 */
@@ -37,11 +29,22 @@ public enum NotificationTopic {
 	SPECIAL_COMMITTEE_ON_BUDGET_ACCOUNTS("예산결산특별위원회", "default/icon-image-url"),
 
 	/**
+	 * 법안 알림 : default 로 5개 전부 동의된 알림 (수정가능)
+	 */
+	RECEIPT("접수", "default/icon-image-url"),
+	SUBMISSION_PLENARY_SESSION("본회의부의안건", "default/icon-image-url"),
+	RESOLUTION_PLENARY_SESSION("본회의의결", "default/icon-image-url"),
+	RECONSIDERATION_GOVERNMENT("재의요구", "default/icon-image-url"),
+	PROMULGATION("공포", "default/icon-image-url"),
+
+	/**
 	 * 사용자 상호작용 알림
 	 */
 	REACTION("리액션", "default/icon-image-url"),
 	COMMENT("댓글", "default/icon-image-url"),
 	;
+
+	private static final int MAX_LEGISLATION_BODY_ORD = 17;
 
 	private final String value;
 	private final String iconUrl;
@@ -53,6 +56,12 @@ public enum NotificationTopic {
 			.orElseThrow(() -> new IllegalArgumentException(
 				String.format("기존에 존재하지 않던 NotificationTopic 입니다 : %s", value)
 			));
+	}
+
+	static List<NotificationTopic> findDisableLegislationTopics(List<NotificationTopic> enableTopics) {
+		return Arrays.stream(NotificationTopic.values())
+			.filter(topic -> topic.ordinal() <= MAX_LEGISLATION_BODY_ORD && !enableTopics.contains(topic))
+			.toList();
 	}
 
 	NotificationTopic(String value, String iconUrl) {

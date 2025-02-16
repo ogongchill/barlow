@@ -1,5 +1,7 @@
 package com.barlow.storage.db.core;
 
+import com.barlow.core.domain.User;
+import com.barlow.core.domain.subscribe.Subscribe;
 import com.barlow.core.domain.subscription.Subscription;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,6 +26,15 @@ public class SubscribeJpaEntity extends BaseTimeJpaEntity {
     private Long memberNo;
 
     protected SubscribeJpaEntity() {
+    }
+
+    SubscribeJpaEntity(Long subscribeLegislationAccountNo, Long memberNo) {
+        this.subscribeLegislationAccountNo = subscribeLegislationAccountNo;
+        this.memberNo = memberNo;
+    }
+
+    Subscribe toSubscribe(User user) {
+        return new Subscribe(user, subscribeLegislationAccountNo, true);
     }
 
     public Subscription toSubscription() {

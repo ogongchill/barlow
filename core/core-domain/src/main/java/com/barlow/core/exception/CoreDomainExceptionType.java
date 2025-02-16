@@ -7,7 +7,7 @@ import static com.barlow.core.exception.CoreDomainExceptionLevel.IMPLEMENTATION;
 public enum CoreDomainExceptionType {
 
 	NOT_FOUND_EXCEPTION(E404, IMPLEMENTATION),
-	ILLEGAL_STATE_EXCEPTION(E409, IMPLEMENTATION)
+	CONFLICT_EXCEPTION(E409, IMPLEMENTATION)
 	;
 
 	private final CoreDomainExceptionCode code;

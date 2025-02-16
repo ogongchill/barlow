@@ -1,6 +1,6 @@
 package com.barlow.core.api.controller.v1.committee;
 
-import com.barlow.core.domain.account.LegislationAccount;
+import com.barlow.core.domain.legislationaccount.LegislationAccount;
 import com.barlow.core.domain.notification.MemberNotificationConfig;
 import com.barlow.core.domain.notification.NotifiableTopic;
 import com.barlow.core.domain.notification.NotificationConfig;

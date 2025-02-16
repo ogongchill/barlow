@@ -1,4 +1,4 @@
-package com.barlow.core.domain.account;
+package com.barlow.core.domain.legislationaccount;
 
 import org.jetbrains.annotations.NotNull;
 
