@@ -4,6 +4,5 @@ public enum AuthenticationExceptionType {
 
     INVALID_CREDENTIAL,
     EXPIRED_CREDENTIAL,
-    PERMISSION_DENIED,
     ;
 }

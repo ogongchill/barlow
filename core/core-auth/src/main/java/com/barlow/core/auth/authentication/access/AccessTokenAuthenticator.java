@@ -1,7 +1,6 @@
 package com.barlow.core.auth.authentication.access;
 
 import com.barlow.core.auth.authentication.core.Authenticator;
-import com.barlow.core.auth.principal.MemberPrincipal;
 import org.springframework.stereotype.Component;
 
 @Component

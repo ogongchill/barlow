@@ -1,4 +1,4 @@
-package com.barlow.core.auth.principal;
+package com.barlow.core.auth.authentication.core;
 
 public abstract class Principal {
 
