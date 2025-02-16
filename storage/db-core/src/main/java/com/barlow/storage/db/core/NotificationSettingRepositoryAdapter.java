@@ -7,9 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
-import com.barlow.core.domain.legislationaccount.notificationsetting.NotificationSetting;
-import com.barlow.core.domain.legislationaccount.notificationsetting.LegislationNotificationSettingQuery;
-import com.barlow.core.domain.legislationaccount.notificationsetting.NotificationSettingRepository;
+import com.barlow.core.domain.notificationsetting.NotificationSetting;
+import com.barlow.core.domain.notificationsetting.LegislationNotificationSettingQuery;
+import com.barlow.core.domain.notificationsetting.NotificationSettingRepository;
 
 @Component
 public class NotificationSettingRepositoryAdapter implements NotificationSettingRepository {
