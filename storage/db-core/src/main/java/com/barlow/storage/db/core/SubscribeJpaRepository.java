@@ -10,4 +10,8 @@ public interface SubscribeJpaRepository extends JpaRepository <SubscribeJpaEntit
 
     @Query("SELECT d FROM SubscribeJpaEntity d WHERE d.memberNo = :memberNo")
     List<SubscribeJpaEntity> retrieveByMemberNo(@Param("memberNo") Long memberNo);
+
+    SubscribeJpaEntity findBySubscribeLegislationAccountNoAndMemberNo(Long subscribeLegislationAccountNo, Long memberNo);
+
+    void deleteBySubscribeLegislationAccountNoAndMemberNo(Long subscribeLegislationAccountNo, Long memberNo);
 }
