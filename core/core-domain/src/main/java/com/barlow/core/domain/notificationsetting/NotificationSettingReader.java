@@ -11,8 +11,7 @@ public class NotificationSettingReader {
 
 	private final NotificationSettingRepository notificationSettingRepository;
 
-	public NotificationSettingReader(
-		NotificationSettingRepository notificationSettingRepository) {
+	public NotificationSettingReader(NotificationSettingRepository notificationSettingRepository) {
 		this.notificationSettingRepository = notificationSettingRepository;
 	}
 
