@@ -8,4 +8,8 @@ public class AuthenticationException extends RuntimeException {
         super(message);
         this.type = type;
     }
+
+    public AuthenticationExceptionType getType() {
+        return type;
+    }
 }

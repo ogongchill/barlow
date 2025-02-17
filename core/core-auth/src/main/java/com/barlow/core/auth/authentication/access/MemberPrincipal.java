@@ -2,6 +2,8 @@ package com.barlow.core.auth.authentication.access;
 
 import com.barlow.core.auth.authentication.core.Principal;
 
+import java.util.Objects;
+
 public class MemberPrincipal extends Principal {
 
     private final Long memberNo;
@@ -19,5 +21,20 @@ public class MemberPrincipal extends Principal {
 
     public Long getMemberNo() {
         return memberNo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MemberPrincipal principal = (MemberPrincipal) o;
+        return memberNo.equals(principal.memberNo)
+               && role.equals( principal.role)
+               && identifier.equals(principal.identifier);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(memberNo, role, identifier);
     }
 }

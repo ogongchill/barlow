@@ -13,6 +13,14 @@ public class JwtConfig {
         this.tokenLifeTime = tokenLifeTime;
     }
 
+    public String getIssuer() {
+        return issuer;
+    }
+
+    public Duration getTokenLifeTime() {
+        return tokenLifeTime;
+    }
+
     public enum Claims {
 
         ISSUER("iss"),

@@ -9,15 +9,18 @@ import org.springframework.stereotype.Component;
 public class AccessTokenProvider {
 
     private final PrivateKeyAlgorithm privateKeyAlgorithm;
+    private final JwtConfig accessTokenConfig;
 
-    public AccessTokenProvider(PrivateKeyAlgorithm privateKeyAlgorithm) {
+    public AccessTokenProvider(PrivateKeyAlgorithm privateKeyAlgorithm, JwtConfig accessTokenConfig) {
         this.privateKeyAlgorithm = privateKeyAlgorithm;
+        this.accessTokenConfig = accessTokenConfig;
     }
 
     public AccessToken issue(AccessTokenPayload memberInfo) {
         return new AccessToken(
                 JWT.create()
-                .withIssuer("barlow")
+                .withIssuer(accessTokenConfig.getIssuer())
+                .withClaim(JwtConfig.Claims.MEMBER_NO.getName(), memberInfo.memberNo())
                 .withClaim(JwtConfig.Claims.ROLE.getName(), memberInfo.role())
                 .sign(privateKeyAlgorithm.getAlgorithm())
         );
