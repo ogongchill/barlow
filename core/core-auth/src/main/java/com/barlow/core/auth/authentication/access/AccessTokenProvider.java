@@ -2,6 +2,7 @@ package com.barlow.core.auth.authentication.access;
 
 import com.auth0.jwt.JWT;
 import com.barlow.core.auth.support.crypto.PrivateKeyAlgorithm;
+import com.barlow.core.auth.support.jwt.JwtConfig;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,9 +17,8 @@ public class AccessTokenProvider {
     public AccessToken issue(AccessTokenPayload memberInfo) {
         return new AccessToken(
                 JWT.create()
-                .withSubject(memberInfo.memberNo().toString())
                 .withIssuer("barlow")
-                .withClaim("role", memberInfo.role())
+                .withClaim(JwtConfig.Claims.ROLE.getName(), memberInfo.role())
                 .sign(privateKeyAlgorithm.getAlgorithm())
         );
     }

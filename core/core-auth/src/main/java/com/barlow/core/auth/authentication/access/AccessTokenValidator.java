@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.barlow.core.auth.support.crypto.PublicKeyAlgorithm;
+import com.barlow.core.auth.support.jwt.JwtConfig;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,10 +23,11 @@ public class AccessTokenValidator {
     public AccessTokenPayload getPayload(AccessToken token) {
         try {
             DecodedJWT jwt = jwtVerifier.verify(token.getValue());
-            return new AccessTokenPayload(
-                    jwt.getClaim("memberNo").asLong(),
-                    jwt.getClaim("role").toString()
-            );
+            return AccessTokenPayload.builder()
+                    .memberNo(jwt.getClaim(JwtConfig.Claims.MEMBER_NO.getName()).asLong())
+                    .role(jwt.getClaim(JwtConfig.Claims.ROLE.getName()).toString())
+                    .issueAt(jwt.getIssuedAt().getTime())
+                    .build();
         } catch (TokenExpiredException e) {
             throw AccessTokenException.expired(e.getExpiredOn().toEpochMilli());
         } catch (JWTVerificationException e) {
