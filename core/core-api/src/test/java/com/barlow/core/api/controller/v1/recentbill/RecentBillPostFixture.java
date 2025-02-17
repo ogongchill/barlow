@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.barlow.core.domain.recentbill.BillProposer;
-import com.barlow.core.domain.recentbill.RecentBillPost;
-import com.barlow.core.domain.recentbill.RecentBillPostsStatus;
+import com.barlow.core.domain.recentbill.BillPost;
+import com.barlow.core.domain.recentbill.BillPostsStatus;
 
 public class RecentBillPostFixture {
 
@@ -22,15 +22,15 @@ public class RecentBillPostFixture {
 	static final String DETAIL = "주요내용 및 제안이유";
 	static final int VIEW_COUNT = 1;
 
-	static final RecentBillPost RECENT_BILL_POST = new RecentBillPost(
-		new RecentBillPost.BillInfo(BILL_ID_1, BILL_NAME_1),
-		new RecentBillPost.ProposerInfo(PROPOSER_TYPE, PROPOSERS_SUMMARY),
-		new RecentBillPost.LegislationInfo(LEGISLATION_TYPE, LEGISLATION_PROCESS_STATUS),
+	static final BillPost RECENT_BILL_POST = new BillPost(
+		new BillPost.BillInfo(BILL_ID_1, BILL_NAME_1),
+		new BillPost.ProposerInfo(PROPOSER_TYPE, PROPOSERS_SUMMARY),
+		new BillPost.LegislationInfo(LEGISLATION_TYPE, LEGISLATION_PROCESS_STATUS),
 		SUMMARY, DETAIL, LocalDateTime.of(2024, 12, 31, 23, 59), VIEW_COUNT
 	);
 
 	static final BillProposer PROPOSER = new BillProposer("code", PROPOSER_NAME, PARTY_NAME, PROFILE_IMAGE_PATH);
-	static final RecentBillPostsStatus RECENT_BILL_POSTS_STATUS = new RecentBillPostsStatus(
+	static final BillPostsStatus RECENT_BILL_POSTS_STATUS = new BillPostsStatus(
 		List.of(RECENT_BILL_POST),
 		true
 	);

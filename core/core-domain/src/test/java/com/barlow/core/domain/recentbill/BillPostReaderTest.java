@@ -25,34 +25,34 @@ import org.mockito.Mock;
 
 import com.barlow.DevelopTest;
 
-class RecentBillPostReaderTest extends DevelopTest {
+class BillPostReaderTest extends DevelopTest {
 
-	private @Mock RecentBillPostRepository recentBillPostRepository;
-	private @InjectMocks RecentBillPostReader recentBillPostReader;
+	private @Mock BillPostRepository billPostRepository;
+	private @InjectMocks BillPostReader billPostReader;
 
 	@DisplayName("페이지, 사이즈, 정렬키, 태그정보를 받아 최근법안게시글 전체를 조회하면 최근법안게시글들의 페이징 결과를 반환한다")
 	@Test
-	void readRecentBillPosts() {
+	void readBillPosts() {
 		BillPostQuery billPostQuery = new BillPostQuery(1, 100, "created_at#asc", Map.of());
-		when(recentBillPostRepository.retrieveRecentBillPosts(billPostQuery))
+		when(billPostRepository.retrieveRecentBillPosts(billPostQuery))
 			.thenReturn(EMPTY_RECENT_BILL_POST_STATUS);
 
-		RecentBillPostsStatus result = recentBillPostReader.readRecentBillPosts(billPostQuery);
+		BillPostsStatus result = billPostReader.readBillPosts(billPostQuery);
 
 		assertAll(
-			() -> assertThat(result.recentBillPosts()).isEmpty(),
+			() -> assertThat(result.billPosts()).isEmpty(),
 			() -> assertThat(result.isLastPage()).isTrue()
 		);
 	}
 
 	@DisplayName("법안 ID 를 받아, 최근법안게시글 상세조회하면 최근법안게시글의 상세정보를 반환한다")
 	@Test
-	void readRecentBillPostDetail() {
+	void readBillPostDetail() {
 		BillPostDetailQuery postDetailQuery = new BillPostDetailQuery(BILL_ID_1);
-		when(recentBillPostRepository.retrieveRecentBillPost(postDetailQuery))
+		when(billPostRepository.retrieveRecentBillPost(postDetailQuery))
 			.thenReturn(RECENT_BILL_POST_1);
 
-		RecentBillPost result = recentBillPostReader.readRecentBillPostDetail(postDetailQuery);
+		BillPost result = billPostReader.readBillPostDetail(postDetailQuery);
 
 		assertAll(
 			() -> assertThat(result).isNotNull(),
@@ -70,13 +70,13 @@ class RecentBillPostReaderTest extends DevelopTest {
 
 	@DisplayName("법안 ID 를 받아, 최근법안게시글 상세조회 시 값이 없으면 예외를 발생시킨다")
 	@Test
-	void readRecentBillPostDetailFailure() {
+	void readBillPostDetailFailure() {
 		BillPostDetailQuery postDetailQuery = new BillPostDetailQuery(BILL_ID_1);
-		when(recentBillPostRepository.retrieveRecentBillPost(postDetailQuery))
+		when(billPostRepository.retrieveRecentBillPost(postDetailQuery))
 			.thenReturn(null);
 
-		assertThatThrownBy(() -> recentBillPostReader.readRecentBillPostDetail(postDetailQuery))
-			.isInstanceOf(RecentBillPostDomainException.class)
-			.hasMessage(RecentBillPostDomainException.notFound(BILL_ID_1).getMessage());
+		assertThatThrownBy(() -> billPostReader.readBillPostDetail(postDetailQuery))
+			.isInstanceOf(BillPostDomainException.class)
+			.hasMessage(BillPostDomainException.notFound(BILL_ID_1).getMessage());
 	}
 }

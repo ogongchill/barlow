@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 import com.barlow.core.domain.recentbill.BillPostDetailQuery;
 import com.barlow.core.domain.recentbill.BillPostQuery;
 import com.barlow.core.domain.recentbill.BillProposer;
-import com.barlow.core.domain.recentbill.RecentBillPost;
-import com.barlow.core.domain.recentbill.RecentBillPostRepository;
-import com.barlow.core.domain.recentbill.RecentBillPostsStatus;
+import com.barlow.core.domain.recentbill.BillPost;
+import com.barlow.core.domain.recentbill.BillPostRepository;
+import com.barlow.core.domain.recentbill.BillPostsStatus;
 
 @Component
-public class BillPostRepositoryAdapter implements RecentBillPostRepository {
+public class BillPostRepositoryAdapter implements BillPostRepository {
 
 	private final BillPostJpaRepository billPostJpaRepository;
 	private final BillProposerJpaRepository billProposerJpaRepository;
@@ -29,7 +29,7 @@ public class BillPostRepositoryAdapter implements RecentBillPostRepository {
 	}
 
 	@Override
-	public RecentBillPostsStatus retrieveRecentBillPosts(BillPostQuery query) {
+	public BillPostsStatus retrieveRecentBillPosts(BillPostQuery query) {
 		SortKey sortKey = new SortKey(query.sortKey());
 		BillPostFilterTag filterTag = BillPostFilterTag.from(query.tags());
 		Pageable pageable = PageRequest.of(query.page(), query.size(), sortKey.getSort());
@@ -50,20 +50,20 @@ public class BillPostRepositoryAdapter implements RecentBillPostRepository {
 				pageable
 			);
 		}
-		List<RecentBillPost> recentBillPosts = billPostJpaEntities.stream()
+		List<BillPost> billPosts = billPostJpaEntities.stream()
 			.map(BillPostJpaEntity::toRecentBillPost)
 			.toList();
-		return new RecentBillPostsStatus(recentBillPosts, billPostJpaEntities.isLast());
+		return new BillPostsStatus(billPosts, billPostJpaEntities.isLast());
 	}
 
 	@Override
-	public RecentBillPost retrieveRecentBillPost(BillPostDetailQuery query) {
-		RecentBillPost recentBillPost = billPostJpaRepository.findByBillId(query.billId()).toRecentBillPost();
+	public BillPost retrieveRecentBillPost(BillPostDetailQuery query) {
+		BillPost billPost = billPostJpaRepository.findByBillId(query.billId()).toRecentBillPost();
 		List<BillProposer> billProposers = billProposerJpaRepository.findAllByBillId(query.billId())
 			.stream()
 			.map(BillProposerJpaEntity::toBillProposer)
 			.toList();
-		recentBillPost.setBillProposers(billProposers);
-		return recentBillPost;
+		billPost.setBillProposers(billProposers);
+		return billPost;
 	}
 }

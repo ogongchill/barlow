@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RecentBillFixture {
 
-	static final RecentBillPostsStatus EMPTY_RECENT_BILL_POST_STATUS = new RecentBillPostsStatus(List.of(), true);
+	static final BillPostsStatus EMPTY_RECENT_BILL_POST_STATUS = new BillPostsStatus(List.of(), true);
 
 	static final String BILL_ID_1 = "bill_id_1";
 	static final String BILL_NAME_1 = "bill_name_1";
@@ -17,10 +17,10 @@ public class RecentBillFixture {
 	static final String DETAIL = "주요내용 및 제안이유";
 	static final int VIEW_COUNT = 1;
 
-	static final RecentBillPost RECENT_BILL_POST_1 = new RecentBillPost(
-		new RecentBillPost.BillInfo(BILL_ID_1, BILL_NAME_1),
-		new RecentBillPost.ProposerInfo(PROPOSER_TYPE, PROPOSERS),
-		new RecentBillPost.LegislationInfo(LEGISLATION_TYPE, LEGISLATION_PROCESS_STATUS),
+	static final BillPost RECENT_BILL_POST_1 = new BillPost(
+		new BillPost.BillInfo(BILL_ID_1, BILL_NAME_1),
+		new BillPost.ProposerInfo(PROPOSER_TYPE, PROPOSERS),
+		new BillPost.LegislationInfo(LEGISLATION_TYPE, LEGISLATION_PROCESS_STATUS),
 		SUMMARY, DETAIL, LocalDateTime.of(2025, 1, 1, 0, 0), VIEW_COUNT
 	);
 }

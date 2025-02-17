@@ -12,7 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class RecentBillPostsApiSpecComposerTest {
+class BillPostsApiSpecComposerTest {
 
 	@DisplayName("오늘 날짜를 받아, 날짜에 따라서 최근법안게시글을 '오늘' 과 '최근' 으로 분류하여 구성한다")
 	@ParameterizedTest

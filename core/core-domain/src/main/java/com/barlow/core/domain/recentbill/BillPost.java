@@ -3,7 +3,7 @@ package com.barlow.core.domain.recentbill;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class RecentBillPost {
+public class BillPost {
 
 	private final BillInfo billInfo;
 	private final ProposerInfo proposerInfo;
@@ -14,7 +14,7 @@ public class RecentBillPost {
 	private final int viewCount;
 	private List<BillProposer> billProposers;
 
-	public RecentBillPost(
+	public BillPost(
 		BillInfo billInfo, ProposerInfo proposerInfo, LegislationInfo legislationInfo,
 		String summary, String detail, LocalDateTime createdAt, int viewCount
 	) {

@@ -5,26 +5,26 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.barlow.core.domain.recentbill.BillProposer;
-import com.barlow.core.domain.recentbill.RecentBillPost;
+import com.barlow.core.domain.recentbill.BillPost;
 
 public class RecentBillPostDetailApiSpecComposer {
 
-	private final RecentBillPost recentBillPost;
+	private final BillPost billPost;
 
-	RecentBillPostDetailApiSpecComposer(RecentBillPost recentBillPost) {
-		this.recentBillPost = recentBillPost;
+	RecentBillPostDetailApiSpecComposer(BillPost billPost) {
+		this.billPost = billPost;
 	}
 
 	RecentBillPostDetailResponse compose() {
-		BillProposers billProposers = new BillProposers(recentBillPost.getBillProposers());
+		BillProposers billProposers = new BillProposers(billPost.getBillProposers());
 		return new RecentBillPostDetailResponse(
-			recentBillPost.getBillName(),
-			recentBillPost.getProposers(),
-			recentBillPost.getProposerType(),
-			recentBillPost.getLegislativeBody(),
-			recentBillPost.getCreatedAt(),
-			recentBillPost.getDetail(),
-			new RecentBillPostDetailResponse.SummarySection(recentBillPost.getSummary()),
+			billPost.getBillName(),
+			billPost.getProposers(),
+			billPost.getProposerType(),
+			billPost.getLegislativeBody(),
+			billPost.getCreatedAt(),
+			billPost.getDetail(),
+			new RecentBillPostDetailResponse.SummarySection(billPost.getSummary()),
 			new RecentBillPostDetailResponse.ProposerSection(
 				billProposers.getProposerPartyRate(),
 				billProposers.mapToProposerResponse()
