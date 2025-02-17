@@ -11,11 +11,11 @@ public class BillPostRetrieveService {
 		this.billPostReader = billPostReader;
 	}
 
-	public BillPostsStatus readRecentBillPosts(BillPostQuery query) {
+	public BillPostsStatus readBillPosts(BillPostQuery query) {
 		return billPostReader.readBillPosts(query);
 	}
 
-	public BillPost readRecentBillPostDetail(BillPostDetailQuery query) {
+	public BillPost readBillPostDetail(BillPostDetailQuery query) {
 		return billPostReader.readBillPostDetail(query);
 	}
 }
