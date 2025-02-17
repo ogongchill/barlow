@@ -1,6 +1,6 @@
 package com.barlow.storage.db.core;
 
-import com.barlow.core.domain.recentbill.BillPost;
+import com.barlow.core.domain.billpost.BillPost;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

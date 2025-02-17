@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.barlow.core.domain.recentbill.BillProposer;
-import com.barlow.core.domain.recentbill.BillPost;
+import com.barlow.core.domain.billpost.BillProposer;
+import com.barlow.core.domain.billpost.BillPost;
 
 public class RecentBillPostDetailApiSpecComposer {
 

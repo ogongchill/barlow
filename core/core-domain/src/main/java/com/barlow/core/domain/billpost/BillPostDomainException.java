@@ -1,4 +1,4 @@
-package com.barlow.core.domain.recentbill;
+package com.barlow.core.domain.billpost;
 
 import com.barlow.core.exception.CoreDomainException;
 import com.barlow.core.exception.CoreDomainExceptionCode;

@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.barlow.core.domain.recentbill.BillPostDetailQuery;
-import com.barlow.core.domain.recentbill.BillPostQuery;
-import com.barlow.core.domain.recentbill.BillPost;
-import com.barlow.core.domain.recentbill.BillPostRetrieveService;
-import com.barlow.core.domain.recentbill.BillPostsStatus;
+import com.barlow.core.domain.billpost.BillPostDetailQuery;
+import com.barlow.core.domain.billpost.BillPostQuery;
+import com.barlow.core.domain.billpost.BillPost;
+import com.barlow.core.domain.billpost.BillPostRetrieveService;
+import com.barlow.core.domain.billpost.BillPostsStatus;
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController

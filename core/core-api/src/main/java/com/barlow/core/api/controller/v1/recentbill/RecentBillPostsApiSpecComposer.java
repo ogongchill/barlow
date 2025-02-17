@@ -6,8 +6,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.barlow.core.domain.recentbill.BillPost;
-import com.barlow.core.domain.recentbill.BillPostsStatus;
+import com.barlow.core.domain.billpost.BillPost;
+import com.barlow.core.domain.billpost.BillPostsStatus;
 
 public class RecentBillPostsApiSpecComposer {
 

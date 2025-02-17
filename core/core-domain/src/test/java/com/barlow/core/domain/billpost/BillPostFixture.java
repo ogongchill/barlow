@@ -1,9 +1,9 @@
-package com.barlow.core.domain.recentbill;
+package com.barlow.core.domain.billpost;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class RecentBillFixture {
+public class BillPostFixture {
 
 	static final BillPostsStatus EMPTY_RECENT_BILL_POST_STATUS = new BillPostsStatus(List.of(), true);
 

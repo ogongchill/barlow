@@ -7,12 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
 
-import com.barlow.core.domain.recentbill.BillPostDetailQuery;
-import com.barlow.core.domain.recentbill.BillPostQuery;
-import com.barlow.core.domain.recentbill.BillProposer;
-import com.barlow.core.domain.recentbill.BillPost;
-import com.barlow.core.domain.recentbill.BillPostRepository;
-import com.barlow.core.domain.recentbill.BillPostsStatus;
+import com.barlow.core.domain.billpost.BillPostDetailQuery;
+import com.barlow.core.domain.billpost.BillPostQuery;
+import com.barlow.core.domain.billpost.BillProposer;
+import com.barlow.core.domain.billpost.BillPost;
+import com.barlow.core.domain.billpost.BillPostRepository;
+import com.barlow.core.domain.billpost.BillPostsStatus;
 
 @Component
 public class BillPostRepositoryAdapter implements BillPostRepository {

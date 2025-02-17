@@ -1,4 +1,4 @@
-package com.barlow.core.domain.recentbill;
+package com.barlow.core.domain.billpost;
 
 import java.time.LocalDateTime;
 import java.util.List;

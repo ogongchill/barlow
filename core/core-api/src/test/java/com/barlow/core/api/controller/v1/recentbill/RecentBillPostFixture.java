@@ -3,9 +3,9 @@ package com.barlow.core.api.controller.v1.recentbill;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.barlow.core.domain.recentbill.BillProposer;
-import com.barlow.core.domain.recentbill.BillPost;
-import com.barlow.core.domain.recentbill.BillPostsStatus;
+import com.barlow.core.domain.billpost.BillProposer;
+import com.barlow.core.domain.billpost.BillPost;
+import com.barlow.core.domain.billpost.BillPostsStatus;
 
 public class RecentBillPostFixture {
 

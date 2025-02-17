@@ -1,16 +1,16 @@
-package com.barlow.core.domain.recentbill;
+package com.barlow.core.domain.billpost;
 
-import static com.barlow.core.domain.recentbill.RecentBillFixture.BILL_ID_1;
-import static com.barlow.core.domain.recentbill.RecentBillFixture.BILL_NAME_1;
-import static com.barlow.core.domain.recentbill.RecentBillFixture.DETAIL;
-import static com.barlow.core.domain.recentbill.RecentBillFixture.EMPTY_RECENT_BILL_POST_STATUS;
-import static com.barlow.core.domain.recentbill.RecentBillFixture.LEGISLATION_PROCESS_STATUS;
-import static com.barlow.core.domain.recentbill.RecentBillFixture.LEGISLATION_TYPE;
-import static com.barlow.core.domain.recentbill.RecentBillFixture.PROPOSERS;
-import static com.barlow.core.domain.recentbill.RecentBillFixture.PROPOSER_TYPE;
-import static com.barlow.core.domain.recentbill.RecentBillFixture.RECENT_BILL_POST_1;
-import static com.barlow.core.domain.recentbill.RecentBillFixture.SUMMARY;
-import static com.barlow.core.domain.recentbill.RecentBillFixture.VIEW_COUNT;
+import static com.barlow.core.domain.billpost.BillPostFixture.BILL_ID_1;
+import static com.barlow.core.domain.billpost.BillPostFixture.BILL_NAME_1;
+import static com.barlow.core.domain.billpost.BillPostFixture.DETAIL;
+import static com.barlow.core.domain.billpost.BillPostFixture.EMPTY_RECENT_BILL_POST_STATUS;
+import static com.barlow.core.domain.billpost.BillPostFixture.LEGISLATION_PROCESS_STATUS;
+import static com.barlow.core.domain.billpost.BillPostFixture.LEGISLATION_TYPE;
+import static com.barlow.core.domain.billpost.BillPostFixture.PROPOSERS;
+import static com.barlow.core.domain.billpost.BillPostFixture.PROPOSER_TYPE;
+import static com.barlow.core.domain.billpost.BillPostFixture.RECENT_BILL_POST_1;
+import static com.barlow.core.domain.billpost.BillPostFixture.SUMMARY;
+import static com.barlow.core.domain.billpost.BillPostFixture.VIEW_COUNT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
