@@ -3,6 +3,7 @@ package com.barlow.core.auth.authentication.access;
 import com.auth0.jwt.JWT;
 import com.barlow.core.auth.authentication.core.AuthenticationException;
 import com.barlow.core.auth.authentication.core.AuthenticationExceptionType;
+import com.barlow.core.auth.authentication.core.MemberPrincipal;
 import com.barlow.core.auth.config.TestKeyConfig;
 import com.barlow.core.auth.support.crypto.PrivateKeyAlgorithm;
 import com.barlow.core.auth.support.jwt.TokenConfig;

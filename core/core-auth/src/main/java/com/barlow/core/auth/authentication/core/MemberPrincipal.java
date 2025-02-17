@@ -1,6 +1,4 @@
-package com.barlow.core.auth.authentication.access;
-
-import com.barlow.core.auth.authentication.core.Principal;
+package com.barlow.core.auth.authentication.core;
 
 import java.util.Objects;
 

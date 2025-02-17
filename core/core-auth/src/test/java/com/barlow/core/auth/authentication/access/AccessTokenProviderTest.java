@@ -3,6 +3,7 @@ package com.barlow.core.auth.authentication.access;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.barlow.core.auth.authentication.core.MemberPrincipal;
 import com.barlow.core.auth.config.TestKeyConfig;
 import com.barlow.core.auth.support.crypto.PublicKeyAlgorithm;
 import com.barlow.core.auth.support.jwt.TokenConfig;
@@ -31,7 +32,7 @@ class AccessTokenProviderTest {
     void testDoesNotThrowWhenIssue() {
         JWTVerifier verifier = JWT.require(publicKeyAlgorithm.getAlgorithm())
                 .build();
-        AccessToken token = accessTokenProvider.issue(AccessTokenPayload.ofGuest(1L));
+        AccessToken token = accessTokenProvider.issue(new MemberPrincipal(1L, "GUEST"));
         assertDoesNotThrow(() -> verifier.verify(token.getValue()));
     }
 
@@ -40,7 +41,7 @@ class AccessTokenProviderTest {
     void testIssue() {
         JWTVerifier verifier = JWT.require(publicKeyAlgorithm.getAlgorithm())
                 .build();
-        AccessToken token = accessTokenProvider.issue(AccessTokenPayload.ofGuest(1L));
+        AccessToken token = accessTokenProvider.issue(new MemberPrincipal(1L, "GUEST"));
         DecodedJWT decodedJWT = verifier.verify(token.getValue());
         assertAll(
                 () -> assertThat(decodedJWT.getIssuer()).isEqualTo("barlow"),
