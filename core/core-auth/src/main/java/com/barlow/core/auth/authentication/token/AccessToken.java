@@ -1,4 +1,4 @@
-package com.barlow.core.auth.authentication.access;
+package com.barlow.core.auth.authentication.token;
 
 import com.barlow.core.auth.authentication.core.Credential;
 import com.barlow.core.auth.authentication.core.CredentialType;

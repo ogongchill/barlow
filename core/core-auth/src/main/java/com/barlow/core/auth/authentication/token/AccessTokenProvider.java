@@ -1,4 +1,4 @@
-package com.barlow.core.auth.authentication.access;
+package com.barlow.core.auth.authentication.token;
 
 import com.auth0.jwt.JWT;
 import com.barlow.core.auth.authentication.core.MemberPrincipal;

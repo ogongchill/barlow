@@ -1,4 +1,4 @@
-package com.barlow.core.auth.authentication.access;
+package com.barlow.core.auth.authentication.token;
 
 import com.barlow.core.auth.authentication.core.AuthenticationException;
 import com.barlow.core.auth.authentication.core.AuthenticationExceptionType;
