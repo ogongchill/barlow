@@ -15,16 +15,16 @@ import com.barlow.core.domain.recentbill.RecentBillPostRepository;
 import com.barlow.core.domain.recentbill.RecentBillPostsStatus;
 
 @Component
-public class RecentBillRepositoryAdapter implements RecentBillPostRepository {
+public class BillPostRepositoryAdapter implements RecentBillPostRepository {
 
-	private final RecentBillPostJpaRepository recentBillPostJpaRepository;
+	private final BillPostJpaRepository billPostJpaRepository;
 	private final BillProposerJpaRepository billProposerJpaRepository;
 
-	public RecentBillRepositoryAdapter(
-		RecentBillPostJpaRepository recentBillPostJpaRepository,
+	public BillPostRepositoryAdapter(
+		BillPostJpaRepository billPostJpaRepository,
 		BillProposerJpaRepository billProposerJpaRepository
 	) {
-		this.recentBillPostJpaRepository = recentBillPostJpaRepository;
+		this.billPostJpaRepository = billPostJpaRepository;
 		this.billProposerJpaRepository = billProposerJpaRepository;
 	}
 
@@ -33,16 +33,16 @@ public class RecentBillRepositoryAdapter implements RecentBillPostRepository {
 		SortKey sortKey = new SortKey(query.sortKey());
 		BillPostFilterTag filterTag = BillPostFilterTag.from(query.tags());
 		Pageable pageable = PageRequest.of(query.page(), query.size(), sortKey.getSort());
-		Slice<RecentBillPostJpaEntity> billPostJpaEntities;
+		Slice<BillPostJpaEntity> billPostJpaEntities;
 		if (filterTag.isPartyNameTagEmpty()) {
-			billPostJpaEntities = recentBillPostJpaRepository.findAllBy(
+			billPostJpaEntities = billPostJpaRepository.findAllBy(
 				filterTag.getLegislationTypeTags(),
 				filterTag.getLegislationStatusTags(),
 				filterTag.getProposerTypeTags(),
 				pageable
 			);
 		} else {
-			billPostJpaEntities = recentBillPostJpaRepository.findAllBy(
+			billPostJpaEntities = billPostJpaRepository.findAllBy(
 				filterTag.getLegislationTypeTags(),
 				filterTag.getLegislationStatusTags(),
 				filterTag.getProposerTypeTags(),
@@ -51,14 +51,14 @@ public class RecentBillRepositoryAdapter implements RecentBillPostRepository {
 			);
 		}
 		List<RecentBillPost> recentBillPosts = billPostJpaEntities.stream()
-			.map(RecentBillPostJpaEntity::toRecentBillPost)
+			.map(BillPostJpaEntity::toRecentBillPost)
 			.toList();
 		return new RecentBillPostsStatus(recentBillPosts, billPostJpaEntities.isLast());
 	}
 
 	@Override
 	public RecentBillPost retrieveRecentBillPost(BillPostDetailQuery query) {
-		RecentBillPost recentBillPost = recentBillPostJpaRepository.findByBillId(query.billId()).toRecentBillPost();
+		RecentBillPost recentBillPost = billPostJpaRepository.findByBillId(query.billId()).toRecentBillPost();
 		List<BillProposer> billProposers = billProposerJpaRepository.findAllByBillId(query.billId())
 			.stream()
 			.map(BillProposerJpaEntity::toBillProposer)

@@ -10,8 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "recent_bill_post")
-public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
+@Table(name = "bill_post")
+public class BillPostJpaEntity extends BaseTimeJpaEntity {
 
 	@Id
 	@Column(name = "bill_id", nullable = false, length = 100)
@@ -44,7 +44,7 @@ public class RecentBillPostJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "view_count", nullable = false)
 	private Integer viewCount;
 
-	protected RecentBillPostJpaEntity() {
+	protected BillPostJpaEntity() {
 	}
 
 	RecentBillPost toRecentBillPost() {
