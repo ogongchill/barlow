@@ -33,13 +33,14 @@ public class SubscribeJpaEntity extends BaseTimeJpaEntity {
     protected SubscribeJpaEntity() {
     }
 
-    SubscribeJpaEntity(Long subscribeLegislationAccountNo, Long memberNo) {
+    SubscribeJpaEntity(Long subscribeLegislationAccountNo, LegislationType legislationType, Long memberNo) {
         this.subscribeLegislationAccountNo = subscribeLegislationAccountNo;
+        this.legislationType = legislationType;
         this.memberNo = memberNo;
     }
 
     Subscribe toSubscribe(User user) {
-        return new Subscribe(user, subscribeLegislationAccountNo, true);
+        return new Subscribe(user, legislationType.getValue(), true);
     }
 
     LegislationType getLegislationType() {

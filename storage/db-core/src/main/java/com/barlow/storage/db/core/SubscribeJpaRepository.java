@@ -1,8 +1,6 @@
 package com.barlow.storage.db.core;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -12,5 +10,5 @@ public interface SubscribeJpaRepository extends JpaRepository <SubscribeJpaEntit
 
     SubscribeJpaEntity findBySubscribeLegislationAccountNoAndMemberNo(Long subscribeLegislationAccountNo, Long memberNo);
 
-    void deleteBySubscribeLegislationAccountNoAndMemberNo(Long subscribeLegislationAccountNo, Long memberNo);
+    void deleteByLegislationTypeAndMemberNo(LegislationType legislationType, Long memberNo);
 }

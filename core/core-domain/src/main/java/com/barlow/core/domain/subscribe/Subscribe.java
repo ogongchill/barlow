@@ -7,17 +7,17 @@ public class Subscribe {
 	private final User subscriber;
 	private final SubscriptionInfo subscriptionInfo;
 
-	public Subscribe(User subscriber, long legislationAccountNo, boolean isSubscribed) {
+	public Subscribe(User subscriber, String legislationAccountType, boolean isSubscribed) {
 		this.subscriber = subscriber;
-		this.subscriptionInfo = new SubscriptionInfo(legislationAccountNo, isSubscribed);
+		this.subscriptionInfo = new SubscriptionInfo(legislationAccountType, isSubscribed);
 	}
 
 	Subscribe activate() {
-		return new Subscribe(subscriber, subscriptionInfo.legislationAccountNo, true);
+		return new Subscribe(subscriber, subscriptionInfo.legislationAccountType, true);
 	}
 
 	Subscribe deactivate() {
-		return new Subscribe(subscriber, subscriptionInfo.legislationAccountNo, false);
+		return new Subscribe(subscriber, subscriptionInfo.legislationAccountType, false);
 	}
 
 	public boolean isActive() {
@@ -28,17 +28,17 @@ public class Subscribe {
 		return subscriber;
 	}
 
-	public long getLegislationAccountNo() {
-		return subscriptionInfo.legislationAccountNo;
+	public String getLegislationAccountType() {
+		return subscriptionInfo.legislationAccountType;
 	}
 
 	static class SubscriptionInfo {
 
-		private final long legislationAccountNo;
+		private final String legislationAccountType;
 		private final boolean isSubscribed;
 
-		public SubscriptionInfo(long legislationAccountNo, boolean isSubscribed) {
-			this.legislationAccountNo = legislationAccountNo;
+		public SubscriptionInfo(String legislationAccountType, boolean isSubscribed) {
+			this.legislationAccountType = legislationAccountType;
 			this.isSubscribed = isSubscribed;
 		}
 	}

@@ -48,12 +48,12 @@ public class LegislationAccountReader {
 
 		Map<String, Boolean> memberNotificationSetting = notificationSettingReader.readNotificationSettings(user).stream()
 			.collect(Collectors.toMap(NotificationSetting::getTopicName, NotificationSetting::isNotifiable));
-		Map<Long, Boolean> memberSubscription = subscribeReader.readSubscribes(legislationTypes, user).stream()
-			.collect(Collectors.toMap(Subscribe::getLegislationAccountNo, Subscribe::isActive));
+		Map<String, Boolean> memberSubscription = subscribeReader.readSubscribes(legislationTypes, user).stream()
+			.collect(Collectors.toMap(Subscribe::getLegislationAccountType, Subscribe::isActive));
 
 		legislationAccounts.forEach(legislationAccount -> {
 			legislationAccount.setNotifiable(memberNotificationSetting.get(legislationAccount.getLegislationType()));
-			legislationAccount.setSubscribed(memberSubscription.get(legislationAccount.getNo()));
+			legislationAccount.setSubscribed(memberSubscription.get(legislationAccount.getLegislationType()));
 		});
 		return legislationAccounts;
 	}

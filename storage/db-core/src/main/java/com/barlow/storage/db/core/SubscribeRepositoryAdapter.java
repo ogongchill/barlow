@@ -25,7 +25,7 @@ public class SubscribeRepositoryAdapter implements SubscribeRepository {
 		SubscribeJpaEntity subscribeJpaEntity = subscribeJpaRepository
 			.findBySubscribeLegislationAccountNoAndMemberNo(query.legislationAccountNo(), query.user().getUserNo());
 		if (subscribeJpaEntity == null) {
-			return new Subscribe(query.user(), query.legislationAccountNo(), false);
+			return new Subscribe(query.user(), "", false); // accountNo 랑 ordinal 이랑 비교해서 찾기
 		}
 		return subscribeJpaEntity.toSubscribe(query.user());
 	}
@@ -40,21 +40,29 @@ public class SubscribeRepositoryAdapter implements SubscribeRepository {
 		List<LegislationType> disableLegislationBodies = LegislationType.findDisableLegislationType(actives);
 		return Stream.concat(
 			jpaEntities.stream().map(entity -> entity.toSubscribe(user)),
-			disableLegislationBodies.stream().map(disableBody -> new Subscribe(user, 1, false))
+			disableLegislationBodies.stream().map(disableBody -> new Subscribe(
+				user,
+				disableBody.getValue(),
+				false
+			))
 		).toList();
 	}
 
 	@Override
 	public void save(Subscribe subscribe) {
 		subscribeJpaRepository.save(
-			new SubscribeJpaEntity(subscribe.getSubscriber().getUserNo(), subscribe.getLegislationAccountNo())
+			new SubscribeJpaEntity(
+				1L, // ordinal + 1 로 대체하자
+				LegislationType.valueOf(subscribe.getLegislationAccountType()),
+				subscribe.getSubscriber().getUserNo()
+			)
 		);
 	}
 
 	@Override
 	public void delete(Subscribe subscribe) {
-		subscribeJpaRepository.deleteBySubscribeLegislationAccountNoAndMemberNo(
-			subscribe.getLegislationAccountNo(),
+		subscribeJpaRepository.deleteByLegislationTypeAndMemberNo(
+			LegislationType.valueOf(subscribe.getLegislationAccountType()),
 			subscribe.getSubscriber().getUserNo()
 		);
 	}
