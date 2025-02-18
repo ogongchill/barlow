@@ -35,7 +35,7 @@ public class LegislationAccount {
 		isNotifiable = notifiable;
 	}
 
-	long getNo() {
+	public long getNo() {
 		return no;
 	}
 

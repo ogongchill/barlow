@@ -1,5 +1,7 @@
 package com.barlow.core.api.controller.v1.legislationaccount;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,23 +13,29 @@ import com.barlow.core.domain.legislationaccount.LegislationAccountRetrieveServi
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
-@RequestMapping("/api/v1/legislation-accounts/{accountNo}/profile")
-public class LegislationAccountProfileRetrieveController {
+@RequestMapping("/api/v1/legislation-accounts")
+public class LegislationAccountRetrieveController {
 
 	private final LegislationAccountRetrieveService legislationAccountRetrieveService;
 
-	public LegislationAccountProfileRetrieveController(
+	public LegislationAccountRetrieveController(
 		LegislationAccountRetrieveService legislationAccountRetrieveService
 	) {
 		this.legislationAccountRetrieveService = legislationAccountRetrieveService;
 	}
 
-	@GetMapping
+	@GetMapping("/{accountNo}/profile")
 	public ApiResponse<LegislationAccountProfileResponse> retrieveProfile(
 		@PathVariable Long accountNo,
 		User user
 	) {
 		LegislationAccount legislationAccount = legislationAccountRetrieveService.retrieve(accountNo, user);
 		return ApiResponse.success(LegislationAccountProfileResponse.from(legislationAccount));
+	}
+
+	@GetMapping("/committees/info")
+	public ApiResponse<CommitteeAccountResponse> retrieveCommitteeAccounts(User user) {
+		List<LegislationAccount> legislationAccounts = legislationAccountRetrieveService.retrieveAllCommittees(user);
+		return ApiResponse.success(CommitteeAccountResponse.from(legislationAccounts));
 	}
 }
