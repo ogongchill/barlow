@@ -42,9 +42,13 @@ public class LegislationAccountReader {
 
 	public List<LegislationAccount> readAllCommittees(User user) {
 		List<LegislationAccount> legislationAccounts = legislationAccountRepository.retrieveCommitteeAccount();
+		List<String> legislationTypes = legislationAccounts.stream()
+			.map(LegislationAccount::getLegislationType)
+			.toList();
+
 		Map<String, Boolean> memberNotificationSetting = notificationSettingReader.readNotificationSettings(user).stream()
 			.collect(Collectors.toMap(NotificationSetting::getTopicName, NotificationSetting::isNotifiable));
-		Map<Long, Boolean> memberSubscription = subscribeReader.readSubscribes(user).stream()
+		Map<Long, Boolean> memberSubscription = subscribeReader.readSubscribes(legislationTypes, user).stream()
 			.collect(Collectors.toMap(Subscribe::getLegislationAccountNo, Subscribe::isActive));
 
 		legislationAccounts.forEach(legislationAccount -> {

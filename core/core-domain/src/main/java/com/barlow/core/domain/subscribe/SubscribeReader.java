@@ -20,7 +20,8 @@ public class SubscribeReader {
 		return subscribeRepository.retrieve(query);
 	}
 
-	public List<Subscribe> readSubscribes(User user) {
-		return subscribeRepository.retrieveAll(user);
+	public List<Subscribe> readSubscribes(List<String> legislationTypes, User user) {
+		SubscribesQuery query = new SubscribesQuery(legislationTypes, user);
+		return subscribeRepository.retrieveAll(query);
 	}
 }
