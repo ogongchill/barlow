@@ -7,6 +7,8 @@ import java.util.List;
 @Repository
 public interface LegislationAccountRepository {
 
+	LegislationAccount retrieve(long accountNo);
+
 	List<LegislationAccount> retrieveCommitteeAccount();
 
 	void incrementSubscriber(long accountNo);
