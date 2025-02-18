@@ -1,7 +1,10 @@
 package com.barlow.storage.db.core;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
+import com.barlow.core.domain.User;
 import com.barlow.core.domain.subscribe.Subscribe;
 import com.barlow.core.domain.subscribe.SubscribeQuery;
 import com.barlow.core.domain.subscribe.SubscribeRepository;
@@ -23,6 +26,17 @@ public class SubscribeRepositoryAdapter implements SubscribeRepository {
 			return new Subscribe(query.user(), query.legislationAccountNo(), false);
 		}
 		return subscribeJpaEntity.toSubscribe(query.user());
+	}
+
+	/**
+	 * FIXME : 조회되지 않는 값들은 구독 여부를 아예 알 수가 없음
+	 */
+	@Override
+	public List<Subscribe> retrieveAll(User user) {
+		return subscribeJpaRepository.findAllByMemberNo(user.getUserNo())
+			.stream()
+			.map(subscribeJpaEntity -> subscribeJpaEntity.toSubscribe(user))
+			.toList();
 	}
 
 	@Override

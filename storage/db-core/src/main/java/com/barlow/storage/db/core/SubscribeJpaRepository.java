@@ -8,8 +8,7 @@ import java.util.List;
 
 public interface SubscribeJpaRepository extends JpaRepository <SubscribeJpaEntity, Long> {
 
-    @Query("SELECT d FROM SubscribeJpaEntity d WHERE d.memberNo = :memberNo")
-    List<SubscribeJpaEntity> retrieveByMemberNo(@Param("memberNo") Long memberNo);
+    List<SubscribeJpaEntity> findAllByMemberNo(Long memberNo);
 
     SubscribeJpaEntity findBySubscribeLegislationAccountNoAndMemberNo(Long subscribeLegislationAccountNo, Long memberNo);
 

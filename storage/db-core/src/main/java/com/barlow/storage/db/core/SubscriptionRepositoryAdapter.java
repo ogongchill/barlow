@@ -17,7 +17,7 @@ public class SubscriptionRepositoryAdapter implements SubscriptionRepository {
 
     @Override
     public List<Subscription> retrieveByMemberNo(Long memberNo) {
-        return subscribeJpaRepository.retrieveByMemberNo(memberNo)
+        return subscribeJpaRepository.findAllByMemberNo(memberNo)
                 .stream()
                 .map(SubscribeJpaEntity::toSubscription)
                 .toList();
