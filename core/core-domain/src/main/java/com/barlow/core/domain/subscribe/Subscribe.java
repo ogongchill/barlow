@@ -20,7 +20,7 @@ public class Subscribe {
 		return new Subscribe(subscriber, subscriptionInfo.legislationAccountNo, false);
 	}
 
-	boolean isActive() {
+	public boolean isActive() {
 		return subscriptionInfo.isSubscribed;
 	}
 
