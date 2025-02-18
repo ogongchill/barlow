@@ -28,7 +28,7 @@ public class NotificationSetting {
 		return new NotificationSetting(user, notificationTopic, false);
 	}
 
-	boolean isNotifiable() {
+	public boolean isNotifiable() {
 		return isNotifiable;
 	}
 
