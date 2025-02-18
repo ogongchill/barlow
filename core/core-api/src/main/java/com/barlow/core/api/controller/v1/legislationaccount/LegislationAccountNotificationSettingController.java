@@ -10,7 +10,7 @@ import com.barlow.core.domain.notificationsetting.NotificationSettingService;
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
-@RequestMapping("/api/v1/legislation-account/notification-setting")
+@RequestMapping("/api/v1/legislation-accounts/notification-setting")
 public class LegislationAccountNotificationSettingController {
 
 	private final NotificationSettingService notificationSettingService;

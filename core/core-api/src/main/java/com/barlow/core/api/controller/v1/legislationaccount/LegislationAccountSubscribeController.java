@@ -10,7 +10,7 @@ import com.barlow.core.domain.legislationaccount.LegislationAccountSubscribeServ
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
-@RequestMapping("/api/v1/legislation-account/subscribe")
+@RequestMapping("/api/v1/legislation-accounts/{accountNo}/subscribe")
 public class LegislationAccountSubscribeController {
 
 	private final LegislationAccountSubscribeService legislationAccountSubscribeService;
@@ -19,13 +19,13 @@ public class LegislationAccountSubscribeController {
 		this.legislationAccountSubscribeService = legislationAccountSubscribeService;
 	}
 
-	@PostMapping("/{accountNo}")
+	@PostMapping
 	public ApiResponse<Void> subscribe(@PathVariable Long accountNo, User user) {
 		legislationAccountSubscribeService.subscribeAccount(accountNo, user);
 		return ApiResponse.success();
 	}
 
-	@PostMapping("/{accountNo}")
+	@PostMapping
 	public ApiResponse<Void> unsubscribe(@PathVariable Long accountNo, User user) {
 		legislationAccountSubscribeService.unsubscribeAccount(accountNo, user);
 		return ApiResponse.success();
