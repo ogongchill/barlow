@@ -19,13 +19,13 @@ public class LegislationAccountSubscribeController {
 		this.legislationAccountSubscribeService = legislationAccountSubscribeService;
 	}
 
-	@PostMapping
+	@PostMapping("/activate")
 	public ApiResponse<Void> subscribe(@PathVariable Long accountNo, User user) {
 		legislationAccountSubscribeService.subscribeAccount(accountNo, user);
 		return ApiResponse.success();
 	}
 
-	@PostMapping
+	@PostMapping("/deactivate")
 	public ApiResponse<Void> unsubscribe(@PathVariable Long accountNo, User user) {
 		legislationAccountSubscribeService.unsubscribeAccount(accountNo, user);
 		return ApiResponse.success();

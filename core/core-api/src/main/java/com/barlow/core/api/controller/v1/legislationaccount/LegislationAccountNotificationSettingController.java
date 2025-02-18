@@ -10,7 +10,7 @@ import com.barlow.core.domain.notificationsetting.NotificationSettingService;
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
-@RequestMapping("/api/v1/legislation-accounts/notification-setting")
+@RequestMapping("/api/v1/legislation-accounts/{legislationType}/notification-setting")
 public class LegislationAccountNotificationSettingController {
 
 	private final NotificationSettingService notificationSettingService;
@@ -19,15 +19,15 @@ public class LegislationAccountNotificationSettingController {
 		this.notificationSettingService = notificationSettingService;
 	}
 
-	@PostMapping("/{committeeName}")
-	public ApiResponse<Void> subscribe(@PathVariable String committeeName, User user) {
-		notificationSettingService.activateSetting(committeeName, user);
+	@PostMapping("/activate")
+	public ApiResponse<Void> activate(@PathVariable String legislationType, User user) {
+		notificationSettingService.activateSetting(legislationType, user);
 		return ApiResponse.success();
 	}
 
-	@PostMapping("/{committeeName}")
-	public ApiResponse<Void> unsubscribe(@PathVariable String committeeName, User user) {
-		notificationSettingService.deactivateSetting(committeeName, user);
+	@PostMapping("/deactivate")
+	public ApiResponse<Void> deactivate(@PathVariable String legislationType, User user) {
+		notificationSettingService.deactivateSetting(legislationType, user);
 		return ApiResponse.success();
 	}
 }
