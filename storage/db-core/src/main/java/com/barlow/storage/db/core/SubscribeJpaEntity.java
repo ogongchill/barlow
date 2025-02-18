@@ -4,6 +4,8 @@ import com.barlow.core.domain.User;
 import com.barlow.core.domain.subscribe.Subscribe;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,6 +23,10 @@ public class SubscribeJpaEntity extends BaseTimeJpaEntity {
     @Column(name = "subscribe_legislation_account_no", nullable = false)
     private Long subscribeLegislationAccountNo;
 
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(100)", name = "legislation_type", nullable = false)
+    private LegislationType legislationType;
+
     @Column(name = "subscriber_no", nullable = false)
     private Long memberNo;
 
@@ -34,5 +40,9 @@ public class SubscribeJpaEntity extends BaseTimeJpaEntity {
 
     Subscribe toSubscribe(User user) {
         return new Subscribe(user, subscribeLegislationAccountNo, true);
+    }
+
+    LegislationType getLegislationType() {
+        return legislationType;
     }
 }
