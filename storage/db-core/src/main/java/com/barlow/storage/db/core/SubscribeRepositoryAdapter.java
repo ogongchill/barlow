@@ -1,6 +1,7 @@
 package com.barlow.storage.db.core;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
@@ -8,6 +9,7 @@ import com.barlow.core.domain.User;
 import com.barlow.core.domain.subscribe.Subscribe;
 import com.barlow.core.domain.subscribe.SubscribeQuery;
 import com.barlow.core.domain.subscribe.SubscribeRepository;
+import com.barlow.core.domain.subscribe.SubscribesQuery;
 
 @Component
 public class SubscribeRepositoryAdapter implements SubscribeRepository {
@@ -28,15 +30,18 @@ public class SubscribeRepositoryAdapter implements SubscribeRepository {
 		return subscribeJpaEntity.toSubscribe(query.user());
 	}
 
-	/**
-	 * FIXME : 조회되지 않는 값들은 구독 여부를 아예 알 수가 없음
-	 */
 	@Override
-	public List<Subscribe> retrieveAll(User user) {
-		return subscribeJpaRepository.findAllByMemberNo(user.getUserNo())
-			.stream()
-			.map(subscribeJpaEntity -> subscribeJpaEntity.toSubscribe(user))
+	public List<Subscribe> retrieveAll(SubscribesQuery query) {
+		User user = query.user();
+		List<SubscribeJpaEntity> jpaEntities = subscribeJpaRepository.findAllByMemberNo(user.getUserNo());
+		List<LegislationType> actives = jpaEntities.stream()
+			.map(SubscribeJpaEntity::getLegislationType)
 			.toList();
+		List<LegislationType> disableLegislationBodies = LegislationType.findDisableLegislationType(actives);
+		return Stream.concat(
+			jpaEntities.stream().map(entity -> entity.toSubscribe(user)),
+			disableLegislationBodies.stream().map(disableBody -> new Subscribe(user, 1, false))
+		).toList();
 	}
 
 	@Override
