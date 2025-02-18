@@ -57,10 +57,7 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 		return new MyLegislationAccount(
 			no,
 			legislationType.getValue(),
-			legislationType.getIconUrl(),
-			description,
-			postCount,
-			subscriberCount
+			legislationType.getIconUrl()
 		);
 	}
 }
