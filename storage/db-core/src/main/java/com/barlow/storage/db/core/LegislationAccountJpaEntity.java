@@ -37,12 +37,13 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 	protected LegislationAccountJpaEntity() {
 	}
 
-	public boolean isCommittee() {
+	boolean isCommittee() {
 		return !legislationType.equals(LegislationType.GOVERNMENT)
-			&& !legislationType.equals(LegislationType.SPEAKER);
+			&& !legislationType.equals(LegislationType.SPEAKER)
+			&& !legislationType.equals(LegislationType.EMPTY);
 	}
 
-	public LegislationAccount toLegislationAccount() {
+	LegislationAccount toLegislationAccount() {
 		return LegislationAccount.builder()
 			.no(no)
 			.name(legislationType.getValue())
