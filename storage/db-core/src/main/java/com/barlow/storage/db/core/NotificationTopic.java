@@ -45,7 +45,7 @@ public enum NotificationTopic {
 	private static final int MAX_LEGISLATION_BODY_ORD = 17;
 
 	private final String value;
-	private final String iconUrl;
+	private final String iconPath;
 
 	public static NotificationTopic findByValue(String value) {
 		return Arrays.stream(NotificationTopic.values())
@@ -62,16 +62,16 @@ public enum NotificationTopic {
 			.toList();
 	}
 
-	NotificationTopic(String value, String iconUrl) {
+	NotificationTopic(String value, String iconPath) {
 		this.value = value;
-		this.iconUrl = iconUrl;
+		this.iconPath = iconPath;
 	}
 
 	String getValue() {
 		return value;
 	}
 
-	String getIconUrl() {
-		return iconUrl;
+	String getIconPath() {
+		return iconPath;
 	}
 }

@@ -28,7 +28,7 @@ public class NotificationSettingRepositoryAdapter implements NotificationSetting
 		NotificationConfigJpaEntity notificationConfigJpaEntity = notificationConfigJpaRepository
 			.findByTopicAndMemberNo(topic, user.getUserNo());
 		if (notificationConfigJpaEntity == null) {
-			return new NotificationSetting(user, topic.getValue(), topic.getIconUrl(), false);
+			return new NotificationSetting(user, topic.getValue(), topic.getIconPath(), false);
 		}
 		return notificationConfigJpaEntity.toNotificationSetting(user);
 	}
@@ -45,7 +45,7 @@ public class NotificationSettingRepositoryAdapter implements NotificationSetting
 			disableTopics.stream().map(disableTopic -> new NotificationSetting(
 				user,
 				disableTopic.getValue(),
-				disableTopic.getIconUrl(),
+				disableTopic.getIconPath(),
 				false
 			))
 		).toList();

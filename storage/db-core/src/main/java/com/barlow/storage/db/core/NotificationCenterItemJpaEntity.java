@@ -43,7 +43,7 @@ public class NotificationCenterItemJpaEntity extends BaseTimeJpaEntity {
 		return new NotificationCenterItem(
 			billId,
 			notificationTopic.name(),
-			notificationTopic.getIconUrl(),
+			notificationTopic.getIconPath(),
 			title,
 			body,
 			getCreatedAt()

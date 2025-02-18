@@ -51,7 +51,7 @@ public class NotificationConfigJpaEntity extends BaseTimeJpaEntity {
 		return new NotificationSetting(
 			user,
 			topic.getValue(),
-			topic.getIconUrl(),
+			topic.getIconPath(),
 			enable
 		);
 	}

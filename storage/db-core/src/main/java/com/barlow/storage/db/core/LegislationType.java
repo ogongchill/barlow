@@ -33,7 +33,7 @@ public enum LegislationType {
 	private static final int MAX_LEGISLATION_BODY_ORD = 17;
 
 	private final String value;
-	private final String iconUrl;
+	private final String iconPath;
 
 	static List<LegislationType> findDisableLegislationType(List<LegislationType> activeLegislationBodies) {
 		return Arrays.stream(LegislationType.values())
@@ -41,16 +41,16 @@ public enum LegislationType {
 			.toList();
 	}
 
-	LegislationType(String value, String iconUrl) {
+	LegislationType(String value, String iconPath) {
 		this.value = value;
-		this.iconUrl = iconUrl;
+		this.iconPath = iconPath;
 	}
 
 	public String getValue() {
 		return value;
 	}
 
-	public String getIconUrl() {
-		return iconUrl;
+	public String getIconPath() {
+		return iconPath;
 	}
 }
