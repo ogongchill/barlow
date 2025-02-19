@@ -24,7 +24,7 @@ public class NotificationSettingActivator {
 		if (notificationSetting.isNotifiable()) {
 			throw NotificationSettingDomainException.alreadyRegistered(type.name());
 		}
-		notificationSettingRepository.saveNotificationSetting(notificationSetting);
+		notificationSettingRepository.saveNotificationSetting(notificationSetting.activate());
 	}
 
 	public void deactivate(LegislationType type, User user) {
@@ -32,6 +32,6 @@ public class NotificationSettingActivator {
 		if (!notificationSetting.isNotifiable()) {
 			throw NotificationSettingDomainException.alreadyRegistered(type.name());
 		}
-		notificationSettingRepository.deleteNotificationSetting(notificationSetting);
+		notificationSettingRepository.deleteNotificationSetting(notificationSetting.deactivate());
 	}
 }
