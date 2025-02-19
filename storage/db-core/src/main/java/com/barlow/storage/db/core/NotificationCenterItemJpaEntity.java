@@ -24,7 +24,7 @@ public class NotificationCenterItemJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "member_no", nullable = false)
 	private Long memberNo;
 
-	@Column(name = "bill_id", nullable = false)
+	@Column(name = "bill_id")
 	private String billId;
 
 	@Enumerated(EnumType.STRING)
