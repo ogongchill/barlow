@@ -3,6 +3,7 @@ package com.barlow.core.domain.notificationsetting;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
+import com.barlow.core.enumerate.LegislationType;
 
 @Component
 public class NotificationSettingActivator {
@@ -18,19 +19,19 @@ public class NotificationSettingActivator {
 		this.notificationSettingRepository = notificationSettingRepository;
 	}
 
-	public void activate(String committeeName, User user) {
-		NotificationSetting notificationSetting = notificationSettingReader.readNotificationSetting(committeeName, user);
+	public void activate(LegislationType type, User user) {
+		NotificationSetting notificationSetting = notificationSettingReader.readNotificationSetting(type, user);
 		if (notificationSetting.isNotifiable()) {
-			throw NotificationSettingDomainException.alreadyRegistered(committeeName);
+			throw NotificationSettingDomainException.alreadyRegistered(type.name());
 		}
-		notificationSettingRepository.saveNotificationSetting(notificationSetting);
+		notificationSettingRepository.saveNotificationSetting(notificationSetting.activate());
 	}
 
-	public void deactivate(String committeeName, User user) {
-		NotificationSetting notificationSetting = notificationSettingReader.readNotificationSetting(committeeName, user);
+	public void deactivate(LegislationType type, User user) {
+		NotificationSetting notificationSetting = notificationSettingReader.readNotificationSetting(type, user);
 		if (!notificationSetting.isNotifiable()) {
-			throw NotificationSettingDomainException.alreadyRegistered(committeeName);
+			throw NotificationSettingDomainException.alreadyRegistered(type.name());
 		}
-		notificationSettingRepository.deleteNotificationSetting(notificationSetting);
+		notificationSettingRepository.deleteNotificationSetting(notificationSetting.deactivate());
 	}
 }

@@ -3,6 +3,10 @@ package com.barlow.core.domain.billpost;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.barlow.core.enumerate.LegislationType;
+import com.barlow.core.enumerate.ProgressStatus;
+import com.barlow.core.enumerate.ProposerType;
+
 public class BillPost {
 
 	private final BillInfo billInfo;
@@ -40,7 +44,7 @@ public class BillPost {
 	}
 
 	public String getProposerType() {
-		return proposerInfo.proposerType;
+		return proposerInfo.type.getValue();
 	}
 
 	public String getProposers() {
@@ -48,11 +52,11 @@ public class BillPost {
 	}
 
 	public String getLegislativeBody() {
-		return legislationInfo.legislativeBody;
+		return legislationInfo.legislativeBody.getValue();
 	}
 
 	public String getLegislationProcessStatus() {
-		return legislationInfo.legislationProcessStatus;
+		return legislationInfo.legislationProcessStatus.getValue();
 	}
 
 	public String getSummary() {
@@ -85,18 +89,18 @@ public class BillPost {
 	}
 
 	public static class ProposerInfo {
-		private final String proposerType;
+		private final ProposerType type;
 		private final String proposers;
-		public ProposerInfo(String proposerType, String proposers) {
-			this.proposerType = proposerType;
+		public ProposerInfo(ProposerType type, String proposers) {
+			this.type = type;
 			this.proposers = proposers;
 		}
 	}
 
 	public static class LegislationInfo {
-		private final String legislativeBody;
-		private final String legislationProcessStatus;
-		public LegislationInfo(String legislationType, String legislationProcessStatus) {
+		private final LegislationType legislativeBody;
+		private final ProgressStatus legislationProcessStatus;
+		public LegislationInfo(LegislationType legislationType, ProgressStatus legislationProcessStatus) {
 			this.legislativeBody = legislationType;
 			this.legislationProcessStatus = legislationProcessStatus;
 		}

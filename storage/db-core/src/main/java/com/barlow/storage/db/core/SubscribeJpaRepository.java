@@ -10,5 +10,5 @@ public interface SubscribeJpaRepository extends JpaRepository <SubscribeJpaEntit
 
     SubscribeJpaEntity findBySubscribeLegislationAccountNoAndMemberNo(Long subscribeLegislationAccountNo, Long memberNo);
 
-    void deleteByLegislationTypeAndMemberNo(LegislationType legislationType, Long memberNo);
+    void deleteBySubscribeLegislationAccountNoAndMemberNo(Long subscribeLegislationAccountNo, Long memberNo);
 }

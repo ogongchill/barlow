@@ -9,7 +9,7 @@ import com.barlow.core.domain.User;
 import com.barlow.core.domain.subscribe.Subscribe;
 import com.barlow.core.domain.subscribe.SubscribeQuery;
 import com.barlow.core.domain.subscribe.SubscribeRepository;
-import com.barlow.core.domain.subscribe.SubscribesQuery;
+import com.barlow.core.enumerate.LegislationType;
 
 @Component
 public class SubscribeRepositoryAdapter implements SubscribeRepository {
@@ -22,17 +22,23 @@ public class SubscribeRepositoryAdapter implements SubscribeRepository {
 
 	@Override
 	public Subscribe retrieve(SubscribeQuery query) {
+		User user = query.user();
+		long legislationAccountNo = query.legislationAccountNo();
 		SubscribeJpaEntity subscribeJpaEntity = subscribeJpaRepository
-			.findBySubscribeLegislationAccountNoAndMemberNo(query.legislationAccountNo(), query.user().getUserNo());
+			.findBySubscribeLegislationAccountNoAndMemberNo(legislationAccountNo, user.getUserNo());
 		if (subscribeJpaEntity == null) {
-			return new Subscribe(query.user(), "", false); // accountNo 랑 ordinal 이랑 비교해서 찾기
+			return new Subscribe(
+				user,
+				legislationAccountNo,
+				LegislationType.findByAccountNo(legislationAccountNo),
+				false
+			);
 		}
-		return subscribeJpaEntity.toSubscribe(query.user());
+		return subscribeJpaEntity.toSubscribe(user);
 	}
 
 	@Override
-	public List<Subscribe> retrieveAll(SubscribesQuery query) {
-		User user = query.user();
+	public List<Subscribe> retrieveAll(User user) {
 		List<SubscribeJpaEntity> jpaEntities = subscribeJpaRepository.findAllByMemberNo(user.getUserNo());
 		List<LegislationType> actives = jpaEntities.stream()
 			.map(SubscribeJpaEntity::getLegislationType)
@@ -42,7 +48,8 @@ public class SubscribeRepositoryAdapter implements SubscribeRepository {
 			jpaEntities.stream().map(entity -> entity.toSubscribe(user)),
 			disableLegislationBodies.stream().map(disableBody -> new Subscribe(
 				user,
-				disableBody.getValue(),
+				disableBody.getLegislationNo(),
+				disableBody,
 				false
 			))
 		).toList();
@@ -52,8 +59,8 @@ public class SubscribeRepositoryAdapter implements SubscribeRepository {
 	public void save(Subscribe subscribe) {
 		subscribeJpaRepository.save(
 			new SubscribeJpaEntity(
-				1L, // ordinal + 1 로 대체하자
-				LegislationType.valueOf(subscribe.getLegislationAccountType()),
+				subscribe.getSubscribeAccountNo(),
+				subscribe.getLegislationType(),
 				subscribe.getSubscriber().getUserNo()
 			)
 		);
@@ -61,8 +68,8 @@ public class SubscribeRepositoryAdapter implements SubscribeRepository {
 
 	@Override
 	public void delete(Subscribe subscribe) {
-		subscribeJpaRepository.deleteByLegislationTypeAndMemberNo(
-			LegislationType.valueOf(subscribe.getLegislationAccountType()),
+		subscribeJpaRepository.deleteBySubscribeLegislationAccountNoAndMemberNo(
+			subscribe.getSubscribeAccountNo(),
 			subscribe.getSubscriber().getUserNo()
 		);
 	}

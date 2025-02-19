@@ -7,6 +7,11 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.barlow.core.enumerate.LegislationType;
+import com.barlow.core.enumerate.PartyName;
+import com.barlow.core.enumerate.ProgressStatus;
+import com.barlow.core.enumerate.ProposerType;
+
 public interface BillPostJpaRepository extends JpaRepository<BillPostJpaEntity, Long> {
 
 	@Query("""

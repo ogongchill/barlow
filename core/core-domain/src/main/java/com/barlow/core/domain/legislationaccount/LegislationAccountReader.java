@@ -32,7 +32,7 @@ public class LegislationAccountReader {
 	public LegislationAccount read(long accountNo, User user) {
 		LegislationAccount legislationAccount = legislationAccountRepository.retrieve(accountNo);
 		legislationAccount.setNotifiable(notificationSettingReader
-			.readNotificationSetting(legislationAccount.getLegislationType(), user)
+			.readNotificationSetting(legislationAccount.getType(), user)
 			.isNotifiable());
 		legislationAccount.setSubscribed(subscribeReader
 			.readSubscribe(accountNo, user)
@@ -42,18 +42,15 @@ public class LegislationAccountReader {
 
 	public List<LegislationAccount> readAllCommittees(User user) {
 		List<LegislationAccount> legislationAccounts = legislationAccountRepository.retrieveCommitteeAccount();
-		List<String> legislationTypes = legislationAccounts.stream()
-			.map(LegislationAccount::getLegislationType)
-			.toList();
 
 		Map<String, Boolean> memberNotificationSetting = notificationSettingReader.readNotificationSettings(user).stream()
 			.collect(Collectors.toMap(NotificationSetting::getTopicName, NotificationSetting::isNotifiable));
-		Map<String, Boolean> memberSubscription = subscribeReader.readSubscribes(legislationTypes, user).stream()
+		Map<String, Boolean> memberSubscription = subscribeReader.readSubscribes(user).stream()
 			.collect(Collectors.toMap(Subscribe::getLegislationAccountType, Subscribe::isActive));
 
-		legislationAccounts.forEach(legislationAccount -> {
-			legislationAccount.setNotifiable(memberNotificationSetting.get(legislationAccount.getLegislationType()));
-			legislationAccount.setSubscribed(memberSubscription.get(legislationAccount.getLegislationType()));
+		legislationAccounts.forEach(account -> {
+			account.setNotifiable(memberNotificationSetting.get(account.getLegislationType()));
+			account.setSubscribed(memberSubscription.get(account.getLegislationType()));
 		});
 		return legislationAccounts;
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
+import com.barlow.core.enumerate.LegislationType;
 
 @Component
 public class NotificationSettingReader {
@@ -15,8 +16,8 @@ public class NotificationSettingReader {
 		this.notificationSettingRepository = notificationSettingRepository;
 	}
 
-	public NotificationSetting readNotificationSetting(String committeeName, User user) {
-		LegislationNotificationSettingQuery query = new LegislationNotificationSettingQuery(committeeName, user);
+	public NotificationSetting readNotificationSetting(LegislationType type, User user) {
+		LegislationNotificationSettingQuery query = new LegislationNotificationSettingQuery(type, user);
 		return notificationSettingRepository.retrieveNotificationSetting(query);
 	}
 

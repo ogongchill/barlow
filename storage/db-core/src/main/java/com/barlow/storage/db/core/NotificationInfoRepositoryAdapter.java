@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import com.barlow.core.enumerate.NotificationTopic;
 import com.barlow.notification.NotificationInfo;
 import com.barlow.notification.NotificationInfoRepository;
 

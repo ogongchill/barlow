@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.notificationsetting.NotificationSettingService;
+import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
@@ -20,13 +21,13 @@ public class LegislationAccountNotificationSettingController {
 	}
 
 	@PostMapping("/activate")
-	public ApiResponse<Void> activate(@PathVariable String legislationType, User user) {
+	public ApiResponse<Void> activate(@PathVariable LegislationType legislationType, User user) {
 		notificationSettingService.activateSetting(legislationType, user);
 		return ApiResponse.success();
 	}
 
 	@PostMapping("/deactivate")
-	public ApiResponse<Void> deactivate(@PathVariable String legislationType, User user) {
+	public ApiResponse<Void> deactivate(@PathVariable LegislationType legislationType, User user) {
 		notificationSettingService.deactivateSetting(legislationType, user);
 		return ApiResponse.success();
 	}

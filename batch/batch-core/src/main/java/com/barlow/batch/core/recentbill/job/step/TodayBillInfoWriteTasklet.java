@@ -20,9 +20,9 @@ import org.springframework.stereotype.Component;
 import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
 import com.barlow.batch.core.recentbill.job.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
-import com.barlow.storage.db.core.LegislationType;
-import com.barlow.storage.db.core.ProgressStatus;
-import com.barlow.storage.db.core.ProposerType;
+import com.barlow.core.enumerate.LegislationType;
+import com.barlow.core.enumerate.ProgressStatus;
+import com.barlow.core.enumerate.ProposerType;
 
 @Component
 @StepScope
@@ -63,9 +63,9 @@ public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingMa
 			.addValue("bill_id", item.billId())
 			.addValue("bill_name", item.billName())
 			.addValue("proposers", item.proposers())
-			.addValue("proposer_type", ProposerType.findByValue(item.proposerType()).name())
-			.addValue("legislation_type", LegislationType.EMPTY.name())
-			.addValue("progress_status", ProgressStatus.RECEIVED.name())
+			.addValue("proposer_type", ProposerType.findByValue(item.proposerType()))
+			.addValue("legislation_type", LegislationType.EMPTY)
+			.addValue("progress_status", ProgressStatus.RECEIVED)
 			.addValue("summary", null)
 			.addValue("detail", item.summary())
 			.addValue("view_count", 0)

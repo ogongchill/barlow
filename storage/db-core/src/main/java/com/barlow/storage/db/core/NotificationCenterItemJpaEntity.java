@@ -1,6 +1,7 @@
 package com.barlow.storage.db.core;
 
 import com.barlow.core.domain.home.notificationcenter.NotificationCenterItem;
+import com.barlow.core.enumerate.NotificationTopic;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,8 +43,7 @@ public class NotificationCenterItemJpaEntity extends BaseTimeJpaEntity {
 	NotificationCenterItem toNotificationItem() {
 		return new NotificationCenterItem(
 			billId,
-			notificationTopic.name(),
-			notificationTopic.getIconPath(),
+			notificationTopic,
 			title,
 			body,
 			getCreatedAt()

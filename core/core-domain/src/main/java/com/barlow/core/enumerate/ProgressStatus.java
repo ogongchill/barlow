@@ -1,4 +1,4 @@
-package com.barlow.storage.db.core;
+package com.barlow.core.enumerate;
 
 public enum ProgressStatus {
 
@@ -20,7 +20,7 @@ public enum ProgressStatus {
 		this.value = value;
 	}
 
-	String getValue() {
+	public String getValue() {
 		return value;
 	}
 }

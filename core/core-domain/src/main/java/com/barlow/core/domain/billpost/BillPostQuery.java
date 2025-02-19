@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.barlow.core.enumerate.ProgressStatus;
+
 public record BillPostQuery(
 	@NotNull Integer page,
 	@NotNull Integer size,
@@ -23,15 +25,15 @@ public record BillPostQuery(
 		tags.putAll(Map.of(
 			legislationTypeKey, List.of(legislationType),
 			progressStatusKey, List.of(
-				"COMMITTEE_RECEIVED",
-				"COMMITTEE_REVIEW",
-				"PLENARY_SUBMITTED",
-				"PLENARY_DECIDED",
-				"WITHDRAWN",
-				"GOVERNMENT_TRANSFERRED",
-				"REDEMAND_REQUESTED",
-				"REJECTED",
-				"PROMULGATED"
+				ProgressStatus.COMMITTEE_RECEIVED.name(),
+				ProgressStatus.COMMITTEE_REVIEW.name(),
+				ProgressStatus.PLENARY_SUBMITTED.name(),
+				ProgressStatus.PLENARY_DECIDED.name(),
+				ProgressStatus.WITHDRAWN.name(),
+				ProgressStatus.GOVERNMENT_TRANSFERRED.name(),
+				ProgressStatus.REDEMAND_REQUESTED.name(),
+				ProgressStatus.REJECTED.name(),
+				ProgressStatus.PROMULGATED.name()
 			)
 		));
 		return new BillPostQuery(page, size, sortKey, tags);
