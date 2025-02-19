@@ -1,9 +1,9 @@
 package com.barlow.storage.db.core;
 
-public enum LegislationType {
+import java.util.Arrays;
+import java.util.List;
 
-	GOVERNMENT("정부", "default/icon-image-url"),
-	SPEAKER("국회의장", "default/icon-image-url"),
+public enum LegislationType {
 
 	HOUSE_STEERING("국회운영위원회", "default/icon-image-url"),
 	LEGISLATION_AND_JUDICIARY("법제사법위원회", "default/icon-image-url"),
@@ -24,22 +24,33 @@ public enum LegislationType {
 	GENDER_EQUALITY_FAMILY("여성가족위원회", "default/icon-image-url"),
 	SPECIAL_COMMITTEE_ON_BUDGET_ACCOUNTS("예산결산특별위원회", "default/icon-image-url"),
 
+	GOVERNMENT("정부", "default/icon-image-url"),
+	SPEAKER("국회의장", "default/icon-image-url"),
+
 	EMPTY("소관위미접수상태", "default/icon-image-url"),
 	;
 
-	private final String value;
-	private final String iconUrl;
+	private static final int MAX_LEGISLATION_BODY_ORD = 17;
 
-	LegislationType(String value, String iconUrl) {
+	private final String value;
+	private final String iconPath;
+
+	static List<LegislationType> findDisableLegislationType(List<LegislationType> activeLegislationBodies) {
+		return Arrays.stream(LegislationType.values())
+			.filter(body -> body.ordinal() <= MAX_LEGISLATION_BODY_ORD && !activeLegislationBodies.contains(body))
+			.toList();
+	}
+
+	LegislationType(String value, String iconPath) {
 		this.value = value;
-		this.iconUrl = iconUrl;
+		this.iconPath = iconPath;
 	}
 
 	public String getValue() {
 		return value;
 	}
 
-	public String getIconUrl() {
-		return iconUrl;
+	public String getIconPath() {
+		return iconPath;
 	}
 }

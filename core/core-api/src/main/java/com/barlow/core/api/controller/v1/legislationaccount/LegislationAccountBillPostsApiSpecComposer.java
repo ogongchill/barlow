@@ -1,6 +1,6 @@
-package com.barlow.core.api.controller.v1.recentbill;
+package com.barlow.core.api.controller.v1.legislationaccount;
 
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostsResponse.RecentBillPostThumbnail;
+import static com.barlow.core.api.controller.v1.legislationaccount.LegislationAccountBillPostsResponse.BillPostThumbnail;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,27 +9,27 @@ import java.util.function.Predicate;
 import com.barlow.core.domain.billpost.BillPost;
 import com.barlow.core.domain.billpost.BillPostsStatus;
 
-public class RecentBillPostsApiSpecComposer {
+public class LegislationAccountBillPostsApiSpecComposer {
 
 	private final BillPostsStatus billPostsStatus;
 
-	public RecentBillPostsApiSpecComposer(BillPostsStatus billPostsStatus) {
+	public LegislationAccountBillPostsApiSpecComposer(BillPostsStatus billPostsStatus) {
 		this.billPostsStatus = billPostsStatus;
 	}
 
-	RecentBillPostsResponse compose(LocalDate today) {
-		return new RecentBillPostsResponse(
+	LegislationAccountBillPostsResponse compose(LocalDate today) {
+		return new LegislationAccountBillPostsResponse(
 			composeByDatePredicate(recentBillPost -> recentBillPost.getCreatedAt().toLocalDate().isEqual(today)),
 			composeByDatePredicate(recentBillPost -> recentBillPost.getCreatedAt().toLocalDate().isBefore(today)),
 			billPostsStatus.isLastPage()
 		);
 	}
 
-	private List<RecentBillPostThumbnail> composeByDatePredicate(Predicate<BillPost> filterCondition) {
+	private List<BillPostThumbnail> composeByDatePredicate(Predicate<BillPost> filterCondition) {
 		return billPostsStatus.billPosts()
 			.stream()
 			.filter(filterCondition)
-			.map(recentBillPost -> new RecentBillPostThumbnail(
+			.map(recentBillPost -> new BillPostThumbnail(
 				recentBillPost.getBillId(),
 				recentBillPost.getBillName(),
 				recentBillPost.getProposers(),

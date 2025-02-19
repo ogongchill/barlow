@@ -28,7 +28,7 @@ import com.barlow.storage.db.core.ProposerType;
 @StepScope
 public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingManager implements Tasklet {
 
-	private static final String RECENT_BILL_POST_TABLE_NAME = "recent_bill_post";
+	private static final String BILL_POST_TABLE_NAME = "bill_post";
 
 	private final SimpleJdbcInsert simpleJdbcInsert;
 	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
@@ -38,7 +38,7 @@ public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingMa
 		RecentBillJobScopeShareRepository jobScopeShareRepository
 	) {
 		super();
-		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(RECENT_BILL_POST_TABLE_NAME);
+		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(BILL_POST_TABLE_NAME);
 		this.jobScopeShareRepository = jobScopeShareRepository;
 	}
 

@@ -10,21 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.barlow.core.domain.recentbill.BillPostDetailQuery;
-import com.barlow.core.domain.recentbill.BillPostQuery;
-import com.barlow.core.domain.recentbill.RecentBillPost;
-import com.barlow.core.domain.recentbill.RecentBillPostRetrieveService;
-import com.barlow.core.domain.recentbill.RecentBillPostsStatus;
+import com.barlow.core.domain.billpost.BillPostDetailQuery;
+import com.barlow.core.domain.billpost.BillPostQuery;
+import com.barlow.core.domain.billpost.BillPost;
+import com.barlow.core.domain.billpost.BillPostRetrieveService;
+import com.barlow.core.domain.billpost.BillPostsStatus;
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
 @RequestMapping("/api/v1/recent-bill")
 public class RecentBillRetrieveController {
 
-	private final RecentBillPostRetrieveService recentBillPostRetrieveService;
+	private final BillPostRetrieveService billPostRetrieveService;
 
-	public RecentBillRetrieveController(RecentBillPostRetrieveService recentBillPostRetrieveService) {
-		this.recentBillPostRetrieveService = recentBillPostRetrieveService;
+	public RecentBillRetrieveController(BillPostRetrieveService billPostRetrieveService) {
+		this.billPostRetrieveService = billPostRetrieveService;
 	}
 
 	@GetMapping("/thumbnail")
@@ -34,9 +34,9 @@ public class RecentBillRetrieveController {
 		@RequestParam(name = "sort", required = false) String sortKey,
 		@RequestParam(required = false) Map<String, List<String>> tags
 	) {
-		RecentBillPostsStatus recentBillPostsStatus
-			= recentBillPostRetrieveService.readRecentBillPosts(new BillPostQuery(page, size, sortKey, tags));
-		RecentBillPostsApiSpecComposer apiSpecComposer = new RecentBillPostsApiSpecComposer(recentBillPostsStatus);
+		BillPostsStatus billPostsStatus
+			= billPostRetrieveService.readBillPosts(new BillPostQuery(page, size, sortKey, tags));
+		RecentBillPostsApiSpecComposer apiSpecComposer = new RecentBillPostsApiSpecComposer(billPostsStatus);
 		return ApiResponse.success(apiSpecComposer.compose(LocalDate.now()));
 	}
 
@@ -44,9 +44,9 @@ public class RecentBillRetrieveController {
 	public ApiResponse<RecentBillPostDetailResponse> retrieveRecentBillDetail(
 		@PathVariable String recentBillId
 	) {
-		RecentBillPost recentBillPost
-			= recentBillPostRetrieveService.readRecentBillPostDetail(new BillPostDetailQuery(recentBillId));
-		RecentBillPostDetailApiSpecComposer apiSpecComposer = new RecentBillPostDetailApiSpecComposer(recentBillPost);
+		BillPost billPost
+			= billPostRetrieveService.readBillPostDetail(new BillPostDetailQuery(recentBillId));
+		RecentBillPostDetailApiSpecComposer apiSpecComposer = new RecentBillPostDetailApiSpecComposer(billPost);
 		return ApiResponse.success(apiSpecComposer.compose());
 	}
 }

@@ -1,31 +1,35 @@
-package com.barlow.core.api.controller.v1.recentbill;
+package com.barlow.core.api.controller.v1.legislationaccount;
+
+import static com.barlow.core.api.controller.v1.legislationaccount.LegislationAccountBillPostDetailResponse.ProposerResponse;
+import static com.barlow.core.api.controller.v1.legislationaccount.LegislationAccountBillPostDetailResponse.ProposerSection;
+import static com.barlow.core.api.controller.v1.legislationaccount.LegislationAccountBillPostDetailResponse.SummarySection;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.barlow.core.domain.billpost.BillProposer;
 import com.barlow.core.domain.billpost.BillPost;
+import com.barlow.core.domain.billpost.BillProposer;
 
-public class RecentBillPostDetailApiSpecComposer {
+public class LegislationAccountBillPostDetailApiSpecComposer {
 
 	private final BillPost billPost;
 
-	RecentBillPostDetailApiSpecComposer(BillPost billPost) {
+	LegislationAccountBillPostDetailApiSpecComposer(BillPost billPost) {
 		this.billPost = billPost;
 	}
 
-	RecentBillPostDetailResponse compose() {
+	LegislationAccountBillPostDetailResponse compose() {
 		BillProposers billProposers = new BillProposers(billPost.getBillProposers());
-		return new RecentBillPostDetailResponse(
+		return new LegislationAccountBillPostDetailResponse(
 			billPost.getBillName(),
 			billPost.getProposers(),
 			billPost.getProposerType(),
 			billPost.getLegislativeBody(),
 			billPost.getCreatedAt(),
 			billPost.getDetail(),
-			new RecentBillPostDetailResponse.SummarySection(billPost.getSummary()),
-			new RecentBillPostDetailResponse.ProposerSection(
+			new SummarySection(billPost.getSummary()),
+			new ProposerSection(
 				billProposers.getProposerPartyRate(),
 				billProposers.mapToProposerResponse()
 			)
@@ -50,9 +54,9 @@ public class RecentBillPostDetailApiSpecComposer {
 				));
 		}
 
-		List<RecentBillPostDetailResponse.ProposerResponse> mapToProposerResponse() {
+		List<ProposerResponse> mapToProposerResponse() {
 			return values.stream()
-				.map(billProposer -> new RecentBillPostDetailResponse.ProposerResponse(
+				.map(billProposer -> new ProposerResponse(
 					billProposer.getProposerName(),
 					billProposer.getProfileImagePath(),
 					billProposer.getPartyName()

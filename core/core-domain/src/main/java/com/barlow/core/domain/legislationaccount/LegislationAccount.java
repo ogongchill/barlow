@@ -1,15 +1,71 @@
 package com.barlow.core.domain.legislationaccount;
 
-import org.jetbrains.annotations.NotNull;
+public class LegislationAccount {
 
-public record LegislationAccount(
-	@NotNull Long no,
-	@NotNull String name,
-	@NotNull String iconUrl,
-	@NotNull String description,
-	@NotNull Integer postCount,
-	@NotNull Integer subscriberCount
-) {
+	private final long no;
+	private final String legislationType;
+	private final String iconPath;
+	private final String description;
+	private final int postCount;
+	private final int subscriberCount;
+	private boolean isSubscribed;
+	private boolean isNotifiable;
+
+	public LegislationAccount(
+		long no,
+		String legislationType,
+		String iconPath,
+		String description,
+		int postCount,
+		int subscriberCount
+	) {
+		this.no = no;
+		this.legislationType = legislationType;
+		this.iconPath = iconPath;
+		this.description = description;
+		this.postCount = postCount;
+		this.subscriberCount = subscriberCount;
+	}
+
+	void setSubscribed(boolean subscribed) {
+		isSubscribed = subscribed;
+	}
+
+	void setNotifiable(boolean notifiable) {
+		isNotifiable = notifiable;
+	}
+
+	public long getNo() {
+		return no;
+	}
+
+	public String getLegislationType() {
+		return legislationType;
+	}
+
+	public String getIconPath() {
+		return iconPath;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public int getPostCount() {
+		return postCount;
+	}
+
+	public int getSubscriberCount() {
+		return subscriberCount;
+	}
+
+	public boolean isSubscribed() {
+		return isSubscribed;
+	}
+
+	public boolean isNotifiable() {
+		return isNotifiable;
+	}
 
 	public static Builder builder() {
 		return new Builder();
@@ -60,8 +116,8 @@ public record LegislationAccount(
 				this.name,
 				this.iconUrl,
 				this.description,
-				this.subscriberCount,
-				this.postCount
+				this.postCount,
+				this.subscriberCount
 			);
 		}
 	}

@@ -15,6 +15,8 @@ public interface LegislationAccountJpaRepository extends JpaRepository<Legislati
 		WHERE s.memberNo = :memberNo""")
 	List<LegislationAccountJpaEntity> findSubscribedLegislationAccountsByMemberNo(@Param("memberNo") Long memberNo);
 
+	LegislationAccountJpaEntity findByNo(Long accountNo);
+
 	@Modifying
 	@Query("""
 		UPDATE LegislationAccountJpaEntity la

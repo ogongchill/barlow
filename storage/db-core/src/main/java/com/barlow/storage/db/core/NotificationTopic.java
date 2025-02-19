@@ -3,8 +3,6 @@ package com.barlow.storage.db.core;
 import java.util.Arrays;
 import java.util.List;
 
-import com.barlow.core.domain.notification.NotifiableTopic;
-
 public enum NotificationTopic {
 	/**
 	 * 법안 알림 : [소관위접수] 의안에 한하여 알림
@@ -47,7 +45,7 @@ public enum NotificationTopic {
 	private static final int MAX_LEGISLATION_BODY_ORD = 17;
 
 	private final String value;
-	private final String iconUrl;
+	private final String iconPath;
 
 	public static NotificationTopic findByValue(String value) {
 		return Arrays.stream(NotificationTopic.values())
@@ -64,20 +62,16 @@ public enum NotificationTopic {
 			.toList();
 	}
 
-	NotificationTopic(String value, String iconUrl) {
+	NotificationTopic(String value, String iconPath) {
 		this.value = value;
-		this.iconUrl = iconUrl;
+		this.iconPath = iconPath;
 	}
 
-	public String getValue() {
+	String getValue() {
 		return value;
 	}
 
-	public String getIconUrl() {
-		return iconUrl;
-	}
-
-	public NotifiableTopic toNotifiableTopic() {
-		return new NotifiableTopic(this.name(), this.value, this.iconUrl);
+	String getIconPath() {
+		return iconPath;
 	}
 }

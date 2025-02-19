@@ -37,16 +37,17 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 	protected LegislationAccountJpaEntity() {
 	}
 
-	public boolean isCommittee() {
+	boolean isCommittee() {
 		return !legislationType.equals(LegislationType.GOVERNMENT)
-			&& !legislationType.equals(LegislationType.SPEAKER);
+			&& !legislationType.equals(LegislationType.SPEAKER)
+			&& !legislationType.equals(LegislationType.EMPTY);
 	}
 
-	public LegislationAccount toLegislationAccount() {
+	LegislationAccount toLegislationAccount() {
 		return LegislationAccount.builder()
 			.no(no)
 			.name(legislationType.getValue())
-			.iconUrl(legislationType.getIconUrl())
+			.iconUrl(legislationType.getIconPath())
 			.description(description)
 			.subscriberCount(subscriberCount)
 			.postCount(postCount)
@@ -57,10 +58,7 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 		return new MyLegislationAccount(
 			no,
 			legislationType.getValue(),
-			legislationType.getIconUrl(),
-			description,
-			postCount,
-			subscriberCount
+			legislationType.getIconPath()
 		);
 	}
 }

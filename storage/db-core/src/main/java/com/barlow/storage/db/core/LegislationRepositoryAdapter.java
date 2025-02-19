@@ -17,6 +17,12 @@ public class LegislationRepositoryAdapter implements LegislationAccountRepositor
 	}
 
 	@Override
+	public LegislationAccount retrieve(long accountNo) {
+		return legislationAccountJpaRepository.findByNo(accountNo)
+			.toLegislationAccount();
+	}
+
+	@Override
 	public List<LegislationAccount> retrieveCommitteeAccount() {
 		return legislationAccountJpaRepository.findAll()
 			.stream()
