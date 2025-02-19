@@ -44,8 +44,7 @@ public class RecentBillRetrieveController {
 	public ApiResponse<RecentBillPostDetailResponse> retrieveRecentBillDetail(
 		@PathVariable String recentBillId
 	) {
-		BillPost billPost
-			= billPostRetrieveService.readBillPostDetail(new BillPostDetailQuery(recentBillId));
+		BillPost billPost = billPostRetrieveService.readBillPostDetail(new BillPostDetailQuery(recentBillId));
 		RecentBillPostDetailApiSpecComposer apiSpecComposer = new RecentBillPostDetailApiSpecComposer(billPost);
 		return ApiResponse.success(apiSpecComposer.compose());
 	}

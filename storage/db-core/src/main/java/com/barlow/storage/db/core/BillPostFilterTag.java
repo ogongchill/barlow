@@ -6,10 +6,15 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.barlow.core.enumerate.LegislationType;
+import com.barlow.core.enumerate.PartyName;
+import com.barlow.core.enumerate.ProgressStatus;
+import com.barlow.core.enumerate.ProposerType;
+
 public class BillPostFilterTag {
 
 	private static final String LEGISLATION_TYPE_TAG = "legislationType";
-	private static final String LEGISLATION_STATUS_TAG = "legislationStatus";
+	private static final String PROGRESS_STATUS_TAG = "progressStatus";
 	private static final String PROPOSER_TYPE_TAG = "proposerType";
 	private static final String PARTY_NAME_TAG = "partyName";
 
@@ -37,7 +42,7 @@ public class BillPostFilterTag {
 		}
 		Map<String, Function<String, Enum<?>>> tagMappers = Map.of(
 			LEGISLATION_TYPE_TAG, s -> LegislationType.valueOf(s.toUpperCase()),
-			LEGISLATION_STATUS_TAG, s -> ProgressStatus.valueOf(s.toUpperCase()),
+			PROGRESS_STATUS_TAG, s -> ProgressStatus.valueOf(s.toUpperCase()),
 			PROPOSER_TYPE_TAG, s -> ProposerType.valueOf(s.toUpperCase()),
 			PARTY_NAME_TAG, s -> PartyName.valueOf(s.toUpperCase())
 		);
@@ -54,7 +59,7 @@ public class BillPostFilterTag {
 
 		return new BillPostFilterTag(
 			(Set<LegislationType>)results.getOrDefault(LEGISLATION_TYPE_TAG, Set.of()),
-			(Set<ProgressStatus>)results.getOrDefault(LEGISLATION_STATUS_TAG, Set.of()),
+			(Set<ProgressStatus>)results.getOrDefault(PROGRESS_STATUS_TAG, Set.of()),
 			(Set<ProposerType>)results.getOrDefault(PROPOSER_TYPE_TAG, Set.of()),
 			(Set<PartyName>)results.getOrDefault(PARTY_NAME_TAG, Set.of())
 		);

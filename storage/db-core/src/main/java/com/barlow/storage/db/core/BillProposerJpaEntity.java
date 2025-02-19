@@ -1,6 +1,7 @@
 package com.barlow.storage.db.core;
 
 import com.barlow.core.domain.billpost.BillProposer;
+import com.barlow.core.enumerate.PartyName;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

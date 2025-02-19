@@ -2,8 +2,8 @@ package com.barlow.storage.db.core;
 
 import static com.barlow.storage.db.core.DeviceJpaEntity.Status.ACTIVE;
 import static com.barlow.storage.db.core.DeviceJpaEntity.Status.INACTIVE;
-import static com.barlow.storage.db.core.DeviceOs.ANDROID;
-import static com.barlow.storage.db.core.DeviceOs.IOS;
+import static com.barlow.core.enumerate.DeviceOs.ANDROID;
+import static com.barlow.core.enumerate.DeviceOs.IOS;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.barlow.core.enumerate.NotificationTopic;
 import com.barlow.notification.NotificationInfo;
 import com.barlow.storage.db.CoreDbContextTest;
 

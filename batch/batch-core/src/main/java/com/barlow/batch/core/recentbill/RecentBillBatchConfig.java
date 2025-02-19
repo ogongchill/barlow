@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ComponentScan(basePackages = {
 	"com.barlow.client.knal.api",
 	"com.barlow.storage.db.core",
+	// "com.barlow.core.enumerate",
 	"com.barlow.notification"
 })
 public class RecentBillBatchConfig {

@@ -1,6 +1,9 @@
 package com.barlow.storage.db.core;
 
 import com.barlow.core.domain.billpost.BillPost;
+import com.barlow.core.enumerate.LegislationType;
+import com.barlow.core.enumerate.ProgressStatus;
+import com.barlow.core.enumerate.ProposerType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,8 +53,8 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 	BillPost toRecentBillPost() {
 		return new BillPost(
 			new BillPost.BillInfo(billId, billName),
-			new BillPost.ProposerInfo(proposerType.getValue(), proposers),
-			new BillPost.LegislationInfo(legislationType.getValue(), progressStatus.getValue()),
+			new BillPost.ProposerInfo(proposerType, proposers),
+			new BillPost.LegislationInfo(legislationType, progressStatus),
 			summary, detail, getCreatedAt(), viewCount
 		);
 	}

@@ -2,6 +2,8 @@ package com.barlow.storage.db.core;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.subscribe.Subscribe;
+import com.barlow.core.enumerate.LegislationType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,7 +42,12 @@ public class SubscribeJpaEntity extends BaseTimeJpaEntity {
     }
 
     Subscribe toSubscribe(User user) {
-        return new Subscribe(user, legislationType.getValue(), true);
+        return new Subscribe(
+            user,
+			subscribeLegislationAccountNo,
+			legislationType,
+			true
+        );
     }
 
     LegislationType getLegislationType() {

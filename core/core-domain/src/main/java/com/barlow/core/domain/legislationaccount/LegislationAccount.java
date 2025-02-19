@@ -1,10 +1,11 @@
 package com.barlow.core.domain.legislationaccount;
 
+import com.barlow.core.enumerate.LegislationType;
+
 public class LegislationAccount {
 
 	private final long no;
-	private final String legislationType;
-	private final String iconPath;
+	private final LegislationType type;
 	private final String description;
 	private final int postCount;
 	private final int subscriberCount;
@@ -13,15 +14,13 @@ public class LegislationAccount {
 
 	public LegislationAccount(
 		long no,
-		String legislationType,
-		String iconPath,
+		LegislationType type,
 		String description,
 		int postCount,
 		int subscriberCount
 	) {
 		this.no = no;
-		this.legislationType = legislationType;
-		this.iconPath = iconPath;
+		this.type = type;
 		this.description = description;
 		this.postCount = postCount;
 		this.subscriberCount = subscriberCount;
@@ -39,12 +38,16 @@ public class LegislationAccount {
 		return no;
 	}
 
+	public LegislationType getType() {
+		return type;
+	}
+
 	public String getLegislationType() {
-		return legislationType;
+		return type.getValue();
 	}
 
 	public String getIconPath() {
-		return iconPath;
+		return type.getIconPath();
 	}
 
 	public String getDescription() {
@@ -65,60 +68,5 @@ public class LegislationAccount {
 
 	public boolean isNotifiable() {
 		return isNotifiable;
-	}
-
-	public static Builder builder() {
-		return new Builder();
-	}
-
-	public static class Builder {
-
-		private Long no;
-		private String name;
-		private String iconUrl;
-		private String description;
-		private Integer subscriberCount;
-		private Integer postCount;
-
-		public Builder no(Long no) {
-			this.no = no;
-			return this;
-		}
-
-		public Builder name(String name) {
-			this.name = name;
-			return this;
-		}
-
-		public Builder iconUrl(String iconUrl) {
-			this.iconUrl = iconUrl;
-			return this;
-		}
-
-		public Builder description(String description) {
-			this.description = description;
-			return this;
-		}
-
-		public Builder subscriberCount(Integer subscriberCount) {
-			this.subscriberCount = subscriberCount;
-			return this;
-		}
-
-		public Builder postCount(Integer postCount) {
-			this.postCount = postCount;
-			return this;
-		}
-
-		public LegislationAccount build() {
-			return new LegislationAccount(
-				this.no,
-				this.name,
-				this.iconUrl,
-				this.description,
-				this.postCount,
-				this.subscriberCount
-			);
-		}
 	}
 }

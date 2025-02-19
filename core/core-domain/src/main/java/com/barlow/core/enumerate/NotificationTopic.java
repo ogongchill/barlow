@@ -1,4 +1,4 @@
-package com.barlow.storage.db.core;
+package com.barlow.core.enumerate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,7 +56,7 @@ public enum NotificationTopic {
 			));
 	}
 
-	static List<NotificationTopic> findDisableLegislationTopics(List<NotificationTopic> enableTopics) {
+	public static List<NotificationTopic> findDisableLegislationTopics(List<NotificationTopic> enableTopics) {
 		return Arrays.stream(NotificationTopic.values())
 			.filter(topic -> topic.ordinal() <= MAX_LEGISLATION_BODY_ORD && !enableTopics.contains(topic))
 			.toList();
@@ -67,11 +67,11 @@ public enum NotificationTopic {
 		this.iconPath = iconPath;
 	}
 
-	String getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	String getIconPath() {
+	public String getIconPath() {
 		return iconPath;
 	}
 }

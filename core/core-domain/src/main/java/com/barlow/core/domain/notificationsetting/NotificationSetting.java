@@ -1,6 +1,7 @@
 package com.barlow.core.domain.notificationsetting;
 
 import com.barlow.core.domain.User;
+import com.barlow.core.enumerate.NotificationTopic;
 
 public class NotificationSetting {
 
@@ -8,13 +9,7 @@ public class NotificationSetting {
 	private final NotificationTopic notificationTopic;
 	private final boolean isNotifiable;
 
-	public NotificationSetting(User user, String name, String iconPath, boolean isNotifiable) {
-		this.user = user;
-		this.notificationTopic = new NotificationTopic(name, iconPath);
-		this.isNotifiable = isNotifiable;
-	}
-
-	private NotificationSetting(User user, NotificationTopic notificationTopic, boolean isNotifiable) {
+	public NotificationSetting(User user, NotificationTopic notificationTopic, boolean isNotifiable) {
 		this.user = user;
 		this.notificationTopic = notificationTopic;
 		this.isNotifiable = isNotifiable;
@@ -36,22 +31,15 @@ public class NotificationSetting {
 		return user;
 	}
 
+	public NotificationTopic getNotificationTopic() {
+		return notificationTopic;
+	}
+
 	public String getTopicName() {
-		return notificationTopic.korName;
+		return notificationTopic.getValue();
 	}
 
 	public String getIconPath() {
-		return notificationTopic.iconPath;
-	}
-
-	static class NotificationTopic {
-
-		private final String korName;
-		private final String iconPath;
-
-		public NotificationTopic(String korName, String iconPath) {
-			this.korName = korName;
-			this.iconPath = iconPath;
-		}
+		return notificationTopic.getIconPath();
 	}
 }

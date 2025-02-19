@@ -10,6 +10,7 @@ import com.barlow.core.domain.User;
 import com.barlow.core.domain.notificationsetting.NotificationSetting;
 import com.barlow.core.domain.notificationsetting.LegislationNotificationSettingQuery;
 import com.barlow.core.domain.notificationsetting.NotificationSettingRepository;
+import com.barlow.core.enumerate.NotificationTopic;
 
 @Component
 public class NotificationSettingRepositoryAdapter implements NotificationSettingRepository {
@@ -24,11 +25,11 @@ public class NotificationSettingRepositoryAdapter implements NotificationSetting
 	@NotNull
 	public NotificationSetting retrieveNotificationSetting(LegislationNotificationSettingQuery query) {
 		User user = query.user();
-		NotificationTopic topic = NotificationTopic.valueOf(query.committeeName().toUpperCase());
+		NotificationTopic topic = NotificationTopic.findByValue(query.legislationType().getValue());
 		NotificationConfigJpaEntity notificationConfigJpaEntity = notificationConfigJpaRepository
 			.findByTopicAndMemberNo(topic, user.getUserNo());
 		if (notificationConfigJpaEntity == null) {
-			return new NotificationSetting(user, topic.getValue(), topic.getIconPath(), false);
+			return new NotificationSetting(user, topic, false);
 		}
 		return notificationConfigJpaEntity.toNotificationSetting(user);
 	}
@@ -42,27 +43,25 @@ public class NotificationSettingRepositoryAdapter implements NotificationSetting
 		List<NotificationTopic> disableTopics = NotificationTopic.findDisableLegislationTopics(enableTopics);
 		return Stream.concat(
 			jpaEntities.stream().map(jpaEntity -> jpaEntity.toNotificationSetting(user)),
-			disableTopics.stream().map(disableTopic -> new NotificationSetting(
-				user,
-				disableTopic.getValue(),
-				disableTopic.getIconPath(),
-				false
-			))
+			disableTopics.stream().map(disableTopic -> new NotificationSetting(user, disableTopic, false))
 		).toList();
 	}
 
 	@Override
 	public void saveNotificationSetting(NotificationSetting notificationSetting) {
-		NotificationTopic topic = NotificationTopic.findByValue(notificationSetting.getTopicName());
 		notificationConfigJpaRepository.save(
-			new NotificationConfigJpaEntity(topic, true, notificationSetting.getUser().getUserNo())
+			new NotificationConfigJpaEntity(
+				notificationSetting.getNotificationTopic(),
+				true,
+				notificationSetting.getUser().getUserNo()
+			)
 		);
 	}
 
 	@Override
 	public void deleteNotificationSetting(NotificationSetting notificationSetting) {
 		notificationConfigJpaRepository.deleteByTopicAndMemberNo(
-			NotificationTopic.findByValue(notificationSetting.getTopicName()),
+			notificationSetting.getNotificationTopic(),
 			notificationSetting.getUser().getUserNo()
 		);
 	}

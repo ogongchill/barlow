@@ -1,4 +1,4 @@
-package com.barlow.storage.db.core;
+package com.barlow.core.enumerate;
 
 public enum DeviceOs {
 	IOS, ANDROID,

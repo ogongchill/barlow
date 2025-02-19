@@ -11,6 +11,7 @@ import com.barlow.core.domain.User;
 import com.barlow.core.domain.home.HomeRetrieveService;
 import com.barlow.core.domain.home.HomeStatus;
 import com.barlow.core.domain.home.notificationcenter.NotificationCenterItemRetrieveService;
+import com.barlow.core.enumerate.NotificationTopic;
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
@@ -49,7 +50,7 @@ public class HomeRetrieveController {
 	@GetMapping("/notification-center")
 	public ApiResponse<NotificationCenterResponse> retrieveNotificationCenter(
 		User user,
-		@RequestParam(name = "filterTopic", required = false) String filterTopic
+		@RequestParam(name = "filterTopic", required = false) NotificationTopic filterTopic
 	) {
 		NotificationCenterApiSpecComposer notificationCenterApiSpecComposer = new NotificationCenterApiSpecComposer(
 			notificationCenterItemRetrieveService.retrieveNotificationCenterItems(user)

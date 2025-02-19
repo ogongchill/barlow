@@ -19,10 +19,10 @@ public record NotificationCenterResponse(
 	) {
 		static Item from(NotificationCenterItem item) {
 			return new Item(
-				item.notificationTopic(),
+				item.notificationTopic().getValue(),
 				item.title(),
 				item.body(),
-				Constant.IMAGE_ACCESS_URL + item.iconImagePath(),
+				Constant.IMAGE_ACCESS_URL + item.notificationTopic().getIconPath(),
 				item.billId(),
 				item.createdAt()
 			);

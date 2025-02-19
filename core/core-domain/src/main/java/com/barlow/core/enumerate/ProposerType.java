@@ -1,4 +1,4 @@
-package com.barlow.storage.db.core;
+package com.barlow.core.enumerate;
 
 import java.util.Arrays;
 
@@ -24,7 +24,7 @@ public enum ProposerType {
 		this.value = value;
 	}
 
-	String getValue() {
+	public String getValue() {
 		return value;
 	}
 }

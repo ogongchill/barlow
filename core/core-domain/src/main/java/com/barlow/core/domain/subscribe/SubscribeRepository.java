@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.barlow.core.domain.User;
+
 @Repository
 public interface SubscribeRepository {
 
 	Subscribe retrieve(SubscribeQuery query);
 
-	List<Subscribe> retrieveAll(SubscribesQuery query);
+	List<Subscribe> retrieveAll(User user);
 
 	void save(Subscribe subscribe);
 

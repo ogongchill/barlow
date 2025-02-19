@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
+import com.barlow.core.enumerate.NotificationTopic;
 import com.barlow.notification.NotificationCenterRepository;
 import com.barlow.notification.NotificationCenterItemInfo;
 

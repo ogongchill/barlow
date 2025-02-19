@@ -1,4 +1,4 @@
-package com.barlow.storage.db.core;
+package com.barlow.core.enumerate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +35,29 @@ public enum LegislationType {
 	private final String value;
 	private final String iconPath;
 
-	static List<LegislationType> findDisableLegislationType(List<LegislationType> activeLegislationBodies) {
+	public static LegislationType findByValue(String value) {
+		return Arrays.stream(LegislationType.values())
+			.filter(body -> body.value.equals(value))
+			.findFirst()
+			.orElseThrow(() -> new IllegalArgumentException(
+				String.format("기존에 존재하지 않던 LegislationType 입니다 : %s", value)
+			));
+	}
+
+	public static LegislationType findByAccountNo(long accountNo) {
+		return Arrays.stream(LegislationType.values())
+			.filter(body -> body.getLegislationNo() == accountNo)
+			.findFirst()
+			.orElseThrow(() -> new IllegalArgumentException(
+				String.format("%d번 LegislationType 은 존재하지 않습니다", accountNo)
+			));
+	}
+
+	public long getLegislationNo() {
+		return Integer.toUnsignedLong(this.ordinal() + 1);
+	}
+
+	public static List<LegislationType> findDisableLegislationType(List<LegislationType> activeLegislationBodies) {
 		return Arrays.stream(LegislationType.values())
 			.filter(body -> body.ordinal() <= MAX_LEGISLATION_BODY_ORD && !activeLegislationBodies.contains(body))
 			.toList();

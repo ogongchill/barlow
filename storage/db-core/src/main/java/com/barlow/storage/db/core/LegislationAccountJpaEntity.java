@@ -2,6 +2,7 @@ package com.barlow.storage.db.core;
 
 import com.barlow.core.domain.legislationaccount.LegislationAccount;
 import com.barlow.core.domain.home.MyLegislationAccount;
+import com.barlow.core.enumerate.LegislationType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,14 +45,13 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 	}
 
 	LegislationAccount toLegislationAccount() {
-		return LegislationAccount.builder()
-			.no(no)
-			.name(legislationType.getValue())
-			.iconUrl(legislationType.getIconPath())
-			.description(description)
-			.subscriberCount(subscriberCount)
-			.postCount(postCount)
-			.build();
+		return new LegislationAccount(
+			no,
+			legislationType,
+			description,
+			postCount,
+			subscriberCount
+		);
 	}
 
 	MyLegislationAccount toMyLegislationAccount() {
