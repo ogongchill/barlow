@@ -1,11 +1,10 @@
-package com.barlow.core.domain.home;
+package com.barlow.core.domain.home.notificationcenter;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
 import com.barlow.core.domain.User;
-import com.barlow.core.domain.home.notificationcenter.NotificationCenterItem;
 
 @Repository
 public interface MyNotificationCenterRepository {

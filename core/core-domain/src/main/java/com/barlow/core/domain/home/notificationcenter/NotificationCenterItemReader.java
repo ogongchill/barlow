@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
-import com.barlow.core.domain.home.MyNotificationCenterRepository;
 
 @Component
 public class NotificationCenterItemReader {
