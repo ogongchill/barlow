@@ -46,19 +46,23 @@ public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingMa
 	public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) {
 		super.setCurrentExecutionContext(contribution.getStepExecution().getJobExecution().getExecutionContext());
 		String hashKey = super.getDataFromJobExecutionContext(TODAY_BILL_INFO_JOB_KEY);
-		saveAllInBatch(jobScopeShareRepository.findByKey(hashKey));
+		TodayBillInfoResult todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
+
+		saveReceivedAllInBatch(todayBillInfo.filterReceivedBills());
+		saveAlternativeAllInBatch(todayBillInfo.filterAlternativeBills());
+
 		return RepeatStatus.FINISHED;
 	}
 
-	private void saveAllInBatch(TodayBillInfoResult result) {
+	private void saveReceivedAllInBatch(TodayBillInfoResult result) {
 		SqlParameterSource[] sqlParameterSources = result.items()
 			.stream()
-			.map(this::createSqlParameterSource)
+			.map(this::createReceiveSqlParameterSource)
 			.toArray(SqlParameterSource[]::new);
 		simpleJdbcInsert.executeBatch(sqlParameterSources);
 	}
 
-	private MapSqlParameterSource createSqlParameterSource(TodayBillInfoResult.BillInfoItem item) {
+	private MapSqlParameterSource createReceiveSqlParameterSource(TodayBillInfoResult.BillInfoItem item) {
 		return new MapSqlParameterSource()
 			.addValue("bill_id", item.billId())
 			.addValue("bill_name", item.billName())
@@ -68,6 +72,29 @@ public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingMa
 			.addValue("progress_status", ProgressStatus.RECEIVED)
 			.addValue("summary", null)
 			.addValue("detail", item.summary())
+			.addValue("view_count", 0)
+			.addValue("created_at", LocalDateTime.now(), Types.TIMESTAMP)
+			.addValue("updated_at", LocalDateTime.now(), Types.TIMESTAMP);
+	}
+
+	private void saveAlternativeAllInBatch(TodayBillInfoResult result) {
+		SqlParameterSource[] sqlParameterSources = result.items()
+			.stream()
+			.map(this::createAlternativeSqlParameterSource)
+			.toArray(SqlParameterSource[]::new);
+		simpleJdbcInsert.executeBatch(sqlParameterSources);
+	}
+
+	private MapSqlParameterSource createAlternativeSqlParameterSource(TodayBillInfoResult.BillInfoItem item) {
+		return new MapSqlParameterSource()
+			.addValue("bill_id", item.billId())
+			.addValue("bill_name", item.billName())
+			.addValue("proposers", item.proposers())
+			.addValue("proposer_type", ProposerType.findByValue(item.proposerType()))
+			.addValue("legislation_type", LegislationType.findByChairman(item.proposers()))
+			.addValue("progress_status", ProgressStatus.findByValue(item.progressStatusCode()))
+			.addValue("summary", null)
+			.addValue("detail", null)
 			.addValue("view_count", 0)
 			.addValue("created_at", LocalDateTime.now(), Types.TIMESTAMP)
 			.addValue("updated_at", LocalDateTime.now(), Types.TIMESTAMP);
