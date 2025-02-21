@@ -18,7 +18,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 
-import com.barlow.batch.core.recentbill.job.listener.StepExecutionContextSharingListener;
+import com.barlow.batch.core.recentbill.job.listener.BillProposerReaderStepExecutionContextSharingListener;
 import com.barlow.batch.core.recentbill.job.listener.StepLoggingListener;
 import com.barlow.batch.core.recentbill.job.step.BillProposer;
 
@@ -36,7 +36,7 @@ public class TodayBillCreateBatchJobConfig {
 		return new JobBuilder("todayBillCreateBatchJob", jobRepository)
 			.listener(jobExecutionListener)
 			.start(writeTodayBillInfoStep(null, null, null))
-			.next(setBillProposerStep(null, null, null, null, null, null))
+			.next(writeBillProposerStep(null, null, null, null, null, null))
 			.next(notifyTodayBillStep(null, null, null))
 			.build();
 	}
@@ -56,11 +56,11 @@ public class TodayBillCreateBatchJobConfig {
 
 	@Bean
 	@JobScope
-	public Step setBillProposerStep(
+	public Step writeBillProposerStep(
 		@Value("#{jobParameters[chunkSize]}") Integer chunkSize,
 		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener,
-		StepExecutionContextSharingListener stepExecutionContextSharingListener,
+		BillProposerReaderStepExecutionContextSharingListener stepExecutionContextSharingListener,
 		ItemReader<BillProposer> billProposerReader,
 		ItemWriter<BillProposer> billProposerWriter
 	) {
