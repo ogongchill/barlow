@@ -45,7 +45,7 @@ public class BillProposerReader
 	public void open(@NotNull ExecutionContext executionContext) throws ItemStreamException {
 		super.setCurrentExecutionContext(executionContext);
 		if (executionContext.containsKey(BILL_PROPOSER_READER_INDEX_KEY)
-			&& executionContext.containsKey(TODAY_BILL_INFO_JOB_KEY)) {
+			&& executionContext.containsKey(RECEIVED_BILL_WITH_FEW_PROPOSERS_JOB_KEY)) {
 			currentIndex = executionContext.getInt(BILL_PROPOSER_READER_INDEX_KEY);
 		} else {
 			currentIndex = 0; // 처음부터 시작
@@ -54,12 +54,12 @@ public class BillProposerReader
 
 	@Override
 	public BillProposer read() throws UnexpectedInputException, ParseException, NonTransientResourceException {
-		String hashKey = super.getDataFromJobExecutionContext(TODAY_BILL_INFO_JOB_KEY);
-		TodayBillInfoResult todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
-		if (currentIndex >= todayBillInfo.itemSize()) {
+		String hashKey = super.getDataFromJobExecutionContext(RECEIVED_BILL_WITH_FEW_PROPOSERS_JOB_KEY);
+		TodayBillInfoResult receiveBillWithFewProposers = jobScopeShareRepository.findByKey(hashKey);
+		if (currentIndex >= receiveBillWithFewProposers.itemSize()) {
 			return null;
 		}
-		String billId = todayBillInfo.items().get(currentIndex).billId();
+		String billId = receiveBillWithFewProposers.items().get(currentIndex).billId();
 		List<LawmakerProvider.Lawmaker> billProposeLawmakers = client.getBillProposerInfo(billId)
 			.billProposerInfos()
 			.stream()
