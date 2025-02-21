@@ -32,7 +32,8 @@ public class RetrieveTodayBillJobListener
 
 	@Override
 	public void beforeJob(@NotNull JobExecution jobExecution) {
-		TodayBillInfoResult todayBillInfo = client.getTodayBillInfo(LocalDate.now());
+		LocalDate batchDate = jobExecution.getJobParameters().getLocalDate("batchDate");
+		TodayBillInfoResult todayBillInfo = client.getTodayBillInfo(batchDate);
 
 		String hashKey = HashUtil.generate(todayBillInfo);
 		super.setCurrentExecutionContext(jobExecution.getExecutionContext());
