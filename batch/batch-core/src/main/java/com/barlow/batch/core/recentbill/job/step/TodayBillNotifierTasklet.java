@@ -1,5 +1,7 @@
 package com.barlow.batch.core.recentbill.job.step;
 
+import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -19,8 +21,6 @@ import com.barlow.notification.NotificationSendPort;
 @StepScope
 public class TodayBillNotifierTasklet extends AbstractExecutionContextSharingManager implements Tasklet {
 
-	private static final String DEFAULT_BILL_STATUS = "접수";
-
 	private final NotificationSendPort notificationSendPort;
 	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
 
@@ -38,12 +38,16 @@ public class TodayBillNotifierTasklet extends AbstractExecutionContextSharingMan
 		super.setCurrentExecutionContext(contribution.getStepExecution().getJobExecution().getExecutionContext());
 		String hashKey = super.getDataFromJobExecutionContext(TODAY_BILL_INFO_JOB_KEY);
 		TodayBillInfoResult todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
-		DefaultBillNotificationRequest notificationRequest = DefaultBillNotificationRequest.of(
-			DEFAULT_BILL_STATUS,
+
+		DefaultBillNotificationRequest notificationRequest = DefaultBillNotificationRequest.from(
 			todayBillInfo.items()
 				.stream()
-				.map(info -> new NotificationRequest.BillInfo(info.billId(), info.billName()))
-				.toList()
+				.collect(Collectors.groupingBy(
+					TodayBillInfoResult.BillInfoItem::progressStatusCode,
+					Collectors.mapping(item -> new NotificationRequest.BillInfo(
+						item.billId(), item.billName()
+					), Collectors.toList())
+				))
 		);
 		notificationSendPort.sendCall(notificationRequest);
 		return RepeatStatus.FINISHED;
