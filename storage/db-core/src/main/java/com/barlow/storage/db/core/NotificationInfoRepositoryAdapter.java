@@ -38,7 +38,7 @@ public class NotificationInfoRepositoryAdapter implements NotificationInfoReposi
 	@Override
 	public NotificationInfo retrieveNotificationInfosByTopics(Set<String> topics) {
 		Set<NotificationTopic> notificationTopics = topics.stream()
-			.map(NotificationTopic::valueOf)
+			.map(NotificationTopic::findByValue)
 			.collect(Collectors.toUnmodifiableSet());
 		List<NotificationInfoProjection> projections = notificationConfigJpaRepository
 			.findAllByEnableTrueAndTopicIn(notificationTopics);
