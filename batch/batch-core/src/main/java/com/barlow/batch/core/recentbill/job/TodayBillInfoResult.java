@@ -23,7 +23,7 @@ public record TodayBillInfoResult(
 
 	public TodayBillInfoResult filterReceivedBills() {
 		List<BillInfoItem> receivedBills = items.stream()
-			.filter(item -> item.billName.contains(DEFAULT_BILL_PROGRESS_STATUS))
+			.filter(BillInfoItem::isReceipt)
 			.toList();
 		return new TodayBillInfoResult(
 			receivedBills.size(),
@@ -33,7 +33,7 @@ public record TodayBillInfoResult(
 
 	public TodayBillInfoResult filterAlternativeBills() {
 		List<BillInfoItem> alternativeBills = items.stream()
-			.filter(item -> item.billName.contains(ALTERNATIVE_BILL_STATUS))
+			.filter(BillInfoItem::isAlternative)
 			.toList();
 		return new TodayBillInfoResult(
 			alternativeBills.size(),
@@ -43,8 +43,7 @@ public record TodayBillInfoResult(
 
 	public TodayBillInfoResult filteredReceivedBillsWithFewProposers() {
 		List<BillInfoItem> receivedWithFewProposers = items.stream()
-			.filter(item -> item.billName.contains(DEFAULT_BILL_PROGRESS_STATUS) &&
-				Integer.parseInt(item.proposers.replaceAll("\\d", "")) < 20)
+			.filter(item -> item.isReceipt() && item.isLessThanTwenty())
 			.toList();
 		return new TodayBillInfoResult(
 			receivedWithFewProposers.size(),
@@ -76,11 +75,24 @@ public record TodayBillInfoResult(
 		String summary // 주요내용
 	) implements Serializable {
 		private static final String REGEX_PATTERN_TRAILING_PARENTHESIS = "^(.*?)\\((.*?)\\)(?:\\((.*?)\\))?$";
+		private static final String NON_DIGIT_REGEX = "\\D";
+
+		boolean isReceipt() {
+			return progressStatusCode.equals(DEFAULT_BILL_PROGRESS_STATUS);
+		}
+
+		boolean isAlternative() {
+			return billName.contains(ALTERNATIVE_BILL_STATUS);
+		}
+
+		boolean isLessThanTwenty() {
+			return Integer.parseInt(proposers.replaceAll(NON_DIGIT_REGEX, "")) < 20;
+		}
 
 		static BillInfoItem from(BillInfoListItem listItem) {
 			Pattern pattern = Pattern.compile(REGEX_PATTERN_TRAILING_PARENTHESIS);
 			Matcher matcher = pattern.matcher(listItem.billName());
-			if (matcher.find() && listItem.procStageCd().equals(DEFAULT_BILL_PROGRESS_STATUS)) {
+			if (matcher.find() && matcher.group(3) == null) {
 				return new BillInfoItem(
 					listItem.billId(),
 					listItem.billNo(),
@@ -94,7 +106,7 @@ public record TodayBillInfoResult(
 					listItem.procStageCd(),
 					listItem.summary()
 				);
-			} else if (matcher.find() && matcher.group(2).equals(ALTERNATIVE_BILL_STATUS)) {
+			} else if (matcher.group(2).equals(ALTERNATIVE_BILL_STATUS) && matcher.group(3) != null) {
 				return new BillInfoItem(
 					listItem.billId(),
 					listItem.billNo(),
