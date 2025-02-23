@@ -22,7 +22,7 @@ public class DefaultMessageTemplate implements MessageTemplate {
 
 	enum Default {
 
-		RECEIPT("접수의안", "%s 등 %d 개의 법안이 오늘 접수되었어요. 지금 바로 확인해보세요."),
+		RECEIPT("접수", "%s 등 %d 개의 법안이 오늘 접수되었어요. 지금 바로 확인해보세요."),
 		SUBMISSION_PLENARY_SESSION("본회의부의안건", "%s 등 %d 개의 법안이 지금 본회의에서 검토중이에요."),
 		RESOLUTION_PLENARY_SESSION("본회의의결", "%s 등 %d 개의 법안이 오늘 본회의에서 통과되었어요."),
 		RECONSIDERATION_GOVERNMENT("재의요구", "정부에서 %s 등 %d 개의 법안에 대해 재의를 요구했어요."),
