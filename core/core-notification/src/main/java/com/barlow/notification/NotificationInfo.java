@@ -18,11 +18,13 @@ public class NotificationInfo {
 			.forEach(info -> info.setTopicCount(totalCount));
 	}
 
-	void assignRepresentationBillAndTotalCount(String representationBillName, int totalCount) {
-		infos.keySet().forEach(topic -> {
-			topic.setRepresentation(representationBillName);
-			topic.setTopicCount(totalCount);
-		});
+	void assignRepresentationBillAndTotalCountPerTopic(String topic, String representationBillName, int totalCount) {
+		infos.keySet().stream()
+			.filter(info -> info.isSame(topic))
+			.forEach(info -> {
+				info.setTopicCount(totalCount);
+				info.setRepresentation(representationBillName);
+			});
 	}
 
 	Map<Topic, List<Subscriber>> getInfos() {
