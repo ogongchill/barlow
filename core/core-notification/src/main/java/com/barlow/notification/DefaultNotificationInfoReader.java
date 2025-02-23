@@ -1,5 +1,10 @@
 package com.barlow.notification;
 
+import static com.barlow.notification.DefaultBillNotificationRequest.BillSummary;
+
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,13 +19,14 @@ public class DefaultNotificationInfoReader implements NotificationInfoReader {
 	@Override
 	public NotificationInfo readNotificationInfos(NotificationRequest request) {
 		DefaultBillNotificationRequest notificationRequest = checkAndConvert(request);
-		NotificationInfo notificationInfo = notificationInfoRepository
-			.retrieveNotificationInfosByTopic(notificationRequest.topic());
-		notificationInfo.assignRepresentationBillAndTotalCount(
-			notificationRequest.representationBill(),
-			notificationRequest.totalCount()
-		);
-		return notificationInfo;
+		Map<String, BillSummary> topicsWithBillInfos = notificationRequest.topicsWithBillInfos();
+		Set<String> topics = topicsWithBillInfos.keySet();
+		NotificationInfo notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopics(topics);
+		topicsWithBillInfos.forEach((topic, billSummary) ->
+			notificationInfos.assignRepresentationBillAndTotalCountPerTopic(
+				topic, billSummary.representationBill(), billSummary.totalCount()
+			));
+		return notificationInfos;
 	}
 
 	private DefaultBillNotificationRequest checkAndConvert(NotificationRequest request) {
