@@ -64,7 +64,7 @@ public class TodayBillCreateBatchJobConfig {
 		ItemReader<BillProposer> billProposerReader,
 		ItemWriter<BillProposer> billProposerWriter
 	) {
-		return new StepBuilder("setBillProposerStep", jobRepository)
+		return new StepBuilder("writeBillProposerStep", jobRepository)
 			.<BillProposer, BillProposer>chunk(chunkSize, transactionManager)
 			.reader(billProposerReader)
 			.writer(billProposerWriter)
