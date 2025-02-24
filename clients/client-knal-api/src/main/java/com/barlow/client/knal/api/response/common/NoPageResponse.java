@@ -1,7 +1,5 @@
-package com.barlow.client.knal.api.response;
+package com.barlow.client.knal.api.response.common;
 
-import com.barlow.client.knal.api.response.common.Header;
-import com.barlow.client.knal.api.response.common.ItemListBody;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 public class NoPageResponse<T> {

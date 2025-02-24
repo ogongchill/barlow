@@ -1,7 +1,5 @@
-package com.barlow.client.knal.api.response;
+package com.barlow.client.knal.api.response.common;
 
-import com.barlow.client.knal.api.response.common.Header;
-import com.barlow.client.knal.api.response.common.ItemListPagingBody;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 public abstract class Response<T> {
