@@ -9,7 +9,7 @@ import com.barlow.client.knal.api.request.BillAdditionalInfoRequest;
 import com.barlow.client.knal.api.request.BillCommissionExaminationInfoRequest;
 import com.barlow.client.knal.api.request.BillInfoListRequest;
 import com.barlow.client.knal.api.request.BillPetitionMemberListRequest;
-import com.barlow.client.knal.api.request.BillPreLiminaryExaminationInfoRequest;
+import com.barlow.client.knal.api.request.BillPreliminaryExaminationInfoRequest;
 import com.barlow.client.knal.api.request.BillPromulgationInfoRequest;
 import com.barlow.client.knal.api.request.BillReceiptInfoRequest;
 import com.barlow.client.knal.api.request.CommitPetitionListRequest;
@@ -21,6 +21,7 @@ import com.barlow.client.knal.api.request.RecentRceptListRequest;
 import com.barlow.client.knal.api.request.SessionRequestListRequest;
 import com.barlow.client.knal.api.response.BillInfoListResponse;
 import com.barlow.client.knal.api.response.BillPetitionMemberListResponse;
+import com.barlow.client.knal.api.response.BillPreliminaryExaminationInfoResponse;
 import com.barlow.client.knal.api.response.BillPromulgationInfoResponse;
 import com.barlow.client.knal.api.response.BillReceiptInfoResponse;
 import com.barlow.client.knal.api.response.CommitPetitionListResponse;
@@ -49,7 +50,8 @@ public interface NationalAssemblyLegislationApi {
 		value = Operation.GET_BILL_PRELIMINARY_EXAMINATION_INFO,
 		consumes = MediaType.APPLICATION_JSON_VALUE,
 		produces = MediaType.APPLICATION_XML_VALUE)
-	BillInfoListResponse getBillPreliminaryExaminationInfo(@SpringQueryMap BillPreLiminaryExaminationInfoRequest request);
+	BillPreliminaryExaminationInfoResponse getBillPreliminaryExaminationInfo(
+		@SpringQueryMap BillPreliminaryExaminationInfoRequest request);
 
 	@GetMapping(
 		value = Operation.GET_RECENT_RCEPT_LIST,

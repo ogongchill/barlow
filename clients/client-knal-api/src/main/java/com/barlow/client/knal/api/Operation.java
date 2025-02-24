@@ -3,7 +3,7 @@ package com.barlow.client.knal.api;
 /**
  * <a href="https://www.data.go.kr/data/3037286/openapi.do">IROS4_OA_DV_0401_OpenAPI활용가이드_의안정보(국회사무처)_v1.30<</a></href>에 따른 오퍼레이션명
  */
-final class Operation {
+public final class Operation {
 
 	static final String GET_BILL_INFO_LIST = "getBillInfoList"; // "의안 목록 검색"
 	static final String GET_RECENT_RCEPT_LIST = "getRecentRceptList"; // "최근 접수의안 목록 정보조회"
@@ -13,7 +13,7 @@ final class Operation {
 	static final String GET_SESSION_REQUEST_LIST = "getSessionRequestList"; // "본회의부의요청안건 목록 정보조회"
 	static final String GET_BILL_RECEIPT_INFO = "getBillReceiptInfo"; // "의안 접수 정보조회"
 	static final String GET_BILL_PETITION_MEMBER_LIST = "getBillPetitionMemberList"; // "의안/청원 접수정보 국회의원 목록조회"
-	static final String GET_BILL_PRELIMINARY_EXAMINATION_INFO = "getBillPreliminaryExaminationInfo"; // "의안 예비 심사 정보 조회"
+	static final String GET_BILL_PRELIMINARY_EXAMINATION_INFO = "getBillPreLiminaryExaminationInfo"; // "의안 예비 심사 정보 조회"
 	static final String GET_BILL_COMPREHENSIVE_AUDIT_INFO = "getBillComprehensiveAuditInfo"; // "의안 종합심사 정보조회"
 	static final String GET_BILL_COMMISSION_EXAMINATION_INFO = "getBillCommissionExaminationInfo"; // "의안 위원회심사 정보조회"
 	static final String GET_BILL_DELIVERATE_INFO = "getBillDeliverateInfo"; // "의안 본회의심의 정보조회"
