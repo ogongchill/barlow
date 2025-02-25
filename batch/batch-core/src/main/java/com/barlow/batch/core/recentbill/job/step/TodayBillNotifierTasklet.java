@@ -1,5 +1,6 @@
 package com.barlow.batch.core.recentbill.job.step;
 
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
 import com.barlow.batch.core.recentbill.job.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
+import com.barlow.core.enumerate.NotificationTopic;
+import com.barlow.core.enumerate.ProgressStatus;
 import com.barlow.notification.DefaultBillNotificationRequest;
 import com.barlow.notification.NotificationRequest;
 import com.barlow.notification.NotificationSendPort;
@@ -40,12 +43,13 @@ public class TodayBillNotifierTasklet extends AbstractExecutionContextSharingMan
 		TodayBillInfoResult todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
 
 		DefaultBillNotificationRequest notificationRequest = DefaultBillNotificationRequest.from(
-			todayBillInfo.items()
-				.stream()
+			todayBillInfo.items().stream()
+				.map(item -> Map.entry(ProgressStatus.findByValue(item.progressStatusCode()), item))
+				.filter(entry -> NotificationTopic.isNotifiableProgressStatus(entry.getKey()))
 				.collect(Collectors.groupingBy(
-					TodayBillInfoResult.BillInfoItem::progressStatusCode,
-					Collectors.mapping(item -> new NotificationRequest.BillInfo(
-						item.billId(), item.billName()
+					entry -> NotificationTopic.findByProgressStatus(entry.getKey()),
+					Collectors.mapping(entry -> new NotificationRequest.BillInfo(
+						entry.getValue().billId(), entry.getValue().billName()
 					), Collectors.toList())
 				))
 		);
