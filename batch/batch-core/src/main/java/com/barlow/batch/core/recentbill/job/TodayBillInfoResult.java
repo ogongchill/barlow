@@ -43,7 +43,7 @@ public record TodayBillInfoResult(
 
 	public TodayBillInfoResult filteredReceivedBillsWithFewProposers() {
 		List<BillInfoItem> receivedWithFewProposers = items.stream()
-			.filter(item -> item.isReceipt() && item.isLessThanTwenty())
+			.filter(item -> item.isReceipt() && item.isProposerLessThanTwentyOrChairman())
 			.toList();
 		return new TodayBillInfoResult(
 			receivedWithFewProposers.size(),
@@ -74,7 +74,7 @@ public record TodayBillInfoResult(
 		String progressStatusCode, // 심사진행상태: 접수,소관위접수 등
 		String summary // 주요내용
 	) implements Serializable {
-		private static final String REGEX_PATTERN_TRAILING_PARENTHESIS = "^(.*?)\\((.*?)\\)(?:\\((.*?)\\))?$";
+		private static final String REGEX_PATTERN_TRAILING_PARENTHESIS = "^(.*?)\\(([^)]+)\\)(?:\\(([^)]+)\\))?$";
 		private static final String NON_DIGIT_REGEX = "\\D";
 
 		boolean isReceipt() {
@@ -85,8 +85,12 @@ public record TodayBillInfoResult(
 			return billName.contains(ALTERNATIVE_BILL_STATUS);
 		}
 
-		boolean isLessThanTwenty() {
-			return Integer.parseInt(proposers.replaceAll(NON_DIGIT_REGEX, "")) < 20;
+		boolean isProposerLessThanTwentyOrChairman() {
+			String digitStr = proposers.replaceAll(NON_DIGIT_REGEX, "");
+			if (digitStr.isBlank()) {
+				return true;
+			}
+			return Integer.parseInt(digitStr) < 20;
 		}
 
 		static BillInfoItem from(BillInfoListItem listItem) {
