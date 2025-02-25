@@ -36,6 +36,15 @@ public enum LegislationType {
 	private final String chairman;
 	private final String iconPath;
 
+	public static LegislationType findByValue(String value) {
+		return Arrays.stream(LegislationType.values())
+			.filter(body -> body.value.equals(value))
+			.findFirst()
+			.orElseThrow(() -> new IllegalArgumentException(
+				String.format("%s 에 대한 LegislationType 은 존재하지 않습니다", value)
+			));
+	}
+
 	public static LegislationType findByAccountNo(long accountNo) {
 		return Arrays.stream(LegislationType.values())
 			.filter(body -> body.getLegislationNo() == accountNo)
