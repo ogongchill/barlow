@@ -4,9 +4,6 @@ import org.springframework.batch.item.ExecutionContext;
 
 public abstract class AbstractExecutionContextSharingManager {
 
-	public static final String TODAY_BILL_INFO_JOB_KEY = "TODAY_BILL_INFO";
-	public static final String RECEIVED_BILL_WITH_FEW_PROPOSERS_JOB_KEY = "RECEIVED_BILL_WITH_FEW_PROPOSERS";
-
 	private ExecutionContext executionContext;
 
 	protected AbstractExecutionContextSharingManager() {

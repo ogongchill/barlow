@@ -11,6 +11,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
+import com.barlow.batch.core.recentbill.RecentBillConstant;
 import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
 import com.barlow.batch.core.recentbill.job.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
@@ -22,12 +23,12 @@ import com.barlow.notification.NotificationSendPort;
 
 @Component
 @StepScope
-public class TodayBillNotifierTasklet extends AbstractExecutionContextSharingManager implements Tasklet {
+public class TodayBillNotifyTasklet extends AbstractExecutionContextSharingManager implements Tasklet {
 
 	private final NotificationSendPort notificationSendPort;
 	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
 
-	public TodayBillNotifierTasklet(
+	public TodayBillNotifyTasklet(
 		NotificationSendPort notificationSendPort,
 		RecentBillJobScopeShareRepository jobScopeShareRepository
 	) {
@@ -39,7 +40,7 @@ public class TodayBillNotifierTasklet extends AbstractExecutionContextSharingMan
 	@Override
 	public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) {
 		super.setCurrentExecutionContext(contribution.getStepExecution().getJobExecution().getExecutionContext());
-		String hashKey = super.getDataFromJobExecutionContext(TODAY_BILL_INFO_JOB_KEY);
+		String hashKey = super.getDataFromJobExecutionContext(RecentBillConstant.TODAY_BILL_INFO_JOB_KEY);
 		TodayBillInfoResult todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
 
 		DefaultBillNotificationRequest notificationRequest = DefaultBillNotificationRequest.from(

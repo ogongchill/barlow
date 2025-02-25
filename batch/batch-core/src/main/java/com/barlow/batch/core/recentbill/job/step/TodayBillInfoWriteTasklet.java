@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
+import com.barlow.batch.core.recentbill.RecentBillConstant;
 import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
 import com.barlow.batch.core.recentbill.job.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
@@ -45,7 +46,7 @@ public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingMa
 	@Override
 	public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) {
 		super.setCurrentExecutionContext(contribution.getStepExecution().getJobExecution().getExecutionContext());
-		String hashKey = super.getDataFromJobExecutionContext(TODAY_BILL_INFO_JOB_KEY);
+		String hashKey = super.getDataFromJobExecutionContext(RecentBillConstant.TODAY_BILL_INFO_JOB_KEY);
 		TodayBillInfoResult todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
 
 		saveReceivedAllInBatch(todayBillInfo.filterReceivedBills());

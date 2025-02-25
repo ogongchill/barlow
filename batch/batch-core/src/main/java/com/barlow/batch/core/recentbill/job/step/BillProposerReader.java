@@ -14,6 +14,7 @@ import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.recentbill.LawmakerProvider;
+import com.barlow.batch.core.recentbill.RecentBillConstant;
 import com.barlow.batch.core.recentbill.job.TodayBillRetrieveClient;
 import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
 import com.barlow.batch.core.recentbill.job.AbstractExecutionContextSharingManager;
@@ -47,7 +48,7 @@ public class BillProposerReader
 	public void open(@NotNull ExecutionContext executionContext) throws ItemStreamException {
 		super.setCurrentExecutionContext(executionContext);
 		if (executionContext.containsKey(BILL_PROPOSER_READER_INDEX_KEY)
-			&& executionContext.containsKey(RECEIVED_BILL_WITH_FEW_PROPOSERS_JOB_KEY)) {
+			&& executionContext.containsKey(RecentBillConstant.RECEIVED_BILL_WITH_FEW_PROPOSERS_JOB_KEY)) {
 			currentIndex = executionContext.getInt(BILL_PROPOSER_READER_INDEX_KEY);
 		} else {
 			currentIndex = 0; // 처음부터 시작
@@ -56,7 +57,7 @@ public class BillProposerReader
 
 	@Override
 	public BillProposer read() throws UnexpectedInputException, ParseException, NonTransientResourceException {
-		String hashKey = super.getDataFromJobExecutionContext(RECEIVED_BILL_WITH_FEW_PROPOSERS_JOB_KEY);
+		String hashKey = super.getDataFromJobExecutionContext(RecentBillConstant.RECEIVED_BILL_WITH_FEW_PROPOSERS_JOB_KEY);
 		TodayBillInfoResult receiveBillWithFewProposers = jobScopeShareRepository.findByKey(hashKey);
 		if (currentIndex >= receiveBillWithFewProposers.itemSize()) {
 			return null;
