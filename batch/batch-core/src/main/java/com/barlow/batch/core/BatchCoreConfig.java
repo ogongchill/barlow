@@ -7,10 +7,15 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
+@ComponentScan(basePackages = {
+	"com.barlow.client.knal.api",
+	"com.barlow.storage.db.core",
+	"com.barlow.notification"})
 @EnableBatchProcessing(
 	dataSourceRef = "coreDataSource",
 	transactionManagerRef = "coreTransactionManager")
