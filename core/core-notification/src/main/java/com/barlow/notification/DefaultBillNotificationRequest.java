@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.barlow.core.enumerate.NotificationTopic;
+
 /**
  * 법안 알림 : 법안 알림에 관한 기본 전송 알림에 사용한다
  * @param topicsWithBillInfos {key:법안의 ProgressStatus value:[key]에 해당하는 BillSummary(법안요약정보)}
@@ -14,10 +16,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public record DefaultBillNotificationRequest(
 	@NotNull NotificationType type,
-	@NotNull Map<String, BillSummary> topicsWithBillInfos
+	@NotNull Map<NotificationTopic, BillSummary> topicsWithBillInfos
 ) implements NotificationRequest {
 
-	public static DefaultBillNotificationRequest from(Map<String, List<BillInfo>> topicsWithBillInfos) {
+	public static DefaultBillNotificationRequest from(Map<NotificationTopic, List<BillInfo>> topicsWithBillInfos) {
 		if (topicsWithBillInfos == null) {
 			throw new IllegalArgumentException("null 파라미터는 들어올 수 없습니다");
 		}
@@ -32,7 +34,7 @@ public record DefaultBillNotificationRequest(
 	}
 
 	@Override
-	public List<BillInfo> billInfosByTopic(String topic) {
+	public List<BillInfo> billInfosByTopic(NotificationTopic topic) {
 		return topicsWithBillInfos.get(topic).billInfos;
 	}
 

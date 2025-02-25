@@ -21,8 +21,8 @@ public class NotificationCenterRegistrar {
 				.stream()
 				.map(subscriber -> NotificationCenterItemInfo.of(
 					subscriber.memberNo(),
-					entry.getKey().getName(),
-					request.billInfosByTopic(entry.getKey().getName())
+					entry.getKey().getTopic(),
+					request.billInfosByTopic(entry.getKey().getTopic())
 				))
 			)
 			.toList();
