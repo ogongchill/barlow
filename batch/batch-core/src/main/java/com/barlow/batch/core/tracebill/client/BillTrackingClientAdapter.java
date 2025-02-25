@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.barlow.batch.core.tracebill.job.NationalAssemblyLegislationClient;
+import com.barlow.batch.core.tracebill.job.BillTrackingClient;
 import com.barlow.batch.core.tracebill.job.CurrentBillInfoResult;
 import com.barlow.client.knal.api.NationalAssemblyLegislationApi;
 import com.barlow.client.knal.api.request.BillInfoListRequest;
@@ -21,16 +21,16 @@ import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.enumerate.ProgressStatus;
 
 @Component
-public class NationalAssemblyLegislationClientAdapter implements NationalAssemblyLegislationClient {
+public class BillTrackingClientAdapter implements BillTrackingClient {
 
-	private static final Logger log = LoggerFactory.getLogger(NationalAssemblyLegislationClientAdapter.class);
+	private static final Logger log = LoggerFactory.getLogger(BillTrackingClientAdapter.class);
 
 	private final NationalAssemblyLegislationApi api;
 	private final Integer startOrd;
 	private final Integer endOrd;
 	private final Integer numOfRows;
 
-	public NationalAssemblyLegislationClientAdapter(
+	public BillTrackingClientAdapter(
 		NationalAssemblyLegislationApi api,
 		@Value("${start-ordinal:22}") Integer startOrd,
 		@Value("${end-ordinal:22}") Integer endOrd,

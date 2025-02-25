@@ -11,7 +11,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
-import com.barlow.batch.core.tracebill.job.NationalAssemblyLegislationClient;
+import com.barlow.batch.core.tracebill.job.BillTrackingClient;
 import com.barlow.batch.core.tracebill.job.PreviousBillBatchRepository;
 import com.barlow.batch.core.tracebill.job.CurrentBillInfoResult;
 import com.barlow.batch.core.tracebill.job.PreviousBills;
@@ -23,12 +23,12 @@ import com.barlow.batch.core.utils.HashUtil;
 @StepScope
 public class TraceBillDirtyCheckTasklet implements Tasklet {
 
-	private final NationalAssemblyLegislationClient client;
+	private final BillTrackingClient client;
 	private final PreviousBillBatchRepository previousBillBatchRepository;
 	private final UpdatedBillShareRepository billShareRepository;
 
 	public TraceBillDirtyCheckTasklet(
-		NationalAssemblyLegislationClient client,
+		BillTrackingClient client,
 		PreviousBillBatchRepository previousBillBatchRepository,
 		UpdatedBillShareRepository billShareRepository
 	) {

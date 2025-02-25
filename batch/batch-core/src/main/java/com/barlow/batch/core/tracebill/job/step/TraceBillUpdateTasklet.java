@@ -8,7 +8,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.tracebill.job.BillPostBatchRepository;
-import com.barlow.batch.core.tracebill.job.NationalAssemblyLegislationClient;
+import com.barlow.batch.core.tracebill.job.BillTrackingClient;
 import com.barlow.batch.core.tracebill.job.UpdatedBillShareRepository;
 import com.barlow.batch.core.tracebill.job.UpdatedBills;
 import com.barlow.core.enumerate.LegislationType;
@@ -17,12 +17,12 @@ import com.barlow.core.enumerate.LegislationType;
 @StepScope
 public class TraceBillUpdateTasklet implements Tasklet {
 
-	private final NationalAssemblyLegislationClient client;
+	private final BillTrackingClient client;
 	private final UpdatedBillShareRepository billShareRepository;
 	private final BillPostBatchRepository billPostBatchRepository;
 
 	public TraceBillUpdateTasklet(
-		NationalAssemblyLegislationClient client,
+		BillTrackingClient client,
 		UpdatedBillShareRepository billShareRepository,
 		BillPostBatchRepository billPostBatchRepository
 	) {
