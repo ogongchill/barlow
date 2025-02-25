@@ -1,4 +1,4 @@
-package com.barlow.batch.core.recentbill.job.listener;
+package com.barlow.batch.core.common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -24,7 +24,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 
 import com.barlow.batch.core.recentbill.job.listener.BillProposerReaderStepExecutionContextSharingListener;
-import com.barlow.batch.core.recentbill.job.listener.StepLoggingListener;
+import com.barlow.batch.core.common.StepLoggingListener;
 import com.barlow.batch.core.recentbill.job.step.BillProposer;
 
 @Configuration
