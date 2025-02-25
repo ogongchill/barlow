@@ -14,7 +14,7 @@ import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.recentbill.LawmakerProvider;
-import com.barlow.batch.core.recentbill.client.NationalAssemblyLegislationClientAdapter;
+import com.barlow.batch.core.recentbill.job.TodayBillRetrieveClient;
 import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
 import com.barlow.batch.core.recentbill.job.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
@@ -28,13 +28,15 @@ public class BillProposerReader
 	private static final String BILL_PROPOSER_READER_INDEX_KEY = "BillProposerReader.currentIndex";
 
 	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
-	private final NationalAssemblyLegislationClientAdapter client;
+	private final TodayBillRetrieveClient client;
 	private final LawmakerProvider lawmakerProvider;
 	private int currentIndex = 0;
 
 	public BillProposerReader(
 		RecentBillJobScopeShareRepository jobScopeShareRepository,
-		NationalAssemblyLegislationClientAdapter client, LawmakerProvider lawmakerProvider) {
+		TodayBillRetrieveClient client,
+		LawmakerProvider lawmakerProvider
+	) {
 		super();
 		this.jobScopeShareRepository = jobScopeShareRepository;
 		this.lawmakerProvider = lawmakerProvider;

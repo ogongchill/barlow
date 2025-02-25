@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.recentbill.job.BillProposerInfoResult;
-import com.barlow.batch.core.recentbill.job.NationalAssemblyLegislationClient;
+import com.barlow.batch.core.recentbill.job.TodayBillRetrieveClient;
 import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
 import com.barlow.client.knal.api.NationalAssemblyLegislationApi;
 import com.barlow.client.knal.api.request.BillInfoListRequest;
@@ -19,16 +19,16 @@ import com.barlow.client.knal.api.response.BillInfoListResponse;
 import com.barlow.client.knal.api.response.BillPetitionMemberListResponse;
 
 @Component
-public class NationalAssemblyLegislationClientAdapter implements NationalAssemblyLegislationClient {
+public class TodayBillRetrieveClientAdapter implements TodayBillRetrieveClient {
 
-	private static final Logger log = LoggerFactory.getLogger(NationalAssemblyLegislationClientAdapter.class);
+	private static final Logger log = LoggerFactory.getLogger(TodayBillRetrieveClientAdapter.class);
 
 	private final NationalAssemblyLegislationApi api;
 	private final Integer startOrd;
 	private final Integer endOrd;
 	private final Integer numOfRows;
 
-	public NationalAssemblyLegislationClientAdapter(
+	public TodayBillRetrieveClientAdapter(
 		NationalAssemblyLegislationApi api,
 		@Value("${start-ordinal:22}") Integer startOrd,
 		@Value("${end-ordinal:22}") Integer endOrd,

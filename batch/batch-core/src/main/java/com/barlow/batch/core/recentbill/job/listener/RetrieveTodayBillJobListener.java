@@ -7,7 +7,7 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.stereotype.Component;
 
-import com.barlow.batch.core.recentbill.job.NationalAssemblyLegislationClient;
+import com.barlow.batch.core.recentbill.job.TodayBillRetrieveClient;
 import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
 import com.barlow.batch.core.recentbill.job.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
@@ -18,11 +18,11 @@ public class RetrieveTodayBillJobListener
 	extends AbstractExecutionContextSharingManager
 	implements JobExecutionListener {
 
-	private final NationalAssemblyLegislationClient client;
+	private final TodayBillRetrieveClient client;
 	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
 
 	public RetrieveTodayBillJobListener(
-		NationalAssemblyLegislationClient client,
+		TodayBillRetrieveClient client,
 		RecentBillJobScopeShareRepository jobScopeShareRepository
 	) {
 		super();
