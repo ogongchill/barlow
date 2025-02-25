@@ -46,7 +46,7 @@ public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingMa
 	@Override
 	public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) {
 		super.setCurrentExecutionContext(contribution.getStepExecution().getJobExecution().getExecutionContext());
-		String hashKey = super.getDataFromJobExecutionContext(RecentBillConstant.TODAY_BILL_INFO_JOB_KEY);
+		String hashKey = super.getDataFromJobExecutionContext(RecentBillConstant.TODAY_BILL_INFO_SHARE_KEY);
 		TodayBillInfoResult todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
 
 		saveReceivedAllInBatch(todayBillInfo.filterReceivedBills());

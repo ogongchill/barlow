@@ -40,7 +40,7 @@ public class TodayBillNotifyTasklet extends AbstractExecutionContextSharingManag
 	@Override
 	public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) {
 		super.setCurrentExecutionContext(contribution.getStepExecution().getJobExecution().getExecutionContext());
-		String hashKey = super.getDataFromJobExecutionContext(RecentBillConstant.TODAY_BILL_INFO_JOB_KEY);
+		String hashKey = super.getDataFromJobExecutionContext(RecentBillConstant.TODAY_BILL_INFO_SHARE_KEY);
 		TodayBillInfoResult todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
 
 		DefaultBillNotificationRequest notificationRequest = DefaultBillNotificationRequest.from(
