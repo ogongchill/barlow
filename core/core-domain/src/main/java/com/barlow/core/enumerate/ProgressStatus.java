@@ -29,6 +29,10 @@ public enum ProgressStatus {
 			));
 	}
 
+	public boolean isCommitteeReceived() {
+		return this == ProgressStatus.COMMITTEE_RECEIVED;
+	}
+
 	ProgressStatus(String value) {
 		this.value = value;
 	}
