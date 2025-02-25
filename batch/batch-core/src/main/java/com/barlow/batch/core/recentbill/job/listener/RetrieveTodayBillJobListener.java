@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.barlow.batch.core.recentbill.RecentBillConstant;
 import com.barlow.batch.core.recentbill.job.TodayBillRetrieveClient;
 import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
-import com.barlow.batch.core.recentbill.job.AbstractExecutionContextSharingManager;
+import com.barlow.batch.core.common.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
 import com.barlow.batch.core.utils.HashUtil;
 

@@ -1,4 +1,4 @@
-package com.barlow.batch.core.recentbill.job;
+package com.barlow.batch.core.common;
 
 import org.springframework.batch.item.ExecutionContext;
 
