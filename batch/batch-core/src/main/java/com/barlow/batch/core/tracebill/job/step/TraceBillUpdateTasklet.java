@@ -7,6 +7,8 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
+import com.barlow.batch.core.common.AbstractExecutionContextSharingManager;
+import com.barlow.batch.core.tracebill.TraceBillConstant;
 import com.barlow.batch.core.tracebill.job.BillPostBatchRepository;
 import com.barlow.batch.core.tracebill.job.BillTrackingClient;
 import com.barlow.batch.core.tracebill.job.UpdatedBillShareRepository;
@@ -15,7 +17,7 @@ import com.barlow.core.enumerate.LegislationType;
 
 @Component
 @StepScope
-public class TraceBillUpdateTasklet implements Tasklet {
+public class TraceBillUpdateTasklet extends AbstractExecutionContextSharingManager implements Tasklet {
 
 	private final BillTrackingClient client;
 	private final UpdatedBillShareRepository billShareRepository;
@@ -33,8 +35,9 @@ public class TraceBillUpdateTasklet implements Tasklet {
 
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-		Object hashKey = contribution.getStepExecution().getJobExecution().getExecutionContext().get("updatedBills");
-		UpdatedBills updatedBills = billShareRepository.findByKey((String)hashKey);
+		super.setCurrentExecutionContext(contribution.getStepExecution().getJobExecution().getExecutionContext());
+		String hashKey = super.getDataFromJobExecutionContext(TraceBillConstant.UPDATED_BILL_SHARE_KEY);
+		UpdatedBills updatedBills = billShareRepository.findByKey(hashKey);
 
 		UpdatedBills committeeReceived = updatedBills.filterCommitteeReceived();
 		if (!committeeReceived.isEmpty()) {

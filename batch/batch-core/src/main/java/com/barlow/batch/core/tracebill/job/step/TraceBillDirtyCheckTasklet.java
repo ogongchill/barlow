@@ -11,6 +11,8 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
+import com.barlow.batch.core.common.AbstractExecutionContextSharingManager;
+import com.barlow.batch.core.tracebill.TraceBillConstant;
 import com.barlow.batch.core.tracebill.job.BillTrackingClient;
 import com.barlow.batch.core.tracebill.job.PreviousBillBatchRepository;
 import com.barlow.batch.core.tracebill.job.CurrentBillInfoResult;
@@ -21,7 +23,7 @@ import com.barlow.batch.core.utils.HashUtil;
 
 @Component
 @StepScope
-public class TraceBillDirtyCheckTasklet implements Tasklet {
+public class TraceBillDirtyCheckTasklet extends AbstractExecutionContextSharingManager implements Tasklet {
 
 	private final BillTrackingClient client;
 	private final PreviousBillBatchRepository previousBillBatchRepository;
@@ -41,17 +43,18 @@ public class TraceBillDirtyCheckTasklet implements Tasklet {
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
 		JobExecution jobExecution = contribution.getStepExecution().getJobExecution();
 		JobParameters jobParameters = jobExecution.getJobParameters();
-		LocalDate startProposeDate = jobParameters.getLocalDate("startProposeDate");
-		LocalDate batchDate = jobParameters.getLocalDate("batchDate");
+		LocalDate startDate = jobParameters.getLocalDate(TraceBillConstant.TRACKING_START_DATE_JOB_PARAMETER);
+		LocalDate batchDate = jobParameters.getLocalDate(TraceBillConstant.BATCH_DATE_JOB_PARAMETER);
 
-		CurrentBillInfoResult currentBillInfo = client.getTraceBillInfo(startProposeDate, batchDate);
+		CurrentBillInfoResult currentBillInfo = client.getTraceBillInfo(startDate, batchDate);
 		PreviousBills previousBills = new PreviousBills(
-			previousBillBatchRepository.findAllPreviousBetween(startProposeDate, batchDate)
+			previousBillBatchRepository.findAllPreviousBetween(startDate, batchDate)
 		);
 		UpdatedBills updatedBills = previousBills.dirtyCheck(currentBillInfo);
 
 		String hashKey = HashUtil.generate(updatedBills);
-		jobExecution.getExecutionContext().put("updatedBills", hashKey);
+		super.setCurrentExecutionContext(jobExecution.getExecutionContext());
+		super.putDataToExecutionContext(TraceBillConstant.UPDATED_BILL_SHARE_KEY, hashKey);
 		billShareRepository.save(hashKey, updatedBills);
 
 		return RepeatStatus.FINISHED;

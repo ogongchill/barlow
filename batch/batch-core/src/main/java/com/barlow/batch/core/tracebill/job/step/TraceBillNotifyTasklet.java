@@ -13,6 +13,8 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
+import com.barlow.batch.core.common.AbstractExecutionContextSharingManager;
+import com.barlow.batch.core.tracebill.TraceBillConstant;
 import com.barlow.batch.core.tracebill.job.UpdatedBillShareRepository;
 import com.barlow.batch.core.tracebill.job.UpdatedBills;
 import com.barlow.core.enumerate.NotificationTopic;
@@ -21,7 +23,7 @@ import com.barlow.notification.NotificationSendPort;
 
 @Component
 @StepScope
-public class TraceBillNotifyTasklet implements Tasklet {
+public class TraceBillNotifyTasklet extends AbstractExecutionContextSharingManager implements Tasklet {
 
 	private final NotificationSendPort notificationSendPort;
 	private final UpdatedBillShareRepository billShareRepository;
@@ -36,8 +38,9 @@ public class TraceBillNotifyTasklet implements Tasklet {
 
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-		Object hashKey = contribution.getStepExecution().getJobExecution().getExecutionContext().get("updatedBills");
-		UpdatedBills updatedBills = billShareRepository.findByKey((String)hashKey);
+		super.setCurrentExecutionContext(contribution.getStepExecution().getJobExecution().getExecutionContext());
+		String hashKey = super.getDataFromJobExecutionContext(TraceBillConstant.UPDATED_BILL_SHARE_KEY);
+		UpdatedBills updatedBills = billShareRepository.findByKey(hashKey);
 
 		if (!updatedBills.isEmpty()) {
 			Map<NotificationTopic, List<BillInfo>> notificationTopicMap = new EnumMap<>(NotificationTopic.class);
