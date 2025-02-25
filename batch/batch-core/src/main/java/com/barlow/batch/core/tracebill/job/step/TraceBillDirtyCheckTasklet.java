@@ -44,11 +44,11 @@ public class TraceBillDirtyCheckTasklet extends AbstractExecutionContextSharingM
 		JobExecution jobExecution = contribution.getStepExecution().getJobExecution();
 		JobParameters jobParameters = jobExecution.getJobParameters();
 		LocalDate startDate = jobParameters.getLocalDate(TraceBillConstant.TRACKING_START_DATE_JOB_PARAMETER);
-		LocalDate batchDate = jobParameters.getLocalDate(TraceBillConstant.BATCH_DATE_JOB_PARAMETER);
+		LocalDate endDate = jobParameters.getLocalDate(TraceBillConstant.TRACKING_END_DATE_JOB_PARAMETER);
 
-		CurrentBillInfoResult currentBillInfo = client.getTraceBillInfo(startDate, batchDate);
+		CurrentBillInfoResult currentBillInfo = client.getTraceBillInfo(startDate, endDate);
 		PreviousBills previousBills = new PreviousBills(
-			previousBillBatchRepository.findAllPreviousBetween(startDate, batchDate)
+			previousBillBatchRepository.findAllPreviousBetween(startDate, endDate)
 		);
 		UpdatedBills updatedBills = previousBills.dirtyCheck(currentBillInfo);
 

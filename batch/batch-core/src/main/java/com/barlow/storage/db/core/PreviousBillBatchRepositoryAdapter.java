@@ -1,7 +1,6 @@
 package com.barlow.storage.db.core;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -20,9 +19,7 @@ public class PreviousBillBatchRepositoryAdapter implements PreviousBillBatchRepo
 
 	@Override
 	public List<PreviousBillBatchEntity> findAllPreviousBetween(LocalDate start, LocalDate end) {
-		LocalDateTime startOfDay = start.atStartOfDay();
-		LocalDateTime endOfDay = end.minusDays(1).atStartOfDay();
-		return traceBillJpaRepository.findAllByCreatedAtBetween(startOfDay, endOfDay)
+		return traceBillJpaRepository.findAllByCreatedAtBetween(start.atStartOfDay(), end.atStartOfDay())
 			.stream()
 			.map(BatchTraceBillJpaEntity::toPreviousBillBatchEntity)
 			.toList();

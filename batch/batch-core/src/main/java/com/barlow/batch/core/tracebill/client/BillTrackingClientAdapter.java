@@ -43,10 +43,10 @@ public class BillTrackingClientAdapter implements BillTrackingClient {
 	}
 
 	@Override
-	public CurrentBillInfoResult getTraceBillInfo(LocalDate startProposeDate, LocalDate batchDate) {
+	public CurrentBillInfoResult getTraceBillInfo(LocalDate startProposeDate, LocalDate yesterdayDate) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String startProposeDateStr = startProposeDate.format(formatter);
-		String traceDateStr = batchDate.minusDays(1).format(formatter);
+		String traceDateStr = yesterdayDate.format(formatter);
 		BillInfoListRequest request = BillInfoListRequest.builder()
 			.startProposeDate(startProposeDateStr)
 			.endProposeDate(traceDateStr)
