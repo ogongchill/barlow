@@ -38,11 +38,10 @@ public class NotificationCenterRepositoryAdapter implements NotificationCenterRe
 		simpleJdbcInsert.executeBatch(sqlParameterSources);
 	}
 
-	private MapSqlParameterSource[] toSqlParameterSources(NotificationCenterItemInfo notificationCenterItemInfo) {
-		Long memberNo = notificationCenterItemInfo.memberNo();
-		NotificationTopic topic = NotificationTopic.valueOf(notificationCenterItemInfo.topic());
-		return notificationCenterItemInfo.items().stream()
-			.map(billItemInfo -> createSqlParameterSource(memberNo, topic, billItemInfo))
+	private MapSqlParameterSource[] toSqlParameterSources(NotificationCenterItemInfo notificationItemInfo) {
+		Long memberNo = notificationItemInfo.memberNo();
+		return notificationItemInfo.items().stream()
+			.map(billItemInfo -> createSqlParameterSource(memberNo, notificationItemInfo.topic(), billItemInfo))
 			.toArray(MapSqlParameterSource[]::new);
 	}
 
