@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.barlow.batch.core.recentbill.RecentBillConstant;
+
 @Component
 public class RecentBillBatchJobExecutor {
 
@@ -26,7 +28,7 @@ public class RecentBillBatchJobExecutor {
 
 	public RecentBillBatchJobExecutor(
 		JobLauncher jobLauncher,
-		@Qualifier("todayBillCreateBatchJob") Job job,
+		@Qualifier(RecentBillConstant.JOB_NAME) Job job,
 		@Value("${chunkSize:10}") Integer chunkSize
 	) {
 		this.jobLauncher = jobLauncher;
@@ -36,7 +38,7 @@ public class RecentBillBatchJobExecutor {
 
 	public void execute(LocalDate now) {
 		JobParameters jobParameters = new JobParameters(Map.of(
-			"batchDate", new JobParameter<>(now, LocalDate.class),
+			RecentBillConstant.BATCH_DATE_JOB_PARAMETER, new JobParameter<>(now, LocalDate.class),
 			"chunkSize", new JobParameter<>(chunkSize, Integer.class)
 		));
 		try {
