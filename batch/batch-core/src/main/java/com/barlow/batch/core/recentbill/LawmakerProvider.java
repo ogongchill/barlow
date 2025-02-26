@@ -10,7 +10,7 @@ public record LawmakerProvider(
 ) {
 	public Lawmaker provide(String name, String partyName) {
 		return lawmakers.stream()
-			.filter(lawmaker -> lawmaker.name.equals(name) && lawmaker.partyName.equals(partyName))
+			.filter(lawmaker -> lawmaker.matchesNameAndParty(name, partyName))
 			.findFirst()
 			.orElse(null);
 	}
@@ -22,5 +22,11 @@ public record LawmakerProvider(
 		@JsonProperty("POLY_NM") String partyName,
 		@JsonProperty("HOMEPAGE") String profileImagePath // fixme : profile image path 로 변경
 	) {
+		boolean matchesNameAndParty(String name, String partyName) {
+			if (partyName == null) {
+				return name.equals(this.name);
+			}
+			return name.equals(this.name) && partyName.equals(this.partyName);
+		}
 	}
 }
