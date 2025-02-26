@@ -39,6 +39,10 @@ public class TraceBillUpdateTasklet extends AbstractExecutionContextSharingManag
 		String hashKey = super.getDataFromJobExecutionContext(TraceBillConstant.UPDATED_BILL_SHARE_KEY);
 		UpdatedBills updatedBills = billShareRepository.findByKey(hashKey);
 
+		if (updatedBills.isEmpty()) {
+			return RepeatStatus.FINISHED;
+		}
+
 		UpdatedBills committeeReceived = updatedBills.filterCommitteeReceived();
 		if (!committeeReceived.isEmpty()) {
 			committeeReceived.getCommitteeReceived()
