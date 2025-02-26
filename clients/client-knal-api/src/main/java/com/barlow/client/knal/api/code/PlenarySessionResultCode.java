@@ -11,9 +11,10 @@ public enum PlenarySessionResultCode {
 	E01("가결"),
 	E02("부결"),
 	E03("대안반영폐기"),
-	E04("임기만료폐기"),
-	E05("철회"),
-	E06("계류");
+	E04("폐기"),
+	E05("임기만료폐기"),
+	E06("철회"),
+	E07("계류");
 
 	private final String description;
 

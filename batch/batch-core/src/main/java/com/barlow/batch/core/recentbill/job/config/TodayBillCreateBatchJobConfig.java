@@ -1,5 +1,11 @@
 package com.barlow.batch.core.recentbill.job.config;
 
+import static com.barlow.batch.core.recentbill.RecentBillConstant.JOB_NAME;
+import static com.barlow.batch.core.recentbill.RecentBillConstant.TODAY_BILL_NOTIFY_STEP;
+import static com.barlow.batch.core.recentbill.RecentBillConstant.WRITE_BILL_PROPOSER_STEP;
+import static com.barlow.batch.core.recentbill.RecentBillConstant.WRITE_TODAY_BILL_INFO_STEP;
+import static com.barlow.batch.core.recentbill.RecentBillConstant.WRITE_TRACKING_BILL_INFO_STEP;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
@@ -18,8 +24,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 
-import com.barlow.batch.core.recentbill.job.listener.StepExecutionContextSharingListener;
-import com.barlow.batch.core.recentbill.job.listener.StepLoggingListener;
+import com.barlow.batch.core.recentbill.job.listener.BillProposerReaderStepExecutionContextSharingListener;
+import com.barlow.batch.core.common.StepLoggingListener;
 import com.barlow.batch.core.recentbill.job.step.BillProposer;
 
 @Configuration
@@ -33,11 +39,25 @@ public class TodayBillCreateBatchJobConfig {
 
 	@Bean
 	public Job todayBillCreateBatchJob(JobExecutionListener jobExecutionListener) {
-		return new JobBuilder("todayBillCreateBatchJob", jobRepository)
+		return new JobBuilder(JOB_NAME, jobRepository)
 			.listener(jobExecutionListener)
-			.start(writeTodayBillInfoStep(null, null, null))
-			.next(setBillProposerStep(null, null, null, null, null, null))
+			.start(writeTrackingBillInfoStep(null, null, null))
+			.next(writeTodayBillInfoStep(null, null, null))
+			.next(writeBillProposerStep(null, null, null, null, null, null))
 			.next(notifyTodayBillStep(null, null, null))
+			.build();
+	}
+
+	@Bean
+	@JobScope
+	public Step writeTrackingBillInfoStep(
+		@Qualifier("trackingBillInfoWriteTasklet") Tasklet tasklet,
+		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		StepLoggingListener stepLoggingListener
+	) {
+		return new StepBuilder(WRITE_TRACKING_BILL_INFO_STEP, jobRepository)
+			.tasklet(tasklet, transactionManager)
+			.listener(stepLoggingListener)
 			.build();
 	}
 
@@ -48,7 +68,7 @@ public class TodayBillCreateBatchJobConfig {
 		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
-		return new StepBuilder("writeTodayBillInfoStep", jobRepository)
+		return new StepBuilder(WRITE_TODAY_BILL_INFO_STEP, jobRepository)
 			.tasklet(tasklet, transactionManager)
 			.listener(stepLoggingListener)
 			.build();
@@ -56,15 +76,15 @@ public class TodayBillCreateBatchJobConfig {
 
 	@Bean
 	@JobScope
-	public Step setBillProposerStep(
+	public Step writeBillProposerStep(
 		@Value("#{jobParameters[chunkSize]}") Integer chunkSize,
 		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener,
-		StepExecutionContextSharingListener stepExecutionContextSharingListener,
+		BillProposerReaderStepExecutionContextSharingListener stepExecutionContextSharingListener,
 		ItemReader<BillProposer> billProposerReader,
 		ItemWriter<BillProposer> billProposerWriter
 	) {
-		return new StepBuilder("setBillProposerStep", jobRepository)
+		return new StepBuilder(WRITE_BILL_PROPOSER_STEP, jobRepository)
 			.<BillProposer, BillProposer>chunk(chunkSize, transactionManager)
 			.reader(billProposerReader)
 			.writer(billProposerWriter)
@@ -76,13 +96,13 @@ public class TodayBillCreateBatchJobConfig {
 	@Bean
 	@JobScope
 	public Step notifyTodayBillStep(
-		@Qualifier("todayBillNotifierTasklet") Tasklet tasklet,
+		@Qualifier("todayBillNotifyTasklet") Tasklet tasklet,
 		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
 		DefaultTransactionAttribute transactionAttribute = new DefaultTransactionAttribute();
 		transactionAttribute.setPropagationBehavior(TransactionDefinition.PROPAGATION_NEVER);
-		return new StepBuilder("todayBillNotifierTasklet", jobRepository)
+		return new StepBuilder(TODAY_BILL_NOTIFY_STEP, jobRepository)
 			.tasklet(tasklet, transactionManager)
 			.transactionAttribute(transactionAttribute)
 			.listener(stepLoggingListener)

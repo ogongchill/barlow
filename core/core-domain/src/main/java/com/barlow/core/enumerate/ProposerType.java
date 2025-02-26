@@ -7,7 +7,10 @@ public enum ProposerType {
 	GOVERNMENT("정부"),
 	CHAIRMAN("위원장"),
 	SPEAKER("의장"),
-	LAWMAKER("의원");
+	LAWMAKER("의원"),
+
+	ETC("기타")
+	;
 
 	private final String value;
 

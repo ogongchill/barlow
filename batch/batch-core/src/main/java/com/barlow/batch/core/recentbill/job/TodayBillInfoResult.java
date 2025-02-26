@@ -14,8 +14,41 @@ public record TodayBillInfoResult(
 	List<BillInfoItem> items
 ) implements Serializable {
 
+	private static final String DEFAULT_BILL_PROGRESS_STATUS = "접수";
+	private static final String ALTERNATIVE_BILL_STATUS = "대안";
+
 	public int itemSize() {
 		return items.size();
+	}
+
+	public TodayBillInfoResult filterReceivedBills() {
+		List<BillInfoItem> receivedBills = items.stream()
+			.filter(BillInfoItem::isReceipt)
+			.toList();
+		return new TodayBillInfoResult(
+			receivedBills.size(),
+			receivedBills
+		);
+	}
+
+	public TodayBillInfoResult filterAlternativeBills() {
+		List<BillInfoItem> alternativeBills = items.stream()
+			.filter(BillInfoItem::isAlternative)
+			.toList();
+		return new TodayBillInfoResult(
+			alternativeBills.size(),
+			alternativeBills
+		);
+	}
+
+	public TodayBillInfoResult filteredReceivedBillsWithFewProposers() {
+		List<BillInfoItem> receivedWithFewProposers = items.stream()
+			.filter(item -> item.isReceipt() && item.isProposerLessThanTwentyOrChairman())
+			.toList();
+		return new TodayBillInfoResult(
+			receivedWithFewProposers.size(),
+			receivedWithFewProposers
+		);
 	}
 
 	public static TodayBillInfoResult from(ItemListPagingBody<BillInfoListItem> billInfoItems) {
@@ -41,13 +74,29 @@ public record TodayBillInfoResult(
 		String progressStatusCode, // 심사진행상태: 접수,소관위접수 등
 		String summary // 주요내용
 	) implements Serializable {
-		private static final String REGEX_PATTERN_TRAILING_PARENTHESIS = "^(.*?)\\((.*?)\\)(?:\\((.*?)\\))?$";
-		private static final String DEFAULT_BILL_PROGRESS_STATUS = "접수";
+		private static final String REGEX_PATTERN_TRAILING_PARENTHESIS = "^(.*?)\\(([^)]+)\\)(?:\\(([^)]+)\\))?$";
+		private static final String NON_DIGIT_REGEX = "\\D";
+
+		boolean isReceipt() {
+			return progressStatusCode.equals(DEFAULT_BILL_PROGRESS_STATUS);
+		}
+
+		boolean isAlternative() {
+			return billName.contains(ALTERNATIVE_BILL_STATUS);
+		}
+
+		boolean isProposerLessThanTwentyOrChairman() {
+			String digitStr = proposers.replaceAll(NON_DIGIT_REGEX, "");
+			if (digitStr.isBlank()) {
+				return true;
+			}
+			return Integer.parseInt(digitStr) < 20;
+		}
 
 		static BillInfoItem from(BillInfoListItem listItem) {
 			Pattern pattern = Pattern.compile(REGEX_PATTERN_TRAILING_PARENTHESIS);
 			Matcher matcher = pattern.matcher(listItem.billName());
-			if (matcher.find() && listItem.procStageCd().equals(DEFAULT_BILL_PROGRESS_STATUS)) {
+			if (matcher.find() && matcher.group(3) == null) {
 				return new BillInfoItem(
 					listItem.billId(),
 					listItem.billNo(),
@@ -56,6 +105,20 @@ public record TodayBillInfoResult(
 					listItem.passGubn(),
 					listItem.proposerKind(),
 					matcher.group(2),
+					listItem.proposeDt(),
+					listItem.procDt(),
+					listItem.procStageCd(),
+					listItem.summary()
+				);
+			} else if (matcher.group(2).equals(ALTERNATIVE_BILL_STATUS) && matcher.group(3) != null) {
+				return new BillInfoItem(
+					listItem.billId(),
+					listItem.billNo(),
+					String.format("%s(%s)", matcher.group(1), matcher.group(2)),
+					listItem.generalResult(),
+					listItem.passGubn(),
+					listItem.proposerKind(),
+					matcher.group(3),
 					listItem.proposeDt(),
 					listItem.procDt(),
 					listItem.procStageCd(),

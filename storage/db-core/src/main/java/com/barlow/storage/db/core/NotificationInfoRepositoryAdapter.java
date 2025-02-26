@@ -25,10 +25,10 @@ public class NotificationInfoRepositoryAdapter implements NotificationInfoReposi
 			notificationConfigJpaRepository.findAllByEnableTrueAndTopic(NotificationTopic.findByValue(topic))
 				.stream()
 				.collect(Collectors.groupingBy(
-					projection -> NotificationInfo.Topic.initialize(projection.topic().getValue()),
+					projection -> NotificationInfo.Topic.initialize(projection.topic()),
 					Collectors.mapping(projection -> new NotificationInfo.Subscriber(
 						projection.memberNo(),
-						projection.deviceOs().name(),
+						projection.deviceOs(),
 						projection.deviceToken()
 					), Collectors.toList())
 				))
@@ -36,19 +36,16 @@ public class NotificationInfoRepositoryAdapter implements NotificationInfoReposi
 	}
 
 	@Override
-	public NotificationInfo retrieveNotificationInfosByTopics(Set<String> topics) {
-		Set<NotificationTopic> notificationTopics = topics.stream()
-			.map(NotificationTopic::valueOf)
-			.collect(Collectors.toUnmodifiableSet());
+	public NotificationInfo retrieveNotificationInfosByTopics(Set<NotificationTopic> topics) {
 		List<NotificationInfoProjection> projections = notificationConfigJpaRepository
-			.findAllByEnableTrueAndTopicIn(notificationTopics);
+			.findAllByEnableTrueAndTopicIn(topics);
 		return new NotificationInfo(
 			projections.stream()
 				.collect(Collectors.groupingBy(
-					projection -> NotificationInfo.Topic.initialize(projection.topic().getValue()),
+					projection -> NotificationInfo.Topic.initialize(projection.topic()),
 					Collectors.mapping(projection -> new NotificationInfo.Subscriber(
 						projection.memberNo(),
-						projection.deviceOs().name(),
+						projection.deviceOs(),
 						projection.deviceToken()
 					), Collectors.toList())
 				))

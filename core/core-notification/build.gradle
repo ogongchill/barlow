@@ -1,4 +1,6 @@
 dependencies {
-    compileOnly("org.springframework:spring-context")
+    compileOnly 'org.springframework:spring-context'
+    compileOnly project(":core:core-domain")
+
     implementation 'com.google.firebase:firebase-admin:9.4.1'
 }

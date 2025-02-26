@@ -1,10 +1,8 @@
-package com.barlow.batch.core.recentbill.job;
+package com.barlow.batch.core.common;
 
 import org.springframework.batch.item.ExecutionContext;
 
 public abstract class AbstractExecutionContextSharingManager {
-
-	public static final String TODAY_BILL_INFO_JOB_KEY = "TODAY_BILL_INFO";
 
 	private ExecutionContext executionContext;
 
