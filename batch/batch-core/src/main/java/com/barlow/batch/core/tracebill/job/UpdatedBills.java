@@ -24,8 +24,13 @@ public class UpdatedBills {
 	}
 
 	public UpdatedBills filterCommitteeReceived() {
+		Map<ProgressStatus, List<BillInfo>> map = new EnumMap<>(ProgressStatus.class);
 		List<BillInfo> receivedBillInfo = values.get(ProgressStatus.COMMITTEE_RECEIVED);
-		return new UpdatedBills(Map.of(ProgressStatus.RECEIVED, receivedBillInfo));
+		if (receivedBillInfo == null) {
+			return new UpdatedBills(map);
+		}
+		map.put(ProgressStatus.COMMITTEE_RECEIVED, receivedBillInfo);
+		return new UpdatedBills(map);
 	}
 
 	public List<BillInfo> getCommitteeReceived() {
