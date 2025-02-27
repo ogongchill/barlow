@@ -1,0 +1,18 @@
+auth:
+  jwt:
+    crypto:
+      private-key: ${auth.jwt.crypto.private-key}|
+      public-key: ${auth.jwt.crypto.public-key}
+
+---
+spring.config.activate.on-profile: local
+
+---
+spring.config.activate.on-profile:
+  - local-dev
+  - dev
+
+---
+spring.config.activate.on-profile:
+  - staging
+  - live
