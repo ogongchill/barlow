@@ -2,8 +2,8 @@ package com.barlow.core.auth.authentication.token;
 
 import com.auth0.jwt.JWT;
 import com.barlow.core.auth.authentication.core.MemberPrincipal;
-import com.barlow.core.auth.support.crypto.PrivateKeyAlgorithm;
-import com.barlow.core.auth.support.jwt.JwtConfig;
+import com.barlow.core.support.crypto.PrivateKeyAlgorithm;
+import com.barlow.core.support.jwt.JwtConfig;
 import org.springframework.stereotype.Component;
 
 @Component

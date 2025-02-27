@@ -1,7 +1,7 @@
 package com.barlow.core.auth.config;
 
-import com.barlow.core.auth.support.crypto.PrivateKeyAlgorithm;
-import com.barlow.core.auth.support.crypto.PublicKeyAlgorithm;
+import com.barlow.core.support.crypto.PrivateKeyAlgorithm;
+import com.barlow.core.support.crypto.PublicKeyAlgorithm;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

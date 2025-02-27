@@ -6,8 +6,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.barlow.core.auth.support.crypto.PublicKeyAlgorithm;
-import com.barlow.core.auth.support.jwt.JwtConfig;
+import com.barlow.core.support.crypto.PublicKeyAlgorithm;
+import com.barlow.core.support.jwt.JwtConfig;
 import org.springframework.stereotype.Component;
 
 @Component

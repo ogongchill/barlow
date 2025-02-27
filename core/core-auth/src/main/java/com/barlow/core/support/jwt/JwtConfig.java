@@ -1,4 +1,4 @@
-package com.barlow.core.auth.support.jwt;
+package com.barlow.core.support.jwt;
 
 
 import java.time.Duration;

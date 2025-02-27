@@ -1,4 +1,4 @@
-package com.barlow.core.auth.support.crypto;
+package com.barlow.core.support.crypto;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;

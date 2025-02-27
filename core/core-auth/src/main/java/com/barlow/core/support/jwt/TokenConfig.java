@@ -1,4 +1,4 @@
-package com.barlow.core.auth.support.jwt;
+package com.barlow.core.support.jwt;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
