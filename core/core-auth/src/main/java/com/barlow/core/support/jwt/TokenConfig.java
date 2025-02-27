@@ -3,13 +3,16 @@ package com.barlow.core.support.jwt;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.Duration;
-
 @Configuration
 public class TokenConfig {
 
-    @Bean
-    public JwtConfig accessTokenConfig() {
-        return new JwtConfig("barlow", Duration.ofDays(7));
-    }
+	@Bean
+	public JwtConfig accessTokenConfig() {
+		return JwtConfig.createAccessToken();
+	}
+
+	@Bean
+	public JwtConfig refreshTokenConfig() {
+		return JwtConfig.createRefreshToken();
+	}
 }

@@ -1,43 +1,51 @@
 package com.barlow.core.support.jwt;
 
-
 import java.time.Duration;
 
 public class JwtConfig {
 
-    private final String issuer;
-    private final Duration tokenLifeTime;
+	private static final String JWT_ISSUER = "barlow-core-auth";
 
-    public JwtConfig(String issuer, Duration tokenLifeTime) {
-        this.issuer = issuer;
-        this.tokenLifeTime = tokenLifeTime;
-    }
+	private final String issuer;
+	private final Duration tokenLifeTime;
 
-    public String getIssuer() {
-        return issuer;
-    }
+	private JwtConfig(String issuer, Duration tokenLifeTime) {
+		this.issuer = issuer;
+		this.tokenLifeTime = tokenLifeTime;
+	}
 
-    public Duration getTokenLifeTime() {
-        return tokenLifeTime;
-    }
+	static JwtConfig createAccessToken() {
+		return new JwtConfig(JWT_ISSUER, Duration.ofDays(1));
+	}
 
-    public enum Claims {
+	static JwtConfig createRefreshToken() {
+		return new JwtConfig(JWT_ISSUER, Duration.ofDays(30));
+	}
 
-        ISSUER("iss"),
-        ROLE("role"),
-        MEMBER_NO("memberNo"),
-        EXPIRATION("exp"),
-        ISSUED_AT("iat")
-        ;
+	public String getIssuer() {
+		return issuer;
+	}
 
-        private final String name;
+	public Duration getTokenLifeTime() {
+		return tokenLifeTime;
+	}
 
-        Claims(String claimName) {
-            this.name = claimName;
-        }
+	public enum Claims {
 
-        public String getName() {
-            return name;
-        }
-    }
+		ISSUER("iss"),
+		ROLE("role"),
+		MEMBER_NO("memberNo"),
+		EXPIRATION("exp"),
+		ISSUED_AT("iat");
+
+		private final String name;
+
+		Claims(String claimName) {
+			this.name = claimName;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
 }

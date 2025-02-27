@@ -1,53 +1,38 @@
 package com.barlow.core.support.crypto;
 
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.io.ClassPathResource;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 
+import com.auth0.jwt.algorithms.Algorithm;
+
 @Configuration
-@PropertySource(value = "classpath:crypto.properties")
 public class AlgorithmConfig {
 
-    @Value("${crypto.private}")
-    private String privateKeyPath;
+	@Bean
+	RSAKeyFactory rsaKeyFactory() {
+		return new RSAKeyFactory();
+	}
 
-    @Value("${crypto.public}")
-    private String publicKeyPath;
+	@Bean
+	public Algorithm jwtPrivateKeyAlgorithm(
+		@Value("${auth.jwt.crypto.private-key}") String privateKeyStr,
+		RSAKeyFactory rsaKeyFactory
+	) throws InvalidKeySpecException {
+		RSAPrivateKey privateKey = rsaKeyFactory.createPrivateKey(privateKeyStr);
+		return Algorithm.RSA256(privateKey);
+	}
 
-    @Bean
-    PublicKeyAlgorithm publicKeyAlgorithm() {
-        try {
-            String keyString = FileReader.read(publicKeyPath);
-            return PublicKeyAlgorithm.from(keyString);
-        } catch (InvalidKeySpecException | IOException e) {
-            throw new BeanCreationException("fail during create publicKey", e);
-        }
-    }
-
-    @Bean
-    PrivateKeyAlgorithm privateKeyAlgorithm() {
-        try {
-            String keyString = FileReader.read(privateKeyPath);
-            return PrivateKeyAlgorithm.from(keyString);
-        } catch (InvalidKeySpecException | IOException e) {
-            throw new BeanCreationException("fail during create privateKey", e);
-        }
-    }
-
-
-    static class FileReader {
-        public static String read(String fileName) throws IOException {
-            ClassPathResource resource = new ClassPathResource(fileName);
-            InputStream inputStream = resource.getInputStream();
-            return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-        }
-    }
+	@Bean
+	public Algorithm jwtPublicKeyAlgorithm(
+		@Value("${auth.jwt.crypto.public-key}") String publicKeyStr,
+		RSAKeyFactory rsaKeyFactory
+	) throws InvalidKeySpecException {
+		RSAPublicKey publicKey = rsaKeyFactory.createPublicKey(publicKeyStr);
+		return Algorithm.RSA256(publicKey);
+	}
 }
