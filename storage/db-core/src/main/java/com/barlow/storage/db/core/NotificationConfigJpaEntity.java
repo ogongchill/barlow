@@ -1,5 +1,9 @@
 package com.barlow.storage.db.core;
 
+import com.barlow.core.domain.User;
+import com.barlow.core.domain.notificationsetting.NotificationSetting;
+import com.barlow.core.enumerate.NotificationTopic;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,7 +23,7 @@ public class NotificationConfigJpaEntity extends BaseTimeJpaEntity {
 	private Long no;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "topic", nullable = false)
+	@Column(columnDefinition = "varchar(100)", name = "topic", nullable = false)
 	private NotificationTopic topic;
 
 	@Column(name = "enable", nullable = false)
@@ -43,5 +47,9 @@ public class NotificationConfigJpaEntity extends BaseTimeJpaEntity {
 
 	public Long getMemberNo() {
 		return memberNo;
+	}
+
+	NotificationSetting toNotificationSetting(User user) {
+		return new NotificationSetting(user, topic, enable);
 	}
 }

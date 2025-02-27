@@ -6,27 +6,27 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.barlow.core.domain.recentbill.RecentBillPost;
-import com.barlow.core.domain.recentbill.RecentBillPostsStatus;
+import com.barlow.core.domain.billpost.BillPost;
+import com.barlow.core.domain.billpost.BillPostsStatus;
 
 public class RecentBillPostsApiSpecComposer {
 
-	private final RecentBillPostsStatus recentBillPostsStatus;
+	private final BillPostsStatus billPostsStatus;
 
-	public RecentBillPostsApiSpecComposer(RecentBillPostsStatus recentBillPostsStatus) {
-		this.recentBillPostsStatus = recentBillPostsStatus;
+	public RecentBillPostsApiSpecComposer(BillPostsStatus billPostsStatus) {
+		this.billPostsStatus = billPostsStatus;
 	}
 
 	RecentBillPostsResponse compose(LocalDate today) {
 		return new RecentBillPostsResponse(
 			composeByDatePredicate(recentBillPost -> recentBillPost.getCreatedAt().toLocalDate().isEqual(today)),
 			composeByDatePredicate(recentBillPost -> recentBillPost.getCreatedAt().toLocalDate().isBefore(today)),
-			recentBillPostsStatus.isLastPage()
+			billPostsStatus.isLastPage()
 		);
 	}
 
-	private List<RecentBillPostThumbnail> composeByDatePredicate(Predicate<RecentBillPost> filterCondition) {
-		return recentBillPostsStatus.recentBillPosts()
+	private List<RecentBillPostThumbnail> composeByDatePredicate(Predicate<BillPost> filterCondition) {
+		return billPostsStatus.billPosts()
 			.stream()
 			.filter(filterCondition)
 			.map(recentBillPost -> new RecentBillPostThumbnail(

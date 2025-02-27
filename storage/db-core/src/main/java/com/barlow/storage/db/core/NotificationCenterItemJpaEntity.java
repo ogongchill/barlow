@@ -1,6 +1,7 @@
 package com.barlow.storage.db.core;
 
 import com.barlow.core.domain.home.notificationcenter.NotificationCenterItem;
+import com.barlow.core.enumerate.NotificationTopic;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,11 +24,11 @@ public class NotificationCenterItemJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "member_no", nullable = false)
 	private Long memberNo;
 
-	@Column(name = "bill_id", nullable = false)
+	@Column(name = "bill_id")
 	private String billId;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "notification_topic", nullable = false)
+	@Column(columnDefinition = "varchar(100)", name = "notification_topic", nullable = false)
 	private NotificationTopic notificationTopic;
 
 	@Column(name = "title", nullable = false)
@@ -42,8 +43,7 @@ public class NotificationCenterItemJpaEntity extends BaseTimeJpaEntity {
 	NotificationCenterItem toNotificationItem() {
 		return new NotificationCenterItem(
 			billId,
-			notificationTopic.name(),
-			notificationTopic.getIconUrl(),
+			notificationTopic,
 			title,
 			body,
 			getCreatedAt()

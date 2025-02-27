@@ -1,5 +1,7 @@
 package com.barlow.storage.db.core;
 
+import com.barlow.core.enumerate.DeviceOs;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,7 +24,7 @@ public class DeviceJpaEntity extends BaseTimeJpaEntity {
 	private String deviceId;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "device_os", nullable = false)
+	@Column(columnDefinition = "varchar(10)", name = "device_os", nullable = false)
 	private DeviceOs deviceOs;
 
 	@Column(name = "token", nullable = false, length = 100)
@@ -32,7 +34,7 @@ public class DeviceJpaEntity extends BaseTimeJpaEntity {
 	private Long memberNo;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "device_status", nullable = false)
+	@Column(columnDefinition = "varchar(10)", name = "device_status", nullable = false)
 	private Status status;
 
 	protected DeviceJpaEntity() {

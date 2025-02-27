@@ -1,6 +1,6 @@
 package com.barlow.storage.db.core;
 
-import static com.barlow.storage.db.core.NotificationTopic.HOUSE_STEERING;
+import static com.barlow.core.enumerate.NotificationTopic.HOUSE_STEERING;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import java.util.List;

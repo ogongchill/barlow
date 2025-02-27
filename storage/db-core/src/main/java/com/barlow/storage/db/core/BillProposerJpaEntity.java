@@ -1,6 +1,7 @@
 package com.barlow.storage.db.core;
 
-import com.barlow.core.domain.recentbill.BillProposer;
+import com.barlow.core.domain.billpost.BillProposer;
+import com.barlow.core.enumerate.PartyName;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,8 +24,8 @@ public class BillProposerJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "propose_bill_id", nullable = false)
 	private String proposeBillId;
 
-	@Column(name = "proposer_no", nullable = false)
-	private Long proposerNo;
+	@Column(name = "proposer_code", nullable = false)
+	private String proposerCode;
 
 	@Column(name = "proposer_name", nullable = false)
 	private String proposerName;
@@ -33,7 +34,7 @@ public class BillProposerJpaEntity extends BaseTimeJpaEntity {
 	private String proposerProfileImagePath;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "party_name", nullable = false)
+	@Column(columnDefinition = "varchar(50)", name = "party_name", nullable = false)
 	private PartyName partyName;
 
 	protected BillProposerJpaEntity() {
@@ -41,7 +42,7 @@ public class BillProposerJpaEntity extends BaseTimeJpaEntity {
 
 	BillProposer toBillProposer() {
 		return new BillProposer(
-			proposerNo,
+			proposerCode,
 			proposerName,
 			partyName.getValue(),
 			proposerProfileImagePath

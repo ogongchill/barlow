@@ -1,6 +1,8 @@
 package com.barlow.storage.db.core;
 
+import com.barlow.core.domain.legislationaccount.LegislationAccount;
 import com.barlow.core.domain.home.MyLegislationAccount;
+import com.barlow.core.enumerate.LegislationType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +23,7 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 	private Long no;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "legislation_type", nullable = false)
+	@Column(columnDefinition = "varchar(100)", name = "legislation_type", nullable = false)
 	private LegislationType legislationType;
 
 	@Column(name = "description", nullable = false, length = 500)
@@ -36,14 +38,27 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 	protected LegislationAccountJpaEntity() {
 	}
 
+	boolean isCommittee() {
+		return !legislationType.equals(LegislationType.GOVERNMENT)
+			&& !legislationType.equals(LegislationType.SPEAKER)
+			&& !legislationType.equals(LegislationType.EMPTY);
+	}
+
+	LegislationAccount toLegislationAccount() {
+		return new LegislationAccount(
+			no,
+			legislationType,
+			description,
+			postCount,
+			subscriberCount
+		);
+	}
+
 	MyLegislationAccount toMyLegislationAccount() {
 		return new MyLegislationAccount(
 			no,
 			legislationType.getValue(),
-			legislationType.getIconUrl(),
-			description,
-			postCount,
-			subscriberCount
+			legislationType.getIconPath()
 		);
 	}
 }

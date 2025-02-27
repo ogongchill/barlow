@@ -8,6 +8,8 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import com.barlow.core.enumerate.NotificationTopic;
+
 @Component
 public class CommitteeNotificationInfoReader implements NotificationInfoReader {
 
@@ -20,8 +22,8 @@ public class CommitteeNotificationInfoReader implements NotificationInfoReader {
 	@Override
 	public NotificationInfo readNotificationInfos(NotificationRequest request) {
 		CommitteeBillNotificationRequest notificationRequest = checkAndConvert(request);
-		Map<String, List<BillInfo>> topicsWithBillInfos = notificationRequest.topicsWithBillInfos();
-		Set<String> topics = topicsWithBillInfos.keySet();
+		Map<NotificationTopic, List<BillInfo>> topicsWithBillInfos = notificationRequest.topicsWithBillInfos();
+		Set<NotificationTopic> topics = topicsWithBillInfos.keySet();
 		NotificationInfo notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopics(topics);
 		topicsWithBillInfos.forEach((topic, billInfos) ->
 			notificationInfos.assignBillTotalCountPerTopic(topic, billInfos.size()));

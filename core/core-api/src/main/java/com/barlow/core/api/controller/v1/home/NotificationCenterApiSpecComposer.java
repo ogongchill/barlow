@@ -3,6 +3,7 @@ package com.barlow.core.api.controller.v1.home;
 import java.util.List;
 
 import com.barlow.core.domain.home.notificationcenter.NotificationCenterItem;
+import com.barlow.core.enumerate.NotificationTopic;
 
 public class NotificationCenterApiSpecComposer {
 
@@ -12,8 +13,8 @@ public class NotificationCenterApiSpecComposer {
 		this.items = items;
 	}
 
-	NotificationCenterResponse compose(String filterTopic) {
-		if (filterTopic == null || filterTopic.isEmpty()) {
+	NotificationCenterResponse compose(NotificationTopic filterTopic) {
+		if (filterTopic == null) {
 			return new NotificationCenterResponse(
 				items.stream()
 					.map(NotificationCenterResponse.Item::from)
