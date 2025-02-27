@@ -11,7 +11,11 @@ rootProject.name = 'barlow'
 include 'core:core-api'
 include 'core:core-domain'
 include 'core:core-notification'
+include 'core:core-auth'
+
 include 'storage:db-core'
 include 'support:logging'
-include 'clients:client-knal-api'
+
 include 'batch:batch-core'
+
+include 'clients:client-knal-api'
