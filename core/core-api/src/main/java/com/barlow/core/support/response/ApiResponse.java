@@ -23,11 +23,11 @@ public class ApiResponse<T> {
 		return new ApiResponse<>(ResultType.SUCCESS, data, null);
 	}
 
-	public static ApiResponse<?> error(CoreApiErrorType error) {
+	public static ApiResponse<Void> error(CoreApiErrorType error) {
 		return new ApiResponse<>(ResultType.ERROR, null, new CoreApiErrorMessage(error));
 	}
 
-	public static ApiResponse<?> error(CoreApiErrorType error, Object errorData) {
+	public static ApiResponse<Void> error(CoreApiErrorType error, Object errorData) {
 		return new ApiResponse<>(ResultType.ERROR, null, new CoreApiErrorMessage(error, errorData));
 	}
 
