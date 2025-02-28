@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.legislationaccount.LegislationAccount;
 import com.barlow.core.domain.legislationaccount.LegislationAccountRetrieveService;
+import com.barlow.core.support.annotation.PassportUser;
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
@@ -27,14 +28,14 @@ public class LegislationAccountRetrieveController {
 	@GetMapping("/{accountNo}/profile")
 	public ApiResponse<LegislationAccountProfileResponse> retrieveProfile(
 		@PathVariable Long accountNo,
-		User user
+		@PassportUser User user
 	) {
 		LegislationAccount legislationAccount = legislationAccountRetrieveService.retrieve(accountNo, user);
 		return ApiResponse.success(LegislationAccountProfileResponse.from(legislationAccount));
 	}
 
 	@GetMapping("/committees/info")
-	public ApiResponse<CommitteeAccountResponse> retrieveCommitteeAccounts(User user) {
+	public ApiResponse<CommitteeAccountResponse> retrieveCommitteeAccounts(@PassportUser User user) {
 		List<LegislationAccount> legislationAccounts = legislationAccountRetrieveService.retrieveAllCommittees(user);
 		return ApiResponse.success(CommitteeAccountResponse.from(legislationAccounts));
 	}
