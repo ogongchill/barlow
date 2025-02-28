@@ -1,5 +1,6 @@
 dependencies {
     compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly project(":core:core-domain")
 
     implementation 'com.auth0:java-jwt:4.4.0'
 
