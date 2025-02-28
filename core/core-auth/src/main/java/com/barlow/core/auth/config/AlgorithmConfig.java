@@ -1,4 +1,4 @@
-package com.barlow.core.support.crypto;
+package com.barlow.core.auth.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
