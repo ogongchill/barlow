@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.menu.MenuFacade;
 import com.barlow.core.enumerate.LegislationType;
+import com.barlow.core.support.annotation.PassportUser;
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
@@ -24,7 +25,7 @@ public class MenuController {
 	@PostMapping("/notifications/{legislationType}/activate")
 	public ApiResponse<Void> activateNotify(
 		@PathVariable LegislationType legislationType,
-		User user
+		@PassportUser User user
 	) {
 		menuFacade.activateNotify(legislationType, user);
 		return ApiResponse.success();
@@ -33,14 +34,14 @@ public class MenuController {
 	@PostMapping("/notifications/{legislationType}/deactivate")
 	public ApiResponse<Void> deactivateNotify(
 		@PathVariable LegislationType legislationType,
-		User user
+		@PassportUser User user
 	) {
 		menuFacade.deactivateNotify(legislationType, user);
 		return ApiResponse.success();
 	}
 
 	@GetMapping("/notifications")
-	public ApiResponse<NotificationMenuResponse> retrieveNotifications(User user) {
+	public ApiResponse<NotificationMenuResponse> retrieveNotifications(@PassportUser User user) {
 		return ApiResponse.success(NotificationMenuResponse.from(menuFacade.retrieveNotificationSettingMenu(user)));
 	}
 }

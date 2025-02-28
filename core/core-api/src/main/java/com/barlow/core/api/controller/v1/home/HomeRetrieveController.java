@@ -12,6 +12,7 @@ import com.barlow.core.domain.home.HomeRetrieveService;
 import com.barlow.core.domain.home.HomeStatus;
 import com.barlow.core.domain.home.notificationcenter.NotificationCenterItemRetrieveService;
 import com.barlow.core.enumerate.NotificationTopic;
+import com.barlow.core.support.annotation.PassportUser;
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
@@ -30,7 +31,7 @@ public class HomeRetrieveController {
 	}
 
 	@GetMapping
-	public ApiResponse<HomeResponse> retrieveHome(User user) {
+	public ApiResponse<HomeResponse> retrieveHome(@PassportUser User user) {
 		HomeStatus homeStatus = homeRetrieveService.retrieveHome(user);
 		List<HomeResponse.SubscribeLegislationBody> subscribeLegislationBodies = homeStatus.myLegislationAccounts()
 			.stream()
@@ -49,7 +50,7 @@ public class HomeRetrieveController {
 
 	@GetMapping("/notification-center")
 	public ApiResponse<NotificationCenterResponse> retrieveNotificationCenter(
-		User user,
+		@PassportUser User user,
 		@RequestParam(name = "filterTopic", required = false) NotificationTopic filterTopic
 	) {
 		NotificationCenterApiSpecComposer notificationCenterApiSpecComposer = new NotificationCenterApiSpecComposer(

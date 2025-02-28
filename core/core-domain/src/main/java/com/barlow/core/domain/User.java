@@ -5,29 +5,27 @@ import java.util.Objects;
 public class User {
 
 	private final long userNo;
-	private final String userId;
 	private final Role role;
 
-	private User(long userNo, String userId, Role role) {
+	private User(long userNo, Role role) {
 		this.userNo = userNo;
-		this.userId = userId;
 		this.role = role;
 	}
 
-	public static User authorizedOf(Long userNo, String userId) {
-		return new User(userNo, userId, Role.AUTHORIZED_USER);
+	public static User of(Long userNo, String role) {
+		return new User(userNo, Role.valueOf(role.toUpperCase()));
 	}
 
-	public static User unAuthorizedOf(Long userNo, String userId) {
-		return new User(userNo, userId, Role.UNAUTHORIZED_USER);
+	public boolean isMemberUser() {
+		return this.role == Role.MEMBER;
 	}
 
-	boolean isAuthorizedUser() {
-		return this.role == Role.AUTHORIZED_USER;
+	public boolean isGuestUser() {
+		return this.role == Role.GUEST;
 	}
 
-	boolean isUnauthorizedUser() {
-		return this.role == Role.UNAUTHORIZED_USER;
+	public boolean isAdminUser() {
+		return this.role == Role.ADMIN;
 	}
 
 	public long getUserNo() {
@@ -35,7 +33,7 @@ public class User {
 	}
 
 	enum Role {
-		ADMIN, AUTHORIZED_USER, UNAUTHORIZED_USER;
+		ADMIN, MEMBER, GUEST;
 	}
 
 	@Override
@@ -45,11 +43,11 @@ public class User {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		User user = (User)o;
-		return userNo == user.userNo && Objects.equals(userId, user.userId) && role == user.role;
+		return userNo == user.userNo && role == user.role;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(userNo, userId, role);
+		return Objects.hash(userNo, role);
 	}
 }
