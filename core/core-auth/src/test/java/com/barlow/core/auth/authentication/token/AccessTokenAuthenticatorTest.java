@@ -6,7 +6,7 @@ import com.barlow.core.auth.authentication.core.AuthenticationException;
 import com.barlow.core.auth.authentication.core.AuthenticationExceptionType;
 import com.barlow.core.auth.authentication.core.MemberPrincipal;
 import com.barlow.core.auth.config.TestKeyConfig;
-import com.barlow.core.support.jwt.TokenConfig;
+import com.barlow.core.auth.config.TokenConfig;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

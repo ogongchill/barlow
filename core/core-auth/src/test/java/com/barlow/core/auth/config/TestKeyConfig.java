@@ -1,8 +1,6 @@
 package com.barlow.core.auth.config;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import com.barlow.core.support.crypto.AlgorithmConfig;
-import com.barlow.core.support.crypto.RSAKeyFactory;
 
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.test.context.TestConfiguration;

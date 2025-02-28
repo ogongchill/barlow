@@ -2,7 +2,7 @@ package com.barlow.core.auth.support.crypto;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.barlow.core.support.crypto.AlgorithmConfig;
+import com.barlow.core.auth.config.AlgorithmConfig;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
