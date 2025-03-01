@@ -12,19 +12,26 @@ public enum NotificationTopic {
 	NATIONAL_POLICY(LegislationType.NATIONAL_POLICY.getValue(), "default/icon-image-url"),
 	STRATEGY_AND_FINANCE(LegislationType.STRATEGY_AND_FINANCE.getValue(), "default/icon-image-url"),
 	EDUCATION(LegislationType.EDUCATION.getValue(), "default/icon-image-url"),
-	SCIENCE_ICT_BROADCASTING_AND_COMMUNICATIONS(LegislationType.SCIENCE_ICT_BROADCASTING_AND_COMMUNICATIONS.getValue(), "default/icon-image-url"),
-	FOREIGN_AFFAIRS_AND_UNIFICATION(LegislationType.FOREIGN_AFFAIRS_AND_UNIFICATION.getValue(), "default/icon-image-url"),
+	SCIENCE_ICT_BROADCASTING_AND_COMMUNICATIONS(LegislationType.SCIENCE_ICT_BROADCASTING_AND_COMMUNICATIONS.getValue(),
+		"default/icon-image-url"),
+	FOREIGN_AFFAIRS_AND_UNIFICATION(LegislationType.FOREIGN_AFFAIRS_AND_UNIFICATION.getValue(),
+		"default/icon-image-url"),
 	NATIONAL_DEFENSE(LegislationType.NATIONAL_DEFENSE.getValue(), "default/icon-image-url"),
-	PUBLIC_ADMINISTRATION_AND_SECURITY(LegislationType.PUBLIC_ADMINISTRATION_AND_SECURITY.getValue(), "default/icon-image-url"),
+	PUBLIC_ADMINISTRATION_AND_SECURITY(LegislationType.PUBLIC_ADMINISTRATION_AND_SECURITY.getValue(),
+		"default/icon-image-url"),
 	CULTURE_SPORTS_AND_TOURISM(LegislationType.CULTURE_SPORTS_AND_TOURISM.getValue(), "default/icon-image-url"),
-	AGRICULTURE_FOOD_RURAL_AFFAIRS_OCEANS_AND_FISHERIES(LegislationType.AGRICULTURE_FOOD_RURAL_AFFAIRS_OCEANS_AND_FISHERIES.getValue(), "default/icon-image-url"),
-	TRADE_INDUSTRY_ENERGY_SMES_AND_STARTUPS(LegislationType.TRADE_INDUSTRY_ENERGY_SMES_AND_STARTUPS.getValue(), "default/icon-image-url"),
+	AGRICULTURE_FOOD_RURAL_AFFAIRS_OCEANS_AND_FISHERIES(
+		LegislationType.AGRICULTURE_FOOD_RURAL_AFFAIRS_OCEANS_AND_FISHERIES.getValue(), "default/icon-image-url"),
+	TRADE_INDUSTRY_ENERGY_SMES_AND_STARTUPS(LegislationType.TRADE_INDUSTRY_ENERGY_SMES_AND_STARTUPS.getValue(),
+		"default/icon-image-url"),
 	HEALTH_AND_WELFARE(LegislationType.HEALTH_AND_WELFARE.getValue(), "default/icon-image-url"),
 	ENVIRONMENT_AND_LABOR(LegislationType.ENVIRONMENT_AND_LABOR.getValue(), "default/icon-image-url"),
-	LAND_INFRASTRUCTURE_AND_TRANSPORT(LegislationType.LAND_INFRASTRUCTURE_AND_TRANSPORT.getValue(), "default/icon-image-url"),
+	LAND_INFRASTRUCTURE_AND_TRANSPORT(LegislationType.LAND_INFRASTRUCTURE_AND_TRANSPORT.getValue(),
+		"default/icon-image-url"),
 	INTELLIGENCE(LegislationType.INTELLIGENCE.getValue(), "default/icon-image-url"),
 	GENDER_EQUALITY_FAMILY(LegislationType.GENDER_EQUALITY_FAMILY.getValue(), "default/icon-image-url"),
-	SPECIAL_COMMITTEE_ON_BUDGET_ACCOUNTS(LegislationType.SPECIAL_COMMITTEE_ON_BUDGET_ACCOUNTS.getValue(), "default/icon-image-url"),
+	SPECIAL_COMMITTEE_ON_BUDGET_ACCOUNTS(LegislationType.SPECIAL_COMMITTEE_ON_BUDGET_ACCOUNTS.getValue(),
+		"default/icon-image-url"),
 
 	/**
 	 * 법안 알림 : default 로 5개 전부 동의된 알림 (수정가능)
@@ -78,6 +85,10 @@ public enum NotificationTopic {
 			.orElseThrow(() -> new IllegalArgumentException(
 				String.format("%s 에 대응하는 NotificationTopic 이 존재하지 않습니다", progressStatus)
 			));
+	}
+
+	public boolean isDefault() {
+		return this.ordinal() > MAX_LEGISLATION_BODY_ORD && this.ordinal() <= 22;
 	}
 
 	public static boolean isNotifiableProgressStatus(ProgressStatus progressStatus) {

@@ -1,5 +1,6 @@
 package com.barlow.storage.db.core;
 
+import com.barlow.core.domain.account.Device;
 import com.barlow.core.enumerate.DeviceOs;
 
 import jakarta.persistence.Column;
@@ -35,12 +36,12 @@ public class DeviceJpaEntity extends BaseTimeJpaEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "varchar(10)", name = "device_status", nullable = false)
-	private Status status;
+	private Device.Status status;
 
 	protected DeviceJpaEntity() {
 	}
 
-	public DeviceJpaEntity(String deviceId, DeviceOs deviceOs, String token, Long memberNo, Status status) {
+	public DeviceJpaEntity(String deviceId, DeviceOs deviceOs, String token, Long memberNo, Device.Status status) {
 		this.deviceId = deviceId;
 		this.deviceOs = deviceOs;
 		this.token = token;
@@ -48,7 +49,19 @@ public class DeviceJpaEntity extends BaseTimeJpaEntity {
 		this.status = status;
 	}
 
-	enum Status {
-		ACTIVE, INACTIVE;
+	public DeviceJpaEntity(String deviceId, DeviceOs deviceOs, String token, Long memberNo) {
+		this.deviceId = deviceId;
+		this.deviceOs = deviceOs;
+		this.token = token;
+		this.memberNo = memberNo;
+		this.status = Device.Status.ACTIVE;
+	}
+
+	Device toDevice() {
+		return new Device(memberNo, deviceId, deviceOs, token, status);
+	}
+
+	void inactivate() {
+		this.status = Device.Status.INACTIVE;
 	}
 }

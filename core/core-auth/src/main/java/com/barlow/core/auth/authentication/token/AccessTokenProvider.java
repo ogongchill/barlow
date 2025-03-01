@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.barlow.core.auth.authentication.core.MemberPrincipal;
 import com.barlow.core.auth.config.JwtConfig;
+import com.barlow.core.domain.User;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,16 @@ public class AccessTokenProvider {
 				.withIssuer(accessTokenConfig.getIssuer())
 				.withClaim(JwtConfig.Claims.MEMBER_NO.getName(), memberInfo.getMemberNo())
 				.withClaim(JwtConfig.Claims.ROLE.getName(), memberInfo.getRole())
+				.sign(privateKeyAlgorithm)
+		);
+	}
+
+	public AccessToken issue(User user) {
+		return new AccessToken(
+			JWT.create()
+				.withIssuer(accessTokenConfig.getIssuer())
+				.withClaim(JwtConfig.Claims.MEMBER_NO.getName(), user.getUserNo())
+				.withClaim(JwtConfig.Claims.ROLE.getName(), user.getRoleName())
 				.sign(privateKeyAlgorithm)
 		);
 	}
