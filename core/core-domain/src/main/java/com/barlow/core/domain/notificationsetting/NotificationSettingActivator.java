@@ -34,4 +34,12 @@ public class NotificationSettingActivator {
 		}
 		notificationSettingRepository.deleteNotificationSetting(notificationSetting.deactivate());
 	}
+
+	public void activateDefault(User user) {
+		notificationSettingReader.readNotificationSettings(user)
+			.stream()
+			.filter(NotificationSetting::isDefaultTopic)
+			.map(NotificationSetting::activate)
+			.forEach(notificationSettingRepository::saveNotificationSetting);
+	}
 }
