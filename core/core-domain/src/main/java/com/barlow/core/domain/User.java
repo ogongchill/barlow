@@ -16,6 +16,10 @@ public class User {
 		return new User(userNo, Role.valueOf(role.toUpperCase()));
 	}
 
+	public static User of(Long userNo, Role role) {
+		return new User(userNo, role);
+	}
+
 	public boolean isMemberUser() {
 		return this.role == Role.MEMBER;
 	}
@@ -32,7 +36,11 @@ public class User {
 		return userNo;
 	}
 
-	enum Role {
+	public String getRoleName() {
+		return role.name();
+	}
+
+	public enum Role {
 		ADMIN, MEMBER, GUEST;
 	}
 
