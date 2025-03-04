@@ -34,7 +34,9 @@ public class BillPostRepositoryAdapter implements BillPostRepository {
 		BillPostFilterTag filterTag = BillPostFilterTag.from(query.tags());
 		Pageable pageable = PageRequest.of(query.page(), query.size(), sortKey.getSort());
 		Slice<BillPostJpaEntity> billPostJpaEntities;
-		if (filterTag.isPartyNameTagEmpty()) {
+		if (filterTag.isEmpty()) {
+			billPostJpaEntities = billPostJpaRepository.findAll(pageable);
+		} else if (filterTag.isPartyNameTagEmpty()) {
 			billPostJpaEntities = billPostJpaRepository.findAllBy(
 				filterTag.getLegislationTypeTags(),
 				filterTag.getLegislationStatusTags(),
@@ -58,7 +60,11 @@ public class BillPostRepositoryAdapter implements BillPostRepository {
 
 	@Override
 	public BillPost retrieveRecentBillPost(BillPostDetailQuery query) {
-		BillPost billPost = billPostJpaRepository.findByBillId(query.billId()).toRecentBillPost();
+		BillPostJpaEntity billPostJpaEntity = billPostJpaRepository.findByBillId(query.billId());
+		if (billPostJpaEntity == null) {
+			return null;
+		}
+		BillPost billPost = billPostJpaEntity.toRecentBillPost();
 		List<BillProposer> billProposers = billProposerJpaRepository.findAllByBillId(query.billId())
 			.stream()
 			.map(BillProposerJpaEntity::toBillProposer)

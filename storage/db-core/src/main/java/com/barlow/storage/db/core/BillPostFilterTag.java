@@ -65,6 +65,13 @@ public class BillPostFilterTag {
 		);
 	}
 
+	boolean isEmpty() {
+		return legislationTypeTags.isEmpty()
+			&& progressStatusTags.isEmpty()
+			&& proposerTypeTags.isEmpty()
+			&& partyNameTags.isEmpty();
+	}
+
 	boolean isPartyNameTagEmpty() {
 		return partyNameTags.isEmpty();
 	}
