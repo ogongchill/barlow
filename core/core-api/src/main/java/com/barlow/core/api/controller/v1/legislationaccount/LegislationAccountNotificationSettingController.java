@@ -22,13 +22,19 @@ public class LegislationAccountNotificationSettingController {
 	}
 
 	@PostMapping("/activate")
-	public ApiResponse<Void> activate(@PathVariable LegislationType legislationType, @PassportUser User user) {
+	public ApiResponse<Void> activate(
+		@PathVariable("legislationType") LegislationType legislationType,
+		@PassportUser User user
+	) {
 		notificationSettingService.activateSetting(legislationType, user);
 		return ApiResponse.success();
 	}
 
 	@PostMapping("/deactivate")
-	public ApiResponse<Void> deactivate(@PathVariable LegislationType legislationType, @PassportUser User user) {
+	public ApiResponse<Void> deactivate(
+		@PathVariable("legislationType") LegislationType legislationType,
+		@PassportUser User user
+	) {
 		notificationSettingService.deactivateSetting(legislationType, user);
 		return ApiResponse.success();
 	}

@@ -27,7 +27,7 @@ public class LegislationAccountRetrieveController {
 
 	@GetMapping("/{accountNo}/profile")
 	public ApiResponse<LegislationAccountProfileResponse> retrieveProfile(
-		@PathVariable Long accountNo,
+		@PathVariable("accountNo") Long accountNo,
 		@PassportUser User user
 	) {
 		LegislationAccount legislationAccount = legislationAccountRetrieveService.retrieve(accountNo, user);
