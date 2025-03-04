@@ -1,6 +1,7 @@
 package com.barlow.core.enumerate;
 
 import java.util.Arrays;
+import java.util.List;
 
 public enum ProposerType {
 
@@ -21,6 +22,12 @@ public enum ProposerType {
 			.orElseThrow(() -> new IllegalArgumentException(
 				String.format("기존에 존재하지 않던 ProposerType 입니다 : %s", value)
 			));
+	}
+
+	public static List<String> findDefaultTagNames() {
+		return Arrays.stream(ProposerType.values())
+			.map(Enum::name)
+			.toList();
 	}
 
 	ProposerType(String value) {
