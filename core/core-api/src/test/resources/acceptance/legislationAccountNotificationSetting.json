@@ -1,0 +1,14 @@
+{
+  "notification_config": [
+    {
+      "topic": "HOUSE_STEERING",
+      "enable": false,
+      "member_no": 1
+    },
+    {
+      "topic": "LEGISLATION_AND_JUDICIARY",
+      "enable": true,
+      "member_no": 1
+    }
+  ]
+}
