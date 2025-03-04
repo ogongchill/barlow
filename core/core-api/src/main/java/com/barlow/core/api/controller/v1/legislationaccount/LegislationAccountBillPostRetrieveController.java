@@ -15,6 +15,7 @@ import com.barlow.core.domain.billpost.BillPostDetailQuery;
 import com.barlow.core.domain.billpost.BillPostQuery;
 import com.barlow.core.domain.billpost.BillPostRetrieveService;
 import com.barlow.core.domain.billpost.BillPostsStatus;
+import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
@@ -29,7 +30,7 @@ public class LegislationAccountBillPostRetrieveController {
 
 	@GetMapping("/{legislationType}/bill-posts")
 	public ApiResponse<LegislationAccountBillPostsResponse> retrieveBillPostThumbnail(
-		@PathVariable("legislationType") String legislationType,
+		@PathVariable("legislationType") LegislationType legislationType,
 		@RequestParam(name = "page") Integer page,
 		@RequestParam(name = "size") Integer size,
 		@RequestParam(name = "sort", defaultValue = "createdAt#DESC", required = false) String sortKey,
