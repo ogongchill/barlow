@@ -1,0 +1,90 @@
+package com.barlow.core.api.controller.v1.auth;
+
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+import java.util.Map;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+
+import com.barlow.core.ContextTest;
+import com.barlow.core.support.AcceptanceTest;
+
+import io.restassured.RestAssured;
+
+@AcceptanceTest({"acceptance/user.json", "acceptance/device.json"})
+class AuthControllerTest extends ContextTest {
+
+	@DisplayName("사용자가 게스트 회원가입을 하면 회원가입 절차를 진행하고 access token 을 반환한다")
+	@Test
+	void guestSignup() {
+		Map<String, Object> responseMap = RestAssured.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.when()
+			.body(Map.of(
+				"deviceOs", "ios",
+				"deviceId", "device_id_1",
+				"deviceToken", "device_token_1",
+				"nickname", "nickname"
+			))
+			.post("/api/v1/auth/guest/signup")
+			.then().log().all().extract()
+			.jsonPath().getMap(".");
+		assertAll(
+			() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+			() -> assertThat(responseMap.get("data")).isNotNull(),
+			() -> assertThat(responseMap.get("error")).isNull()
+		);
+	}
+
+	@DisplayName("게스트 로그인")
+	@Nested
+	class GuestLoginTest {
+
+		@DisplayName("사용자가 게스트 로그인을 하면 로그인 절차를 진행하고 access token 을 반환한다")
+		@Test
+		void guestLogin_tokenNotChanged() {
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.when()
+				.body(Map.of(
+					"deviceOs", "ios",
+					"deviceId", "device_id_1",
+					"deviceToken", "device_token_1"
+				))
+				.post("/api/v1/auth/guest/login")
+				.then().log().all().extract()
+				.jsonPath().getMap(".");
+			assertAll(
+				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap.get("data")).isNotNull(),
+				() -> assertThat(responseMap.get("error")).isNull()
+			);
+		}
+
+		// fixme : tx 해결 후 다시 테스트
+		@DisplayName("사용자가 게스트 로그인 시 디바이스 토큰이 바뀌었다면 로그인 절차 중 디바이스 토큰을 변경한 후 access token 을 반환한다")
+		@Test
+		void guestLogin_tokenChanged() {
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.when()
+				.body(Map.of(
+					"deviceOs", "ios",
+					"deviceId", "device_id_1",
+					"deviceToken", "changed_device_token"
+				))
+				.post("/api/v1/auth/guest/login")
+				.then().log().all().extract()
+				.jsonPath().getMap(".");
+			assertAll(
+				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap.get("data")).isNotNull(),
+				() -> assertThat(responseMap.get("error")).isNull()
+			);
+		}
+	}
+}

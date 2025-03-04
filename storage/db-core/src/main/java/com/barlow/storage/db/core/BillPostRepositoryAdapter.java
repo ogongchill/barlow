@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.billpost.BillPostDetailQuery;
@@ -13,6 +14,8 @@ import com.barlow.core.domain.billpost.BillProposer;
 import com.barlow.core.domain.billpost.BillPost;
 import com.barlow.core.domain.billpost.BillPostRepository;
 import com.barlow.core.domain.billpost.BillPostsStatus;
+import com.barlow.core.domain.billpost.BillPostFilterTag;
+import com.barlow.core.support.SortKey;
 
 @Component
 public class BillPostRepositoryAdapter implements BillPostRepository {
@@ -30,11 +33,17 @@ public class BillPostRepositoryAdapter implements BillPostRepository {
 
 	@Override
 	public BillPostsStatus retrieveRecentBillPosts(BillPostQuery query) {
-		SortKey sortKey = new SortKey(query.sortKey());
-		BillPostFilterTag filterTag = BillPostFilterTag.from(query.tags());
-		Pageable pageable = PageRequest.of(query.page(), query.size(), sortKey.getSort());
+		SortKey sortKey = query.sortKey();
+		BillPostFilterTag filterTag = query.tags();
+		Pageable pageable = PageRequest.of(
+			query.page(),
+			query.size(),
+			Sort.by(Sort.Direction.valueOf(sortKey.getSortOrder()), sortKey.getSortField())
+		);
 		Slice<BillPostJpaEntity> billPostJpaEntities;
-		if (filterTag.isPartyNameTagEmpty()) {
+		if (filterTag.isEmpty()) {
+			billPostJpaEntities = billPostJpaRepository.findAll(pageable);
+		} else if (filterTag.isPartyNameTagEmpty()) {
 			billPostJpaEntities = billPostJpaRepository.findAllBy(
 				filterTag.getLegislationTypeTags(),
 				filterTag.getLegislationStatusTags(),
@@ -58,7 +67,11 @@ public class BillPostRepositoryAdapter implements BillPostRepository {
 
 	@Override
 	public BillPost retrieveRecentBillPost(BillPostDetailQuery query) {
-		BillPost billPost = billPostJpaRepository.findByBillId(query.billId()).toRecentBillPost();
+		BillPostJpaEntity billPostJpaEntity = billPostJpaRepository.findByBillId(query.billId());
+		if (billPostJpaEntity == null) {
+			return null;
+		}
+		BillPost billPost = billPostJpaEntity.toRecentBillPost();
 		List<BillProposer> billProposers = billProposerJpaRepository.findAllByBillId(query.billId())
 			.stream()
 			.map(BillProposerJpaEntity::toBillProposer)

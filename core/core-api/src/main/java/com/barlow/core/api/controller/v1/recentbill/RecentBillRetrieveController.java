@@ -31,18 +31,18 @@ public class RecentBillRetrieveController {
 	public ApiResponse<RecentBillPostsResponse> retrieveRecentBill(
 		@RequestParam(name = "page") Integer page,
 		@RequestParam(name = "size") Integer size,
-		@RequestParam(name = "sort", required = false) String sortKey,
-		@RequestParam(required = false) Map<String, List<String>> tags
+		@RequestParam(name = "sort", defaultValue = "createdAt#DESC", required = false) String sortKey,
+		@RequestParam(name = "tags", required = false) Map<String, List<String>> tags
 	) {
 		BillPostsStatus billPostsStatus
-			= billPostRetrieveService.readBillPosts(new BillPostQuery(page, size, sortKey, tags));
+			= billPostRetrieveService.readBillPosts(BillPostQuery.defaultOf(page, size, sortKey, tags));
 		RecentBillPostsApiSpecComposer apiSpecComposer = new RecentBillPostsApiSpecComposer(billPostsStatus);
 		return ApiResponse.success(apiSpecComposer.compose(LocalDate.now()));
 	}
 
 	@GetMapping("/detail/{recentBillId}")
 	public ApiResponse<RecentBillPostDetailResponse> retrieveRecentBillDetail(
-		@PathVariable String recentBillId
+		@PathVariable("recentBillId") String recentBillId
 	) {
 		BillPost billPost = billPostRetrieveService.readBillPostDetail(new BillPostDetailQuery(recentBillId));
 		RecentBillPostDetailApiSpecComposer apiSpecComposer = new RecentBillPostDetailApiSpecComposer(billPost);

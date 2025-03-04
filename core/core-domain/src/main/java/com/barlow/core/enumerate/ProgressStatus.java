@@ -1,6 +1,7 @@
 package com.barlow.core.enumerate;
 
 import java.util.Arrays;
+import java.util.List;
 
 public enum ProgressStatus {
 
@@ -29,8 +30,19 @@ public enum ProgressStatus {
 			));
 	}
 
+	public static List<String> findDefaultTagNames() {
+		return Arrays.stream(ProgressStatus.values())
+			.filter(ProgressStatus::isNotReceived)
+			.map(Enum::name)
+			.toList();
+	}
+
+	private boolean isNotReceived() {
+		return !this.equals(RECEIVED);
+	}
+
 	public boolean isCommitteeReceived() {
-		return this == ProgressStatus.COMMITTEE_RECEIVED;
+		return this.equals(COMMITTEE_RECEIVED);
 	}
 
 	ProgressStatus(String value) {

@@ -1,7 +1,7 @@
 auth:
   jwt:
     crypto:
-      private-key: ${auth.jwt.crypto.private-key}|
+      private-key: ${auth.jwt.crypto.private-key}
       public-key: ${auth.jwt.crypto.public-key}
 
 ---

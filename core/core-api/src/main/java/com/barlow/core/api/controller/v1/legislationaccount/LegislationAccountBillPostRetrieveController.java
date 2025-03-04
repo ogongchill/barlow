@@ -15,6 +15,7 @@ import com.barlow.core.domain.billpost.BillPostDetailQuery;
 import com.barlow.core.domain.billpost.BillPostQuery;
 import com.barlow.core.domain.billpost.BillPostRetrieveService;
 import com.barlow.core.domain.billpost.BillPostsStatus;
+import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.support.response.ApiResponse;
 
 @RestController
@@ -29,11 +30,11 @@ public class LegislationAccountBillPostRetrieveController {
 
 	@GetMapping("/{legislationType}/bill-posts")
 	public ApiResponse<LegislationAccountBillPostsResponse> retrieveBillPostThumbnail(
-		@PathVariable String legislationType,
+		@PathVariable("legislationType") LegislationType legislationType,
 		@RequestParam(name = "page") Integer page,
 		@RequestParam(name = "size") Integer size,
-		@RequestParam(name = "sort", required = false) String sortKey,
-		@RequestParam(required = false) Map<String, List<String>> tags
+		@RequestParam(name = "sort", defaultValue = "createdAt#DESC", required = false) String sortKey,
+		@RequestParam(name = "tags", required = false) Map<String, List<String>> tags
 	) {
 		BillPostQuery billPostQuery = BillPostQuery.legislationOf(legislationType, page, size, sortKey, tags);
 		BillPostsStatus billPostsStatus = billPostRetrieveService.readBillPosts(billPostQuery);
@@ -44,7 +45,7 @@ public class LegislationAccountBillPostRetrieveController {
 
 	@GetMapping("/bill-posts/{billId}")
 	public ApiResponse<LegislationAccountBillPostDetailResponse> retrieveBillPostDetail(
-		@PathVariable String billId
+		@PathVariable("billId") String billId
 	) {
 		BillPost billPost = billPostRetrieveService.readBillPostDetail(new BillPostDetailQuery(billId));
 		LegislationAccountBillPostDetailApiSpecComposer apiSpecComposer

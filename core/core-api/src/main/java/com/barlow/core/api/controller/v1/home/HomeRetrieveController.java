@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.core.domain.User;
-import com.barlow.core.domain.home.HomeRetrieveService;
+import com.barlow.core.domain.home.HomeRetrieveFacade;
 import com.barlow.core.domain.home.HomeStatus;
-import com.barlow.core.domain.home.notificationcenter.NotificationCenterItemRetrieveService;
 import com.barlow.core.enumerate.NotificationTopic;
 import com.barlow.core.support.annotation.PassportUser;
 import com.barlow.core.support.response.ApiResponse;
@@ -19,20 +18,15 @@ import com.barlow.core.support.response.ApiResponse;
 @RequestMapping("/api/v1/home")
 public class HomeRetrieveController {
 
-	private final HomeRetrieveService homeRetrieveService;
-	private final NotificationCenterItemRetrieveService notificationCenterItemRetrieveService;
+	private final HomeRetrieveFacade homeRetrieveFacade;
 
-	public HomeRetrieveController(
-		HomeRetrieveService homeRetrieveService,
-		NotificationCenterItemRetrieveService notificationCenterItemRetrieveService
-	) {
-		this.homeRetrieveService = homeRetrieveService;
-		this.notificationCenterItemRetrieveService = notificationCenterItemRetrieveService;
+	public HomeRetrieveController(HomeRetrieveFacade homeRetrieveFacade) {
+		this.homeRetrieveFacade = homeRetrieveFacade;
 	}
 
 	@GetMapping
 	public ApiResponse<HomeResponse> retrieveHome(@PassportUser User user) {
-		HomeStatus homeStatus = homeRetrieveService.retrieveHome(user);
+		HomeStatus homeStatus = homeRetrieveFacade.retrieveHome(user);
 		List<HomeResponse.SubscribeLegislationBody> subscribeLegislationBodies = homeStatus.myLegislationAccounts()
 			.stream()
 			.map(status -> new HomeResponse.SubscribeLegislationBody(
@@ -54,7 +48,7 @@ public class HomeRetrieveController {
 		@RequestParam(name = "filterTopic", required = false) NotificationTopic filterTopic
 	) {
 		NotificationCenterApiSpecComposer notificationCenterApiSpecComposer = new NotificationCenterApiSpecComposer(
-			notificationCenterItemRetrieveService.retrieveNotificationCenterItems(user)
+			homeRetrieveFacade.retrieveNotificationCenter(user)
 		);
 		return ApiResponse.success(notificationCenterApiSpecComposer.compose(filterTopic));
 	}

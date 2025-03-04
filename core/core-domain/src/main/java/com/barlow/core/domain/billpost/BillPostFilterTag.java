@@ -1,4 +1,4 @@
-package com.barlow.storage.db.core;
+package com.barlow.core.domain.billpost;
 
 import java.util.List;
 import java.util.Map;
@@ -11,19 +11,19 @@ import com.barlow.core.enumerate.PartyName;
 import com.barlow.core.enumerate.ProgressStatus;
 import com.barlow.core.enumerate.ProposerType;
 
-public class BillPostFilterTag {
+public final class BillPostFilterTag {
 
-	private static final String LEGISLATION_TYPE_TAG = "legislationType";
-	private static final String PROGRESS_STATUS_TAG = "progressStatus";
-	private static final String PROPOSER_TYPE_TAG = "proposerType";
-	private static final String PARTY_NAME_TAG = "partyName";
+	static final String LEGISLATION_TYPE_TAG = "legislationType";
+	static final String PROGRESS_STATUS_TAG = "progressStatus";
+	static final String PROPOSER_TYPE_TAG = "proposerType";
+	static final String PARTY_NAME_TAG = "partyName";
 
 	private final Set<LegislationType> legislationTypeTags;
 	private final Set<ProgressStatus> progressStatusTags;
 	private final Set<ProposerType> proposerTypeTags;
 	private final Set<PartyName> partyNameTags;
 
-	public BillPostFilterTag(
+	private BillPostFilterTag(
 		Set<LegislationType> legislationTypeTags,
 		Set<ProgressStatus> progressStatusTags,
 		Set<ProposerType> proposerTypeTags,
@@ -36,7 +36,7 @@ public class BillPostFilterTag {
 	}
 
 	@SuppressWarnings("unchecked")
-	static BillPostFilterTag from(Map<String, List<String>> tags) {
+	public static BillPostFilterTag from(Map<String, List<String>> tags) {
 		if (tags.isEmpty()) {
 			return new BillPostFilterTag(Set.of(), Set.of(), Set.of(), Set.of());
 		}
@@ -65,23 +65,30 @@ public class BillPostFilterTag {
 		);
 	}
 
-	boolean isPartyNameTagEmpty() {
+	public boolean isEmpty() {
+		return legislationTypeTags.isEmpty()
+			&& progressStatusTags.isEmpty()
+			&& proposerTypeTags.isEmpty()
+			&& partyNameTags.isEmpty();
+	}
+
+	public boolean isPartyNameTagEmpty() {
 		return partyNameTags.isEmpty();
 	}
 
-	Set<LegislationType> getLegislationTypeTags() {
+	public Set<LegislationType> getLegislationTypeTags() {
 		return legislationTypeTags;
 	}
 
-	Set<ProgressStatus> getLegislationStatusTags() {
+	public Set<ProgressStatus> getLegislationStatusTags() {
 		return progressStatusTags;
 	}
 
-	Set<ProposerType> getProposerTypeTags() {
+	public Set<ProposerType> getProposerTypeTags() {
 		return proposerTypeTags;
 	}
 
-	Set<PartyName> getPartyNameTags() {
+	public Set<PartyName> getPartyNameTags() {
 		return partyNameTags;
 	}
 }

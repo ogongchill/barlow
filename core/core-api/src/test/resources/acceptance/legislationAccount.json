@@ -1,0 +1,18 @@
+{
+  "legislation_account": [
+    {
+      "legislation_account_no": 1,
+      "legislation_type": "HOUSE_STEERING",
+      "description": "국회운영위원회에 대한 설명",
+      "post_count": 100,
+      "subscriber_count": 300
+    },
+    {
+      "legislation_account_no": 2,
+      "legislation_type": "LEGISLATION_AND_JUDICIARY",
+      "description": "법제사법위원회에 대한 설명",
+      "post_count": 200,
+      "subscriber_count": 500
+    }
+  ]
+}

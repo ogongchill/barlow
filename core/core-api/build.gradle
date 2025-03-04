@@ -9,4 +9,7 @@ dependencies {
     implementation project(":support:logging")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    testImplementation project(":tests:api-docs")
+    testImplementation 'org.springframework:spring-jdbc'
 }

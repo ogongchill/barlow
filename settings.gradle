@@ -19,3 +19,5 @@ include 'support:logging'
 include 'batch:batch-core'
 
 include 'clients:client-knal-api'
+
+include 'tests:api-docs'

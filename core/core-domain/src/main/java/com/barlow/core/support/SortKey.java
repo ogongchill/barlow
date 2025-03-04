@@ -1,6 +1,4 @@
-package com.barlow.storage.db.core;
-
-import org.springframework.data.domain.Sort;
+package com.barlow.core.support;
 
 public final class SortKey {
 
@@ -14,15 +12,11 @@ public final class SortKey {
 		this.value = value;
 	}
 
-	Sort getSort() {
-		return Sort.by(Sort.Direction.valueOf(getSortOrder()), getSortField());
-	}
-
-	private String getSortField() {
+	public String getSortField() {
 		return value.split(SPLITTER)[SORT_FIELD_INDEX];
 	}
 
-	private String getSortOrder() {
+	public String getSortOrder() {
 		return value.split(SPLITTER)[SORT_ORDER_INDEX];
 	}
 }
