@@ -1,7 +1,6 @@
 package com.barlow.core.api.controller.v1.home;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.home.HomeRetrieveFacade;
-import com.barlow.core.domain.home.HomeStatus;
 import com.barlow.core.enumerate.NotificationTopic;
 import com.barlow.core.support.annotation.PassportUser;
 import com.barlow.core.support.response.ApiResponse;

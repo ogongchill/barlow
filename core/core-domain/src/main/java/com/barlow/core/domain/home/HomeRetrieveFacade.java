@@ -14,22 +14,22 @@ import com.barlow.core.domain.home.todaybill.TodayBillPostThumbnailRetrieveServi
 @Service
 public class HomeRetrieveFacade {
 
-	private final HomeRetrieveService homeRetrieveService;
+	private final MyHomeInfoRetrieveService myHomeInfoRetrieveService;
 	private final TodayBillPostThumbnailRetrieveService todayBillPostThumbnailRetrieveService;
 	private final NotificationCenterItemRetrieveService notificationCenterItemRetrieveService;
 
 	public HomeRetrieveFacade(
-		HomeRetrieveService homeRetrieveService,
+		MyHomeInfoRetrieveService myHomeInfoRetrieveService,
 		TodayBillPostThumbnailRetrieveService todayBillPostThumbnailRetrieveService,
 		NotificationCenterItemRetrieveService notificationCenterItemRetrieveService
 	) {
-		this.homeRetrieveService = homeRetrieveService;
+		this.myHomeInfoRetrieveService = myHomeInfoRetrieveService;
 		this.todayBillPostThumbnailRetrieveService = todayBillPostThumbnailRetrieveService;
 		this.notificationCenterItemRetrieveService = notificationCenterItemRetrieveService;
 	}
 
-	public HomeStatus retrieveHome(User user) {
-		return homeRetrieveService.retrieveHome(user);
+	public MyHomeStatus retrieveHome(User user) {
+		return myHomeInfoRetrieveService.retrieveHome(user);
 	}
 
 	public List<TodayBillPostThumbnail> retrieveTodayBillPostThumbnail(LocalDate today) {

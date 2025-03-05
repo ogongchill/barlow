@@ -6,12 +6,12 @@ import com.barlow.core.domain.User;
 import com.barlow.core.domain.home.notificationcenter.MyNotificationCenterRepository;
 
 @Component
-public class HomeInfoReader {
+public class MyHomeInfoReader {
 
 	private final MyLegislationAccountRepository myLegislationAccountRepository;
 	private final MyNotificationCenterRepository myNotificationCenterRepository;
 
-	public HomeInfoReader(
+	public MyHomeInfoReader(
 		MyLegislationAccountRepository myLegislationAccountRepository,
 		MyNotificationCenterRepository myNotificationCenterRepository
 	) {
@@ -19,8 +19,8 @@ public class HomeInfoReader {
 		this.myNotificationCenterRepository = myNotificationCenterRepository;
 	}
 
-	public HomeStatus readHome(User user) {
-		return new HomeStatus(
+	public MyHomeStatus readHome(User user) {
+		return new MyHomeStatus(
 			myLegislationAccountRepository.retrieveMyLegislationAccounts(user),
 			myNotificationCenterRepository.existsTodayNotification(user)
 		);
