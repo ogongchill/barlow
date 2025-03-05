@@ -14,25 +14,25 @@ import feign.codec.Decoder;
 
 @EnableFeignClients
 @Configuration
-class KnalConfiguration {
+class OpenDataConfig {
 
 	@Bean(name = "authenticationInterceptor")
 	RequestInterceptor interceptor(@Value("${knal.open-data.api.service-key}") String serviceKey) {
 		return template -> template.query("ServiceKey", serviceKey);
 	}
 
-	@Bean(name = "knalOpenDataRetryer")
+	@Bean(name = "openDataRetryer")
 	Retryer retryer() {
 		return new Retryer.Default(100L, TimeUnit.SECONDS.toMillis(1L), 3);
 	}
 
-	@Bean(name = "knalOpenDataDecoder")
+	@Bean(name = "openDataDecoder")
 	Decoder decoder() {
-		return new KnalDecoder();
+		return new OpenDataResponseDecoder();
 	}
 
-	@Bean(name = "knalOpenDataQueryMapEncoder")
+	@Bean(name = "openDataQueryMapEncoder")
 	QueryMapEncoder queryMapEncoder() {
-		return new KnalEncoder();
+		return new OpenDataRequestEncoder();
 	}
 }

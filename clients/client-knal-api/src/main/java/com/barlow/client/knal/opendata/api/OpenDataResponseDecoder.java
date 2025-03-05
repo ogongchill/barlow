@@ -12,7 +12,7 @@ import feign.Response;
 import feign.Util;
 import feign.codec.Decoder;
 
-class KnalDecoder implements Decoder {
+class OpenDataResponseDecoder implements Decoder {
 
 	private static final XmlMapper XML_MAPPER = new XmlMapper();
 

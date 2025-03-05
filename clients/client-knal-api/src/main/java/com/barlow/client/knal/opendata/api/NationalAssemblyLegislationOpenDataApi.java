@@ -37,7 +37,7 @@ import com.barlow.client.knal.opendata.api.response.BillCommissionExaminationInf
 @FeignClient(
 	value = "${knal.open-data.api.name}",
 	url = "${knal.open-data.api.url}",
-	configuration = KnalConfiguration.class)
+	configuration = OpenDataConfig.class)
 public interface NationalAssemblyLegislationOpenDataApi {
 
 	@GetMapping(

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import feign.QueryMapEncoder;
 import feign.codec.EncodeException;
 
-public class KnalEncoder implements QueryMapEncoder {
+public class OpenDataRequestEncoder implements QueryMapEncoder {
 
 	@Override
 	public Map<String, Object> encode(Object object) {
