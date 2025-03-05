@@ -35,10 +35,10 @@ import com.barlow.client.knal.api.response.BillAdditionalInfoResponse;
 import com.barlow.client.knal.api.response.BillCommissionExaminationInfoResponse;
 
 @FeignClient(
-	value = "${knal.api.name}",
-	url = "${knal.api.url}",
+	value = "${knal.open-data.api.name}",
+	url = "${knal.open-data.api.url}",
 	configuration = KnalConfiguration.class)
-public interface NationalAssemblyLegislationApi {
+public interface NationalAssemblyLegislationOpenDataApi {
 
 	@GetMapping(
 		value = Operation.GET_BILL_INFO_LIST,

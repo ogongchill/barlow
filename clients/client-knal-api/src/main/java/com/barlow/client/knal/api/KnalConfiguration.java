@@ -17,21 +17,21 @@ import feign.codec.Decoder;
 class KnalConfiguration {
 
 	@Bean(name = "authenticationInterceptor")
-	RequestInterceptor interceptor(@Value("${knal.api.service-key}") String serviceKey) {
+	RequestInterceptor interceptor(@Value("${knal.open-data.api.service-key}") String serviceKey) {
 		return template -> template.query("ServiceKey", serviceKey);
 	}
 
-	@Bean(name = "knalRetryer")
+	@Bean(name = "knalOpenDataRetryer")
 	Retryer retryer() {
 		return new Retryer.Default(100L, TimeUnit.SECONDS.toMillis(1L), 3);
 	}
 
-	@Bean(name = "knalDecoder")
+	@Bean(name = "knalOpenDataDecoder")
 	Decoder decoder() {
 		return new KnalDecoder();
 	}
 
-	@Bean(name = "knalQueryMapEncoder")
+	@Bean(name = "knalOpenDataQueryMapEncoder")
 	QueryMapEncoder queryMapEncoder() {
 		return new KnalEncoder();
 	}

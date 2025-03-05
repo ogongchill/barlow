@@ -1,8 +1,14 @@
 knal:
-  api:
-    name: national-assembly-legislation-api
-    url: https://apis.data.go.kr/9710000/BillInfoService2/
-    service-key: 65WaXo9KJDUa1A450QOIciMPg9NhtrgjoL0F6nCq3OcV7LAU3drzD5P537sEJpxZLWxZq9tHHZfpAbIiaINjbQ==
+  open-data:
+    api:
+      name: national-assembly-legislation-open-data-api
+      url: https://apis.data.go.kr/9710000/BillInfoService2/
+      service-key: ${knal.open-data.api.service-key}
+  open-congress:
+    api:
+      name: national-assembly-legislation-open-congress-api
+      url: https://open.assembly.go.kr/portal/openapi/nknalejkafmvgzmpt
+      service-key: ${knal.open-congress.api.service-key}
 
 spring.cloud.openfeign:
   client:
@@ -30,8 +36,3 @@ spring.config.activate.on-profile:
 spring.config.activate.on-profile:
   - staging
   - live
-
-knal:
-  api:
-    url: https://apis.data.go.kr/9710000/BillInfoService2
-    service-key: 65WaXo9KJDUa1A450QOIciMPg9NhtrgjoL0F6nCq3OcV7LAU3drzD5P537sEJpxZLWxZq9tHHZfpAbIiaINjbQ==

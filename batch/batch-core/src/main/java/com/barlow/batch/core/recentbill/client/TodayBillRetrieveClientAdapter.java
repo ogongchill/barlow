@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import com.barlow.batch.core.recentbill.job.BillProposerInfoResult;
 import com.barlow.batch.core.recentbill.job.TodayBillRetrieveClient;
 import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
-import com.barlow.client.knal.api.NationalAssemblyLegislationApi;
+import com.barlow.client.knal.api.NationalAssemblyLegislationOpenDataApi;
 import com.barlow.client.knal.api.request.BillInfoListRequest;
 import com.barlow.client.knal.api.request.BillPetitionMemberListRequest;
 import com.barlow.client.knal.api.response.BillInfoListResponse;
@@ -23,13 +23,13 @@ public class TodayBillRetrieveClientAdapter implements TodayBillRetrieveClient {
 
 	private static final Logger log = LoggerFactory.getLogger(TodayBillRetrieveClientAdapter.class);
 
-	private final NationalAssemblyLegislationApi api;
+	private final NationalAssemblyLegislationOpenDataApi api;
 	private final Integer startOrd;
 	private final Integer endOrd;
 	private final Integer numOfRows;
 
 	public TodayBillRetrieveClientAdapter(
-		NationalAssemblyLegislationApi api,
+		NationalAssemblyLegislationOpenDataApi api,
 		@Value("${start-ordinal:22}") Integer startOrd,
 		@Value("${end-ordinal:22}") Integer endOrd,
 		@Value("${num-of-rows:100}") Integer numOfRows

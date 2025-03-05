@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.tracebill.job.BillTrackingClient;
 import com.barlow.batch.core.tracebill.job.CurrentBillInfoResult;
-import com.barlow.client.knal.api.NationalAssemblyLegislationApi;
+import com.barlow.client.knal.api.NationalAssemblyLegislationOpenDataApi;
 import com.barlow.client.knal.api.request.BillInfoListRequest;
 import com.barlow.client.knal.api.request.BillPreliminaryExaminationInfoRequest;
 import com.barlow.client.knal.api.response.BillInfoListResponse;
@@ -25,13 +25,13 @@ public class BillTrackingClientAdapter implements BillTrackingClient {
 
 	private static final Logger log = LoggerFactory.getLogger(BillTrackingClientAdapter.class);
 
-	private final NationalAssemblyLegislationApi api;
+	private final NationalAssemblyLegislationOpenDataApi api;
 	private final Integer startOrd;
 	private final Integer endOrd;
 	private final Integer numOfRows;
 
 	public BillTrackingClientAdapter(
-		NationalAssemblyLegislationApi api,
+		NationalAssemblyLegislationOpenDataApi api,
 		@Value("${start-ordinal:22}") Integer startOrd,
 		@Value("${end-ordinal:22}") Integer endOrd,
 		@Value("${num-of-rows:10000}") Integer numOfRows
