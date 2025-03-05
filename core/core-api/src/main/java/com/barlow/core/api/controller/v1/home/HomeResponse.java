@@ -1,12 +1,15 @@
 package com.barlow.core.api.controller.v1.home;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.barlow.core.support.response.Constant;
 
 public record HomeResponse(
 	boolean isNotificationArrived,
-	SubscribeSection subscribeSection
+	SubscribeSection subscribeSection,
+	TodayBillPostSection todayBillPostSection
 ) {
 
 	record SubscribeSection(
@@ -47,5 +50,35 @@ public record HomeResponse(
 		public String getIconImageUrl() {
 			return iconImageUrl;
 		}
+	}
+
+	record TodayBillPostSection(
+		String display,
+		List<BillPostThumbnail> postThumbnails
+	) {
+		static TodayBillPostSection of(LocalDate today, List<BillPostThumbnail> postThumbnails) {
+			DayOfWeek dayOfWeek = today.getDayOfWeek();
+			if (dayOfWeek.equals(DayOfWeek.SATURDAY) || dayOfWeek.equals(DayOfWeek.SUNDAY)) {
+				return new TodayBillPostSection(
+					"주말에는 새로운 법안이 발의되지 않아요",
+					postThumbnails
+				);
+			} else if (postThumbnails.isEmpty()) {
+				return new TodayBillPostSection(
+					"오늘 접수된 법안들이 아직 등록되지 않았어요",
+					postThumbnails
+				);
+			} else {
+				return new TodayBillPostSection(null, postThumbnails);
+			}
+		}
+	}
+
+	record BillPostThumbnail(
+		String billId,
+		String billName,
+		String proposers,
+		LocalDate createdAt
+	) {
 	}
 }

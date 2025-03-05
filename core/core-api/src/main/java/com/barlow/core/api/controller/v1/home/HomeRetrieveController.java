@@ -1,5 +1,6 @@
 package com.barlow.core.api.controller.v1.home;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,20 +27,12 @@ public class HomeRetrieveController {
 
 	@GetMapping
 	public ApiResponse<HomeResponse> retrieveHome(@PassportUser User user) {
-		HomeStatus homeStatus = homeRetrieveFacade.retrieveHome(user);
-		List<HomeResponse.SubscribeLegislationBody> subscribeLegislationBodies = homeStatus.myLegislationAccounts()
-			.stream()
-			.map(status -> new HomeResponse.SubscribeLegislationBody(
-				status.getNo(),
-				status.getBodyType(),
-				status.getIconImagePath()
-			))
-			.toList();
-		HomeResponse homeResponse = new HomeResponse(
-			homeStatus.isNotificationArrived(),
-			HomeResponse.SubscribeSection.from(subscribeLegislationBodies)
+		LocalDate today = LocalDate.now();
+		HomeResponseApiSpecComposer apiSpecComposer = new HomeResponseApiSpecComposer(
+			homeRetrieveFacade.retrieveHome(user),
+			homeRetrieveFacade.retrieveTodayBillPostThumbnail(today)
 		);
-		return ApiResponse.success(homeResponse);
+		return ApiResponse.success(apiSpecComposer.compose(today));
 	}
 
 	@GetMapping("/notification-center")
