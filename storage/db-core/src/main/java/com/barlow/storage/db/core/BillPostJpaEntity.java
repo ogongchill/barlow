@@ -1,6 +1,7 @@
 package com.barlow.storage.db.core;
 
 import com.barlow.core.domain.billpost.BillPost;
+import com.barlow.core.domain.home.todaybill.TodayBillPostThumbnail;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.enumerate.ProgressStatus;
 import com.barlow.core.enumerate.ProposerType;
@@ -56,6 +57,15 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 			new BillPost.ProposerInfo(proposerType, proposers),
 			new BillPost.LegislationInfo(legislationType, progressStatus),
 			summary, detail, getCreatedAt(), viewCount
+		);
+	}
+
+	TodayBillPostThumbnail toTodayBillPostThumbnail() {
+		return new TodayBillPostThumbnail(
+			billId,
+			billName,
+			proposers,
+			getCreatedAt().toLocalDate()
 		);
 	}
 }

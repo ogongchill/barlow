@@ -1,5 +1,7 @@
 package com.barlow.storage.db.core;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.domain.Pageable;
@@ -43,4 +45,6 @@ public interface BillPostJpaRepository extends JpaRepository<BillPostJpaEntity, 
 	);
 
 	BillPostJpaEntity findByBillId(String billId);
+
+	List<BillPostJpaEntity> findAllByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 }
