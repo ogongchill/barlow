@@ -1,6 +1,6 @@
 package com.barlow.core.api.controller.v1.recentbill;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +11,7 @@ public record RecentBillPostDetailResponse(
 	String proposerSummary,
 	String proposerType,
 	String legislativeBody,
-	LocalDateTime createdAt,
+	LocalDate createdAt,
 	String detail,
 	SummarySection summarySection,
 	ProposerSection proposerSection

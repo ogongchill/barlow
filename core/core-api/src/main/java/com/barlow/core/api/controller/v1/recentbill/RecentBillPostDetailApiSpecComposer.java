@@ -22,7 +22,7 @@ public class RecentBillPostDetailApiSpecComposer {
 			billPost.getProposers(),
 			billPost.getProposerType(),
 			billPost.getLegislativeBody(),
-			billPost.getCreatedAt(),
+			billPost.getCreatedAt().toLocalDate(),
 			billPost.getDetail(),
 			new RecentBillPostDetailResponse.SummarySection(billPost.getSummary()),
 			new RecentBillPostDetailResponse.ProposerSection(

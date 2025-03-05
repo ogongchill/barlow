@@ -26,7 +26,7 @@ public class LegislationAccountBillPostDetailApiSpecComposer {
 			billPost.getProposers(),
 			billPost.getProposerType(),
 			billPost.getLegislativeBody(),
-			billPost.getCreatedAt(),
+			billPost.getCreatedAt().toLocalDate(),
 			billPost.getDetail(),
 			new SummarySection(billPost.getSummary()),
 			new ProposerSection(
