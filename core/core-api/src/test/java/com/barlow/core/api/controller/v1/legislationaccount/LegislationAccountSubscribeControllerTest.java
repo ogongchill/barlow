@@ -1,7 +1,8 @@
 package com.barlow.core.api.controller.v1.legislationaccount;
 
-import static com.barlow.core.support.TestHttpUtils.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.barlow.core.support.TestHttpUtils.AUTHENTICATION_TYPE;
+import static com.barlow.core.support.TestHttpUtils.AUTHORIZATION;
+import static com.barlow.core.support.TestHttpUtils.MANDATORY_DEVICE_HEADERS;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -20,7 +21,6 @@ import com.barlow.core.support.TestTokenProvider;
 
 import io.restassured.RestAssured;
 
-// fixme : tx 해결 후 다시 테스트
 @AcceptanceTest({
 	"acceptance/legislationAccount.json",
 	"acceptance/legislationAccountSubscribe.json"})
@@ -30,37 +30,71 @@ class LegislationAccountSubscribeControllerTest extends ContextTest {
 	@Autowired
 	private TestTokenProvider testTokenProvider;
 
-	@DisplayName("")
+	@DisplayName("상임위원회 별 구독 활성화")
 	@Nested
 	class ActivateSubscription {
 
-		@DisplayName("")
+		@DisplayName("사용자가 상임위원회의 구독을 활성화하면 구독을 활성화시키고 성공한다")
 		@Test
-		void subscribe() {
-			Map<Object, Object> responseMap = RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
-				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.post("/api/v1/legislation-accounts/{accountNo}/subscribe/activate", 1)
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+		void subscribe_success() {
+			Map<String, Object> responseMap = activateSubscription(2L);
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
 				() -> assertThat(responseMap.get("data")).isNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
 		}
+
+		@DisplayName("사용자가 이미 활성화된 상임위원회의 구독을 활성화하면 예외를 발생시키고 실패한다")
+		@Test
+		void subscribe_fail() {
+			Map<String, Object> responseMap = activateSubscription(1L);
+			assertThat(responseMap).containsEntry("result", "ERROR");
+		}
+
+		private Map<String, Object> activateSubscription(Long accountNo) {
+			return RestAssured
+				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
+				.headers(MANDATORY_DEVICE_HEADERS)
+				.when()
+				.post("/api/v1/legislation-accounts/{accountNo}/subscribe/activate", accountNo)
+				.then().log().all().extract()
+				.jsonPath().getMap(".");
+		}
 	}
 
-	@DisplayName("")
+	@DisplayName("상임위원회 별 구독 비활성화")
 	@Nested
 	class DeactivateSubscription {
 
-		@DisplayName("")
+		@DisplayName("사용자가 상임위원회의 구독을 비활성화하면 구독을 비활성화시키고 성공한다")
 		@Test
-		void unsubscribe() {
+		void unsubscribe_success() {
+			Map<String, Object> responseMap = deactivateSubscription(1L);
+			assertAll(
+				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap.get("data")).isNull(),
+				() -> assertThat(responseMap.get("error")).isNull()
+			);
+		}
 
+		@DisplayName("사용자가 이미 비활성화된 상임위원회의 구독을 비활성화하면 예외를 발생시키고 실패한다")
+		@Test
+		void unsubscribe_fail() {
+			Map<String, Object> responseMap = deactivateSubscription(2L);
+			assertThat(responseMap).containsEntry("result", "ERROR");
+		}
+
+		private Map<String, Object> deactivateSubscription(Long accountNo) {
+			return RestAssured
+				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
+				.headers(MANDATORY_DEVICE_HEADERS)
+				.when()
+				.post("/api/v1/legislation-accounts/{accountNo}/subscribe/deactivate", accountNo)
+				.then().log().all().extract()
+				.jsonPath().getMap(".");
 		}
 	}
 }
