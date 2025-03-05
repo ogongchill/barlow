@@ -1,13 +1,11 @@
 package com.barlow.core.domain.legislationaccount;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.subscribe.SubscribeActivator;
 
-/**
- * TODO : tx 관리 어떻게 할 것인지 고민해야함
- */
 @Component
 public class LegislationAccountSubscriptionManager {
 
@@ -22,13 +20,15 @@ public class LegislationAccountSubscriptionManager {
 		this.subscribeActivator = subscribeActivator;
 	}
 
+	@Transactional
 	public void subscribe(long accountNo, User user) {
-		legislationAccountRepository.incrementSubscriber(accountNo);
 		subscribeActivator.activate(accountNo, user);
+		legislationAccountRepository.incrementSubscriber(accountNo);
 	}
 
+	@Transactional
 	public void unsubscribe(long accountNo, User user) {
-		legislationAccountRepository.decrementSubscriber(accountNo);
 		subscribeActivator.deactivate(accountNo, user);
+		legislationAccountRepository.decrementSubscriber(accountNo);
 	}
 }

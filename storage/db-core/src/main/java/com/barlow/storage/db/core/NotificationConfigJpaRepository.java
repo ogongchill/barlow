@@ -3,7 +3,9 @@ package com.barlow.storage.db.core;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.barlow.core.enumerate.NotificationTopic;
 
@@ -13,6 +15,7 @@ public interface NotificationConfigJpaRepository extends JpaRepository<Notificat
 
 	NotificationConfigJpaEntity findByTopicAndMemberNo(NotificationTopic topic, Long memberNo);
 
-	@Transactional
-	void deleteByTopicAndMemberNo(NotificationTopic topic, Long memberNo);
+	@Modifying
+	@Query("DELETE FROM NotificationConfigJpaEntity nc WHERE nc.topic = :topic AND nc.memberNo = :memberNo")
+	void deleteByTopicAndMemberNo(@Param("topic") NotificationTopic topic, @Param("memberNo") Long memberNo);
 }
