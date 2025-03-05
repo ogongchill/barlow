@@ -52,7 +52,7 @@ public class NotificationSettingRepositoryAdapter implements NotificationSetting
 		notificationConfigJpaRepository.save(
 			new NotificationConfigJpaEntity(
 				notificationSetting.getNotificationTopic(),
-				true,
+				notificationSetting.isNotifiable(),
 				notificationSetting.getUser().getUserNo()
 			)
 		);

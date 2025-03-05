@@ -5,9 +5,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.barlow.core.enumerate.DeviceOs;
+
 public interface DeviceJpaRepository extends JpaRepository<DeviceJpaEntity, Long> {
 
-	DeviceJpaEntity findByDeviceId(String deviceId);
+	@Query("SELECT d FROM DeviceJpaEntity d WHERE d.deviceId = :deviceId AND d.deviceOs = :deviceOs")
+	DeviceJpaEntity findByDeviceIdAndOs(@Param("deviceId") String deviceId, @Param("deviceOs") DeviceOs deviceOs);
 
 	@Modifying
 	@Query("UPDATE DeviceJpaEntity d SET d.token = :deviceToken WHERE d.deviceId = :deviceId")
