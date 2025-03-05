@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.tracebill.job.BillTrackingClient;
 import com.barlow.batch.core.tracebill.job.CurrentBillInfoResult;
-import com.barlow.client.knal.api.NationalAssemblyLegislationOpenDataApi;
-import com.barlow.client.knal.api.request.BillInfoListRequest;
-import com.barlow.client.knal.api.request.BillPreliminaryExaminationInfoRequest;
-import com.barlow.client.knal.api.response.BillInfoListResponse;
-import com.barlow.client.knal.api.response.BillPreliminaryExaminationInfoResponse;
-import com.barlow.client.knal.api.response.item.BillInfoListItem;
+import com.barlow.client.knal.opendata.api.NationalAssemblyLegislationOpenDataApi;
+import com.barlow.client.knal.opendata.api.request.BillInfoListRequest;
+import com.barlow.client.knal.opendata.api.request.BillPreliminaryExaminationInfoRequest;
+import com.barlow.client.knal.opendata.api.response.BillInfoListResponse;
+import com.barlow.client.knal.opendata.api.response.BillPreliminaryExaminationInfoResponse;
+import com.barlow.client.knal.opendata.api.response.item.BillInfoListItem;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.enumerate.ProgressStatus;
 

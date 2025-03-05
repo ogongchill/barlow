@@ -2,8 +2,8 @@ package com.barlow.batch.core.recentbill.job;
 
 import java.util.List;
 
-import com.barlow.client.knal.api.response.common.ItemListBody;
-import com.barlow.client.knal.api.response.item.BillPetitionMemberListItem;
+import com.barlow.client.knal.opendata.api.response.common.ItemListBody;
+import com.barlow.client.knal.opendata.api.response.item.BillPetitionMemberListItem;
 
 public record BillProposerInfoResult(
 	List<BillProposerInfo> billProposerInfos

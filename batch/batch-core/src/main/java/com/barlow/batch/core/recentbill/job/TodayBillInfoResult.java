@@ -6,8 +6,8 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.barlow.client.knal.api.response.common.ItemListPagingBody;
-import com.barlow.client.knal.api.response.item.BillInfoListItem;
+import com.barlow.client.knal.opendata.api.response.common.ItemListPagingBody;
+import com.barlow.client.knal.opendata.api.response.item.BillInfoListItem;
 
 public record TodayBillInfoResult(
 	int totalCount,
