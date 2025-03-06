@@ -23,16 +23,3 @@ spring.cloud.openfeign:
   httpclient:
     max-connections: 2000
     max-connections-per-route: 500
-
----
-spring.config.activate.on-profile: local
-
----
-spring.config.activate.on-profile:
-  - local-dev
-  - dev
-
----
-spring.config.activate.on-profile:
-  - staging
-  - live
