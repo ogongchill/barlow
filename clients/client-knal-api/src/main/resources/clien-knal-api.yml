@@ -3,12 +3,12 @@ knal:
     api:
       name: national-assembly-legislation-open-data-api
       url: https://apis.data.go.kr/9710000/BillInfoService2/
-      service-key: ${knal.open-data.api.service-key}
+      service-key: ${knal.open-data-api-service-key}
   open-congress:
     api:
       name: national-assembly-legislation-open-congress-api
-      url: https://open.assembly.go.kr/portal/openapi/nknalejkafmvgzmpt
-      service-key: ${knal.open-congress.api.service-key}
+      url: https://open.assembly.go.kr/portal/openapi/
+      service-key: ${knal.open-congress-api-service-key}
 
 spring.cloud.openfeign:
   client:
