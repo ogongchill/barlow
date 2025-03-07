@@ -76,6 +76,17 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 		);
 	}
 
+	boolean hasPreAnnouncementInfo() {
+		return preAnnouncementInfo != null;
+	}
+
+	BillPost.PreAnnouncementInfo getPreAnnouncementInfo() {
+		return new BillPost.PreAnnouncementInfo(
+			preAnnouncementInfo.linkUrl,
+			preAnnouncementInfo.deadlineDate.toLocalDate()
+		);
+	}
+
 	@Embeddable
 	static class PreAnnouncementInfo {
 
