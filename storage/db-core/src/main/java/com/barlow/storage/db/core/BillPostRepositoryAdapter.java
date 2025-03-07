@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.billpost.BillPostDetailQuery;
@@ -35,32 +36,25 @@ public class BillPostRepositoryAdapter implements BillPostRepository {
 	public BillPostsStatus retrieveRecentBillPosts(BillPostQuery query) {
 		SortKey sortKey = query.sortKey();
 		BillPostFilterTag filterTag = query.tags();
-		Pageable pageable = PageRequest.of(
-			query.page(),
-			query.size(),
-			Sort.by(Sort.Direction.valueOf(sortKey.getSortOrder()), sortKey.getSortField())
-		);
-		Slice<BillPostJpaEntity> billPostJpaEntities;
-		if (filterTag.isEmpty()) {
-			billPostJpaEntities = billPostJpaRepository.findAll(pageable);
-		} else if (filterTag.isPartyNameTagEmpty()) {
-			billPostJpaEntities = billPostJpaRepository.findAllBy(
-				filterTag.getLegislationTypeTags(),
-				filterTag.getLegislationStatusTags(),
-				filterTag.getProposerTypeTags(),
-				pageable
-			);
-		} else {
-			billPostJpaEntities = billPostJpaRepository.findAllBy(
-				filterTag.getLegislationTypeTags(),
-				filterTag.getLegislationStatusTags(),
-				filterTag.getProposerTypeTags(),
-				filterTag.getPartyNameTags(),
-				pageable
-			);
-		}
+		Sort sort = Sort.by(Sort.Direction.valueOf(sortKey.getSortOrder()), sortKey.getSortField());
+		Pageable pageable = PageRequest.of(query.page(), query.size(), sort);
+
+		Specification<BillPostJpaEntity> specification = Specification
+			.where(BillPostSpecifications.isPreAnnouncement(filterTag.isPreAnnouncement()))
+			.and(BillPostSpecifications.hasLegislationTypeTag(filterTag.getLegislationTypeTags()))
+			.and(BillPostSpecifications.hasProgressStatusTag(filterTag.getProgressStatusTags()))
+			.and(BillPostSpecifications.hasProposerTypeTag(filterTag.getProposerTypeTags()))
+			.and(BillPostSpecifications.hasPartyNameTag(filterTag.getPartyNameTags()));
+		Slice<BillPostJpaEntity> billPostJpaEntities = billPostJpaRepository.findAll(specification, pageable);
+
 		List<BillPost> billPosts = billPostJpaEntities.stream()
-			.map(BillPostJpaEntity::toRecentBillPost)
+			.map(billPostJpaEntity -> {
+				BillPost recentBillPost = billPostJpaEntity.toRecentBillPost();
+				if (billPostJpaEntity.hasPreAnnouncementInfo()) {
+					recentBillPost.assignPreAnnouncementInfo(billPostJpaEntity.getPreAnnouncementInfo());
+				}
+				return recentBillPost;
+			})
 			.toList();
 		return new BillPostsStatus(billPosts, billPostJpaEntities.isLast());
 	}
