@@ -47,7 +47,21 @@ public record BillPostQuery(
 				PROPOSER_TYPE_TAG, ProposerType.findDefaultTagNames(),
 				PROGRESS_STATUS_TAG, ProgressStatus.findDefaultTagNames()
 			);
+		} else {
+			tags.put(LEGISLATION_TYPE_TAG, List.of(legislationType.name()));
 		}
 		return new BillPostQuery(page, size, new SortKey(sortKey), BillPostFilterTag.from(tags));
+	}
+
+	public static BillPostQuery preAnnounceOf(
+		@NotNull Integer page,
+		@NotNull Integer size,
+		@NotNull String sortKey,
+		@Nullable Map<String, List<String>> tags
+	) {
+		if (tags == null) {
+			tags = new HashMap<>();
+		}
+		return new BillPostQuery(page, size, new SortKey(sortKey), BillPostFilterTag.preAnnounceFrom(tags));
 	}
 }

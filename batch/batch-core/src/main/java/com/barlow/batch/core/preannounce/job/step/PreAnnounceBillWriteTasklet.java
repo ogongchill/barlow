@@ -64,9 +64,8 @@ public class PreAnnounceBillWriteTasklet extends AbstractExecutionContextSharing
 			.addValue("bill_name", batchEntity.billName())
 			.addValue("proposers", batchEntity.proposers())
 			.addValue("legislation_type", batchEntity.legislationType())
-			.addValue("deadline_dater", batchEntity.deadlineDate())
+			.addValue("deadline_date", batchEntity.deadlineDate())
 			.addValue("link_url", batchEntity.linkUrl())
-			.addValue("progress_status", "IN_PROGRESS")
 			.addValue("created_at", LocalDateTime.now(), Types.TIMESTAMP)
 			.addValue("updated_at", LocalDateTime.now(), Types.TIMESTAMP);
 	}

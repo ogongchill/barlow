@@ -1,5 +1,7 @@
 package com.barlow.storage.db.core;
 
+import java.time.LocalDateTime;
+
 import com.barlow.core.domain.billpost.BillPost;
 import com.barlow.core.domain.home.todaybill.TodayBillPostThumbnail;
 import com.barlow.core.enumerate.LegislationType;
@@ -7,6 +9,8 @@ import com.barlow.core.enumerate.ProgressStatus;
 import com.barlow.core.enumerate.ProposerType;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -48,6 +52,9 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "view_count", nullable = false)
 	private Integer viewCount;
 
+	@Embedded
+	private PreAnnouncementInfo preAnnouncementInfo;
+
 	protected BillPostJpaEntity() {
 	}
 
@@ -67,5 +74,29 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 			proposers,
 			getCreatedAt().toLocalDate()
 		);
+	}
+
+	boolean hasPreAnnouncementInfo() {
+		return preAnnouncementInfo != null;
+	}
+
+	BillPost.PreAnnouncementInfo getPreAnnouncementInfo() {
+		return new BillPost.PreAnnouncementInfo(
+			preAnnouncementInfo.linkUrl,
+			preAnnouncementInfo.deadlineDate.toLocalDate()
+		);
+	}
+
+	@Embeddable
+	static class PreAnnouncementInfo {
+
+		@Column(name = "pre_announce_deadline_date")
+		private LocalDateTime deadlineDate;
+
+		@Column(name = "pre_announce_link_url")
+		private String linkUrl;
+
+		protected PreAnnouncementInfo() {
+		}
 	}
 }

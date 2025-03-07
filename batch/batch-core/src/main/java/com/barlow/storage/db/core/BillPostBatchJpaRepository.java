@@ -1,5 +1,6 @@
 package com.barlow.storage.db.core;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,5 +28,16 @@ public interface BillPostBatchJpaRepository extends JpaRepository<BillPostJpaEnt
 	void updateProgressStatusInBatch(
 		@Param("progressStatus") ProgressStatus progressStatus,
 		@Param("billIds") List<String> billIds
+	);
+
+	@Modifying
+	@Query("""
+		UPDATE BillPostJpaEntity bp
+		SET bp.preAnnouncementInfo.deadlineDate = :deadlineDate, bp.preAnnouncementInfo.linkUrl = :linkUrl
+		WHERE bp.billId = :billId""")
+	void updatePreAnnounceInfo(
+		@Param("billId") String billId,
+		@Param("deadlineDate") LocalDateTime deadlineDate,
+		@Param("linkUrl") String linkUrl
 	);
 }

@@ -1,6 +1,8 @@
 package com.barlow.core.domain.billpost;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import com.barlow.core.enumerate.LegislationType;
@@ -16,11 +18,16 @@ public class BillPost {
 	private final String detail;
 	private final LocalDateTime createdAt;
 	private final int viewCount;
+
+	private PreAnnouncementInfo preAnnouncementInfo;
 	private List<BillProposer> billProposers;
 
 	public BillPost(
-		BillInfo billInfo, ProposerInfo proposerInfo, LegislationInfo legislationInfo,
-		String summary, String detail, LocalDateTime createdAt, int viewCount
+		BillInfo billInfo,
+		ProposerInfo proposerInfo,
+		LegislationInfo legislationInfo,
+		String summary, String detail,
+		LocalDateTime createdAt, int viewCount
 	) {
 		this.billInfo = billInfo;
 		this.proposerInfo = proposerInfo;
@@ -33,6 +40,10 @@ public class BillPost {
 
 	public void setBillProposers(List<BillProposer> billProposers) {
 		this.billProposers = billProposers;
+	}
+
+	public void assignPreAnnouncementInfo(PreAnnouncementInfo preAnnouncementInfo) {
+		this.preAnnouncementInfo = preAnnouncementInfo;
 	}
 
 	public String getBillId() {
@@ -75,6 +86,18 @@ public class BillPost {
 		return viewCount;
 	}
 
+	public int calculateDeadlineDay(LocalDate now) {
+		return (int)ChronoUnit.DAYS.between(now, preAnnouncementInfo.deadline);
+	}
+
+	public String getPreAnnouncementUrl() {
+		return preAnnouncementInfo.linkUrl;
+	}
+
+	public LocalDate getPreAnnounceDeadline() {
+		return preAnnouncementInfo.deadline;
+	}
+
 	public List<BillProposer> getBillProposers() {
 		return billProposers;
 	}
@@ -82,6 +105,7 @@ public class BillPost {
 	public static class BillInfo {
 		private final String billId;
 		private final String billName;
+
 		public BillInfo(String billId, String billName) {
 			this.billId = billId;
 			this.billName = billName;
@@ -91,6 +115,7 @@ public class BillPost {
 	public static class ProposerInfo {
 		private final ProposerType type;
 		private final String proposers;
+
 		public ProposerInfo(ProposerType type, String proposers) {
 			this.type = type;
 			this.proposers = proposers;
@@ -100,9 +125,20 @@ public class BillPost {
 	public static class LegislationInfo {
 		private final LegislationType legislativeBody;
 		private final ProgressStatus legislationProcessStatus;
+
 		public LegislationInfo(LegislationType legislationType, ProgressStatus legislationProcessStatus) {
 			this.legislativeBody = legislationType;
 			this.legislationProcessStatus = legislationProcessStatus;
+		}
+	}
+
+	public static class PreAnnouncementInfo {
+		private final String linkUrl;
+		private final LocalDate deadline;
+
+		public PreAnnouncementInfo(String linkUrl, LocalDate deadline) {
+			this.linkUrl = linkUrl;
+			this.deadline = deadline;
 		}
 	}
 }
