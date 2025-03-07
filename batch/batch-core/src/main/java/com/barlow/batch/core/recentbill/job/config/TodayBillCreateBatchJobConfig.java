@@ -38,7 +38,9 @@ public class TodayBillCreateBatchJobConfig {
 	}
 
 	@Bean
-	public Job todayBillCreateBatchJob(JobExecutionListener jobExecutionListener) {
+	public Job todayBillCreateBatchJob(
+		@Qualifier("retrieveTodayBillJobListener") JobExecutionListener jobExecutionListener
+	) {
 		return new JobBuilder(JOB_NAME, jobRepository)
 			.listener(jobExecutionListener)
 			.start(writeTrackingBillInfoStep(null, null, null))

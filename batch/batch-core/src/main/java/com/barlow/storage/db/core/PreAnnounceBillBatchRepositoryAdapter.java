@@ -1,5 +1,7 @@
 package com.barlow.storage.db.core;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.preannounce.job.PreAnnounceBillBatchRepository;
@@ -15,9 +17,9 @@ public class PreAnnounceBillBatchRepositoryAdapter implements PreAnnounceBillBat
 	}
 
 	@Override
-	public PreviousPreAnnounceBillIds retrieveAllInProgress() {
+	public PreviousPreAnnounceBillIds retrieveAllInProgress(LocalDate today) {
 		return new PreviousPreAnnounceBillIds(
-			jpaRepository.findAllInProgress(PreAnnounceBillJpaEntity.ProgressStatus.IN_PROGRESS.name())
+			jpaRepository.findAllByDeadlineDateGreaterThanEqual(today.atStartOfDay())
 				.stream()
 				.map(PreAnnounceBillJpaEntity::getBillId)
 				.toList()
