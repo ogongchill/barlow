@@ -22,23 +22,34 @@ public final class BillPostFilterTag {
 	private final Set<ProgressStatus> progressStatusTags;
 	private final Set<ProposerType> proposerTypeTags;
 	private final Set<PartyName> partyNameTags;
+	private final boolean isPreAnnouncement;
 
 	private BillPostFilterTag(
 		Set<LegislationType> legislationTypeTags,
 		Set<ProgressStatus> progressStatusTags,
 		Set<ProposerType> proposerTypeTags,
-		Set<PartyName> partyNameTags
+		Set<PartyName> partyNameTags,
+		boolean isPreAnnouncement
 	) {
 		this.legislationTypeTags = legislationTypeTags;
 		this.progressStatusTags = progressStatusTags;
 		this.proposerTypeTags = proposerTypeTags;
 		this.partyNameTags = partyNameTags;
+		this.isPreAnnouncement = isPreAnnouncement;
+	}
+
+	public static BillPostFilterTag from(Map<String, List<String>> tags) {
+		return createFilterTag(tags, false);
+	}
+
+	public static BillPostFilterTag preAnnounceFrom(Map<String, List<String>> tags) {
+		return createFilterTag(tags, true);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static BillPostFilterTag from(Map<String, List<String>> tags) {
+	private static BillPostFilterTag createFilterTag(Map<String, List<String>> tags, boolean isPreAnnouncement) {
 		if (tags.isEmpty()) {
-			return new BillPostFilterTag(Set.of(), Set.of(), Set.of(), Set.of());
+			return new BillPostFilterTag(Set.of(), Set.of(), Set.of(), Set.of(), isPreAnnouncement);
 		}
 		Map<String, Function<String, Enum<?>>> tagMappers = Map.of(
 			LEGISLATION_TYPE_TAG, s -> LegislationType.valueOf(s.toUpperCase()),
@@ -61,26 +72,20 @@ public final class BillPostFilterTag {
 			(Set<LegislationType>)results.getOrDefault(LEGISLATION_TYPE_TAG, Set.of()),
 			(Set<ProgressStatus>)results.getOrDefault(PROGRESS_STATUS_TAG, Set.of()),
 			(Set<ProposerType>)results.getOrDefault(PROPOSER_TYPE_TAG, Set.of()),
-			(Set<PartyName>)results.getOrDefault(PARTY_NAME_TAG, Set.of())
+			(Set<PartyName>)results.getOrDefault(PARTY_NAME_TAG, Set.of()),
+			isPreAnnouncement
 		);
 	}
 
-	public boolean isEmpty() {
-		return legislationTypeTags.isEmpty()
-			&& progressStatusTags.isEmpty()
-			&& proposerTypeTags.isEmpty()
-			&& partyNameTags.isEmpty();
-	}
-
-	public boolean isPartyNameTagEmpty() {
-		return partyNameTags.isEmpty();
+	public boolean isPreAnnouncement() {
+		return isPreAnnouncement;
 	}
 
 	public Set<LegislationType> getLegislationTypeTags() {
 		return legislationTypeTags;
 	}
 
-	public Set<ProgressStatus> getLegislationStatusTags() {
+	public Set<ProgressStatus> getProgressStatusTags() {
 		return progressStatusTags;
 	}
 
