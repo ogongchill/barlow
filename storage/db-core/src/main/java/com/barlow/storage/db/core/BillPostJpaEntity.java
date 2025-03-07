@@ -58,7 +58,7 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 	protected BillPostJpaEntity() {
 	}
 
-	BillPost toRecentBillPost() {
+	BillPost toBillPost() {
 		BillPost billPost = new BillPost(
 			new BillPost.BillInfo(billId, billName),
 			new BillPost.ProposerInfo(proposerType, proposers),
