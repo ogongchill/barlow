@@ -19,6 +19,10 @@ public class BillProposer {
 		this.profileImagePath = profileImagePath;
 	}
 
+	public String getProposerCode() {
+		return proposerCode;
+	}
+
 	public String getProposerName() {
 		return proposerName;
 	}
