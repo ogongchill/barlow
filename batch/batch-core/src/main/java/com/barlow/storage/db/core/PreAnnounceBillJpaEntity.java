@@ -29,24 +29,16 @@ public class PreAnnounceBillJpaEntity extends BaseTimeJpaEntity {
 	@Column(columnDefinition = "varchar(100)", name = "legislation_type", nullable = false)
 	private LegislationType legislationType;
 
-	@Column(name = "deadline_dater", nullable = false)
+	@Column(name = "deadline_date", nullable = false)
 	private LocalDateTime deadlineDate;
 
 	@Column(name = "link_url", nullable = false)
 	private String linkUrl;
-
-	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar(100)", name = "progress_status", nullable = false)
-	private ProgressStatus progressStatus;
 
 	protected PreAnnounceBillJpaEntity() {
 	}
 
 	public String getBillId() {
 		return billId;
-	}
-
-	public enum ProgressStatus {
-		IN_PROGRESS, FINISHED
 	}
 }
