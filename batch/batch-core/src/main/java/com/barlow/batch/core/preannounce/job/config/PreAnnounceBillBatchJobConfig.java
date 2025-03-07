@@ -1,10 +1,11 @@
 package com.barlow.batch.core.preannounce.job.config;
 
-import static com.barlow.batch.core.preannounce.PreAnnounceConstant.DIRTY_CHECK_STEP;
 import static com.barlow.batch.core.preannounce.PreAnnounceConstant.JOB_NAME;
+import static com.barlow.batch.core.preannounce.PreAnnounceConstant.UPDATE_STEP;
 import static com.barlow.batch.core.preannounce.PreAnnounceConstant.WRITE_STEP;
 
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -28,21 +29,24 @@ public class PreAnnounceBillBatchJobConfig {
 	}
 
 	@Bean
-	public Job preAnnounceBillBatchJob() {
+	public Job preAnnounceBillBatchJob(
+		@Qualifier("preAnnounceBillDirtyCheckJobListener") JobExecutionListener jobExecutionListener
+	) {
 		return new JobBuilder(JOB_NAME, jobRepository)
-			.start(preAnnounceBillDirtyCheckStep(null, null, null))
+			.listener(jobExecutionListener)
+			.start(billPostPreAnnounceInfoUpdateStep(null, null, null))
 			.next(preAnnounceBillWriteStep(null, null, null))
 			.build();
 	}
 
 	@Bean
 	@JobScope
-	public Step preAnnounceBillDirtyCheckStep(
-		@Qualifier("preAnnounceBillDirtyCheckTasklet") Tasklet tasklet,
+	public Step billPostPreAnnounceInfoUpdateStep(
+		@Qualifier("billPostPreAnnounceInfoUpdateTasklet") Tasklet tasklet,
 		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
-		return new StepBuilder(DIRTY_CHECK_STEP, jobRepository)
+		return new StepBuilder(UPDATE_STEP, jobRepository)
 			.tasklet(tasklet, transactionManager)
 			.listener(stepLoggingListener)
 			.build();
