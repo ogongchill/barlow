@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,13 +31,12 @@ public class RecentBillRetrieveController {
 
 	@GetMapping("/thumbnail")
 	public ApiResponse<RecentBillPostsResponse> retrieveRecentBill(
-		@RequestParam(name = "page") Integer page,
-		@RequestParam(name = "size") Integer size,
-		@RequestParam(name = "sort", defaultValue = "createdAt#DESC", required = false) String sortKey,
-		@RequestParam(name = "tags", required = false) Map<String, List<String>> tags
+		@RequestParam MultiValueMap<String, String> params
 	) {
-		BillPostsStatus billPostsStatus
-			= billPostRetrieveService.readBillPosts(BillPostQuery.defaultOf(page, size, sortKey, tags));
+		RecentBillPostsRequest request = RecentBillPostsRequest.sanitizeFrom(params);
+		BillPostsStatus billPostsStatus = billPostRetrieveService.readBillPosts(
+			BillPostQuery.defaultOf(request.getPage(), request.getSize(), request.getSort(), request.getFilters())
+		);
 		RecentBillPostsApiSpecComposer apiSpecComposer = new RecentBillPostsApiSpecComposer(billPostsStatus);
 		return ApiResponse.success(apiSpecComposer.compose(LocalDate.now()));
 	}
