@@ -9,6 +9,12 @@ import com.barlow.core.enumerate.PartyName;
 import com.barlow.core.enumerate.ProgressStatus;
 import com.barlow.core.enumerate.ProposerType;
 
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
+
 public class BillPostSpecifications {
 
 	static Specification<BillPostJpaEntity> isPreAnnouncement(boolean isPreAnnouncementMode) {
@@ -40,10 +46,19 @@ public class BillPostSpecifications {
 	}
 
 	static Specification<BillPostJpaEntity> hasPartyNameTag(Set<PartyName> tags) {
-		return (root, query, criteriaBuilder)
-			-> tags.isEmpty()
-			? criteriaBuilder.conjunction()
-			: root.get("partyName").in(tags);
+		return (root, query, criteriaBuilder) -> {
+			if (tags.isEmpty()) {
+				return criteriaBuilder.conjunction();
+			}
+			Subquery<String> subquery = query.subquery(String.class);
+			Root<BillProposerJpaEntity> billProposerRoot = subquery.from(BillProposerJpaEntity.class);
+			subquery.select(billProposerRoot.get("proposeBillId"))
+				.where(
+					criteriaBuilder.equal(root.get("billId"), billProposerRoot.get("proposeBillId")),
+					billProposerRoot.get("partyName").in(tags)
+				);
+			return criteriaBuilder.exists(subquery);
+		};
 	}
 
 	private BillPostSpecifications() {
