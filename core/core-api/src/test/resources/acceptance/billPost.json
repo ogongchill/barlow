@@ -25,6 +25,36 @@
       "view_count": 0,
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
+    },
+    {
+      "bill_id": "PRC_3",
+      "proposers": "허준의원 등 10인",
+      "bill_name": "방위사업법 일부개정법률안",
+      "detail": "제안이유 및 주요내용",
+      "summary": null,
+      "legislation_type": "HOUSE_STEERING",
+      "progress_status": "COMMITTEE_RECEIVED",
+      "proposer_type": "LAWMAKER",
+      "view_count": 0,
+      "pre_announce_deadline_date": "2025-03-20",
+      "pre_announce_link_url": "https://pa.assembly.go.kr/~",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "bill_id": "PRC_4",
+      "proposers": "국회운영위원장",
+      "bill_name": "방위사업법 일부개정법률안(대안)",
+      "detail": "제안이유 및 주요내용",
+      "summary": null,
+      "legislation_type": "HOUSE_STEERING",
+      "progress_status": "COMMITTEE_RECEIVED",
+      "proposer_type": "LAWMAKER",
+      "view_count": 0,
+      "pre_announce_deadline_date": "2025-03-21",
+      "pre_announce_link_url": "https://pa.assembly.go.kr/~",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
     }
   ],
   "bill_proposer": [
@@ -204,6 +234,97 @@
       "propose_bill_id": "PRC_2",
       "proposer_code": "B9",
       "proposer_name": "임꺽정9",
+      "proposer_profile_image_path": "/lawmaker/profile-image-path.jpg",
+      "party_name": "PEOPLE_POWER",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+
+    {
+      "propose_bill_id": "PRC_3",
+      "proposer_code": "C",
+      "proposer_name": "허준",
+      "proposer_profile_image_path": "/lawmaker/profile-image-path.jpg",
+      "party_name": "PEOPLE_POWER",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "propose_bill_id": "PRC_3",
+      "proposer_code": "C1",
+      "proposer_name": "허준1",
+      "proposer_profile_image_path": "/lawmaker/profile-image-path.jpg",
+      "party_name": "PEOPLE_POWER",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "propose_bill_id": "PRC_3",
+      "proposer_code": "C2",
+      "proposer_name": "허준2",
+      "proposer_profile_image_path": "/lawmaker/profile-image-path.jpg",
+      "party_name": "PEOPLE_POWER",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "propose_bill_id": "PRC_3",
+      "proposer_code": "C3",
+      "proposer_name": "허준3",
+      "proposer_profile_image_path": "/lawmaker/profile-image-path.jpg",
+      "party_name": "PEOPLE_POWER",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "propose_bill_id": "PRC_3",
+      "proposer_code": "C4",
+      "proposer_name": "허준4",
+      "proposer_profile_image_path": "/lawmaker/profile-image-path.jpg",
+      "party_name": "PEOPLE_POWER",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "propose_bill_id": "PRC_3",
+      "proposer_code": "C5",
+      "proposer_name": "허준5",
+      "proposer_profile_image_path": "/lawmaker/profile-image-path.jpg",
+      "party_name": "PEOPLE_POWER",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "propose_bill_id": "PRC_3",
+      "proposer_code": "C6",
+      "proposer_name": "허준6",
+      "proposer_profile_image_path": "/lawmaker/profile-image-path.jpg",
+      "party_name": "MINJOO",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "propose_bill_id": "PRC_3",
+      "proposer_code": "C7",
+      "proposer_name": "허준7",
+      "proposer_profile_image_path": "/lawmaker/profile-image-path.jpg",
+      "party_name": "PEOPLE_POWER",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "propose_bill_id": "PRC_3",
+      "proposer_code": "C8",
+      "proposer_name": "허준8",
+      "proposer_profile_image_path": "/lawmaker/profile-image-path.jpg",
+      "party_name": "INDEPENDENT",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "propose_bill_id": "PRC_3",
+      "proposer_code": "C9",
+      "proposer_name": "허준9",
       "proposer_profile_image_path": "/lawmaker/profile-image-path.jpg",
       "party_name": "PEOPLE_POWER",
       "created_at": "2025-01-01",
