@@ -1,5 +1,7 @@
 package com.barlow.core.support.error;
 
+import org.springframework.http.HttpStatus;
+
 public class CoreAuthException extends RuntimeException {
 
 	private final CoreAuthErrorType errorType;
@@ -21,7 +23,19 @@ public class CoreAuthException extends RuntimeException {
 		return errorType;
 	}
 
-	public CoreAuthErrorMessage getErrorMessage() {
-		return errorMessage;
+	public String getErrorMessage() {
+		return errorMessage.getMessage();
+	}
+
+	public String getErrorCode() {
+		return errorType.getCode().name();
+	}
+
+	public HttpStatus getErrorStatus() {
+		return errorType.getStatus();
+	}
+
+	public Object getData() {
+		return errorMessage.getData();
 	}
 }

@@ -1,12 +1,5 @@
 package com.barlow.core.api.controller;
 
-import static com.barlow.core.support.error.CoreApiErrorType.BAD_REQUEST;
-import static com.barlow.core.support.error.CoreApiErrorType.CONFLICT;
-import static com.barlow.core.support.error.CoreApiErrorType.DEFAULT_ERROR;
-import static com.barlow.core.support.error.CoreApiErrorType.FORBIDDEN;
-import static com.barlow.core.support.error.CoreApiErrorType.NOT_FOUND;
-import static com.barlow.core.support.error.CoreApiErrorType.UNAUTHORIZED;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -37,19 +30,16 @@ public class CoreApiControllerAdvice {
 	}
 
 	@ExceptionHandler(CoreAuthException.class)
-	public ResponseEntity<ApiResponse<Void>> handleCoreException(CoreAuthException e) {
+	public ResponseEntity<ApiResponse<Object>> handleCoreException(CoreAuthException e) {
 		switch (e.getErrorType().getLogLevel()) {
 			case ERROR -> log.error(CORE_AUTH_EXCEPTION_MESSAGE_TEMPLATE, e.getMessage(), e);
 			case WARN -> log.warn(CORE_AUTH_EXCEPTION_MESSAGE_TEMPLATE, e.getMessage(), e);
 			default -> log.info(CORE_AUTH_EXCEPTION_MESSAGE_TEMPLATE, e.getMessage(), e);
 		}
-		return switch (e.getErrorType().getCode()) {
-			case E400 -> new ResponseEntity<>(ApiResponse.error(BAD_REQUEST), BAD_REQUEST.getStatus());
-			case E401 -> new ResponseEntity<>(ApiResponse.error(UNAUTHORIZED), UNAUTHORIZED.getStatus());
-			case E404 -> new ResponseEntity<>(ApiResponse.error(NOT_FOUND), NOT_FOUND.getStatus());
-			case E409 -> new ResponseEntity<>(ApiResponse.error(CONFLICT), CONFLICT.getStatus());
-			case E500 -> new ResponseEntity<>(ApiResponse.error(DEFAULT_ERROR), DEFAULT_ERROR.getStatus());
-		};
+		return new ResponseEntity<>(
+			ApiResponse.error(e.getErrorCode(), e.getErrorMessage(), e.getData()),
+			e.getErrorStatus()
+		);
 	}
 
 	@ExceptionHandler(CoreDomainException.class)
@@ -59,13 +49,10 @@ public class CoreApiControllerAdvice {
 			case IMPLEMENTATION -> log.warn("Implementation exception : {}", e.getMessage(), e);
 			default -> log.warn("Unknown exception : {}", e.getMessage(), e);
 		}
-		return switch (e.getCode()) {
-			case E400 -> new ResponseEntity<>(ApiResponse.error(BAD_REQUEST), BAD_REQUEST.getStatus());
-			case E401 -> new ResponseEntity<>(ApiResponse.error(UNAUTHORIZED), UNAUTHORIZED.getStatus());
-			case E403 -> new ResponseEntity<>(ApiResponse.error(FORBIDDEN), UNAUTHORIZED.getStatus());
-			case E404 -> new ResponseEntity<>(ApiResponse.error(NOT_FOUND), NOT_FOUND.getStatus());
-			case E409 -> new ResponseEntity<>(ApiResponse.error(CONFLICT), CONFLICT.getStatus());
-		};
+		return new ResponseEntity<>(
+			ApiResponse.error(e.getCode().name(), e.getMessage()),
+			CoreApiErrorType.findByErrorCode(e.getCode()).getStatus()
+		);
 	}
 
 	@ExceptionHandler(Exception.class)

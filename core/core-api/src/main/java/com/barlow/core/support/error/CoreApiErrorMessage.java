@@ -6,6 +6,12 @@ public class CoreApiErrorMessage {
 	private final String message;
 	private final Object data;
 
+	public CoreApiErrorMessage(String code, String message, Object data) {
+		this.code = code;
+		this.message = message;
+		this.data = data;
+	}
+
 	public CoreApiErrorMessage(CoreApiErrorType errorType) {
 		this.code = errorType.getCode().name();
 		this.message = errorType.getMessage();
