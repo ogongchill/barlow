@@ -20,6 +20,7 @@ import org.springframework.util.MultiValueMap;
 import com.barlow.core.ContextTest;
 import com.barlow.core.support.AcceptanceTest;
 import com.barlow.core.support.TestTokenProvider;
+import com.barlow.core.support.response.ResultType;
 
 import io.restassured.RestAssured;
 
@@ -46,7 +47,7 @@ class PreAnnounceBillRetrieveControllerTest extends ContextTest {
 				.then().log().all().extract()
 				.jsonPath().getMap(".");
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -68,7 +69,7 @@ class PreAnnounceBillRetrieveControllerTest extends ContextTest {
 				.then().log().all().extract()
 				.jsonPath().getMap(".");
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -85,7 +86,7 @@ class PreAnnounceBillRetrieveControllerTest extends ContextTest {
 			Map<String, Object> responseMap = retrievePreAnnounceBillPostDetail("PRC_3");
 
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -95,7 +96,7 @@ class PreAnnounceBillRetrieveControllerTest extends ContextTest {
 		@Test
 		void retrieveBillPostDetail_fail() {
 			Map<String, Object> responseMap = retrievePreAnnounceBillPostDetail("NONE");
-			assertThat(responseMap).containsEntry("result", "ERROR");
+			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
 		}
 
 		private Map<String, Object> retrievePreAnnounceBillPostDetail(String billId) {
