@@ -58,12 +58,27 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 	protected BillPostJpaEntity() {
 	}
 
-	BillPost toRecentBillPost() {
-		return new BillPost(
+	BillPost toBillPost() {
+		BillPost billPost = new BillPost(
 			new BillPost.BillInfo(billId, billName),
 			new BillPost.ProposerInfo(proposerType, proposers),
 			new BillPost.LegislationInfo(legislationType, progressStatus),
 			summary, detail, getCreatedAt(), viewCount
+		);
+		if (hasPreAnnouncementInfo()) {
+			billPost.assignPreAnnouncementInfo(getPreAnnouncementInfo());
+		}
+		return billPost;
+	}
+
+	private boolean hasPreAnnouncementInfo() {
+		return preAnnouncementInfo != null;
+	}
+
+	private BillPost.PreAnnouncementInfo getPreAnnouncementInfo() {
+		return new BillPost.PreAnnouncementInfo(
+			preAnnouncementInfo.linkUrl,
+			preAnnouncementInfo.deadlineDate.toLocalDate()
 		);
 	}
 
@@ -73,17 +88,6 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 			billName,
 			proposers,
 			getCreatedAt().toLocalDate()
-		);
-	}
-
-	boolean hasPreAnnouncementInfo() {
-		return preAnnouncementInfo != null;
-	}
-
-	BillPost.PreAnnouncementInfo getPreAnnouncementInfo() {
-		return new BillPost.PreAnnouncementInfo(
-			preAnnouncementInfo.linkUrl,
-			preAnnouncementInfo.deadlineDate.toLocalDate()
 		);
 	}
 

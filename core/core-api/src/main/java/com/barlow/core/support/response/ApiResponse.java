@@ -31,6 +31,14 @@ public class ApiResponse<T> {
 		return new ApiResponse<>(ResultType.ERROR, null, new CoreApiErrorMessage(error, errorData));
 	}
 
+	public static ApiResponse<Void> error(String errorCode, String errorMessage) {
+		return new ApiResponse<>(ResultType.ERROR, null, new CoreApiErrorMessage(errorCode, errorMessage, null));
+	}
+
+	public static ApiResponse<Object> error(String errorCode, String errorMessage, Object errorData) {
+		return new ApiResponse<>(ResultType.ERROR, errorData, new CoreApiErrorMessage(errorCode, errorMessage, errorData));
+	}
+
 	public ResultType getResult() {
 		return result;
 	}

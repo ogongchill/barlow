@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import com.barlow.core.ContextTest;
 import com.barlow.core.support.AcceptanceTest;
 import com.barlow.core.support.TestTokenProvider;
+import com.barlow.core.support.response.ResultType;
 
 import io.restassured.RestAssured;
 
@@ -39,7 +40,7 @@ class LegislationAccountSubscribeControllerTest extends ContextTest {
 		void subscribe_success() {
 			Map<String, Object> responseMap = activateSubscription(2L);
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -49,7 +50,7 @@ class LegislationAccountSubscribeControllerTest extends ContextTest {
 		@Test
 		void subscribe_fail() {
 			Map<String, Object> responseMap = activateSubscription(1L);
-			assertThat(responseMap).containsEntry("result", "ERROR");
+			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
 		}
 
 		private Map<String, Object> activateSubscription(Long accountNo) {
@@ -73,7 +74,7 @@ class LegislationAccountSubscribeControllerTest extends ContextTest {
 		void unsubscribe_success() {
 			Map<String, Object> responseMap = deactivateSubscription(1L);
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -83,7 +84,7 @@ class LegislationAccountSubscribeControllerTest extends ContextTest {
 		@Test
 		void unsubscribe_fail() {
 			Map<String, Object> responseMap = deactivateSubscription(2L);
-			assertThat(responseMap).containsEntry("result", "ERROR");
+			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
 		}
 
 		private Map<String, Object> deactivateSubscription(Long accountNo) {

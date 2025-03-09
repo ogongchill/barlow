@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import com.barlow.core.ContextTest;
 import com.barlow.core.support.AcceptanceTest;
 import com.barlow.core.support.TestTokenProvider;
+import com.barlow.core.support.response.ResultType;
 
 import io.restassured.RestAssured;
 
@@ -42,7 +43,7 @@ class LegislationAccountRetrieveControllerTest extends ContextTest {
 			.then().log().all().extract()
 			.jsonPath().getMap(".");
 		assertAll(
-			() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+			() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 			() -> assertThat(responseMap.get("data")).isNotNull(),
 			() -> assertThat(responseMap.get("error")).isNull()
 		);
@@ -60,7 +61,7 @@ class LegislationAccountRetrieveControllerTest extends ContextTest {
 			.then().log().all().extract()
 			.jsonPath().getMap(".");
 		assertAll(
-			() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+			() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 			() -> assertThat(responseMap.get("data")).isNotNull(),
 			() -> assertThat(responseMap.get("error")).isNull()
 		);
