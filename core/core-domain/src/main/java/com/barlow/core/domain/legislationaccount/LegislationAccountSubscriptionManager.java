@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.subscribe.SubscribeActivator;
+import com.barlow.core.enumerate.LegislationType;
 
 @Component
 public class LegislationAccountSubscriptionManager {
@@ -21,14 +22,14 @@ public class LegislationAccountSubscriptionManager {
 	}
 
 	@Transactional
-	public void subscribe(long accountNo, User user) {
-		subscribeActivator.activate(accountNo, user);
-		legislationAccountRepository.incrementSubscriber(accountNo);
+	public void subscribe(LegislationType legislationType, User user) {
+		subscribeActivator.activate(legislationType, user);
+		legislationAccountRepository.incrementSubscriber(legislationType);
 	}
 
 	@Transactional
-	public void unsubscribe(long accountNo, User user) {
-		subscribeActivator.deactivate(accountNo, user);
-		legislationAccountRepository.decrementSubscriber(accountNo);
+	public void unsubscribe(LegislationType legislationType, User user) {
+		subscribeActivator.deactivate(legislationType, user);
+		legislationAccountRepository.decrementSubscriber(legislationType);
 	}
 }

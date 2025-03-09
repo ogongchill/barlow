@@ -23,14 +23,14 @@ public class SubscribeRepositoryAdapter implements SubscribeRepository {
 	@Override
 	public Subscribe retrieve(SubscribeQuery query) {
 		User user = query.user();
-		long legislationAccountNo = query.legislationAccountNo();
+		LegislationType legislationType = query.legislationType();
 		SubscribeJpaEntity subscribeJpaEntity = subscribeJpaRepository
-			.findBySubscribeLegislationAccountNoAndMemberNo(legislationAccountNo, user.getUserNo());
+			.findBySubscribeLegislationAccountNoAndMemberNo(legislationType.getLegislationNo(), user.getUserNo());
 		if (subscribeJpaEntity == null) {
 			return new Subscribe(
 				user,
-				legislationAccountNo,
-				LegislationType.findByAccountNo(legislationAccountNo),
+				legislationType.getLegislationNo(),
+				legislationType,
 				false
 			);
 		}
