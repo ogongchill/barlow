@@ -34,7 +34,7 @@ subprojects {
 
     configurations {
         configureEach {
-            exclude group:'org.springframework.boot', module: 'spring-boot-starter-logging'
+            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
             exclude group: 'commons-logging', module: 'commons-logging'
         }
     }
@@ -44,11 +44,35 @@ subprojects {
 
     test {
         useJUnitPlatform {
-            excludeTags('dev')
+            excludeTags('develop', 'restdocs')
         }
     }
 
-    tasks.named('test') {
-        useJUnitPlatform()
+    tasks.register('unitTest', Test) {
+        group = 'verification'
+        useJUnitPlatform {
+            excludeTags('develop', 'context', 'restdocs')
+        }
+    }
+
+    tasks.register('contextTest', Test) {
+        group = 'verification'
+        useJUnitPlatform {
+            includeTags('context')
+        }
+    }
+
+    tasks.register('restDocsTest', Test) {
+        group = 'verification'
+        useJUnitPlatform {
+            includeTags('restdocs')
+        }
+    }
+
+    tasks.register('developTest', Test) {
+        group = 'verification'
+        useJUnitPlatform {
+            includeTags('develop')
+        }
     }
 }
