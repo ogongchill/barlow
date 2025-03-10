@@ -2,6 +2,7 @@ package com.barlow.storage.db.core;
 
 import com.barlow.core.domain.legislationaccount.LegislationAccount;
 import com.barlow.core.domain.legislationaccount.LegislationAccountRepository;
+import com.barlow.core.enumerate.LegislationType;
 
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,8 @@ public class LegislationRepositoryAdapter implements LegislationAccountRepositor
 	}
 
 	@Override
-	public LegislationAccount retrieve(long accountNo) {
-		return legislationAccountJpaRepository.findByNo(accountNo)
+	public LegislationAccount retrieve(LegislationType legislationType) {
+		return legislationAccountJpaRepository.findByNo(legislationType.getLegislationNo())
 			.toLegislationAccount();
 	}
 
@@ -32,12 +33,12 @@ public class LegislationRepositoryAdapter implements LegislationAccountRepositor
 	}
 
 	@Override
-	public void incrementSubscriber(long accountNo) {
-		legislationAccountJpaRepository.updateIncrementSubscriberCount(accountNo);
+	public void incrementSubscriber(LegislationType legislationType) {
+		legislationAccountJpaRepository.updateIncrementSubscriberCount(legislationType.getLegislationNo());
 	}
 
 	@Override
-	public void decrementSubscriber(long accountNo) {
-		legislationAccountJpaRepository.updateDecrementSubscriberCount(accountNo);
+	public void decrementSubscriber(LegislationType legislationType) {
+		legislationAccountJpaRepository.updateDecrementSubscriberCount(legislationType.getLegislationNo());
 	}
 }

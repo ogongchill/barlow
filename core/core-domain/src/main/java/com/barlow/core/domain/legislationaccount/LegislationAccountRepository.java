@@ -4,14 +4,16 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import com.barlow.core.enumerate.LegislationType;
+
 @Repository
 public interface LegislationAccountRepository {
 
-	LegislationAccount retrieve(long accountNo);
+	LegislationAccount retrieve(LegislationType legislationType);
 
 	List<LegislationAccount> retrieveCommitteeAccount();
 
-	void incrementSubscriber(long accountNo);
+	void incrementSubscriber(LegislationType legislationType);
 
-	void decrementSubscriber(long accountNo);
+	void decrementSubscriber(LegislationType legislationType);
 }

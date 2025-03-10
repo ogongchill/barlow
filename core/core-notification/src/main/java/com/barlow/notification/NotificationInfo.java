@@ -34,7 +34,7 @@ public class NotificationInfo {
 			});
 	}
 
-	Map<Topic, List<Subscriber>> getInfos() {
+	public Map<Topic, List<Subscriber>> getInfos() {
 		return infos;
 	}
 

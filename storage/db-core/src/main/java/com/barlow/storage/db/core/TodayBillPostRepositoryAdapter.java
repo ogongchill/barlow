@@ -22,11 +22,8 @@ public class TodayBillPostRepositoryAdapter implements TodayBillPostRepository {
 	public List<TodayBillPostThumbnail> retrieveTodayBillPostThumbnails(LocalDate today) {
 		LocalDateTime todayStart = today.atStartOfDay();
 		LocalDateTime todayEnd = today.plusDays(1).atStartOfDay();
-		List<BillPostJpaEntity> jpaEntities = billPostJpaRepository.findAllByCreatedAtBetween(todayStart, todayEnd);
-		if (jpaEntities == null) {
-			return List.of();
-		}
-		return jpaEntities.stream()
+		return billPostJpaRepository.findAllByCreatedAtBetween(todayStart, todayEnd)
+			.stream()
 			.map(BillPostJpaEntity::toTodayBillPostThumbnail)
 			.toList();
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.barlow.core.domain.User;
+import com.barlow.core.enumerate.LegislationType;
 
 @Service
 public class LegislationAccountRetrieveService {
@@ -15,8 +16,8 @@ public class LegislationAccountRetrieveService {
 		this.legislationAccountReader = legislationAccountReader;
 	}
 
-	public LegislationAccount retrieve(long accountNo, User user) {
-		return legislationAccountReader.read(accountNo, user);
+	public LegislationAccount retrieve(LegislationType legislationType, User user) {
+		return legislationAccountReader.read(legislationType, user);
 	}
 
 	public List<LegislationAccount> retrieveAllCommittees(User user) {

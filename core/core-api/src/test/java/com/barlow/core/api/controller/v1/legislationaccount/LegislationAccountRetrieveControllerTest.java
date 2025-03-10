@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 
 import com.barlow.core.ContextTest;
+import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.support.AcceptanceTest;
 import com.barlow.core.support.TestTokenProvider;
 import com.barlow.core.support.response.ResultType;
@@ -57,7 +58,7 @@ class LegislationAccountRetrieveControllerTest extends ContextTest {
 			.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
 			.headers(MANDATORY_DEVICE_HEADERS)
 			.when()
-			.get("/api/v1/legislation-accounts/{accountNo}/profile", 1)
+			.get("/api/v1/legislation-accounts/{legislationType}/profile", LegislationType.HOUSE_STEERING)
 			.then().log().all().extract()
 			.jsonPath().getMap(".");
 		assertAll(
