@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "barlow_user")
-public class UserJpaEntity {
+public class UserJpaEntity extends BaseTimeJpaEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
