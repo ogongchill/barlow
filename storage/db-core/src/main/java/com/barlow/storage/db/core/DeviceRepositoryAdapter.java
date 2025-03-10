@@ -27,9 +27,12 @@ public class DeviceRepositoryAdapter implements DeviceRepository {
 	}
 
 	@Override
-	public Device read(DeviceQuery query) {
-		return deviceJpaRepository.findByDeviceIdAndOs(query.deviceId(), query.deviceOs())
-			.toDevice();
+	public Device readOrNull(DeviceQuery query) {
+		DeviceJpaEntity deviceJpaEntity = deviceJpaRepository.findByDeviceIdAndOs(query.deviceId(), query.deviceOs());
+		if (deviceJpaEntity == null) {
+			return null;
+		}
+		return deviceJpaEntity.toDevice();
 	}
 
 	@Override

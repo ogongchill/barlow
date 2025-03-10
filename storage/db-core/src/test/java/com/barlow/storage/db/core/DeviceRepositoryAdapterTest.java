@@ -38,8 +38,8 @@ class DeviceRepositoryAdapterTest extends CoreDbContextTest {
 
 	@DisplayName("deviceId 와 deviceOs 정보로 단일 device 를 조회한다")
 	@Test
-	void read() {
-		Device device = adapter.read(new DeviceQuery("device_id_1", DeviceOs.IOS));
+	void readOrNull() {
+		Device device = adapter.readOrNull(new DeviceQuery("device_id_1", DeviceOs.IOS));
 
 		assertAll(
 			() -> assertThat(device).isNotNull(),
