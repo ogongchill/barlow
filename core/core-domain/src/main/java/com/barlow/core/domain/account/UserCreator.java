@@ -16,7 +16,7 @@ public class UserCreator {
 	}
 
 	public User create(UserCreateCommand command) {
-		User user = userRepository.create(command);
+		User user = userRepository.create(command.toUserCommand());
 		deviceRepository.save(command.toDeviceCommand(user.getUserNo()));
 		return user;
 	}

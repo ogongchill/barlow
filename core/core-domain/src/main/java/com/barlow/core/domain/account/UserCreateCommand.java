@@ -8,6 +8,14 @@ public record UserCreateCommand(
 	String deviceToken,
 	String nickname
 ) {
+	DeviceQuery toDeviceQuery() {
+		return new DeviceQuery(deviceId, os);
+	}
+
+	UserRegisterCommand toUserCommand() {
+		return new UserRegisterCommand(nickname);
+	}
+
 	DeviceRegisterCommand toDeviceCommand(long userNo) {
 		return new DeviceRegisterCommand(deviceId, os, deviceToken, userNo);
 	}
