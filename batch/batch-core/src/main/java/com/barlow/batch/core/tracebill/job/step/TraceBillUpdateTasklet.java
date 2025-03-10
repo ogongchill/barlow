@@ -11,6 +11,7 @@ import com.barlow.batch.core.common.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.tracebill.TraceBillConstant;
 import com.barlow.batch.core.tracebill.job.BillPostBatchRepository;
 import com.barlow.batch.core.tracebill.job.BillTrackingClient;
+import com.barlow.batch.core.tracebill.job.LegislationAccountBatchRepository;
 import com.barlow.batch.core.tracebill.job.UpdatedBillShareRepository;
 import com.barlow.batch.core.tracebill.job.UpdatedBills;
 import com.barlow.core.enumerate.LegislationType;
@@ -22,15 +23,18 @@ public class TraceBillUpdateTasklet extends AbstractExecutionContextSharingManag
 	private final BillTrackingClient client;
 	private final UpdatedBillShareRepository billShareRepository;
 	private final BillPostBatchRepository billPostBatchRepository;
+	private final LegislationAccountBatchRepository accountBatchRepository;
 
 	public TraceBillUpdateTasklet(
 		BillTrackingClient client,
 		UpdatedBillShareRepository billShareRepository,
-		BillPostBatchRepository billPostBatchRepository
+		BillPostBatchRepository billPostBatchRepository,
+		LegislationAccountBatchRepository accountBatchRepository
 	) {
 		this.client = client;
 		this.billShareRepository = billShareRepository;
 		this.billPostBatchRepository = billPostBatchRepository;
+		this.accountBatchRepository = accountBatchRepository;
 	}
 
 	@Override
@@ -50,6 +54,7 @@ public class TraceBillUpdateTasklet extends AbstractExecutionContextSharingManag
 					LegislationType committee = client.getCommittee(billInfo.billId());
 					committeeReceived.assignCommittee(billInfo.billId(), committee);
 				});
+			accountBatchRepository.updateAccountBillCount(committeeReceived);
 		}
 
 		billPostBatchRepository.updateAllInBatch(updatedBills);
