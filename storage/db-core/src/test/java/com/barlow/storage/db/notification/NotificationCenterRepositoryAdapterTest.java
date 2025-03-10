@@ -1,4 +1,4 @@
-package com.barlow.storage.db.core;
+package com.barlow.storage.db.notification;
 
 import static com.barlow.core.enumerate.NotificationTopic.HOUSE_STEERING;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -11,27 +11,35 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.barlow.notification.NotificationCenterItemInfo;
 import com.barlow.storage.db.CoreDbContextTest;
+import com.barlow.storage.db.core.NotificationCenterJpaRepository;
+import com.barlow.storage.db.core.NotificationCenterRepositoryAdapter;
 
-@Transactional
 class NotificationCenterRepositoryAdapterTest extends CoreDbContextTest {
 
-	private final NotificationCenterRepositoryAdapter notificationCenterRepositoryAdapter;
+	private final NotificationCenterRepositoryAdapter adapter;
 	private final NotificationCenterJpaRepository notificationCenterJpaRepository;
 
 	NotificationCenterRepositoryAdapterTest(
-		NotificationCenterRepositoryAdapter notificationCenterRepositoryAdapter,
+		NotificationCenterRepositoryAdapter adapter,
 		NotificationCenterJpaRepository notificationCenterJpaRepository
 	) {
-		this.notificationCenterRepositoryAdapter = notificationCenterRepositoryAdapter;
+		this.adapter = adapter;
 		this.notificationCenterJpaRepository = notificationCenterJpaRepository;
 	}
 
 	@DisplayName("알림센터에 저장할 정보들로 NotificationCenter 테이블에 batch insert 하면 정상적으로 저장된다")
 	@Test
+	@Transactional
 	void registerAll() {
-		notificationCenterRepositoryAdapter.registerAll(List.of(
-			new NotificationCenterItemInfo(1L, HOUSE_STEERING.name(), "title", "body"),
-			new NotificationCenterItemInfo(2L, HOUSE_STEERING.name(), "title", "body")
+		adapter.registerAll(List.of(
+			new NotificationCenterItemInfo(
+				1L, HOUSE_STEERING,
+				List.of(new NotificationCenterItemInfo.BillItemInfo("billId1", "billName1"))
+			),
+			new NotificationCenterItemInfo(
+				2L, HOUSE_STEERING,
+				List.of(new NotificationCenterItemInfo.BillItemInfo("billId2", "billName2"))
+			)
 		));
 
 		assertThat(notificationCenterJpaRepository.findAll()).hasSize(2);
