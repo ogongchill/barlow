@@ -1,10 +1,11 @@
 package com.barlow.core.domain.billpost;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import org.springframework.util.MultiValueMap;
 
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.enumerate.PartyName;
@@ -38,16 +39,16 @@ public final class BillPostFilterTag {
 		this.isPreAnnouncement = isPreAnnouncement;
 	}
 
-	public static BillPostFilterTag from(Map<String, List<String>> tags) {
+	public static BillPostFilterTag from(MultiValueMap<String, String> tags) {
 		return createFilterTag(tags, false);
 	}
 
-	public static BillPostFilterTag preAnnounceFrom(Map<String, List<String>> tags) {
+	public static BillPostFilterTag preAnnounceFrom(MultiValueMap<String, String> tags) {
 		return createFilterTag(tags, true);
 	}
 
 	@SuppressWarnings("unchecked")
-	private static BillPostFilterTag createFilterTag(Map<String, List<String>> tags, boolean isPreAnnouncement) {
+	private static BillPostFilterTag createFilterTag(MultiValueMap<String, String> tags, boolean isPreAnnouncement) {
 		if (tags.isEmpty()) {
 			return new BillPostFilterTag(Set.of(), Set.of(), Set.of(), Set.of(), isPreAnnouncement);
 		}

@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 
 import com.barlow.core.ContextTest;
 import com.barlow.core.support.AcceptanceTest;
+import com.barlow.core.support.response.ResultType;
 
 import io.restassured.RestAssured;
 
@@ -34,7 +35,7 @@ class AuthControllerTest extends ContextTest {
 			.then().log().all().extract()
 			.jsonPath().getMap(".");
 		assertAll(
-			() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+			() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 			() -> assertThat(responseMap.get("data")).isNotNull(),
 			() -> assertThat(responseMap.get("error")).isNull()
 		);
@@ -59,7 +60,7 @@ class AuthControllerTest extends ContextTest {
 				.then().log().all().extract()
 				.jsonPath().getMap(".");
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -80,7 +81,7 @@ class AuthControllerTest extends ContextTest {
 				.then().log().all().extract()
 				.jsonPath().getMap(".");
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -100,7 +101,7 @@ class AuthControllerTest extends ContextTest {
 				.post("/api/v1/auth/guest/login")
 				.then().log().all().extract()
 				.jsonPath().getMap(".");
-			assertThat(responseMap).containsEntry("result", "ERROR");
+			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
 		}
 	}
 }

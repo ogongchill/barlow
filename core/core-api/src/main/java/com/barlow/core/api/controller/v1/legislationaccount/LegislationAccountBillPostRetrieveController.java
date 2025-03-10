@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,13 +33,12 @@ public class LegislationAccountBillPostRetrieveController {
 	@GetMapping("/{legislationType}/bill-posts")
 	public ApiResponse<LegislationAccountBillPostsResponse> retrieveBillPostThumbnail(
 		@PathVariable("legislationType") LegislationType legislationType,
-		@RequestParam(name = "page") Integer page,
-		@RequestParam(name = "size") Integer size,
-		@RequestParam(name = "sort", defaultValue = "createdAt#DESC", required = false) String sortKey,
-		@RequestParam(name = "tags", required = false) Map<String, List<String>> tags
+		@RequestParam MultiValueMap<String, String> params
 	) {
-		BillPostQuery billPostQuery = BillPostQuery.legislationOf(legislationType, page, size, sortKey, tags);
-		BillPostsStatus billPostsStatus = billPostRetrieveService.readBillPosts(billPostQuery);
+		LegislationAccountBillPostsRequest request = LegislationAccountBillPostsRequest.sanitizeFrom(params);
+		BillPostQuery query = BillPostQuery.legislationOf(legislationType, request.getPage(), request.getSize(),
+			request.getSort(), request.getFilters());
+		BillPostsStatus billPostsStatus = billPostRetrieveService.readBillPosts(query);
 		LegislationAccountBillPostsApiSpecComposer apiSpecComposer
 			= new LegislationAccountBillPostsApiSpecComposer(billPostsStatus);
 		return ApiResponse.success(apiSpecComposer.compose(LocalDate.now()));

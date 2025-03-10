@@ -23,8 +23,8 @@ public class NotificationCenterRepositoryAdapter implements NotificationCenterRe
 
 	public NotificationCenterRepositoryAdapter(DataSource dataSource) {
 		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-			.withTableName("notification_center")
-			.usingGeneratedKeyColumns("notification_center_no");
+			.withTableName("notification_center_item")
+			.usingGeneratedKeyColumns("notification_center_item_no");
 	}
 
 	@Override

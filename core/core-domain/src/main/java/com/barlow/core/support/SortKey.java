@@ -9,6 +9,9 @@ public final class SortKey {
 	private final String value;
 
 	public SortKey(String value) {
+		if (!value.matches("^[\\w.]+#[\\w.]+$")) {
+			throw new IllegalArgumentException("Invalid sort key: " + value);
+		}
 		this.value = value;
 	}
 

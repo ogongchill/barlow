@@ -1,0 +1,22 @@
+{
+  "notification_center_item": [
+    {
+      "member_no": 1,
+      "bill_id": "PRC_1",
+      "notification_topic": "HOUSE_STEERING",
+      "title": "국회운영위원회",
+      "body": "정부조직법 일부개정법률안",
+      "created_at": "2025-02-01",
+      "updated_at": "2025-02-01"
+    },
+    {
+      "member_no": 1,
+      "bill_id": "PRC_2",
+      "notification_topic": "LEGISLATION_AND_JUDICIARY",
+      "title": "법제사법위원회",
+      "body": "방위사업법 일부개정법률안",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    }
+  ]
+}

@@ -1,9 +1,8 @@
 package com.barlow.core.api.controller.v1.preannounce;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,13 +28,12 @@ public class PreAnnounceBillRetrieveController {
 
 	@GetMapping
 	public ApiResponse<PreAnnounceBillPostsResponse> retrievePreAnnouncementBills(
-		@RequestParam(name = "page") Integer page,
-		@RequestParam(name = "size") Integer size,
-		@RequestParam(name = "sort", defaultValue = "deadlineDate#DESC", required = false) String sortKey,
-		@RequestParam(name = "tags", required = false) Map<String, List<String>> tags
+		@RequestParam MultiValueMap<String, String> params
 	) {
-		BillPostQuery billPostQuery = BillPostQuery.preAnnounceOf(page, size, sortKey, tags);
-		BillPostsStatus billPostsStatus = billPostRetrieveService.readBillPosts(billPostQuery);
+		PreAnnounceBillPostsRequest request = PreAnnounceBillPostsRequest.sanitizeFrom(params);
+		BillPostsStatus billPostsStatus = billPostRetrieveService.readBillPosts(
+			BillPostQuery.preAnnounceOf(request.getPage(), request.getSize(), request.getSort(), request.getFilters())
+		);
 		PreAnnounceBillPostsApiSpecComposer specComposer = new PreAnnounceBillPostsApiSpecComposer(billPostsStatus);
 		return ApiResponse.success(specComposer.compose(LocalDate.now()));
 	}

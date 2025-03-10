@@ -19,6 +19,7 @@ import com.barlow.core.ContextTest;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.support.AcceptanceTest;
 import com.barlow.core.support.TestTokenProvider;
+import com.barlow.core.support.response.ResultType;
 
 import io.restassured.RestAssured;
 
@@ -38,7 +39,7 @@ class LegislationAccountNotificationSettingControllerTest extends ContextTest {
 		void activate_success() {
 			Map<String, Object> responseMap = activateNotificationSetting(LegislationType.HOUSE_STEERING);
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -48,7 +49,7 @@ class LegislationAccountNotificationSettingControllerTest extends ContextTest {
 		@Test
 		void activate_fail() {
 			Map<String, Object> responseMap = activateNotificationSetting(LegislationType.LEGISLATION_AND_JUDICIARY);
-			assertThat(responseMap).containsEntry("result", "ERROR");
+			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
 		}
 
 		private Map<String, Object> activateNotificationSetting(LegislationType legislationType) {
@@ -74,7 +75,7 @@ class LegislationAccountNotificationSettingControllerTest extends ContextTest {
 		void deactivate_success() {
 			Map<String, Object> responseMap = deactivateNotificationSetting(LegislationType.LEGISLATION_AND_JUDICIARY);
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -84,7 +85,7 @@ class LegislationAccountNotificationSettingControllerTest extends ContextTest {
 		@Test
 		void deactivate_fail() {
 			Map<String, Object> responseMap = deactivateNotificationSetting(LegislationType.HOUSE_STEERING);
-			assertThat(responseMap).containsEntry("result", "ERROR");
+			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
 		}
 
 		private Map<String, Object> deactivateNotificationSetting(LegislationType legislationType) {

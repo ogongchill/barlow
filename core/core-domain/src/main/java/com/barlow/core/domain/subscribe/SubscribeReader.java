@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
+import com.barlow.core.enumerate.LegislationType;
 
 @Component
 public class SubscribeReader {
@@ -15,8 +16,8 @@ public class SubscribeReader {
 		this.subscribeRepository = subscribeRepository;
 	}
 
-	public Subscribe readSubscribe(long legislationAccountNo, User user) {
-		SubscribeQuery query = new SubscribeQuery(legislationAccountNo, user);
+	public Subscribe readSubscribe(LegislationType legislationType, User user) {
+		SubscribeQuery query = new SubscribeQuery(legislationType, user);
 		return subscribeRepository.retrieve(query);
 	}
 

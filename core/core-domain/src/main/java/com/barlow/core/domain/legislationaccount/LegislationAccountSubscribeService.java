@@ -3,6 +3,7 @@ package com.barlow.core.domain.legislationaccount;
 import org.springframework.stereotype.Service;
 
 import com.barlow.core.domain.User;
+import com.barlow.core.enumerate.LegislationType;
 
 @Service
 public class LegislationAccountSubscribeService {
@@ -13,11 +14,11 @@ public class LegislationAccountSubscribeService {
 		this.subscriptionManager = subscriptionManager;
 	}
 
-	public void subscribeAccount(long accountNo, User user) {
-		subscriptionManager.subscribe(accountNo, user);
+	public void subscribeAccount(LegislationType legislationType, User user) {
+		subscriptionManager.subscribe(legislationType, user);
 	}
 
-	public void unsubscribeAccount(long accountNo, User user) {
-		subscriptionManager.unsubscribe(accountNo, user);
+	public void unsubscribeAccount(LegislationType legislationType, User user) {
+		subscriptionManager.unsubscribe(legislationType, user);
 	}
 }
