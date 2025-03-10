@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import com.barlow.core.ContextTest;
 import com.barlow.core.support.AcceptanceTest;
 import com.barlow.core.support.TestTokenProvider;
+import com.barlow.core.support.response.ResultType;
 
 import io.restassured.RestAssured;
 
@@ -48,7 +49,7 @@ class RecentBillRetrieveControllerTest extends ContextTest {
 				.then().log().all().extract()
 				.jsonPath().getMap(".");
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -64,7 +65,7 @@ class RecentBillRetrieveControllerTest extends ContextTest {
 		void retrieveRecentBillDetail_success() {
 			Map<String, Object> responseMap = retrievePostDetail("PRC_1");
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -74,7 +75,7 @@ class RecentBillRetrieveControllerTest extends ContextTest {
 		@Test
 		void retrieveRecentBillDetail_fail() {
 			Map<String, Object> responseMap = retrievePostDetail("NONE");
-			assertThat(responseMap).containsEntry("result", "ERROR");
+			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
 		}
 
 		private Map<String, Object> retrievePostDetail(String billId) {

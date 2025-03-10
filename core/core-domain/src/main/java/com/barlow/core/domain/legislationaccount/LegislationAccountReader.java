@@ -11,6 +11,7 @@ import com.barlow.core.domain.notificationsetting.NotificationSetting;
 import com.barlow.core.domain.notificationsetting.NotificationSettingReader;
 import com.barlow.core.domain.subscribe.Subscribe;
 import com.barlow.core.domain.subscribe.SubscribeReader;
+import com.barlow.core.enumerate.LegislationType;
 
 @Component
 public class LegislationAccountReader {
@@ -29,13 +30,13 @@ public class LegislationAccountReader {
 		this.subscribeReader = subscribeReader;
 	}
 
-	public LegislationAccount read(long accountNo, User user) {
-		LegislationAccount legislationAccount = legislationAccountRepository.retrieve(accountNo);
+	public LegislationAccount read(LegislationType legislationType, User user) {
+		LegislationAccount legislationAccount = legislationAccountRepository.retrieve(legislationType);
 		legislationAccount.setNotifiable(notificationSettingReader
 			.readNotificationSetting(legislationAccount.getType(), user)
 			.isNotifiable());
 		legislationAccount.setSubscribed(subscribeReader
-			.readSubscribe(accountNo, user)
+			.readSubscribe(legislationType, user)
 			.isActive());
 		return legislationAccount;
 	}

@@ -48,13 +48,7 @@ public class BillPostRepositoryAdapter implements BillPostRepository {
 		Slice<BillPostJpaEntity> billPostJpaEntities = billPostJpaRepository.findAll(specification, pageable);
 
 		List<BillPost> billPosts = billPostJpaEntities.stream()
-			.map(billPostJpaEntity -> {
-				BillPost recentBillPost = billPostJpaEntity.toRecentBillPost();
-				if (billPostJpaEntity.hasPreAnnouncementInfo()) {
-					recentBillPost.assignPreAnnouncementInfo(billPostJpaEntity.getPreAnnouncementInfo());
-				}
-				return recentBillPost;
-			})
+			.map(BillPostJpaEntity::toBillPost)
 			.toList();
 		return new BillPostsStatus(billPosts, billPostJpaEntities.isLast());
 	}
@@ -65,7 +59,7 @@ public class BillPostRepositoryAdapter implements BillPostRepository {
 		if (billPostJpaEntity == null) {
 			return null;
 		}
-		BillPost billPost = billPostJpaEntity.toRecentBillPost();
+		BillPost billPost = billPostJpaEntity.toBillPost();
 		List<BillProposer> billProposers = billProposerJpaRepository.findAllByBillId(query.billId())
 			.stream()
 			.map(BillProposerJpaEntity::toBillProposer)

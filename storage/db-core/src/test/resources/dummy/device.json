@@ -1,0 +1,32 @@
+{
+  "device": [
+    {
+      "device_id": "device_id_1",
+      "device_os": "IOS",
+      "token": "device_token_1",
+      "member_no": 1,
+      "device_status": "ACTIVE"
+    },
+    {
+      "device_id": "device_id_2",
+      "device_os": "ANDROID",
+      "token": "device_token_2",
+      "member_no": 1,
+      "device_status": "INACTIVE"
+    },
+    {
+      "device_id": "device_id_3",
+      "device_os": "ANDROID",
+      "token": "device_token_3",
+      "member_no": 2,
+      "device_status": "ACTIVE"
+    },
+    {
+      "device_id": "device_id_4",
+      "device_os": "ANDROID",
+      "token": "device_token_4",
+      "member_no": 3,
+      "device_status": "ACTIVE"
+    }
+  ]
+}

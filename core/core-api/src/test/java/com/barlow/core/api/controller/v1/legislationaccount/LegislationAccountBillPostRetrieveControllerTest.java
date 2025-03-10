@@ -19,6 +19,7 @@ import com.barlow.core.ContextTest;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.support.AcceptanceTest;
 import com.barlow.core.support.TestTokenProvider;
+import com.barlow.core.support.response.ResultType;
 
 import io.restassured.RestAssured;
 
@@ -50,7 +51,7 @@ class LegislationAccountBillPostRetrieveControllerTest extends ContextTest {
 				.jsonPath().getMap(".");
 
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -67,7 +68,7 @@ class LegislationAccountBillPostRetrieveControllerTest extends ContextTest {
 			Map<String, Object> responseMap = retrievePostDetail("PRC_1");
 
 			assertAll(
-				() -> assertThat(responseMap).containsEntry("result", "SUCCESS"),
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
@@ -77,7 +78,7 @@ class LegislationAccountBillPostRetrieveControllerTest extends ContextTest {
 		@Test
 		void retrieveBillPostDetail_fail() {
 			Map<String, Object> responseMap = retrievePostDetail("NONE");
-			assertThat(responseMap).containsEntry("result", "ERROR");
+			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
 		}
 
 		private Map<String, Object> retrievePostDetail(String billId) {
