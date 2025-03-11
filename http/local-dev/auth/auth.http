@@ -1,0 +1,22 @@
+### 게스트 회원 가입
+POST http://localhost:8080/api/v1/auth/guest/signup
+Host: {{host}}
+Content-Type: application/json
+
+{
+  "deviceOs": {{deviceOs}},
+  "deviceId": {{deviceId}},
+  "deviceToken": {{deviceToken}},
+  "nickname": "nickname"
+}
+
+###
+POST /api/v1/auth/guest/login
+Host: {{host}}
+Content-Type: application/json
+
+{
+  "deviceOs": {{deviceOs}},
+  "deviceId": {{deviceId}},
+  "deviceToken": {{deviceToken}}
+}

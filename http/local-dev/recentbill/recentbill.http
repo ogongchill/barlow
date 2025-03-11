@@ -1,0 +1,22 @@
+### 최근 접수 법안 썸네일 조회
+GET http://localhost:8080/api/v1/recent-bill/thumbnail
+Authorization: {{access_token}}
+X-Client-OS: {{deviceOs}}
+X-Client-OS-Version: 0.0.1
+X-Device-ID: {{deviceId}}
+
+### 최근 접수 법안 썸네일 조회 - 필터링
+GET http://localhost:8080/api/v1/recent-bill/thumbnail?
+    params={{$random.alphanumeric(8)}}
+Authorization: {{access_token}}
+X-Client-OS: {{deviceOs}}
+X-Client-OS-Version: 0.0.1
+X-Device-ID: {{deviceId}}
+
+
+### 최근 접수 법안 상세 조회
+GET http://localhost:8080/api/v1/recent-bill/detail/{{recentBillId}}
+Authorization: {{access_token}}
+X-Client-OS: {{deviceOs}}
+X-Client-OS-Version: 0.0.1
+X-Device-ID: {{deviceId}}

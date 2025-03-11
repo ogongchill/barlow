@@ -1,0 +1,21 @@
+### 진행중인 입법예고 법안 페이지 조회
+GET http://localhost:8080/api/v1/pre-announcement-bills
+Authorization: {{access_token}}
+X-Client-OS: {{deviceOs}}
+X-Client-OS-Version: 0.0.1
+X-Device-ID: {{deviceId}}
+
+### 진행중인 입법예고 법안 페이지 조회 - 필터링
+GET http://localhost:8080/api/v1/pre-announcement-bills?
+    params={{$random.alphanumeric(8)}}
+Authorization: {{access_token}}
+X-Client-OS: {{deviceOs}}
+X-Client-OS-Version: 0.0.1
+X-Device-ID: {{deviceId}}
+
+###
+GET http://localhost:8080/api/v1/pre-announcement-bills/{{billId}}
+Authorization: {{access_token}}
+X-Client-OS: {{deviceOs}}
+X-Client-OS-Version: 0.0.1
+X-Device-ID: {{deviceId}}
