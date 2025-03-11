@@ -8,9 +8,9 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.barlow.core.auth.interceptor.GuestPassportAuthorizationInterceptor;
-import com.barlow.core.auth.interceptor.MemberPassportAuthorizationInterceptor;
-import com.barlow.core.auth.resolver.PassportUserArgumentResolver;
+import com.barlow.core.support.interceptor.GuestPassportAuthorizationInterceptor;
+import com.barlow.core.support.interceptor.MemberPassportAuthorizationInterceptor;
+import com.barlow.core.support.resolver.PassportUserArgumentResolver;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
@@ -33,6 +33,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 	 * 현재 개발된 API V1 에서는 guest 만 존재하기 때문에
 	 * 모든 api path 에 대해 GuestPassportAuthorizationInterceptor 만 적용 <br>
 	 * 인증된 Member 만 접근 가능한 api 가 개발되면 추가할 예정
+	 *
 	 * @param registry GuestPassportAuthorizationInterceptor
 	 * @see GuestPassportAuthorizationInterceptor
 	 * @see MemberPassportAuthorizationInterceptor

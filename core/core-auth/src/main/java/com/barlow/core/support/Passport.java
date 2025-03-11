@@ -1,4 +1,4 @@
-package com.barlow.core.auth;
+package com.barlow.core.support;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.enumerate.DeviceOs;
