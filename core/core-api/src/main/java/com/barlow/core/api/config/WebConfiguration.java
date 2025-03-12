@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.barlow.core.support.interceptor.GuestPassportAuthorizationInterceptor;
 import com.barlow.core.support.interceptor.MemberPassportAuthorizationInterceptor;
+import com.barlow.core.support.interceptor.TraceLoggingInterceptor;
 import com.barlow.core.support.resolver.PassportUserArgumentResolver;
 
 @Configuration
@@ -17,15 +18,18 @@ public class WebConfiguration implements WebMvcConfigurer {
 
 	private final GuestPassportAuthorizationInterceptor guestPassportAuthorizationInterceptor;
 	private final MemberPassportAuthorizationInterceptor memberPassportAuthorizationInterceptor;
+	private final TraceLoggingInterceptor traceLoggingInterceptor;
 	private final PassportUserArgumentResolver passportUserArgumentResolver;
 
 	public WebConfiguration(
 		GuestPassportAuthorizationInterceptor guestPassportAuthorizationInterceptor,
 		MemberPassportAuthorizationInterceptor memberPassportAuthorizationInterceptor,
+		TraceLoggingInterceptor traceLoggingInterceptor,
 		PassportUserArgumentResolver passportUserArgumentResolver
 	) {
 		this.guestPassportAuthorizationInterceptor = guestPassportAuthorizationInterceptor;
 		this.memberPassportAuthorizationInterceptor = memberPassportAuthorizationInterceptor;
+		this.traceLoggingInterceptor = traceLoggingInterceptor;
 		this.passportUserArgumentResolver = passportUserArgumentResolver;
 	}
 
@@ -41,6 +45,15 @@ public class WebConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(guestPassportAuthorizationInterceptor)
+			.addPathPatterns("/api/v1/home/**")
+			.addPathPatterns("/api/v1/legislation-accounts/**")
+			.addPathPatterns("/api/v1/menu/**")
+			.addPathPatterns("/api/v1/recent-bill/**")
+			.excludePathPatterns("/")
+			.excludePathPatterns("/health")
+			.excludePathPatterns("/api/v1/auth/login")
+			.excludePathPatterns("/api/v1/auth/reissue");
+		registry.addInterceptor(traceLoggingInterceptor)
 			.addPathPatterns("/api/v1/home/**")
 			.addPathPatterns("/api/v1/legislation-accounts/**")
 			.addPathPatterns("/api/v1/menu/**")
