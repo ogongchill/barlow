@@ -2,7 +2,6 @@ pluginManagement {
     plugins {
         id 'org.springframework.boot' version "${springBootVersion}"
         id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
-//        id 'io.spring.javaformat' version "${springJavaFormatVersion}"
     }
 }
 
@@ -14,10 +13,13 @@ include 'core:core-notification'
 include 'core:core-auth'
 
 include 'storage:db-core'
-include 'support:logging'
 
 include 'batch:batch-core'
 
 include 'clients:client-knal-api'
+
+include 'support:logging'
+include 'support:monitoring'
+include 'support:alert'
 
 include 'tests:api-docs'
