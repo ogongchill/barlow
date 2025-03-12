@@ -7,6 +7,8 @@ spring:
       - auth.yml
       - db-core.yml
       - logging.yml
+      - monitoring.yml
+      - alert.yml
   web.resources.add-mappings: false
 
 server:
