@@ -40,4 +40,6 @@ public interface BillPostBatchJpaRepository extends JpaRepository<BillPostJpaEnt
 		@Param("deadlineDate") LocalDateTime deadlineDate,
 		@Param("linkUrl") String linkUrl
 	);
+
+	List<BillPostJpaEntity> findAllByPreAnnouncementInfoDeadlineDateGreaterThanEqual(LocalDateTime deadlineDate);
 }
