@@ -1,6 +1,8 @@
 package com.barlow.core.exception;
 
-import static com.barlow.core.exception.CoreDomainExceptionCode.*;
+import static com.barlow.core.exception.CoreDomainExceptionCode.E403;
+import static com.barlow.core.exception.CoreDomainExceptionCode.E404;
+import static com.barlow.core.exception.CoreDomainExceptionCode.E409;
 import static com.barlow.core.exception.CoreDomainExceptionLevel.IMPLEMENTATION;
 
 public enum CoreDomainExceptionType {

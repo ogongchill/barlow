@@ -1,0 +1,29 @@
+Configuration:
+  name: BarlowLocalLogger
+  status: debug
+
+  Appenders:
+    Console:
+      name: BarlowConsoleAppender
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "[%style{%t}{bright,blue}] %style{%C}{bright,yellow}: time:%style{%d}{cyan}, server:%style{${spring:spring.application.name}}{green},traceId:%X{traceId}, spanId:%X{spanId}, api:%X{api}, user:%X{user}, message:%msg%n%throwable"
+    Sentry:
+      name: SentryAppender
+      dsn: "https://44166251a569ff69cde0c15fe907f519@o4508963733569536.ingest.us.sentry.io/4508963738550272"
+      contextTags: "traceId,spanId"
+      minimumEventLevel: "WARN"
+      minimumBreadcrumbLevel: "INFO"
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        ref: BarlowConsoleAppender
+    AsyncLogger:
+      - name: BarlowAsyncLogger
+        level: debug
+        additivity: false
+        includeLocation: false
+        AppenderRef:
+          ref: BarlowConsoleAppender

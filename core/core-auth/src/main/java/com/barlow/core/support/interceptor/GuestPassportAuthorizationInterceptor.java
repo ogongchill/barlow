@@ -1,9 +1,9 @@
-package com.barlow.core.auth.interceptor;
+package com.barlow.core.support.interceptor;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.barlow.core.auth.Passport;
+import com.barlow.core.support.Passport;
 import com.barlow.core.support.error.CoreAuthErrorType;
 import com.barlow.core.support.error.CoreAuthException;
 

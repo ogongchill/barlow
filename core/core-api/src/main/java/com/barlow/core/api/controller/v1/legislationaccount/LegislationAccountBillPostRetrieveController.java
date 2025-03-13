@@ -1,10 +1,9 @@
 package com.barlow.core.api.controller.v1.legislationaccount;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 
-import org.springframework.util.LinkedMultiValueMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +23,8 @@ import com.barlow.core.support.response.ApiResponse;
 @RequestMapping("/api/v1/legislation-accounts")
 public class LegislationAccountBillPostRetrieveController {
 
+	private static final Logger log = LoggerFactory.getLogger(LegislationAccountBillPostRetrieveController.class);
+
 	private final BillPostRetrieveService billPostRetrieveService;
 
 	public LegislationAccountBillPostRetrieveController(BillPostRetrieveService billPostRetrieveService) {
@@ -35,6 +36,7 @@ public class LegislationAccountBillPostRetrieveController {
 		@PathVariable("legislationType") LegislationType legislationType,
 		@RequestParam MultiValueMap<String, String> params
 	) {
+		log.info("Received retrieve {} account bill post thumbnail request.", legislationType);
 		LegislationAccountBillPostsRequest request = LegislationAccountBillPostsRequest.sanitizeFrom(params);
 		BillPostQuery query = BillPostQuery.legislationOf(legislationType, request.getPage(), request.getSize(),
 			request.getSort(), request.getFilters());
@@ -48,6 +50,7 @@ public class LegislationAccountBillPostRetrieveController {
 	public ApiResponse<LegislationAccountBillPostDetailResponse> retrieveBillPostDetail(
 		@PathVariable("billId") String billId
 	) {
+		log.info("Received retrieve {} account bill post detail request.", billId);
 		BillPost billPost = billPostRetrieveService.readBillPostDetail(new BillPostDetailQuery(billId));
 		LegislationAccountBillPostDetailApiSpecComposer apiSpecComposer
 			= new LegislationAccountBillPostDetailApiSpecComposer(billPost);

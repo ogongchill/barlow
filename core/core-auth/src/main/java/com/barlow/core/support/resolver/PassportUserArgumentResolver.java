@@ -1,4 +1,4 @@
-package com.barlow.core.auth.resolver;
+package com.barlow.core.support.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.barlow.core.auth.Passport;
+import com.barlow.core.support.Passport;
 import com.barlow.core.domain.User;
 import com.barlow.core.support.annotation.PassportUser;
 import com.barlow.core.support.error.CoreAuthErrorType;

@@ -1,0 +1,3 @@
+alert:
+  slack:
+    webhook-url: ${support.alert.slack-webhook-url}

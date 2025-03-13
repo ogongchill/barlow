@@ -87,7 +87,13 @@ public enum NotificationTopic {
 			));
 	}
 
-	public boolean isDefault() {
+	public static List<NotificationTopic> findByDefaultTopic() {
+		return Arrays.stream(NotificationTopic.values())
+			.filter(NotificationTopic::isDefault)
+			.toList();
+	}
+
+	private boolean isDefault() {
 		return this.ordinal() > MAX_LEGISLATION_BODY_ORD && this.ordinal() <= 22;
 	}
 

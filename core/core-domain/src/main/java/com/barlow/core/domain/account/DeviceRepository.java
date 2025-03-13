@@ -4,7 +4,7 @@ public interface DeviceRepository {
 
 	void save(DeviceRegisterCommand command);
 
-	Device read(DeviceQuery query);
+	Device readOrNull(DeviceQuery query);
 
 	void update(Device device);
 }

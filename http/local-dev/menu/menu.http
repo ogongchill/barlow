@@ -1,0 +1,22 @@
+### 설정 페이지에서 알림 설정 활성화
+POST http://localhost:8080/api/v1/menu/notifications/{{legislationBody.HOUSE_STEERING}}/activate
+Content-Type: application/x-www-form-urlencoded
+Authorization: {{access_token}}
+X-Client-OS: {{deviceOs}}
+X-Client-OS-Version: 0.0.1
+X-Device-ID: {{deviceId}}
+
+### 설정 페이지에서 알림 설정 비활성화
+POST http://localhost:8080/api/v1/menu/notifications/{{legislationBody.HOUSE_STEERING}}/deactivate
+Content-Type: application/x-www-form-urlencoded
+Authorization: {{access_token}}
+X-Client-OS: {{deviceOs}}
+X-Client-OS-Version: 0.0.1
+X-Device-ID: {{deviceId}}
+
+### 설정 페이지에서 알림 설정 여부 조회
+GET http://localhost:8080/api/v1/menu/notifications
+Authorization: {{access_token}}
+X-Client-OS: {{deviceOs}}
+X-Client-OS-Version: 0.0.1
+X-Device-ID: {{deviceId}}

@@ -1,1 +1,29 @@
 logging.config: classpath:log4j2/log4j2-${spring.profiles.active}.yml
+
+---
+spring.config.activate.on-profile: local
+
+---
+spring.config.activate.on-profile: local-dev
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+#    propagation: # 추적 정보 전파 방식 (wbc, b3, b3_multi)
+#      type: b3
+#      produce: b3_multi  # 추적 정보를 여러 개의 헤더로 나누어 전송
+#      consume: b3        # HTTP 헤더를 사용하여 추적 ID, 스팬 ID 등을 전달
+    enabled: true
+
+---
+spring.config.activate.on-profile: dev
+
+---
+spring.config.activate.on-profile: staging
+
+---
+spring.config.activate.on-profile: live
+
+---
+spring.config.activate.on-profile: test

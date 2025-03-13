@@ -9,5 +9,5 @@ public interface UserRepository {
 
 	User retrieve(UserQuery query);
 
-	User create(UserCreateCommand command);
+	User create(UserRegisterCommand command);
 }

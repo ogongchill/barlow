@@ -23,10 +23,6 @@ public class NotificationSetting {
 		return new NotificationSetting(user, notificationTopic, false);
 	}
 
-	boolean isDefaultTopic() {
-		return notificationTopic.isDefault();
-	}
-
 	public boolean isNotifiable() {
 		return isNotifiable;
 	}

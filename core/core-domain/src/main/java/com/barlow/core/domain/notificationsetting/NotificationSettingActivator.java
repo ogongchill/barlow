@@ -1,10 +1,13 @@
 package com.barlow.core.domain.notificationsetting;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.enumerate.LegislationType;
+import com.barlow.core.enumerate.NotificationTopic;
 
 @Component
 public class NotificationSettingActivator {
@@ -38,10 +41,9 @@ public class NotificationSettingActivator {
 	}
 
 	public void activateDefault(User user) {
-		notificationSettingReader.readNotificationSettings(user)
+		NotificationTopic.findByDefaultTopic()
 			.stream()
-			.filter(NotificationSetting::isDefaultTopic)
-			.map(NotificationSetting::activate)
+			.map(topic -> new NotificationSetting(user, topic, true))
 			.forEach(notificationSettingRepository::saveNotificationSetting);
 	}
 }

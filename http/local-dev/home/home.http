@@ -1,0 +1,22 @@
+### 메인 홈 페이지 조회
+GET http://localhost:8080/api/v1/home
+Authorization: {{access_token}}
+X-Client-OS: {{deviceOs}}
+X-Client-OS-Version: 0.0.1
+X-Device-ID: {{deviceId}}
+
+### 홈 알림센터 조회
+GET http://localhost:8080/api/v1/home/notification-center
+Authorization: {{access_token}}
+X-Client-OS: {{deviceOs}}
+X-Client-OS-Version: 0.0.1
+X-Device-ID: {{deviceId}}
+
+### 홈 알림센터 알림주제로 필터링 조회
+GET http://localhost:8080/api/v1/home/notification-center?
+    filterTopic={{$random.alphanumeric(8)}}
+Authorization: {{access_token}}
+X-Client-OS: {{deviceOs}}
+X-Client-OS-Version: 0.0.1
+X-Device-ID: {{deviceId}}
+
