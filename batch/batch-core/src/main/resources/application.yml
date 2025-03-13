@@ -11,6 +11,8 @@ spring:
       - notification.yml
       - db-core.yml
       - logging.yml
+      - monitoring.yml
+      - alert.yml
   batch:
     jdbc:
       initialize-schema: never

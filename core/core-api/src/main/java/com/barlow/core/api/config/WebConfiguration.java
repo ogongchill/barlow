@@ -8,24 +8,28 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.barlow.core.auth.interceptor.GuestPassportAuthorizationInterceptor;
-import com.barlow.core.auth.interceptor.MemberPassportAuthorizationInterceptor;
-import com.barlow.core.auth.resolver.PassportUserArgumentResolver;
+import com.barlow.core.support.interceptor.GuestPassportAuthorizationInterceptor;
+import com.barlow.core.support.interceptor.MemberPassportAuthorizationInterceptor;
+import com.barlow.core.support.interceptor.TraceLoggingInterceptor;
+import com.barlow.core.support.resolver.PassportUserArgumentResolver;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
 	private final GuestPassportAuthorizationInterceptor guestPassportAuthorizationInterceptor;
 	private final MemberPassportAuthorizationInterceptor memberPassportAuthorizationInterceptor;
+	private final TraceLoggingInterceptor traceLoggingInterceptor;
 	private final PassportUserArgumentResolver passportUserArgumentResolver;
 
 	public WebConfiguration(
 		GuestPassportAuthorizationInterceptor guestPassportAuthorizationInterceptor,
 		MemberPassportAuthorizationInterceptor memberPassportAuthorizationInterceptor,
+		TraceLoggingInterceptor traceLoggingInterceptor,
 		PassportUserArgumentResolver passportUserArgumentResolver
 	) {
 		this.guestPassportAuthorizationInterceptor = guestPassportAuthorizationInterceptor;
 		this.memberPassportAuthorizationInterceptor = memberPassportAuthorizationInterceptor;
+		this.traceLoggingInterceptor = traceLoggingInterceptor;
 		this.passportUserArgumentResolver = passportUserArgumentResolver;
 	}
 
@@ -33,6 +37,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 	 * 현재 개발된 API V1 에서는 guest 만 존재하기 때문에
 	 * 모든 api path 에 대해 GuestPassportAuthorizationInterceptor 만 적용 <br>
 	 * 인증된 Member 만 접근 가능한 api 가 개발되면 추가할 예정
+	 *
 	 * @param registry GuestPassportAuthorizationInterceptor
 	 * @see GuestPassportAuthorizationInterceptor
 	 * @see MemberPassportAuthorizationInterceptor
@@ -40,6 +45,15 @@ public class WebConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(guestPassportAuthorizationInterceptor)
+			.addPathPatterns("/api/v1/home/**")
+			.addPathPatterns("/api/v1/legislation-accounts/**")
+			.addPathPatterns("/api/v1/menu/**")
+			.addPathPatterns("/api/v1/recent-bill/**")
+			.excludePathPatterns("/")
+			.excludePathPatterns("/health")
+			.excludePathPatterns("/api/v1/auth/login")
+			.excludePathPatterns("/api/v1/auth/reissue");
+		registry.addInterceptor(traceLoggingInterceptor)
 			.addPathPatterns("/api/v1/home/**")
 			.addPathPatterns("/api/v1/legislation-accounts/**")
 			.addPathPatterns("/api/v1/menu/**")

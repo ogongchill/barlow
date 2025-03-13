@@ -42,3 +42,6 @@ core/core-notification/src/main/resources/firebase/*.json
 ### core:core-auth.support.crypto ###
 *.pem
 core/core-auth/src/main/resources/*.properties
+
+### http client private env json
+http/http-client.private.env.json

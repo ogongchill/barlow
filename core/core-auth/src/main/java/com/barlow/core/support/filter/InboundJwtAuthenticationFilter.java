@@ -1,4 +1,4 @@
-package com.barlow.core.auth.filter;
+package com.barlow.core.support.filter;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.barlow.core.auth.Passport;
+import com.barlow.core.support.Passport;
 import com.barlow.core.auth.authentication.core.MemberPrincipal;
 import com.barlow.core.auth.authentication.token.AccessToken;
 import com.barlow.core.auth.authentication.token.AccessTokenAuthenticator;

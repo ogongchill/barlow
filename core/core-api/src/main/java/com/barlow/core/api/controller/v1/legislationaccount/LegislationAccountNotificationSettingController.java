@@ -1,5 +1,7 @@
 package com.barlow.core.api.controller.v1.legislationaccount;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,8 @@ import com.barlow.core.support.response.ApiResponse;
 @RequestMapping("/api/v1/legislation-accounts/{legislationType}/notification-setting")
 public class LegislationAccountNotificationSettingController {
 
+	private static final Logger log = LoggerFactory.getLogger(LegislationAccountNotificationSettingController.class);
+
 	private final NotificationSettingService notificationSettingService;
 
 	public LegislationAccountNotificationSettingController(NotificationSettingService notificationSettingService) {
@@ -26,6 +30,7 @@ public class LegislationAccountNotificationSettingController {
 		@PathVariable("legislationType") LegislationType legislationType,
 		@PassportUser User user
 	) {
+		log.info("Received {} account notification setting activated", legislationType);
 		notificationSettingService.activateSetting(legislationType, user);
 		return ApiResponse.success();
 	}
@@ -35,6 +40,7 @@ public class LegislationAccountNotificationSettingController {
 		@PathVariable("legislationType") LegislationType legislationType,
 		@PassportUser User user
 	) {
+		log.info("Received {} account notification setting deactivated", legislationType);
 		notificationSettingService.deactivateSetting(legislationType, user);
 		return ApiResponse.success();
 	}

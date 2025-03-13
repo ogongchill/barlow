@@ -1,5 +1,7 @@
 package com.barlow.core.api.controller.v1.auth;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,8 @@ import com.barlow.core.support.response.ApiResponse;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
+
+	private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
 	private final AccountCreateService accountCreateService;
 	private final AccountLoginService accountLoginService;
@@ -36,6 +40,7 @@ public class AuthController {
 	 */
 	@PostMapping("/guest/signup")
 	public ApiResponse<LoginResponse> guestSignup(@RequestBody SignupRequest request) {
+		log.info("Received guest signup request.");
 		request.validate();
 		User guest = accountCreateService.createGuest(request.toCommand());
 		AccessToken accessToken = accessTokenProvider.issue(guest);
@@ -47,6 +52,7 @@ public class AuthController {
 	 */
 	@PostMapping("/guest/login")
 	public ApiResponse<LoginResponse> guestLogin(@RequestBody LoginRequest request) {
+		log.info("Received guest login request.");
 		request.validate();
 		User guest = accountLoginService.guestLogin(request.toCommand());
 		AccessToken accessToken = accessTokenProvider.issue(guest);
