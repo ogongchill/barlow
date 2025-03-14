@@ -11,7 +11,7 @@ import com.barlow.core.support.error.CoreApiException;
 import com.barlow.core.support.error.CoreApiErrorType;
 import com.barlow.core.support.error.CoreAuthException;
 import com.barlow.core.support.response.ApiResponse;
-import com.barlow.support.alert.ErrorAlerter;
+import com.barlow.support.alert.Alerter;
 
 @RestControllerAdvice
 public class CoreApiControllerAdvice {
@@ -20,10 +20,10 @@ public class CoreApiControllerAdvice {
 	private static final String CORE_API_EXCEPTION_MESSAGE_TEMPLATE = "CoreApiException : {}";
 	private static final String CORE_AUTH_EXCEPTION_MESSAGE_TEMPLATE = "CoreAuthException : {}";
 
-	private final ErrorAlerter errorAlerter;
+	private final Alerter alerter;
 
-	public CoreApiControllerAdvice(ErrorAlerter errorAlerter) {
-		this.errorAlerter = errorAlerter;
+	public CoreApiControllerAdvice(Alerter alerter) {
+		this.alerter = alerter;
 	}
 
 	@ExceptionHandler(CoreApiException.class)
@@ -31,7 +31,7 @@ public class CoreApiControllerAdvice {
 		switch (e.getErrorType().getLogLevel()) {
 			case ERROR -> {
 				log.error(CORE_API_EXCEPTION_MESSAGE_TEMPLATE, e.getMessage(), e);
-				errorAlerter.alert(String.format("CoreApiException : %s", e.getMessage()));
+				alerter.alert(String.format("CoreApiException : %s", e.getMessage()));
 			}
 			case WARN -> log.warn(CORE_API_EXCEPTION_MESSAGE_TEMPLATE, e.getMessage(), e);
 			default -> log.info(CORE_API_EXCEPTION_MESSAGE_TEMPLATE, e.getMessage(), e);
@@ -44,7 +44,7 @@ public class CoreApiControllerAdvice {
 		switch (e.getErrorType().getLogLevel()) {
 			case ERROR -> {
 				log.error(CORE_AUTH_EXCEPTION_MESSAGE_TEMPLATE, e.getMessage(), e);
-				errorAlerter.alert(String.format("CoreAuthException : %s", e.getMessage()));
+				alerter.alert(String.format("CoreAuthException : %s", e.getMessage()));
 			}
 			case WARN -> log.warn(CORE_AUTH_EXCEPTION_MESSAGE_TEMPLATE, e.getMessage(), e);
 			default -> log.info(CORE_AUTH_EXCEPTION_MESSAGE_TEMPLATE, e.getMessage(), e);
@@ -71,7 +71,7 @@ public class CoreApiControllerAdvice {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
 		log.error("Exception : {}", e.getMessage(), e);
-		errorAlerter.alert(String.format("Unexpected Exception : %s", e.getMessage()));
+		alerter.alert(String.format("Unexpected Exception : %s", e.getMessage()));
 		return new ResponseEntity<>(ApiResponse.error(
 			CoreApiErrorType.DEFAULT_ERROR),
 			CoreApiErrorType.DEFAULT_ERROR.getStatus()

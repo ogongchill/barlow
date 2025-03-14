@@ -15,7 +15,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 @ComponentScan(basePackages = {
 	"com.barlow.client.knal",
 	"com.barlow.storage.db.core",
-	"com.barlow.notification"})
+	"com.barlow.notification",
+	"com.barlow.support.alert"})
 @EnableBatchProcessing(
 	dataSourceRef = "coreDataSource",
 	transactionManagerRef = "coreTransactionManager")

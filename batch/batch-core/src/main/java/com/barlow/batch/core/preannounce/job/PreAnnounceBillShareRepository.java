@@ -2,7 +2,7 @@ package com.barlow.batch.core.preannounce.job;
 
 public interface PreAnnounceBillShareRepository {
 
-	void save(String key, NewPreAnnounceBills newPreAnnounceBills);
+	void save(String key, CurrentPreAnnounceBills newPreAnnounceBills);
 
-	NewPreAnnounceBills findByKey(String key);
+	CurrentPreAnnounceBills findByKey(String key);
 }

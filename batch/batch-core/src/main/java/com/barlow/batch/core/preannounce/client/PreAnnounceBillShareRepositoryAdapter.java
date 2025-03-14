@@ -5,21 +5,21 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.barlow.batch.core.preannounce.job.NewPreAnnounceBills;
+import com.barlow.batch.core.preannounce.job.CurrentPreAnnounceBills;
 import com.barlow.batch.core.preannounce.job.PreAnnounceBillShareRepository;
 
 @Component
 public class PreAnnounceBillShareRepositoryAdapter implements PreAnnounceBillShareRepository {
 
-	private static final Map<String, NewPreAnnounceBills> STORAGE = new HashMap<>();
+	private static final Map<String, CurrentPreAnnounceBills> STORAGE = new HashMap<>();
 
 	@Override
-	public void save(String key, NewPreAnnounceBills newPreAnnounceBills) {
+	public void save(String key, CurrentPreAnnounceBills newPreAnnounceBills) {
 		STORAGE.put(key, newPreAnnounceBills);
 	}
 
 	@Override
-	public NewPreAnnounceBills findByKey(String key) {
+	public CurrentPreAnnounceBills findByKey(String key) {
 		return STORAGE.get(key);
 	}
 }
