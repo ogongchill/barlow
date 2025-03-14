@@ -4,7 +4,6 @@ import static com.barlow.batch.core.recentbill.RecentBillConstant.JOB_NAME;
 import static com.barlow.batch.core.recentbill.RecentBillConstant.TODAY_BILL_NOTIFY_STEP;
 import static com.barlow.batch.core.recentbill.RecentBillConstant.WRITE_BILL_PROPOSER_STEP;
 import static com.barlow.batch.core.recentbill.RecentBillConstant.WRITE_TODAY_BILL_INFO_STEP;
-import static com.barlow.batch.core.recentbill.RecentBillConstant.WRITE_TRACKING_BILL_INFO_STEP;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
@@ -43,23 +42,9 @@ public class TodayBillCreateBatchJobConfig {
 	) {
 		return new JobBuilder(JOB_NAME, jobRepository)
 			.listener(jobExecutionListener)
-			.start(writeTrackingBillInfoStep(null, null, null))
-			.next(writeTodayBillInfoStep(null, null, null))
+			.start(writeTodayBillInfoStep(null, null, null))
 			.next(writeBillProposerStep(null, null, null, null, null, null))
 			.next(notifyTodayBillStep(null, null, null))
-			.build();
-	}
-
-	@Bean
-	@JobScope
-	public Step writeTrackingBillInfoStep(
-		@Qualifier("trackingBillInfoWriteTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
-		StepLoggingListener stepLoggingListener
-	) {
-		return new StepBuilder(WRITE_TRACKING_BILL_INFO_STEP, jobRepository)
-			.tasklet(tasklet, transactionManager)
-			.listener(stepLoggingListener)
 			.build();
 	}
 

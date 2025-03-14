@@ -11,17 +11,22 @@ import com.barlow.batch.core.tracebill.job.PreviousBillBatchRepository;
 @Component
 public class PreviousBillBatchRepositoryAdapter implements PreviousBillBatchRepository {
 
-	private final BatchTraceBillJpaRepository traceBillJpaRepository;
+	private final BillPostBatchJpaRepository billPostBatchJpaRepository;
 
-	public PreviousBillBatchRepositoryAdapter(BatchTraceBillJpaRepository traceBillJpaRepository) {
-		this.traceBillJpaRepository = traceBillJpaRepository;
+	public PreviousBillBatchRepositoryAdapter(BillPostBatchJpaRepository billPostBatchJpaRepository) {
+		this.billPostBatchJpaRepository = billPostBatchJpaRepository;
 	}
 
 	@Override
 	public List<PreviousBillBatchEntity> findAllPreviousBetween(LocalDate start, LocalDate end) {
-		return traceBillJpaRepository.findAllByCreatedAtBetween(start.atStartOfDay(), end.atStartOfDay())
+		return billPostBatchJpaRepository.findAllByCreatedAtBetween(start.atStartOfDay(), end.atStartOfDay())
 			.stream()
-			.map(BatchTraceBillJpaEntity::toPreviousBillBatchEntity)
+			.map(jpaEntity -> new PreviousBillBatchEntity(
+				jpaEntity.getBillId(),
+				jpaEntity.getBillName(),
+				jpaEntity.getProgressStatus(),
+				jpaEntity.getLegislationType()
+			))
 			.toList();
 	}
 }

@@ -42,4 +42,6 @@ public interface BillPostBatchJpaRepository extends JpaRepository<BillPostJpaEnt
 	);
 
 	List<BillPostJpaEntity> findAllByPreAnnouncementInfoDeadlineDateGreaterThanEqual(LocalDateTime deadlineDate);
+
+	List<BillPostJpaEntity> findAllByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 }
