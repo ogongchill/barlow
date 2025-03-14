@@ -7,11 +7,11 @@ import net.gpedro.integrations.slack.SlackApi;
 import net.gpedro.integrations.slack.SlackMessage;
 
 @Component
-public class SlackErrorAlerter implements ErrorAlerter {
+public class SlackAlerter implements Alerter {
 
 	private final SlackApi slackApi;
 
-	public SlackErrorAlerter(@Value("${alert.slack.webhook-url}") String webhookUrl) {
+	public SlackAlerter(@Value("${alert.slack.webhook-url}") String webhookUrl) {
 		slackApi = new SlackApi(webhookUrl);
 	}
 

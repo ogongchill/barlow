@@ -3,6 +3,6 @@ package com.barlow.support.alert;
 import org.springframework.scheduling.annotation.Async;
 
 @Async("asyncExecutor")
-public interface ErrorAlerter {
+public interface Alerter {
 	void alert(String message);
 }
