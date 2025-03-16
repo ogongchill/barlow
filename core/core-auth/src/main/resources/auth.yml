@@ -1,8 +1,8 @@
 auth:
   jwt:
     crypto:
-      private-key: ${auth.jwt.crypto.private-key}
-      public-key: ${auth.jwt.crypto.public-key}
+      private-key: ${jwt.crypto.private-key}
+      public-key: ${jwt.crypto.public-key}
 
 ---
 spring.config.activate.on-profile: local

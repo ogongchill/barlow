@@ -45,3 +45,6 @@ core/core-auth/src/main/resources/*.properties
 
 ### http client private env json
 http/http-client.private.env.json
+
+### localstack
+localstack
