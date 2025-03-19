@@ -43,9 +43,9 @@ storage:
   datasource:
     core:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://${storage.database.core-db.url}
-      username: ${storage.database.core-db.username}
-      password: ${storage.database.core-db.password}
+      jdbc-url: jdbc:mysql://${STORAGE_DATABASE_CORE_DB_URL}
+      username: ${STORAGE_DATABASE_CORE_DB_USERNAME}
+      password: ${STORAGE_DATABASE_CORE_DB_PASSWORD}
       pool-name: core-db-pool
       data-source-properties:
         socketTimeout: 3000
