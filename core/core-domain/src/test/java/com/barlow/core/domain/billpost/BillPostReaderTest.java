@@ -16,14 +16,14 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.when;
 
-import java.util.Map;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.util.LinkedMultiValueMap;
 
 import com.barlow.DevelopTest;
+import com.barlow.core.support.SortKey;
 
 class BillPostReaderTest extends DevelopTest {
 
@@ -33,7 +33,9 @@ class BillPostReaderTest extends DevelopTest {
 	@DisplayName("페이지, 사이즈, 정렬키, 태그정보를 받아 최근법안게시글 전체를 조회하면 최근법안게시글들의 페이징 결과를 반환한다")
 	@Test
 	void readBillPosts() {
-		BillPostQuery billPostQuery = new BillPostQuery(1, 100, "created_at#asc", Map.of());
+		BillPostQuery billPostQuery = new BillPostQuery(
+			1, 100, new SortKey("createdAt#DESC"), BillPostFilterTag.from(new LinkedMultiValueMap<>()
+		));
 		when(billPostRepository.retrieveRecentBillPosts(billPostQuery))
 			.thenReturn(EMPTY_RECENT_BILL_POST_STATUS);
 

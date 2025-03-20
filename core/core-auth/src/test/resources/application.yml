@@ -1,10 +1,8 @@
-spring.application.name: core-api-test
+spring.application.name: core-auth-test
 
 spring:
   config:
     import:
       - auth.yml
-      - db-core.yml
-      - alert.yml
   profiles:
     active: test
