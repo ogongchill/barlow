@@ -60,10 +60,10 @@ class BillPostReaderTest extends DevelopTest {
 			() -> assertThat(result).isNotNull(),
 			() -> assertThat(result.getBillId()).isEqualTo(BILL_ID_1),
 			() -> assertThat(result.getBillName()).isEqualTo(BILL_NAME_1),
-			() -> assertThat(result.getProposerType()).isEqualTo(PROPOSER_TYPE),
+			() -> assertThat(result.getProposerType()).isEqualTo(PROPOSER_TYPE.getValue()),
 			() -> assertThat(result.getProposers()).isEqualTo(PROPOSERS),
-			() -> assertThat(result.getLegislativeBody()).isEqualTo(LEGISLATION_TYPE),
-			() -> assertThat(result.getLegislationProcessStatus()).isEqualTo(LEGISLATION_PROCESS_STATUS),
+			() -> assertThat(result.getLegislativeBody()).isEqualTo(LEGISLATION_TYPE.getValue()),
+			() -> assertThat(result.getLegislationProcessStatus()).isEqualTo(LEGISLATION_PROCESS_STATUS.getValue()),
 			() -> assertThat(result.getSummary()).isEqualTo(SUMMARY),
 			() -> assertThat(result.getDetail()).isEqualTo(DETAIL),
 			() -> assertThat(result.getViewCount()).isEqualTo(VIEW_COUNT)
