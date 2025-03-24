@@ -2,6 +2,7 @@ bootJar.enabled = true
 jar.enabled = false
 
 dependencies {
+    implementation project(":core:core-domain")
     implementation project(":storage:db-core")
     implementation project(":core:core-notification")
     implementation project(":clients:client-knal-api")
@@ -13,8 +14,34 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.amazonaws.serverless:aws-serverless-java-container-springboot3:2.0.1'
 
-    compileOnly project(":core:core-domain")
     compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     testImplementation 'org.springframework.batch:spring-batch-test'
+}
+
+tasks.register('copyResourcesConfig', Copy) {
+    from project(':storage:db-core').file('src/main/resources')
+    from project(':core:core-notification').file('src/main/resources')
+    from project(':clients:client-knal-api').file('src/main/resources')
+    from project(':support:alert').file('src/main/resources')
+    from project(':support:monitoring').file('src/main/resources')
+    from project(':support:logging').file('src/main/resources')
+
+    into file("$projectDir/build/resources/main")
+
+    include '*.yml'
+}
+
+processResources.dependsOn('copyResourcesConfig')
+
+tasks.register('buildZip', Zip) {
+    dependsOn('bootJar')
+
+    from compileJava
+    from processResources
+
+    into('lib') {
+        from(jar)
+        from(configurations.runtimeClasspath)
+    }
 }
