@@ -2,16 +2,24 @@ package com.barlow.batch.core;
 
 import java.util.TimeZone;
 
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 
-@EnableScheduling
+import jakarta.annotation.PostConstruct;
+
 @SpringBootApplication
 public class BatchCoreApplication {
 
-	public static void main(String[] args) {
+	@PostConstruct
+	public static void setTimeZone() {
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
-		SpringApplication.run(BatchCoreApplication.class, args);
+	}
+
+	public static void main(String[] args) {
+		setTimeZone();
+		new SpringApplicationBuilder(BatchCoreApplication.class)
+			.web(WebApplicationType.NONE)
+			.run(args);
 	}
 }

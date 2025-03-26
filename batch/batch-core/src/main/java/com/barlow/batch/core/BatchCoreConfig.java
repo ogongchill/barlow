@@ -13,7 +13,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @ComponentScan(basePackages = {
-	"com.barlow.core",
+	"com.barlow.core.enumerate",
 	"com.barlow.client.knal",
 	"com.barlow.storage.db.core",
 	"com.barlow.notification",
