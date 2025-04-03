@@ -15,18 +15,19 @@ import org.springframework.transaction.PlatformTransactionManager;
 @ComponentScan(basePackages = {
 	"com.barlow.core.enumerate",
 	"com.barlow.client.knal",
-	"com.barlow.storage.db.core",
+	"com.barlow.storage.db.core.batch",
+	"com.barlow.storage.db.core.notification",
 	"com.barlow.notification",
 	"com.barlow.support.alert"})
 @EnableBatchProcessing(
-	dataSourceRef = "coreDataSource",
-	transactionManagerRef = "coreTransactionManager")
+	dataSourceRef = "batchCoreDataSource",
+	transactionManagerRef = "batchCoreTransactionManager")
 public class BatchCoreConfig {
 
 	@Bean("batchCoreJobRepository")
 	public JobRepository jobRepository(
-		@Qualifier("coreDataSource") DataSource dataSource,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager
+		@Qualifier("batchCoreDataSource") DataSource dataSource,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager
 	) throws Exception {
 		JobRepositoryFactoryBean factoryBean = new JobRepositoryFactoryBean();
 		factoryBean.setDataSource(dataSource);
