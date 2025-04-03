@@ -1,4 +1,4 @@
-package com.barlow.storage.db.batch.core;
+package com.barlow.storage.db.core.batch;
 
 import java.time.LocalDate;
 import java.util.List;
