@@ -1,4 +1,4 @@
-package com.barlow.storage.db.core;
+package com.barlow.storage.db.batch.core;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.enumerate.ProgressStatus;
+import com.barlow.storage.db.core.BillPostJpaEntity;
 
 public interface BillPostBatchJpaRepository extends JpaRepository<BillPostJpaEntity, Long> {
 

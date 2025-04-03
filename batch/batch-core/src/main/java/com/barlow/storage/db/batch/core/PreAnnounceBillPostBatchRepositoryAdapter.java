@@ -1,4 +1,4 @@
-package com.barlow.storage.db.core;
+package com.barlow.storage.db.batch.core;
 
 import java.time.LocalDate;
 
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.barlow.batch.core.preannounce.job.NewPreAnnounceBills;
 import com.barlow.batch.core.preannounce.job.PreAnnounceBillPostBatchRepository;
 import com.barlow.batch.core.preannounce.job.PreviousPreAnnounceBillIds;
+import com.barlow.storage.db.core.BillPostJpaEntity;
 
 @Component
 public class PreAnnounceBillPostBatchRepositoryAdapter implements PreAnnounceBillPostBatchRepository {
