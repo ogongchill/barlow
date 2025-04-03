@@ -1,4 +1,4 @@
-package com.barlow.storage.db.core;
+package com.barlow.storage.db.core.notification;
 
 import java.util.List;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package com.barlow.storage.db.core;
+package com.barlow.storage.db.core.notification;
 
 import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.core.enumerate.NotificationTopic;

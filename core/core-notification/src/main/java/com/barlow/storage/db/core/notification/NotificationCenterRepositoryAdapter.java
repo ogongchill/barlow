@@ -1,4 +1,4 @@
-package com.barlow.storage.db.core;
+package com.barlow.storage.db.core.notification;
 
 import java.sql.Types;
 import java.time.LocalDateTime;
@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -21,7 +22,7 @@ public class NotificationCenterRepositoryAdapter implements NotificationCenterRe
 
 	private final SimpleJdbcInsert simpleJdbcInsert;
 
-	public NotificationCenterRepositoryAdapter(DataSource dataSource) {
+	public NotificationCenterRepositoryAdapter(@Qualifier("batchCoreDataSource") DataSource dataSource) {
 		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
 			.withTableName("notification_center_item")
 			.usingGeneratedKeyColumns("notification_center_item_no");
