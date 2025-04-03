@@ -35,7 +35,7 @@ public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingMa
 	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
 
 	public TodayBillInfoWriteTasklet(
-		@Qualifier("coreDataSource") DataSource dataSource,
+		@Qualifier("batchCoreDataSource") DataSource dataSource,
 		RecentBillJobScopeShareRepository jobScopeShareRepository
 	) {
 		super();

@@ -41,7 +41,7 @@ public class PreAnnounceBillBatchJobConfig {
 	@JobScope
 	public Step billPostPreAnnounceInfoUpdateStep(
 		@Qualifier("billPostPreAnnounceInfoUpdateTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
 		return new StepBuilder(UPDATE_STEP, jobRepository)

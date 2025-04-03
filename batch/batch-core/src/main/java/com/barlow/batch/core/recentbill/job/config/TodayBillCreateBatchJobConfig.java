@@ -52,7 +52,7 @@ public class TodayBillCreateBatchJobConfig {
 	@JobScope
 	public Step writeTodayBillInfoStep(
 		@Qualifier("todayBillInfoWriteTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
 		return new StepBuilder(WRITE_TODAY_BILL_INFO_STEP, jobRepository)
@@ -65,7 +65,7 @@ public class TodayBillCreateBatchJobConfig {
 	@JobScope
 	public Step writeBillProposerStep(
 		@Value("#{jobParameters[chunkSize]}") Integer chunkSize,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener,
 		BillProposerReaderStepExecutionContextSharingListener stepExecutionContextSharingListener,
 		ItemReader<BillProposer> billProposerReader,
@@ -84,7 +84,7 @@ public class TodayBillCreateBatchJobConfig {
 	@JobScope
 	public Step notifyTodayBillStep(
 		@Qualifier("todayBillNotifyTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
 		DefaultTransactionAttribute transactionAttribute = new DefaultTransactionAttribute();
