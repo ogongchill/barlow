@@ -43,10 +43,7 @@ public class RecentBillBatchJobExecutor {
 		));
 		try {
 			log.info("{} : 오늘 접수된 법안 게시글 생성 Batch 시작", LocalDateTime.now());
-			long start = System.currentTimeMillis();
 			JobExecution jobExecution = jobLauncher.run(job, jobParameters);
-			long end = System.currentTimeMillis();
-			System.out.println(end-start);
 			log.info("{} : 오늘 접수된 법안 게시글 생성 Batch 완료 - {}", jobExecution.getEndTime(), jobExecution);
 		} catch (Exception e) {
 			log.error("{} : 오늘 접수된 법안 게시글 생성 Batch 실패 - {}", LocalDateTime.now(), e.getMessage(), e);
