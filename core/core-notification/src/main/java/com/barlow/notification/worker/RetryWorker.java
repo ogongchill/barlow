@@ -20,7 +20,6 @@ public class RetryWorker {
 	}
 
 	public void start(NotificationResult result) {
-		logNonRetryableMessages(result);
 		FAILURE_MESSAGE_RETRY_QUEUE.pushAllRetryableMessages(result.getRetryableMessages());
 		executor.execute(() -> {
 			while (!Thread.currentThread().isInterrupted()) {

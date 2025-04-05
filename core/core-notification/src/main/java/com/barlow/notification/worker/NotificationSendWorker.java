@@ -63,7 +63,7 @@ public class NotificationSendWorker {
 				)
 				.toList();
 			NotificationResult notificationResult = notificationSender.send(messages);
-			if (notificationResult.hasFailure()) {
+			if (notificationResult.hasRetryableFailure()) {
 				RetryWorker retryWorker = new RetryWorker(asyncThreadPoolExecutor, notificationSender);
 				retryWorker.start(notificationResult);
 			}
