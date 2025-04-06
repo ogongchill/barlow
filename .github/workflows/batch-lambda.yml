@@ -1,0 +1,51 @@
+name: 📆 Run Batch Application in AWS Lambda
+
+on:
+  schedule:
+    - cron: '0 3 * * 1-5'   # 한국시간 12:00 (점심)
+    - cron: '30 6 * * 1-5'  # 한국시간 15:30
+    - cron: '0 10 * * 1-5'  # 한국시간 19:00
+
+jobs:
+  build:
+    name: execute batch job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get Current Time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH:mm:ss
+          timezone: 'Asia/Seoul'
+
+      - name: Print Current Time
+        run: echo "Current Time=${{ steps.current-time.outputs.formattedTime }}"
+        shell: bash
+
+      # 평일 오후 12시 : 진행중인 입법예고 batch
+      - name: Send POST request to Lambda
+        if: github.event.schedule == '0 3 * * 1-5'
+        env:
+          SERVER_URL: ${{ secrets.PROD_BATCH_LAMBDA_MONDAY }}
+        run: |
+          echo "Executing Tracking Pre Announcement Bill Batch Job"
+          curl -X POST $SERVER_URL -H "Content-Type: application/json"
+
+      # 평일 오후 15시 30분 : 법안 변경사항 추적 batch
+      - name: Send POST request to Lambda
+        if: github.event.schedule == '30 6 * * 1-5'
+        env:
+          SERVER_URL: ${{ secrets.PROD_BATCH_LAMBDA_WEDNESDAY }}
+        run: |
+          echo "Executing Tracking Bill Info Batch Job"
+          curl -X POST $SERVER_URL -H "Content-Type: application/json"
+
+      # 평일 오후 19시 : 오늘 발의된 법안 batch
+      - name: Send POST request to Lambda
+        if: github.event.schedule == '0 10 * * 1-5'
+        env:
+          SERVER_URL: ${{ secrets.PROD_BATCH_LAMBDA_FRIDAY }}
+        run: |
+          echo "Executing Update Today Bill Batch Job"
+          curl -X POST $SERVER_URL -H "Content-Type: application/json"
