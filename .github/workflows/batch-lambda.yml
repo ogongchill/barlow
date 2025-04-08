@@ -27,25 +27,25 @@ jobs:
       - name: Send POST request to Lambda
         if: github.event.schedule == '0 3 * * 1-5'
         env:
-          SERVER_URL: ${{ secrets.PROD_BATCH_LAMBDA_MONDAY }}
+          LAMBDA_FUNC_URL: ${{ secrets.PROD_PRE_ANNOUNCE_BATCH_LAMBDA_URL }}
         run: |
           echo "Executing Tracking Pre Announcement Bill Batch Job"
-          curl -X POST $SERVER_URL -H "Content-Type: application/json"
+          curl -X POST $LAMBDA_FUNC_URL -H "Content-Type: application/json"
 
       # 평일 오후 15시 30분 : 법안 변경사항 추적 batch
       - name: Send POST request to Lambda
         if: github.event.schedule == '30 6 * * 1-5'
         env:
-          SERVER_URL: ${{ secrets.PROD_BATCH_LAMBDA_WEDNESDAY }}
+          LAMBDA_FUNC_URL: ${{ secrets.PROD_TRACKING_BILL_BATCH_LAMBDA_URL }}
         run: |
           echo "Executing Tracking Bill Info Batch Job"
-          curl -X POST $SERVER_URL -H "Content-Type: application/json"
+          curl -X POST $LAMBDA_FUNC_URL -H "Content-Type: application/json"
 
       # 평일 오후 19시 : 오늘 발의된 법안 batch
       - name: Send POST request to Lambda
         if: github.event.schedule == '0 10 * * 1-5'
         env:
-          SERVER_URL: ${{ secrets.PROD_BATCH_LAMBDA_FRIDAY }}
+          LAMBDA_FUNC_URL: ${{ secrets.PROD_UPDATE_TODAY_BILL_BATCH_LAMBDA_URL }}
         run: |
           echo "Executing Update Today Bill Batch Job"
-          curl -X POST $SERVER_URL -H "Content-Type: application/json"
+          curl -X POST $LAMBDA_FUNC_URL -H "Content-Type: application/json"
