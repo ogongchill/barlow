@@ -21,7 +21,7 @@ public class AsyncConfiguration {
 		threadPoolTask.setQueueCapacity(10);
 		threadPoolTask.setWaitForTasksToCompleteOnShutdown(true);
 		threadPoolTask.setAwaitTerminationSeconds(10);
-		threadPoolTask.setThreadNamePrefix("async-");
+		threadPoolTask.setThreadNamePrefix("notify-async-");
 		threadPoolTask.initialize();
 		return threadPoolTask;
 	}
