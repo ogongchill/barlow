@@ -11,7 +11,7 @@ import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.recentbill.job.TodayBillRetrieveClient;
-import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
+import com.barlow.batch.core.recentbill.job.TodayBillInfoBatchEntity;
 import com.barlow.batch.core.common.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
 import com.barlow.batch.core.utils.HashUtil;
@@ -36,7 +36,7 @@ public class RetrieveTodayBillJobListener
 	@Override
 	public void beforeJob(@NotNull JobExecution jobExecution) {
 		LocalDate batchDate = jobExecution.getJobParameters().getLocalDate(BATCH_DATE_JOB_PARAMETER);
-		TodayBillInfoResult todayBillInfo = client.getTodayBillInfo(batchDate);
+		TodayBillInfoBatchEntity todayBillInfo = client.getTodayBillInfo(batchDate);
 
 		String hashKey = HashUtil.generate(todayBillInfo);
 		super.setCurrentExecutionContext(jobExecution.getExecutionContext());

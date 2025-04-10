@@ -6,7 +6,7 @@ import java.util.List;
 import com.barlow.core.enumerate.ProgressStatus;
 import com.barlow.core.enumerate.ProposerType;
 
-public record TodayBillInfoResult(
+public record TodayBillInfoBatchEntity(
 	int totalCount,
 	List<BillInfoItem> items
 ) implements Serializable {
@@ -15,25 +15,25 @@ public record TodayBillInfoResult(
 		return items.size();
 	}
 
-	public TodayBillInfoResult filterReceivedBills() {
+	public TodayBillInfoBatchEntity filterReceivedBills() {
 		List<BillInfoItem> receivedBills = items.stream()
 			.filter(BillInfoItem::isReceipt)
 			.toList();
-		return new TodayBillInfoResult(receivedBills.size(), receivedBills);
+		return new TodayBillInfoBatchEntity(receivedBills.size(), receivedBills);
 	}
 
-	public TodayBillInfoResult filterChairmanBills() {
+	public TodayBillInfoBatchEntity filterChairmanBills() {
 		List<BillInfoItem> chairmanBills = items.stream()
 			.filter(BillInfoItem::isChairman)
 			.toList();
-		return new TodayBillInfoResult(chairmanBills.size(), chairmanBills);
+		return new TodayBillInfoBatchEntity(chairmanBills.size(), chairmanBills);
 	}
 
-	public TodayBillInfoResult filteredBillsWithFewProposers() {
+	public TodayBillInfoBatchEntity filteredBillsWithFewProposers() {
 		List<BillInfoItem> billsWithFewProposers = items.stream()
 			.filter(BillInfoItem::isProposerLessThanTwentyOrChairman)
 			.toList();
-		return new TodayBillInfoResult(billsWithFewProposers.size(), billsWithFewProposers);
+		return new TodayBillInfoBatchEntity(billsWithFewProposers.size(), billsWithFewProposers);
 	}
 
 	public record BillInfoItem(
