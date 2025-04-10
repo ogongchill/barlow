@@ -28,6 +28,7 @@ public enum LegislationType {
 	SPEAKER("국회의장", null, "default/icon-image-url"),
 
 	EMPTY("소관위미접수상태", null, "default/icon-image-url"),
+	SPECIAL_COMMITTEE("특별위원회", "특별위원장", "default/icon-image-url"),
 	;
 
 	private static final int MAX_LEGISLATION_BODY_ORD = 17;
@@ -40,27 +41,14 @@ public enum LegislationType {
 		return Arrays.stream(LegislationType.values())
 			.filter(body -> body.value.equals(value))
 			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException(
-				String.format("%s 에 대한 LegislationType 은 존재하지 않습니다", value)
-			));
-	}
-
-	public static LegislationType findByAccountNo(long accountNo) {
-		return Arrays.stream(LegislationType.values())
-			.filter(body -> body.getLegislationNo() == accountNo)
-			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException(
-				String.format("%d번 LegislationType 은 존재하지 않습니다", accountNo)
-			));
+			.orElse(EMPTY);
 	}
 
 	public static LegislationType findByChairman(String chairman) {
 		return Arrays.stream(LegislationType.values())
 			.filter(body -> body.ordinal() <= MAX_LEGISLATION_BODY_ORD && body.chairman.equals(chairman))
 			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException(
-				String.format("%s 에 대한 LegislationType 은 존재하지 않습니다", chairman)
-			));
+			.orElse(SPECIAL_COMMITTEE);
 	}
 
 	public long getLegislationNo() {
