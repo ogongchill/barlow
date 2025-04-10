@@ -45,4 +45,14 @@ public interface BillPostBatchJpaRepository extends JpaRepository<BillPostJpaEnt
 	List<BillPostJpaEntity> findAllByPreAnnouncementInfoDeadlineDateGreaterThanEqual(LocalDateTime deadlineDate);
 
 	List<BillPostJpaEntity> findAllByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+	/**
+	 * Admin 용 update 쿼리
+	 */
+	@Modifying
+	@Query("UPDATE BillPostJpaEntity bp SET bp.legislationType = :legislationType WHERE bp.billId IN :billIds")
+	void updateLegislationTypeInBatchByAdmin(
+		@Param("legislationType") LegislationType legislationType,
+		@Param("billIds") List<String> billIds
+	);
 }
