@@ -2,6 +2,8 @@ package com.barlow.batch.core.tracebill.client;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -76,8 +78,16 @@ public class BillTrackingClientAdapter implements BillTrackingClient {
 		log.info("{}의 소관위원회 조회 호출", billId);
 		BillPreliminaryExaminationInfoResponse response = api.getBillPreliminaryExaminationInfo(request);
 		log.info("{}의 소관위원회 조회 완료", billId);
-		String committeeName = response.body().getItems().getFirst().comitName();
-		return LegislationType.findByValue(committeeName);
+		Optional<BillPreliminaryExaminationInfoResponse.BillPreliminaryExaminationInfoItem> first = response.body()
+			.getItems()
+			.stream()
+			.filter(Objects::nonNull)
+			.findFirst();
+		if (first.isPresent()) {
+			return LegislationType.findByValue(first.get().comitName());
+		} else {
+			return LegislationType.EMPTY;
+		}
 	}
 
 }
