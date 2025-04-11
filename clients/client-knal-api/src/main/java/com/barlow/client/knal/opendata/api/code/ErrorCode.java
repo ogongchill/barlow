@@ -21,13 +21,6 @@ public enum ErrorCode {
 			.anyMatch(errorCode -> xmlResponseBody.contains(errorCode.name()));
 	}
 
-	public boolean isRetryable() {
-		return this.code.equals("01")
-			|| this.code.equals("04")
-			|| this.code.equals("30")
-			|| this.code.equals("99");
-	}
-
 	public String getCode() {
 		return this.code;
 	}
