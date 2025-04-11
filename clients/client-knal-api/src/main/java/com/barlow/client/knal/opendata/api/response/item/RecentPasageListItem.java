@@ -4,7 +4,7 @@ import com.barlow.client.knal.opendata.api.Operation;
 import com.barlow.client.knal.opendata.api.request.RecentRceptListRequest;
 
 /**
- * <a href="https://www.data.go.kr/data/3037286/openapi.do">IROS4_OA_DV_0401_OpenAPI활용가이드_의안정보(국회사무처)_v1.30<</a></href> <code>getRecentPasageList</code>에 따른 응답임 <br>
+ * <a href="https://www.data.go.kr/data/3037286/openapi.do">IROS4_OA_DV_0401_OpenAPI활용가이드_의안정보(국회사무처)_v1.30<</a></href> <resultCode>getRecentPasageList</resultCode>에 따른 응답임 <br>
  * @see Operation
  * @see RecentRceptListRequest
  */
