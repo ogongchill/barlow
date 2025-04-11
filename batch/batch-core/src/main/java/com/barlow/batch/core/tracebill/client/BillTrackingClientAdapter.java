@@ -13,12 +13,13 @@ import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.tracebill.job.BillTrackingClient;
 import com.barlow.batch.core.tracebill.job.CurrentBillInfoResult;
-import com.barlow.client.knal.opendata.api.NationalAssemblyLegislationOpenDataApi;
+import com.barlow.client.knal.opendata.api.OpenDataApiPort;
 import com.barlow.client.knal.opendata.api.request.BillInfoListRequest;
 import com.barlow.client.knal.opendata.api.request.BillPreliminaryExaminationInfoRequest;
 import com.barlow.client.knal.opendata.api.response.BillInfoListResponse;
 import com.barlow.client.knal.opendata.api.response.BillPreliminaryExaminationInfoResponse;
 import com.barlow.client.knal.opendata.api.response.item.BillInfoListItem;
+import com.barlow.client.knal.opendata.api.response.item.BillPreliminaryExaminationInfoItem;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.enumerate.ProgressStatus;
 
@@ -27,13 +28,13 @@ public class BillTrackingClientAdapter implements BillTrackingClient {
 
 	private static final Logger log = LoggerFactory.getLogger(BillTrackingClientAdapter.class);
 
-	private final NationalAssemblyLegislationOpenDataApi api;
+	private final OpenDataApiPort api;
 	private final Integer startOrd;
 	private final Integer endOrd;
 	private final Integer numOfRows;
 
 	public BillTrackingClientAdapter(
-		NationalAssemblyLegislationOpenDataApi api,
+		OpenDataApiPort api,
 		@Value("${start-ordinal:22}") Integer startOrd,
 		@Value("${end-ordinal:22}") Integer endOrd,
 		@Value("${num-of-rows:10000}") Integer numOfRows
@@ -61,7 +62,7 @@ public class BillTrackingClientAdapter implements BillTrackingClient {
 		BillInfoListResponse response = api.getBillInfoList(request);
 		log.info("상태 추적을 위해 {} - {} 까지의 법안 조회 완료", startProposeDate, traceDateStr);
 		return new CurrentBillInfoResult(
-			response.getBody().getItems()
+			response.body().items()
 				.stream()
 				.collect(Collectors.toMap(
 					BillInfoListItem::billId,
@@ -78,8 +79,8 @@ public class BillTrackingClientAdapter implements BillTrackingClient {
 		log.info("{}의 소관위원회 조회 호출", billId);
 		BillPreliminaryExaminationInfoResponse response = api.getBillPreliminaryExaminationInfo(request);
 		log.info("{}의 소관위원회 조회 완료", billId);
-		Optional<BillPreliminaryExaminationInfoResponse.BillPreliminaryExaminationInfoItem> first = response.body()
-			.getItems()
+		Optional<BillPreliminaryExaminationInfoItem> first = response.body()
+			.items()
 			.stream()
 			.filter(Objects::nonNull)
 			.findFirst();

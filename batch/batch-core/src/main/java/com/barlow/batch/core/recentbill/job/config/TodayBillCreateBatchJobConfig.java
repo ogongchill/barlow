@@ -26,6 +26,7 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import com.barlow.batch.core.recentbill.job.listener.BillProposerReaderStepExecutionContextSharingListener;
 import com.barlow.batch.core.common.StepLoggingListener;
 import com.barlow.batch.core.recentbill.job.step.BillProposer;
+import com.barlow.client.knal.opendata.api.OpenDataException;
 
 @Configuration
 public class TodayBillCreateBatchJobConfig {
@@ -77,6 +78,8 @@ public class TodayBillCreateBatchJobConfig {
 			.writer(billProposerWriter)
 			.listener(stepExecutionContextSharingListener)
 			.listener(stepLoggingListener)
+			.faultTolerant()
+			.skip(OpenDataException.class)
 			.build();
 	}
 

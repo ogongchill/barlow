@@ -15,6 +15,7 @@ import com.barlow.batch.core.recentbill.job.TodayBillInfoBatchEntity;
 import com.barlow.batch.core.common.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
 import com.barlow.batch.core.utils.HashUtil;
+import com.barlow.client.knal.opendata.api.OpenDataException;
 
 @Component
 public class RetrieveTodayBillJobListener
@@ -34,7 +35,7 @@ public class RetrieveTodayBillJobListener
 	}
 
 	@Override
-	public void beforeJob(@NotNull JobExecution jobExecution) {
+	public void beforeJob(@NotNull JobExecution jobExecution) throws OpenDataException {
 		LocalDate batchDate = jobExecution.getJobParameters().getLocalDate(BATCH_DATE_JOB_PARAMETER);
 		TodayBillInfoBatchEntity todayBillInfo = client.getTodayBillInfo(batchDate);
 

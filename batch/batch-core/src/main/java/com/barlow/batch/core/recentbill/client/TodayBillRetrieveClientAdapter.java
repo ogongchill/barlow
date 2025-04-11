@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import com.barlow.batch.core.recentbill.job.BillProposerInfoBatchEntity;
 import com.barlow.batch.core.recentbill.job.TodayBillRetrieveClient;
 import com.barlow.batch.core.recentbill.job.TodayBillInfoBatchEntity;
-import com.barlow.client.knal.opendata.api.NationalAssemblyLegislationOpenDataApi;
+import com.barlow.client.knal.opendata.api.OpenDataApiPort;
 import com.barlow.client.knal.opendata.api.request.BillInfoListRequest;
 import com.barlow.client.knal.opendata.api.request.BillPetitionMemberListRequest;
 import com.barlow.client.knal.opendata.api.response.BillInfoListResponse;
@@ -24,13 +24,13 @@ public class TodayBillRetrieveClientAdapter implements TodayBillRetrieveClient {
 
 	private static final Logger log = LoggerFactory.getLogger(TodayBillRetrieveClientAdapter.class);
 
-	private final NationalAssemblyLegislationOpenDataApi api;
+	private final OpenDataApiPort api;
 	private final Integer startOrd;
 	private final Integer endOrd;
 	private final Integer numOfRows;
 
 	public TodayBillRetrieveClientAdapter(
-		NationalAssemblyLegislationOpenDataApi api,
+		OpenDataApiPort api,
 		@Value("${start-ordinal:22}") Integer startOrd,
 		@Value("${end-ordinal:22}") Integer endOrd,
 		@Value("${num-of-rows:100}") Integer numOfRows
@@ -57,8 +57,8 @@ public class TodayBillRetrieveClientAdapter implements TodayBillRetrieveClient {
 		BillInfoListResponse response = api.getBillInfoList(request);
 		log.info("{} : 오늘 접수된 법안 조회 완료", LocalDateTime.now());
 		return new TodayBillInfoBatchEntity(
-			response.getBody().getTotalCount(),
-			response.getBody().getItems().stream()
+			response.body().totalCount(),
+			response.body().items().stream()
 				.map(TodayBillInfoBatchEntityFactory::make)
 				.filter(Objects::nonNull)
 				.toList()
@@ -75,6 +75,6 @@ public class TodayBillRetrieveClientAdapter implements TodayBillRetrieveClient {
 		log.info("{} 법안 발의자 조회", billId);
 		BillPetitionMemberListResponse response = api.getBillPetitionMemberList(request);
 		log.info("{} 법안 발의자 조회 완료", billId);
-		return BillProposerInfoBatchEntity.from(response.getBody());
+		return BillProposerInfoBatchEntity.from(response.body());
 	}
 }

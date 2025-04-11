@@ -3,14 +3,14 @@ package com.barlow.batch.core.recentbill.job;
 import java.util.List;
 import java.util.Objects;
 
-import com.barlow.client.knal.opendata.api.response.common.ItemListBody;
+import com.barlow.client.knal.opendata.api.response.common.ItemResponseBody;
 import com.barlow.client.knal.opendata.api.response.item.BillPetitionMemberListItem;
 
 public record BillProposerInfoBatchEntity(
 	List<BillProposerInfo> billProposerInfos
 ) {
-	public static BillProposerInfoBatchEntity from(ItemListBody<BillPetitionMemberListItem> memberList) {
-		return new BillProposerInfoBatchEntity(memberList.getItems()
+	public static BillProposerInfoBatchEntity from(ItemResponseBody<BillPetitionMemberListItem> memberList) {
+		return new BillProposerInfoBatchEntity(memberList.items()
 			.stream()
 			.filter(Objects::nonNull)
 			.map(BillProposerInfo::from)

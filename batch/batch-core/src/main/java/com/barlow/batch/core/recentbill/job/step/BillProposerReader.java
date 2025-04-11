@@ -21,6 +21,7 @@ import com.barlow.batch.core.recentbill.job.TodayBillRetrieveClient;
 import com.barlow.batch.core.recentbill.job.TodayBillInfoBatchEntity;
 import com.barlow.batch.core.common.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
+import com.barlow.client.knal.opendata.api.OpenDataException;
 
 @Component
 @StepScope
@@ -58,7 +59,7 @@ public class BillProposerReader
 	}
 
 	@Override
-	public BillProposer read() throws UnexpectedInputException, ParseException, NonTransientResourceException {
+	public BillProposer read() throws OpenDataException, UnexpectedInputException, ParseException, NonTransientResourceException {
 		String hashKey = super.getDataFromJobExecutionContext(BILL_WITH_FEW_PROPOSERS_SHARE_KEY);
 		TodayBillInfoBatchEntity billWithFewProposers = jobScopeShareRepository.findByKey(hashKey);
 		if (currentIndex >= billWithFewProposers.itemSize()) {
