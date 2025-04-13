@@ -10,6 +10,7 @@ on:
       - core/core-auth/**
       - core/core-domain/**
       - storage/db-core/**
+      - .github/workflows
 
 env:
   PROJECT_NAME: barlow-api-dev
