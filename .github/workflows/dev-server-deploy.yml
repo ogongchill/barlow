@@ -4,12 +4,11 @@ on:
   push:
     branches:
       - dev-deploy
-      - infra/deploy/issue/56
-#    paths:
-#      - core/core-api/**
-#      - core/core-auth/**
-#      - core/core-domain/**
-#      - storage/db-core/**
+    paths:
+      - core/core-api/**
+      - core/core-auth/**
+      - core/core-domain/**
+      - storage/db-core/**
 
 env:
   PROJECT_NAME: barlow-api-dev
