@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev-deploy
+      - infra/deploy/**
     paths:
       - core/core-api/**
       - core/core-auth/**
@@ -16,6 +17,8 @@ env:
   S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
   CODE_DEPLOY_APPLICATION_NAME: ${{ secrets.TEST_CODE_DEPLOY_APPLICATION_NAME }}
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: ${{ secrets.TEST_CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }}
+  DEV_ACCOUNT_ROLE_ARN: ${{ secrets.DEV_ACCOUNT_ROLE_ARN }}
+  TEST_ACCOUNT_ROLE_ARN: ${{ secrets.TEST_ACCOUNT_ROLE_ARN }}
 
 permissions:
   contents: read
@@ -52,18 +55,27 @@ jobs:
             "batch" "clients" "http" "core/core-notification"
         shell: bash
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Configure AWS credentials for DEV Account
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ env.DEV_ACCOUNT_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
+          role-session-name: GitHubActionsS3Upload
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Upload to AWS S3
         run: |
           aws s3 cp \
             --region ${{ env.AWS_REGION }} \
             ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+          
+      - name: Configure AWS credentials for TEST Account
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ env.TEST_ACCOUNT_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: GitHubActionsCodeDeploy
 
       - name: Deploy to AWS EC2 from S3
         run: |
