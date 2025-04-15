@@ -1,3 +1,4 @@
+#!/bin/bash
 BASE_PATH="/home/ubuntu"
 
 LOG_PATH="$BASE_PATH/log"
