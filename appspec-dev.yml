@@ -21,3 +21,7 @@ hooks:
     - location: scripts/dev/deploy.sh
       timeout: 60
       runas: ubuntu
+  ValidateService:
+    - location: scripts/dev/healthCheck.sh
+      timeout: 60
+      runas: ubuntu
