@@ -26,6 +26,7 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import com.barlow.batch.core.recentbill.job.listener.BillProposerReaderStepExecutionContextSharingListener;
 import com.barlow.batch.core.common.StepLoggingListener;
 import com.barlow.batch.core.recentbill.job.step.BillProposer;
+import com.barlow.client.knal.opendata.api.OpenDataException;
 
 @Configuration
 public class TodayBillCreateBatchJobConfig {
@@ -52,7 +53,7 @@ public class TodayBillCreateBatchJobConfig {
 	@JobScope
 	public Step writeTodayBillInfoStep(
 		@Qualifier("todayBillInfoWriteTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
 		return new StepBuilder(WRITE_TODAY_BILL_INFO_STEP, jobRepository)
@@ -65,7 +66,7 @@ public class TodayBillCreateBatchJobConfig {
 	@JobScope
 	public Step writeBillProposerStep(
 		@Value("#{jobParameters[chunkSize]}") Integer chunkSize,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener,
 		BillProposerReaderStepExecutionContextSharingListener stepExecutionContextSharingListener,
 		ItemReader<BillProposer> billProposerReader,
@@ -77,6 +78,8 @@ public class TodayBillCreateBatchJobConfig {
 			.writer(billProposerWriter)
 			.listener(stepExecutionContextSharingListener)
 			.listener(stepLoggingListener)
+			.faultTolerant()
+			.skip(OpenDataException.class)
 			.build();
 	}
 
@@ -84,7 +87,7 @@ public class TodayBillCreateBatchJobConfig {
 	@JobScope
 	public Step notifyTodayBillStep(
 		@Qualifier("todayBillNotifyTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
 		DefaultTransactionAttribute transactionAttribute = new DefaultTransactionAttribute();

@@ -19,7 +19,7 @@ class OpenDataConfig {
 
 	@Bean(name = "openDataRetryer")
 	Retryer retryer() {
-		return new Retryer.Default(100L, TimeUnit.SECONDS.toMillis(1L), 3);
+		return new Retryer.Default(250L, TimeUnit.SECONDS.toMillis(1L), 3);
 	}
 
 	@Bean(name = "openDataDecoder")

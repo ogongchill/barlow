@@ -1,7 +1,12 @@
 package com.barlow.client.knal.opendata.api.response;
 
-import com.barlow.client.knal.opendata.api.response.common.NoPageResponse;
+import com.barlow.client.knal.opendata.api.response.common.ItemResponseBody;
+import com.barlow.client.knal.opendata.api.response.common.OpenDataResponse;
+import com.barlow.client.knal.opendata.api.response.common.SuccessHeader;
 import com.barlow.client.knal.opendata.api.response.item.CommitPetitionListItem;
 
-public final class CommitPetitionListResponse extends NoPageResponse<CommitPetitionListItem> {
+public record CommitPetitionListResponse(
+	SuccessHeader header,
+	ItemResponseBody<CommitPetitionListItem> body
+) implements OpenDataResponse<CommitPetitionListItem> {
 }

@@ -9,10 +9,6 @@ import com.google.firebase.messaging.MessagingErrorCode;
 public record NotificationResult(
 	Map<Message, MessagingErrorCode> result
 ) {
-	boolean hasFailure() {
-		return !result.isEmpty();
-	}
-
 	boolean hasRetryableFailure() {
 		return result.entrySet()
 			.stream()

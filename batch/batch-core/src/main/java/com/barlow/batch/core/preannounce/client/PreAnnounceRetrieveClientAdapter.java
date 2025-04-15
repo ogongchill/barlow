@@ -1,7 +1,6 @@
 package com.barlow.batch.core.preannounce.client;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.barlow.batch.core.preannounce.job.CurrentPreAnnounceBills;
 import com.barlow.batch.core.preannounce.job.PreAnnounceRetrieveClient;
 import com.barlow.batch.core.preannounce.job.PreAnnounceBatchEntity;
-import com.barlow.client.knal.opencongress.api.NationalAssemblyLegislationOpenCongressApi;
+import com.barlow.client.knal.opencongress.api.OpenCongressApiPort;
 import com.barlow.client.knal.opencongress.api.common.DefaultRequest;
 import com.barlow.client.knal.opencongress.api.preannounce.PreAnnouncementResponse;
 import com.barlow.core.enumerate.LegislationType;
@@ -20,9 +19,9 @@ public class PreAnnounceRetrieveClientAdapter implements PreAnnounceRetrieveClie
 
 	private static final Logger log = LoggerFactory.getLogger(PreAnnounceRetrieveClientAdapter.class);
 
-	private final NationalAssemblyLegislationOpenCongressApi api;
+	private final OpenCongressApiPort api;
 
-	public PreAnnounceRetrieveClientAdapter(NationalAssemblyLegislationOpenCongressApi api) {
+	public PreAnnounceRetrieveClientAdapter(OpenCongressApiPort api) {
 		this.api = api;
 	}
 

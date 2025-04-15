@@ -1,0 +1,8 @@
+spring.application.name: core-auth-test
+
+spring:
+  config:
+    import:
+      - auth.yml
+  profiles:
+    active: test

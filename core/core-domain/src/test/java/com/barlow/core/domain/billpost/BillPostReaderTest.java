@@ -16,14 +16,14 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.when;
 
-import java.util.Map;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.util.LinkedMultiValueMap;
 
 import com.barlow.DevelopTest;
+import com.barlow.core.support.SortKey;
 
 class BillPostReaderTest extends DevelopTest {
 
@@ -33,7 +33,9 @@ class BillPostReaderTest extends DevelopTest {
 	@DisplayName("페이지, 사이즈, 정렬키, 태그정보를 받아 최근법안게시글 전체를 조회하면 최근법안게시글들의 페이징 결과를 반환한다")
 	@Test
 	void readBillPosts() {
-		BillPostQuery billPostQuery = new BillPostQuery(1, 100, "created_at#asc", Map.of());
+		BillPostQuery billPostQuery = new BillPostQuery(
+			1, 100, new SortKey("createdAt#DESC"), BillPostFilterTag.from(new LinkedMultiValueMap<>()
+		));
 		when(billPostRepository.retrieveRecentBillPosts(billPostQuery))
 			.thenReturn(EMPTY_RECENT_BILL_POST_STATUS);
 
@@ -58,10 +60,10 @@ class BillPostReaderTest extends DevelopTest {
 			() -> assertThat(result).isNotNull(),
 			() -> assertThat(result.getBillId()).isEqualTo(BILL_ID_1),
 			() -> assertThat(result.getBillName()).isEqualTo(BILL_NAME_1),
-			() -> assertThat(result.getProposerType()).isEqualTo(PROPOSER_TYPE),
+			() -> assertThat(result.getProposerType()).isEqualTo(PROPOSER_TYPE.getValue()),
 			() -> assertThat(result.getProposers()).isEqualTo(PROPOSERS),
-			() -> assertThat(result.getLegislativeBody()).isEqualTo(LEGISLATION_TYPE),
-			() -> assertThat(result.getLegislationProcessStatus()).isEqualTo(LEGISLATION_PROCESS_STATUS),
+			() -> assertThat(result.getLegislativeBody()).isEqualTo(LEGISLATION_TYPE.getValue()),
+			() -> assertThat(result.getLegislationProcessStatus()).isEqualTo(LEGISLATION_PROCESS_STATUS.getValue()),
 			() -> assertThat(result.getSummary()).isEqualTo(SUMMARY),
 			() -> assertThat(result.getDetail()).isEqualTo(DETAIL),
 			() -> assertThat(result.getViewCount()).isEqualTo(VIEW_COUNT)

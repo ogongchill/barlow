@@ -1,8 +1,9 @@
 package com.barlow.batch.core.recentbill.job.step;
 
-import static com.barlow.batch.core.recentbill.RecentBillConstant.RECEIVED_BILL_WITH_FEW_PROPOSERS_SHARE_KEY;
+import static com.barlow.batch.core.recentbill.RecentBillConstant.BILL_WITH_FEW_PROPOSERS_SHARE_KEY;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -17,9 +18,10 @@ import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.recentbill.LawmakerProvider;
 import com.barlow.batch.core.recentbill.job.TodayBillRetrieveClient;
-import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
+import com.barlow.batch.core.recentbill.job.TodayBillInfoBatchEntity;
 import com.barlow.batch.core.common.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
+import com.barlow.client.knal.opendata.api.OpenDataException;
 
 @Component
 @StepScope
@@ -49,7 +51,7 @@ public class BillProposerReader
 	public void open(@NotNull ExecutionContext executionContext) throws ItemStreamException {
 		super.setCurrentExecutionContext(executionContext);
 		if (executionContext.containsKey(BILL_PROPOSER_READER_INDEX_KEY)
-			&& executionContext.containsKey(RECEIVED_BILL_WITH_FEW_PROPOSERS_SHARE_KEY)) {
+			&& executionContext.containsKey(BILL_WITH_FEW_PROPOSERS_SHARE_KEY)) {
 			currentIndex = executionContext.getInt(BILL_PROPOSER_READER_INDEX_KEY);
 		} else {
 			currentIndex = 0; // 처음부터 시작
@@ -57,17 +59,18 @@ public class BillProposerReader
 	}
 
 	@Override
-	public BillProposer read() throws UnexpectedInputException, ParseException, NonTransientResourceException {
-		String hashKey = super.getDataFromJobExecutionContext(RECEIVED_BILL_WITH_FEW_PROPOSERS_SHARE_KEY);
-		TodayBillInfoResult receiveBillWithFewProposers = jobScopeShareRepository.findByKey(hashKey);
-		if (currentIndex >= receiveBillWithFewProposers.itemSize()) {
+	public BillProposer read() throws OpenDataException, UnexpectedInputException, ParseException, NonTransientResourceException {
+		String hashKey = super.getDataFromJobExecutionContext(BILL_WITH_FEW_PROPOSERS_SHARE_KEY);
+		TodayBillInfoBatchEntity billWithFewProposers = jobScopeShareRepository.findByKey(hashKey);
+		if (currentIndex >= billWithFewProposers.itemSize()) {
 			return null;
 		}
-		String billId = receiveBillWithFewProposers.items().get(currentIndex).billId();
+		String billId = billWithFewProposers.items().get(currentIndex).billId();
 		List<LawmakerProvider.Lawmaker> billProposeLawmakers = client.getBillProposerInfo(billId)
 			.billProposerInfos()
 			.stream()
 			.map(info -> lawmakerProvider.provide(info.name(), info.partyName()))
+			.filter(Objects::nonNull)
 			.toList();
 		currentIndex++;
 		return new BillProposer(billId, billProposeLawmakers);

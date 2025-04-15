@@ -1,6 +1,7 @@
 package com.barlow.batch.core.recentbill.job.step;
 
 import java.sql.Types;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.sql.DataSource;
@@ -18,12 +19,11 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.recentbill.RecentBillConstant;
-import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
+import com.barlow.batch.core.recentbill.job.TodayBillInfoBatchEntity;
 import com.barlow.batch.core.common.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.enumerate.ProgressStatus;
-import com.barlow.core.enumerate.ProposerType;
 
 @Component
 @StepScope
@@ -35,7 +35,7 @@ public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingMa
 	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
 
 	public TodayBillInfoWriteTasklet(
-		@Qualifier("coreDataSource") DataSource dataSource,
+		@Qualifier("batchCoreDataSource") DataSource dataSource,
 		RecentBillJobScopeShareRepository jobScopeShareRepository
 	) {
 		super();
@@ -47,15 +47,15 @@ public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingMa
 	public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) {
 		super.setCurrentExecutionContext(contribution.getStepExecution().getJobExecution().getExecutionContext());
 		String hashKey = super.getDataFromJobExecutionContext(RecentBillConstant.TODAY_BILL_INFO_SHARE_KEY);
-		TodayBillInfoResult todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
+		TodayBillInfoBatchEntity todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
 
 		saveReceivedAllInBatch(todayBillInfo.filterReceivedBills());
-		saveAlternativeAllInBatch(todayBillInfo.filterAlternativeBills());
+		saveChairmanAllInBatch(todayBillInfo.filterChairmanBills());
 
 		return RepeatStatus.FINISHED;
 	}
 
-	private void saveReceivedAllInBatch(TodayBillInfoResult result) {
+	private void saveReceivedAllInBatch(TodayBillInfoBatchEntity result) {
 		SqlParameterSource[] sqlParameterSources = result.items()
 			.stream()
 			.map(this::createReceiveSqlParameterSource)
@@ -63,41 +63,41 @@ public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingMa
 		simpleJdbcInsert.executeBatch(sqlParameterSources);
 	}
 
-	private MapSqlParameterSource createReceiveSqlParameterSource(TodayBillInfoResult.BillInfoItem item) {
+	private MapSqlParameterSource createReceiveSqlParameterSource(TodayBillInfoBatchEntity.BillInfoItem item) {
 		return new MapSqlParameterSource()
 			.addValue("bill_id", item.billId())
 			.addValue("bill_name", item.billName())
 			.addValue("proposers", item.proposers())
-			.addValue("proposer_type", ProposerType.findByValue(item.proposerType()))
+			.addValue("proposer_type", item.proposerType())
 			.addValue("legislation_type", LegislationType.EMPTY)
 			.addValue("progress_status", ProgressStatus.RECEIVED)
 			.addValue("summary", null)
 			.addValue("detail", item.summary())
 			.addValue("view_count", 0)
-			.addValue("created_at", LocalDateTime.now(), Types.TIMESTAMP)
+			.addValue("created_at", LocalDate.parse(item.proposeDateStr()), Types.TIMESTAMP)
 			.addValue("updated_at", LocalDateTime.now(), Types.TIMESTAMP);
 	}
 
-	private void saveAlternativeAllInBatch(TodayBillInfoResult result) {
+	private void saveChairmanAllInBatch(TodayBillInfoBatchEntity result) {
 		SqlParameterSource[] sqlParameterSources = result.items()
 			.stream()
-			.map(this::createAlternativeSqlParameterSource)
+			.map(this::createChairmanSqlParameterSource)
 			.toArray(SqlParameterSource[]::new);
 		simpleJdbcInsert.executeBatch(sqlParameterSources);
 	}
 
-	private MapSqlParameterSource createAlternativeSqlParameterSource(TodayBillInfoResult.BillInfoItem item) {
+	private MapSqlParameterSource createChairmanSqlParameterSource(TodayBillInfoBatchEntity.BillInfoItem item) {
 		return new MapSqlParameterSource()
 			.addValue("bill_id", item.billId())
 			.addValue("bill_name", item.billName())
 			.addValue("proposers", item.proposers())
-			.addValue("proposer_type", ProposerType.findByValue(item.proposerType()))
+			.addValue("proposer_type", item.proposerType())
 			.addValue("legislation_type", LegislationType.findByChairman(item.proposers()))
-			.addValue("progress_status", ProgressStatus.findByValue(item.progressStatusCode()))
+			.addValue("progress_status", item.progressStatus())
 			.addValue("summary", null)
 			.addValue("detail", null)
 			.addValue("view_count", 0)
-			.addValue("created_at", LocalDateTime.now(), Types.TIMESTAMP)
+			.addValue("created_at", LocalDate.parse(item.proposeDateStr()), Types.TIMESTAMP)
 			.addValue("updated_at", LocalDateTime.now(), Types.TIMESTAMP);
 	}
 }

@@ -17,6 +17,8 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.barlow.support.alert.Alerter;
+
 @Component
 public class PreAnnounceBatchJobExecutor {
 
@@ -24,13 +26,16 @@ public class PreAnnounceBatchJobExecutor {
 
 	private final JobLauncher jobLauncher;
 	private final Job job;
+	private final Alerter alerter;
 
 	public PreAnnounceBatchJobExecutor(
 		JobLauncher jobLauncher,
-		@Qualifier(JOB_NAME) Job job
+		@Qualifier(JOB_NAME) Job job,
+		Alerter alerter
 	) {
 		this.jobLauncher = jobLauncher;
 		this.job = job;
+		this.alerter = alerter;
 	}
 
 	public void execute(LocalDate batchDate) {
@@ -38,10 +43,12 @@ public class PreAnnounceBatchJobExecutor {
 			BATCH_DATE_JOB_PARAMETER, new JobParameter<>(batchDate, LocalDate.class)
 		));
 		try {
+			alerter.alert(String.format("진행중인 입법예고 조회 및 업데이트 Batch 시작 : %s", LocalDateTime.now()));
 			log.info("{} : 진행중인 입법예고 조회 및 업데이트 Batch 시작", LocalDateTime.now());
 			JobExecution jobExecution = jobLauncher.run(job, jobParameters);
 			log.info("{} : 진행중인 입법예고 조회 및 업데이트 Batch 완료 - {}", jobExecution.getEndTime(), jobExecution);
 		} catch (Exception e) {
+			alerter.alert(String.format("🚨진행중인 입법예고 조회 및 업데이트 Batch 실패 - %s : %s", e.getMessage(), LocalDateTime.now()));
 			log.error("{} : 진행중인 입법예고 조회 및 업데이트 Batch 실패 - {}", LocalDateTime.now(), e.getMessage(), e);
 		}
 	}

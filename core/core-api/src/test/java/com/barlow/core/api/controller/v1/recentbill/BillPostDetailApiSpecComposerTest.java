@@ -63,8 +63,8 @@ class BillPostDetailApiSpecComposerTest {
 		assertAll(
 			() -> assertThat(result.title()).isEqualTo(BILL_NAME_1),
 			() -> assertThat(result.proposerSummary()).isEqualTo(PROPOSERS_SUMMARY),
-			() -> assertThat(result.proposerType()).isEqualTo(PROPOSER_TYPE),
-			() -> assertThat(result.legislativeBody()).isEqualTo(LEGISLATION_TYPE),
+			() -> assertThat(result.proposerType()).isEqualTo(PROPOSER_TYPE.getValue()),
+			() -> assertThat(result.legislativeBody()).isEqualTo(LEGISLATION_TYPE.getValue()),
 			() -> assertThat(result.detail()).isEqualTo(DETAIL),
 			() -> assertThat(result.summarySection().summaryDetail()).isEqualTo(SUMMARY),
 			() -> assertThat(result.proposerSection().proposerPartyRate()).isEqualTo(expectProposerPartyRate),

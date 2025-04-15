@@ -56,7 +56,7 @@ class BillPostRepositoryAdapterTest extends CoreDbContextTest {
 		assertAll(
 			() -> assertThat(billPostsStatus).isNotNull(),
 			() -> assertThat(billPostsStatus.isLastPage()).isEqualTo(expectIsLastPage),
-			() -> assertThat(billPostsStatus.billPosts()).isNotEmpty().hasSize(expectSize)
+			() -> assertThat(billPostsStatus.billPosts()).hasSize(expectSize)
 		);
 	}
 

@@ -1,19 +1,16 @@
 package com.barlow.client.knal.opendata.api.response.common;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+public interface Header {
 
-public class Header {
-    @JacksonXmlProperty(localName = "resultCode")
-    private Integer code;
+	String resultCode();
 
-    @JacksonXmlProperty(localName = "resultMsg")
-    private String message;
+	String resultMsg();
 
-    public int getCode() {
-        return code;
-    }
+	String requestMsgID();
 
-    public String getMessage() {
-        return message;
-    }
+	String responseMsgID();
+
+	String responseTime();
+
+	String successYN();
 }

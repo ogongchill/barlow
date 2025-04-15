@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public interface TodayBillRetrieveClient {
 
-	TodayBillInfoResult getTodayBillInfo(LocalDate batchDate);
+	TodayBillInfoBatchEntity getTodayBillInfo(LocalDate batchDate);
 
-	BillProposerInfoResult getBillProposerInfo(String billId);
+	BillProposerInfoBatchEntity getBillProposerInfo(String billId);
 }

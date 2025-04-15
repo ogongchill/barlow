@@ -9,13 +9,17 @@ spring:
     import:
       - client-knal-api.yml
       - notification.yml
-      - db-core.yml
+      - db-core-batch.yml
       - logging.yml
       - monitoring.yml
       - alert.yml
   batch:
     jdbc:
       initialize-schema: never
+    job:
+      enabled: false
+  main:
+    banner-mode: off
 
 ---
 spring.config.activate.on-profile: local

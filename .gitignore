@@ -45,3 +45,13 @@ core/core-auth/src/main/resources/*.properties
 
 ### http client private env json
 http/http-client.private.env.json
+
+### localstack
+infra
+
+## admin
+batch/batch-admin
+
+## 임시
+.github/workflows/batch-lambda.yml
+

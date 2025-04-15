@@ -43,7 +43,7 @@ public class TraceBillBatchJobConfig {
 	@JobScope
 	public Step traceBillDirtyCheckStep(
 		@Qualifier("traceBillDirtyCheckTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
 		return new StepBuilder(TRACE_BILL_DIRTY_CHECK_STEP, jobRepository)
@@ -56,7 +56,7 @@ public class TraceBillBatchJobConfig {
 	@JobScope
 	public Step traceBillUpdateStep(
 		@Qualifier("traceBillUpdateTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
 		return new StepBuilder(TRACE_BILL_UPDATE_STEP, jobRepository)
@@ -69,7 +69,7 @@ public class TraceBillBatchJobConfig {
 	@JobScope
 	public Step traceBillNotifyStep(
 		@Qualifier("traceBillNotifyTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
 		DefaultTransactionAttribute transactionAttribute = new DefaultTransactionAttribute();

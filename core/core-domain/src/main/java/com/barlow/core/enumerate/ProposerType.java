@@ -30,6 +30,26 @@ public enum ProposerType {
 			.toList();
 	}
 
+	public boolean isGovernment() {
+		return this == GOVERNMENT;
+	}
+
+	public boolean isChairman() {
+		return this == CHAIRMAN;
+	}
+
+	public boolean isSpeaker() {
+		return this == SPEAKER;
+	}
+
+	public boolean isLawmaker() {
+		return this == LAWMAKER;
+	}
+
+	public boolean isEtc() {
+		return this == ETC;
+	}
+
 	ProposerType(String value) {
 		this.value = value;
 	}

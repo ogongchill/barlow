@@ -17,6 +17,8 @@ public enum ProgressStatus {
 	REDEMAND_REQUESTED("재의요구"),
 	REJECTED("재의(부결)"),
 	PROMULGATED("공포"),
+
+	ABROGATE("폐기"),
 	;
 
 	private final String value;
@@ -25,9 +27,7 @@ public enum ProgressStatus {
 		return Arrays.stream(ProgressStatus.values())
 			.filter(progress -> progress.value.equals(value))
 			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException(
-				String.format("%s 에 대한 ProgressStatus 은 존재하지 않습니다", value)
-			));
+			.orElse(ABROGATE);
 	}
 
 	public static List<String> findDefaultTagNames() {
@@ -37,8 +37,21 @@ public enum ProgressStatus {
 			.toList();
 	}
 
-	private boolean isNotReceived() {
+	public boolean isReceived() {
+		return this.equals(RECEIVED);
+	}
+
+
+	public boolean isNotReceived() {
 		return !this.equals(RECEIVED);
+	}
+
+	public boolean isNotWithdrawn() {
+		return !this.equals(WITHDRAWN);
+	}
+
+	public boolean isNotAbrogate() {
+		return !this.equals(ABROGATE);
 	}
 
 	public boolean isCommitteeReceived() {

@@ -16,6 +16,8 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.barlow.support.alert.Alerter;
+
 @Component
 public class TrackingBillBatchJobExecutor {
 
@@ -23,13 +25,16 @@ public class TrackingBillBatchJobExecutor {
 
 	private final JobLauncher jobLauncher;
 	private final Job job;
+	private final Alerter alerter;
 
 	public TrackingBillBatchJobExecutor(
 		JobLauncher jobLauncher,
-		@Qualifier(JOB_NAME) Job job
+		@Qualifier(JOB_NAME) Job job,
+		Alerter alerter
 	) {
 		this.jobLauncher = jobLauncher;
 		this.job = job;
+		this.alerter = alerter;
 	}
 
 	public void execute(LocalDate yesterday, LocalDate startDate) {
@@ -38,10 +43,12 @@ public class TrackingBillBatchJobExecutor {
 			TRACKING_START_DATE_JOB_PARAMETER, new JobParameter<>(startDate, LocalDate.class)
 		));
 		try {
-			log.info("{} : 법안 상태 추적 Batch 시작 [{} ~ {}]", LocalDateTime.now(), startDate, yesterday);
+			alerter.alert(String.format("[%s - %s] 법안 상태 추적 Batch 시작", startDate, yesterday));
+			log.info("{} : 법안 상태 추적 Batch 시작 [{} - {}]", LocalDateTime.now(), startDate, yesterday);
 			JobExecution jobExecution = jobLauncher.run(job, jobParameters);
 			log.info("{} : 법안 상태 추적 Batch 완료 - {}", jobExecution.getEndTime(), jobExecution);
 		} catch (Exception e) {
+			alerter.alert(String.format("🚨법안 상태 추적 Batch 실패 - %s", e.getMessage()));
 			log.error("{} : 법안 상태 추적 Batch 실패 - {}", LocalDateTime.now(), e.getMessage(), e);
 		}
 	}

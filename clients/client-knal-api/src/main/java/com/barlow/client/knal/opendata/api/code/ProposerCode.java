@@ -20,6 +20,6 @@ public enum ProposerCode {
 		return Arrays.stream(ProposerCode.values())
 			.filter(proposerCode -> proposerCode.description.equals(target))
 			.findFirst()
-			.orElseThrow(() -> new NoSuchElementException("no such proposer code: " + target));
+			.orElseThrow(() -> new NoSuchElementException("no such proposer resultCode: " + target));
 	}
 }

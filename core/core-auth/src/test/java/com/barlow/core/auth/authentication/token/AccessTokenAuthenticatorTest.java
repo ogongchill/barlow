@@ -2,11 +2,10 @@ package com.barlow.core.auth.authentication.token;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.barlow.core.auth.DevelopTest;
 import com.barlow.core.auth.authentication.core.AuthenticationException;
 import com.barlow.core.auth.authentication.core.AuthenticationExceptionType;
 import com.barlow.core.auth.authentication.core.MemberPrincipal;
-import com.barlow.core.auth.config.TestKeyConfig;
-import com.barlow.core.auth.config.TokenConfig;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,8 +14,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
 import java.time.Instant;
 import java.util.stream.Stream;
@@ -24,15 +21,13 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest(classes = {AccessTokenValidator.class, TokenConfig.class})
-@Import(TestKeyConfig.class)
-class AccessTokenAuthenticatorTest {
+class AccessTokenAuthenticatorTest extends DevelopTest {
 
 	@Autowired
-	Algorithm testPrivateKeyAlgorithm;
+	private Algorithm testPrivateKeyAlgorithm;
 
 	@Autowired
-	AccessTokenValidator accessTokenValidator;
+	private	AccessTokenValidator accessTokenValidator;
 
 	private AccessTokenAuthenticator accessTokenAuthenticator;
 
@@ -41,12 +36,12 @@ class AccessTokenAuthenticatorTest {
 		accessTokenAuthenticator = new AccessTokenAuthenticator(accessTokenValidator);
 	}
 
-	@DisplayName("생성된 토큰을 통해 MemberPrincipal을 반환하는지 확인")
+	@DisplayName("생성된 토큰을 통해 MemberPrincipal 을 반환하는지 확인")
 	@Test
 	void testAuthenticate() {
 		MemberPrincipal expected = new MemberPrincipal(1L, "GUEST");
 		String jwt = JWT.create()
-			.withIssuer("barlow")
+			.withIssuer("barlow-core-auth")
 			.withClaim("memberNo", expected.getMemberNo())
 			.withClaim("role", expected.getRole())
 			.withIssuedAt(Instant.now())
@@ -55,7 +50,7 @@ class AccessTokenAuthenticatorTest {
 		assertThat(actual).isEqualTo(expected);
 	}
 
-	@DisplayName("jwt payload에 iss, memberNo, role 중 하나라도 없으면 예외 확인")
+	@DisplayName("jwt payload 에 iss, memberNo, role 중 하나라도 없으면 예외 확인")
 	@ParameterizedTest
 	@MethodSource("createMissingClaimPayload")
 	void testThrowWhenMissingClaim(String payload) {
@@ -82,11 +77,11 @@ class AccessTokenAuthenticatorTest {
 		);
 	}
 
-	@DisplayName("issuer이름이 다르면 예외 확인")
+	@DisplayName("issuer 이름이 다르면 예외 확인")
 	@Test
 	void testThrowWhenInvalidIssuer() {
 		String jwt = JWT.create()
-			.withIssuer("순용")
+			.withIssuer("wrong-issuer")
 			.withClaim("role", "GUEST")
 			.withClaim("memberNo", 1L)
 			.sign(testPrivateKeyAlgorithm);
@@ -104,7 +99,7 @@ class AccessTokenAuthenticatorTest {
 	@Test
 	void testThrowWhenExpired() {
 		String expiredJwt = JWT.create()
-			.withIssuer("barlow")
+			.withIssuer("barlow-core-auth")
 			.withClaim("role", "GUEST")
 			.withClaim("memberNo", 1L)
 			.withExpiresAt(Instant.now().minusSeconds(1000L))
