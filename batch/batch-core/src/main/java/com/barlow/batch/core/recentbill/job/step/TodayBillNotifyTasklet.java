@@ -12,7 +12,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
 import com.barlow.batch.core.recentbill.RecentBillConstant;
-import com.barlow.batch.core.recentbill.job.TodayBillInfoResult;
+import com.barlow.batch.core.recentbill.job.TodayBillInfoBatchEntity;
 import com.barlow.batch.core.common.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
 import com.barlow.core.enumerate.NotificationTopic;
@@ -41,11 +41,11 @@ public class TodayBillNotifyTasklet extends AbstractExecutionContextSharingManag
 	public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) {
 		super.setCurrentExecutionContext(contribution.getStepExecution().getJobExecution().getExecutionContext());
 		String hashKey = super.getDataFromJobExecutionContext(RecentBillConstant.TODAY_BILL_INFO_SHARE_KEY);
-		TodayBillInfoResult todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
+		TodayBillInfoBatchEntity todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
 
 		DefaultBillNotificationRequest notificationRequest = DefaultBillNotificationRequest.from(
 			todayBillInfo.items().stream()
-				.map(item -> Map.entry(ProgressStatus.findByValue(item.progressStatusCode()), item))
+				.map(item -> Map.entry(item.progressStatus(), item))
 				.filter(entry -> NotificationTopic.isNotifiableProgressStatus(entry.getKey()))
 				.collect(Collectors.groupingBy(
 					entry -> NotificationTopic.findByProgressStatus(entry.getKey()),

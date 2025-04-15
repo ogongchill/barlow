@@ -32,6 +32,6 @@ public enum BillKindCode {
 		return Arrays.stream(BillKindCode.values())
 			.filter(billCode -> billCode.description.equals(target))
 			.findFirst()
-			.orElseThrow(() -> new NoSuchElementException("no such bill code : " + target));
+			.orElseThrow(() -> new NoSuchElementException("no such bill resultCode : " + target));
 	}
 }

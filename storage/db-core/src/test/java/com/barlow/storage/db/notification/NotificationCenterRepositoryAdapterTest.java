@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.barlow.notification.NotificationCenterItemInfo;
 import com.barlow.storage.db.CoreDbContextTest;
 import com.barlow.storage.db.core.NotificationCenterJpaRepository;
-import com.barlow.storage.db.core.NotificationCenterRepositoryAdapter;
+import com.barlow.storage.db.core.notification.NotificationCenterRepositoryAdapter;
 
 class NotificationCenterRepositoryAdapterTest extends CoreDbContextTest {
 

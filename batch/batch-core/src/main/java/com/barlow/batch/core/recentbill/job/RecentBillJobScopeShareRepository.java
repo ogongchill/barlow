@@ -2,7 +2,7 @@ package com.barlow.batch.core.recentbill.job;
 
 public interface RecentBillJobScopeShareRepository {
 
-	void save(String key, TodayBillInfoResult value);
+	void save(String key, TodayBillInfoBatchEntity value);
 
-	TodayBillInfoResult findByKey(String key);
+	TodayBillInfoBatchEntity findByKey(String key);
 }

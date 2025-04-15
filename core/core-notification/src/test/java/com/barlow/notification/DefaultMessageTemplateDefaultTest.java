@@ -33,7 +33,7 @@ class DefaultMessageTemplateDefaultTest {
 
 	private static Stream<Arguments> provideDefaultNotificationTopicAndExpectDefaultType() {
 		return Stream.of(
-			Arguments.of("접수의안", Default.RECEIPT),
+			Arguments.of("접수", Default.RECEIPT),
 			Arguments.of("본회의부의안건", Default.SUBMISSION_PLENARY_SESSION),
 			Arguments.of("본회의의결", Default.RESOLUTION_PLENARY_SESSION),
 			Arguments.of("재의요구", Default.RECONSIDERATION_GOVERNMENT),

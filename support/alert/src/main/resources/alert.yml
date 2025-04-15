@@ -1,3 +1,10 @@
 alert:
   slack:
-    webhook-url: ${support.alert.slack-webhook-url}
+    webhook-url: ${SUPPORT_ALERT_SLACK_WEBHOOK_URL}
+
+---
+spring.config.activate.on-profile: test
+
+alert:
+  slack:
+    webhook-url: https://hooks.slack.com/services/mock-test-url

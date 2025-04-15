@@ -15,6 +15,7 @@ include 'core:core-auth'
 include 'storage:db-core'
 
 include 'batch:batch-core'
+include 'batch:batch-admin'
 
 include 'clients:client-knal-api'
 

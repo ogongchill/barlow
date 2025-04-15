@@ -5,7 +5,7 @@ dependencies {
 
     compileOnly project(':core:core-domain')
 
-    testCompileOnly project(':core:core-notification')
+    testImplementation project(':core:core-notification')
     testImplementation project(':core:core-domain')
     testImplementation 'com.fasterxml.jackson.core:jackson-databind'
 }

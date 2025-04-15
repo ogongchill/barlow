@@ -91,6 +91,22 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 		);
 	}
 
+	public String getBillId() {
+		return billId;
+	}
+
+	public String getBillName() {
+		return billName;
+	}
+
+	public ProgressStatus getProgressStatus() {
+		return progressStatus;
+	}
+
+	public LegislationType getLegislationType() {
+		return legislationType;
+	}
+
 	@Embeddable
 	static class PreAnnouncementInfo {
 

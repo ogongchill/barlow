@@ -9,22 +9,22 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import com.barlow.support.alert.ErrorAlerter;
+import com.barlow.support.alert.Alerter;
 
 @EnableAsync
 @Configuration
 public class CoreApiAsyncConfiguration implements AsyncConfigurer {
 
-	private final ErrorAlerter errorAlerter;
+	private final Alerter alerter;
 
-	public CoreApiAsyncConfiguration(ErrorAlerter errorAlerter) {
-		this.errorAlerter = errorAlerter;
+	public CoreApiAsyncConfiguration(Alerter alerter) {
+		this.alerter = alerter;
 	}
 
 	@Override
 	@Bean("coreAsyncUncaughtExceptionHandler")
 	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-		return new AsyncExceptionHandler(errorAlerter);
+		return new AsyncExceptionHandler(alerter);
 	}
 
 	@Override

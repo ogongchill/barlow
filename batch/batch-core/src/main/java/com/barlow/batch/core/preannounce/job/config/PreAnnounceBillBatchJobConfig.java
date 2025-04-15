@@ -2,7 +2,6 @@ package com.barlow.batch.core.preannounce.job.config;
 
 import static com.barlow.batch.core.preannounce.PreAnnounceConstant.JOB_NAME;
 import static com.barlow.batch.core.preannounce.PreAnnounceConstant.UPDATE_STEP;
-import static com.barlow.batch.core.preannounce.PreAnnounceConstant.WRITE_STEP;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
@@ -35,7 +34,6 @@ public class PreAnnounceBillBatchJobConfig {
 		return new JobBuilder(JOB_NAME, jobRepository)
 			.listener(jobExecutionListener)
 			.start(billPostPreAnnounceInfoUpdateStep(null, null, null))
-			.next(preAnnounceBillWriteStep(null, null, null))
 			.build();
 	}
 
@@ -43,23 +41,10 @@ public class PreAnnounceBillBatchJobConfig {
 	@JobScope
 	public Step billPostPreAnnounceInfoUpdateStep(
 		@Qualifier("billPostPreAnnounceInfoUpdateTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
 		return new StepBuilder(UPDATE_STEP, jobRepository)
-			.tasklet(tasklet, transactionManager)
-			.listener(stepLoggingListener)
-			.build();
-	}
-
-	@Bean
-	@JobScope
-	public Step preAnnounceBillWriteStep(
-		@Qualifier("preAnnounceBillWriteTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
-		StepLoggingListener stepLoggingListener
-	) {
-		return new StepBuilder(WRITE_STEP, jobRepository)
 			.tasklet(tasklet, transactionManager)
 			.listener(stepLoggingListener)
 			.build();

@@ -27,7 +27,7 @@ public class BillProposerWriter implements ItemWriter<BillProposer> {
 
 	private final SimpleJdbcInsert simpleJdbcInsert;
 
-	public BillProposerWriter(@Qualifier("coreDataSource") DataSource dataSource) {
+	public BillProposerWriter(@Qualifier("batchCoreDataSource") DataSource dataSource) {
 		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
 			.withTableName(BILL_PROPOSER_TABLE_NAME)
 			.usingGeneratedKeyColumns(BILL_PROPOSER_PK);

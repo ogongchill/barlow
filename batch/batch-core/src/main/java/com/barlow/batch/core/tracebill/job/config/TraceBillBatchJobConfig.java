@@ -1,9 +1,9 @@
 package com.barlow.batch.core.tracebill.job.config;
 
-import static com.barlow.batch.core.tracebill.TraceBillConstant.FIRST_STEP_NAME;
+import static com.barlow.batch.core.tracebill.TraceBillConstant.TRACE_BILL_DIRTY_CHECK_STEP;
 import static com.barlow.batch.core.tracebill.TraceBillConstant.JOB_NAME;
-import static com.barlow.batch.core.tracebill.TraceBillConstant.SECOND_STEP_NAME;
-import static com.barlow.batch.core.tracebill.TraceBillConstant.THIRD_STEP_NAME;
+import static com.barlow.batch.core.tracebill.TraceBillConstant.TRACE_BILL_UPDATE_STEP;
+import static com.barlow.batch.core.tracebill.TraceBillConstant.TRACE_BILL_NOTIFY_STEP;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 
 import com.barlow.batch.core.common.StepLoggingListener;
 
@@ -41,10 +43,10 @@ public class TraceBillBatchJobConfig {
 	@JobScope
 	public Step traceBillDirtyCheckStep(
 		@Qualifier("traceBillDirtyCheckTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
-		return new StepBuilder(FIRST_STEP_NAME, jobRepository)
+		return new StepBuilder(TRACE_BILL_DIRTY_CHECK_STEP, jobRepository)
 			.tasklet(tasklet, transactionManager)
 			.listener(stepLoggingListener)
 			.build();
@@ -54,10 +56,10 @@ public class TraceBillBatchJobConfig {
 	@JobScope
 	public Step traceBillUpdateStep(
 		@Qualifier("traceBillUpdateTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
-		return new StepBuilder(SECOND_STEP_NAME, jobRepository)
+		return new StepBuilder(TRACE_BILL_UPDATE_STEP, jobRepository)
 			.tasklet(tasklet, transactionManager)
 			.listener(stepLoggingListener)
 			.build();
@@ -67,11 +69,14 @@ public class TraceBillBatchJobConfig {
 	@JobScope
 	public Step traceBillNotifyStep(
 		@Qualifier("traceBillNotifyTasklet") Tasklet tasklet,
-		@Qualifier("coreTransactionManager") PlatformTransactionManager transactionManager,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
 		StepLoggingListener stepLoggingListener
 	) {
-		return new StepBuilder(THIRD_STEP_NAME, jobRepository)
+		DefaultTransactionAttribute transactionAttribute = new DefaultTransactionAttribute();
+		transactionAttribute.setPropagationBehavior(TransactionDefinition.PROPAGATION_NEVER);
+		return new StepBuilder(TRACE_BILL_NOTIFY_STEP, jobRepository)
 			.tasklet(tasklet, transactionManager)
+			.transactionAttribute(transactionAttribute)
 			.listener(stepLoggingListener)
 			.build();
 	}

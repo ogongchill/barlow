@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Setting up dev configuration
+      - cp appspec-dev.yml appspec.yml
+      - cp buildspec-dev.yml buildspec.yml
+      - echo Dev config copied to default files
+  build:
+    commands:
+      - echo Build Started on `date`
+      - chmod +x ./gradlew
+      - ./gradlew :core:core-api:clean :core:core-api:build -x test
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo $(basename ./core/core-api/build/libs/*.jar)
+      - pwd
+
+artifacts:
+  files:
+    - appspec.yml
+    - core/core-api/build/libs/*.jar
+    - scripts/**
+  discard-paths: yes
+
+cache:
+  paths:
+    - '/root/.gradle/caches/**/*'

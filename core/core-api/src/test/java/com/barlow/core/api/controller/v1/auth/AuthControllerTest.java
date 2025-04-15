@@ -27,8 +27,8 @@ class AuthControllerTest extends ContextTest {
 			.when()
 			.body(Map.of(
 				"deviceOs", "ios",
-				"deviceId", "device_id_1",
-				"deviceToken", "device_token_1",
+				"deviceId", "device_id_new",
+				"deviceToken", "device_token_new",
 				"nickname", "nickname"
 			))
 			.post("/api/v1/auth/guest/signup")

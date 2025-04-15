@@ -15,3 +15,17 @@ dependencies {
     testImplementation project(":tests:api-docs")
     testImplementation 'org.springframework:spring-jdbc'
 }
+
+tasks.register('copyResourcesConfig', Copy) {
+    from project(':core:core-auth').file('src/main/resources')
+    from project(':storage:db-core').file('src/main/resources')
+    from project(':support:alert').file('src/main/resources')
+    from project(':support:monitoring').file('src/main/resources')
+    from project(':support:logging').file('src/main/resources')
+
+    into file("$projectDir/build/resources/main")
+
+    include '*.yml'
+}
+
+processResources.dependsOn('copyResourcesConfig')
