@@ -5,7 +5,6 @@ phases:
     commands:
       - echo Setting up dev configuration
       - cp appspec-dev.yml appspec.yml
-      - cp buildspec-dev.yml buildspec.yml
       - echo Dev config copied to default files
   build:
     commands:
