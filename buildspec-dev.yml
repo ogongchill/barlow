@@ -7,6 +7,7 @@ phases:
       - cp appspec-dev.yml appspec.yml
       - echo Dev config copied to default files
       - echo $(basename appspec.yml)
+      - cat appspec.yml
   build:
     commands:
       - echo Build Started on `date`
