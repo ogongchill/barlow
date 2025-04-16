@@ -1,5 +1,5 @@
 #!/bin/bash
-BASE_PATH="/home/ubuntu"
+BASE_PATH="/home/ubuntu/barlow-server"
 
 LOG_PATH="$BASE_PATH/log"
 DEPLOY_LOG="$LOG_PATH/deploy.log"
