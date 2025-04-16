@@ -21,7 +21,7 @@ artifacts:
   files:
     - appspec.yml
     - core/core-api/build/libs/*.jar
-    - scripts/**
+    - scripts/dev/**
   discard-paths: yes
 
 cache:
