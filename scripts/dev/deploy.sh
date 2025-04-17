@@ -1,18 +1,19 @@
 #!/bin/bash
-BASE_PATH="/home/ubuntu/barlow-server"
+BASE_PATH="/home/ubuntu"
+BASE_SERVER_PATH=$BASE_PATH/barlow-server
 
 CURRENT_TIME=$(date +%c)
 
-BUILD_JAR_FILE=$(ls $BASE_PATH/*.jar)
+BUILD_JAR_FILE=$(ls $BASE_SERVER_PATH/*.jar)
 JAR_NAME=$(basename "$BUILD_JAR_FILE")
 echo "$CURRENT_TIME > build 파일명: $JAR_NAME"
 
-LOG_PATH="$BASE_PATH/log"
+LOG_PATH="$BASE_SERVER_PATH/log"
 DEPLOY_LOG="$LOG_PATH/deploy.log"
 APP_LOG="$LOG_PATH/nohup.out"
 
 echo "$CURRENT_TIME >  build 파일 복사" >> $DEPLOY_LOG
-DEPLOY_PATH=$BASE_PATH/deploy-jar/
+DEPLOY_PATH=$BASE_SERVER_PATH/deploy-jar/
 cp "$BUILD_JAR_FILE" $DEPLOY_PATH
 
 echo "$CURRENT_TIME > barlow-api-server-deploy.jar 교체" >> $DEPLOY_LOG
@@ -23,7 +24,7 @@ APPLICATION_JAR=$DEPLOY_PATH$APPLICATION_JAR_NAME
 echo "$CURRENT_TIME > 심볼릭 링크 설정" >> $DEPLOY_LOG
 ln -Tfs "$CP_JAR_PATH" $APPLICATION_JAR
 
-source /home/ubuntu/.profile
+source $BASE_PATH/.profile
 
 SPRING_PROFILES_ACTIVE="dev"
 LOG4J_CONTEXT_SELECTOR="org.apache.logging.log4j.core.async.AsyncLoggerContextSelector"
