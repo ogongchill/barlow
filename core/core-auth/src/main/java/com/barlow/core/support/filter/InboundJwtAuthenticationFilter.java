@@ -79,7 +79,7 @@ public class InboundJwtAuthenticationFilter extends OncePerRequestFilter {
 		String requestURI = request.getRequestURI();
 		return requestURI.startsWith("/api/v1/auth/guest/signup")
 			|| requestURI.startsWith("/api/v1/auth/guest/login")
-			|| requestURI.startsWith("/api/v1/health")
+			|| requestURI.startsWith("/health")
 			|| requestURI.startsWith("/h2-console")
 			|| requestURI.startsWith("/actuator");
 	}

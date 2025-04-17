@@ -1,11 +1,6 @@
 version: 0.2
 
 phases:
-  pre_build:
-    commands:
-      - echo Setting up dev configuration
-      - cp appspec-dev.yml appspec.yml
-      - echo Dev config copied to default files
   build:
     commands:
       - echo Build Started on `date`
@@ -21,7 +16,7 @@ artifacts:
   files:
     - appspec.yml
     - core/core-api/build/libs/*.jar
-    - scripts/**
+    - scripts/dev/**
   discard-paths: yes
 
 cache:

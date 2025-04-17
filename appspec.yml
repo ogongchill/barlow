@@ -14,14 +14,14 @@ permissions:
 
 hooks:
   AfterInstall:
-    - location: scripts/dev/stop.sh
+    - location: stop.sh
       timeout: 60
       runas: ubuntu
   ApplicationStart:
-    - location: scripts/dev/deploy.sh
+    - location: deploy.sh
       timeout: 60
       runas: ubuntu
   ValidateService:
-    - location: scripts/dev/healthCheck.sh
+    - location: healthCheck.sh
       timeout: 60
       runas: ubuntu
