@@ -13,7 +13,7 @@ Configuration:
           traceId:%X{traceId}, spanId:%X{spanId}, api:%X{api}, user:%X{user}, message:%msg%n%throwable
     Sentry:
       name: SentryAppender
-      dsn: "https://44166251a569ff69cde0c15fe907f519@o4508963733569536.ingest.us.sentry.io/4508963738550272"
+      dsn: ${sys:SENTRY_DSN}
       contextTags: "traceId,spanId,server,api,user"
       minimumEventLevel: "WARN"
       minimumBreadcrumbLevel: "INFO"
