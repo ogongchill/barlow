@@ -1,0 +1,20 @@
+{
+  "name": "k6",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "recentbill-thumbnail:load": "k6 run recentbill/thumbnail-load.test.js",
+    "recentbill-detail:spike": "k6 run recentbill/detail-spike.test.js",
+    "scenarios:bill-home": "k6 run scenarios/bill-home.test.js",
+    "scenarios:committee-profile": "k6 run scenarios/committee-profile.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/k6": "^1.0.2"
+  },
+  "dependencies": {
+    "k6": "^0.0.0"
+  }
+}
