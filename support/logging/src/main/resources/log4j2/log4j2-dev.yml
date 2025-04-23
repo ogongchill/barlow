@@ -22,11 +22,13 @@ Configuration:
     Root:
       level: info
       AppenderRef:
-        ref: BarlowConsoleAppender
+        - ref: BarlowConsoleAppender
+        - ref: SentryAppender
     AsyncLogger:
       - name: BarlowAsyncLogger
         level: debug
         additivity: false
         includeLocation: false
         AppenderRef:
-          ref: BarlowConsoleAppender
+          - ref: BarlowConsoleAppender
+          - ref: SentryAppender
