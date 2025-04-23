@@ -28,7 +28,7 @@ public class DeviceJpaEntity extends BaseTimeJpaEntity {
 	@Column(columnDefinition = "varchar(10)", name = "device_os", nullable = false)
 	private DeviceOs deviceOs;
 
-	@Column(name = "token", nullable = false, length = 100)
+	@Column(name = "token", nullable = false, length = 500)
 	private String token;
 
 	@Column(name = "member_no", nullable = false)
