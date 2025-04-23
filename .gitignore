@@ -52,6 +52,9 @@ infra
 ## admin
 batch/batch-admin
 
+## k6 부하 테스트 secret
+k6/common-secret.json
+
 ## 임시
 .github/workflows/batch-lambda.yml
 
