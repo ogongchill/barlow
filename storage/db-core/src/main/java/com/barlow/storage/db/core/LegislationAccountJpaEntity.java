@@ -41,7 +41,8 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 	boolean isCommittee() {
 		return !legislationType.equals(LegislationType.GOVERNMENT)
 			&& !legislationType.equals(LegislationType.SPEAKER)
-			&& !legislationType.equals(LegislationType.EMPTY);
+			&& !legislationType.equals(LegislationType.EMPTY)
+			&& !legislationType.equals(LegislationType.SPECIAL_COMMITTEE);
 	}
 
 	LegislationAccount toLegislationAccount() {
