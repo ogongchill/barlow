@@ -7,7 +7,7 @@
     "recentbill-detail:spike": "k6 run recentbill/detail-spike.test.js",
     "scenarios:bill-home": "k6 run scenarios/bill-home.test.js",
     "scenarios:committee-profile": "k6 run scenarios/committee-profile.test.js",
-    "scenarios:committee-subscribe": "k6 run scenarios/committee-subscribe.test.js"
+    "legislationaccount-subscribe": "k6 run legislationaccount/account-subscribe.test.js"
   },
   "keywords": [],
   "author": "",
