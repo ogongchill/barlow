@@ -44,12 +44,7 @@ async function signup() {
 export default function (data) {
     const token = data.tokens[__VU - 1];
     const params = getRequestParams(token);
-    retrieveCommittee(params);
-    if (__VU <= VUS / 2) {
-        subscribe(params);
-    } else {
-        unsubscribe(params);
-    }
+    subscribe(params);
 }
 
 function retrieveCommittee(params) {
@@ -61,13 +56,6 @@ function retrieveCommittee(params) {
 
 function subscribe(params) {
     const url = `${BASE_URL}/api/v1/legislation-accounts/${LEGISLATION_TYPE}/subscribe/activate`;
-    const res = http.post(url, params);
-    check(res, {"status is 200": (res) => res.status === 200});
-    sleep(SLEEP_DURATION);
-}
-
-function unsubscribe(params) {
-    const url = `${BASE_URL}/api/v1/legislation-accounts/${LEGISLATION_TYPE}/subscribe/deactivate`;
     const res = http.post(url, params);
     check(res, {"status is 200": (res) => res.status === 200});
     sleep(SLEEP_DURATION);
