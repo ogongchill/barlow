@@ -10,7 +10,7 @@ public class PreviousPreAnnounceBillIds {
 		this.values = values;
 	}
 
-	public boolean containsSameBillId(String billId) {
-		return values.contains(billId);
+	public boolean doesNotContainSameBillId(String billId) {
+		return !values.contains(billId);
 	}
 }

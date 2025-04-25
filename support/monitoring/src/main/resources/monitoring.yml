@@ -3,3 +3,15 @@ management:
     web:
       exposure:
         include: prometheus
+
+---
+spring.config.activate.on-profile: dev
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    enable:
+      tomcat: true
