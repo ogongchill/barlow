@@ -37,7 +37,7 @@ public class BillTrackingClientAdapter implements BillTrackingClient {
 		OpenDataApiPort api,
 		@Value("${start-ordinal:22}") Integer startOrd,
 		@Value("${end-ordinal:22}") Integer endOrd,
-		@Value("${num-of-rows:10000}") Integer numOfRows
+		@Value("${num-of-rows:11000}") Integer numOfRows
 	) {
 		this.api = api;
 		this.startOrd = startOrd;
