@@ -1,5 +1,6 @@
 package com.barlow.batch.core.preannounce.client;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
@@ -43,7 +44,7 @@ public class PreAnnounceRetrieveClientAdapter implements PreAnnounceRetrieveClie
 					item.billName(),
 					item.proposer(),
 					LegislationType.findByValue(item.currentCommittee()),
-					LocalDateTime.parse(item.notifyEndDate()),
+					LocalDate.parse(item.notifyEndDate()).atStartOfDay(),
 					item.linkUrl()
 				))
 				.toList()
