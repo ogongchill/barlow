@@ -70,10 +70,9 @@ storage:
   datasource:
     batch-core:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://${STORAGE_DATABASE_CORE_DB_URL}/${STORAGE_DATABASE_CORE_DB_NAME}
+      url: jdbc:mysql://${STORAGE_DATABASE_CORE_DB_URL}/${STORAGE_DATABASE_CORE_DB_NAME}
       username: ${STORAGE_DATABASE_CORE_DB_USERNAME}
       password: ${STORAGE_DATABASE_CORE_DB_PASSWORD}
-      pool-name: batch-core-db-pool
       data-source-properties:
         socketTimeout: 3000
         cachePrepStmts: true
