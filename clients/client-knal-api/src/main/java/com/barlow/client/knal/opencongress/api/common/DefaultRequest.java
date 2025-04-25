@@ -15,6 +15,12 @@ public class DefaultRequest {
 	@JsonProperty(value = "pSize")
 	private Integer pSize;
 
+	DefaultRequest(Type type, Integer pIndex, Integer pSize) {
+		this.type = type;
+		this.pIndex = pIndex;
+		this.pSize = pSize;
+	}
+
 	public static Builder builder() {
 		return new Builder();
 	}
@@ -40,12 +46,20 @@ public class DefaultRequest {
 		}
 
 		public DefaultRequest build() {
-			DefaultRequest defaultRequest = new DefaultRequest();
-			defaultRequest.type = type;
-			defaultRequest.pIndex = pIndex;
-			defaultRequest.pSize = pSize;
-			return defaultRequest;
+			return new DefaultRequest(type, pIndex, pSize);
 		}
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public Integer getpIndex() {
+		return pIndex;
+	}
+
+	public Integer getpSize() {
+		return pSize;
 	}
 
 	enum Type {

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,10 +37,10 @@ public class CoreBatchController {
 	}
 
 	@PostMapping("/tracking-bill-job")
-	public ResponseEntity<Void> executeTrackingBillBatchJob() {
+	public ResponseEntity<Void> executeTrackingBillBatchJob(@RequestBody TrackingStartDateRequest request) {
 		trackingBillBatchJobExecutor.execute(
 			LocalDate.now().minusDays(1),
-			LocalDate.of(2024, 5, 30)
+			LocalDate.parse(request.startDate())
 		);
 		return ResponseEntity.noContent().build();
 	}

@@ -11,13 +11,9 @@ const LEGISLATION_TYPE = "LEGISLATION_AND_JUDICIARY";
 const VUS = 100;
 
 export const options = {
-    scenarios: {
-        concurrent_test: {
-            executor: 'constant-vus',
-            vus: VUS,
-            duration: '10s',
-        },
-    },
+    stages: [
+        {duration: '10s', target: VUS}
+    ]
 };
 
 export function setup() {
@@ -41,40 +37,14 @@ async function signup() {
     return {tokens};
 }
 
-export default function (data) {
-    const token = data.tokens[__VU - 1];
-    const params = getRequestParams(token);
-    retrieveCommittee(params);
-    if (__VU <= VUS / 2) {
-        subscribe(params);
-    } else {
-        unsubscribe(params);
-    }
+export default function ({tokens}) {
+    const token = tokens[__VU - 1];
+    subscribe(token);
 }
 
-function retrieveCommittee(params) {
-    const url = `${BASE_URL}/api/v1/legislation-accounts/committees/info`;
-    const res = http.get(url, params)
-    check(res, {"status is 200": (res) => res.status === 200});
-    sleep(SLEEP_DURATION);
-}
-
-function subscribe(params) {
+function subscribe(token) {
     const url = `${BASE_URL}/api/v1/legislation-accounts/${LEGISLATION_TYPE}/subscribe/activate`;
-    const res = http.post(url, params);
-    check(res, {"status is 200": (res) => res.status === 200});
-    sleep(SLEEP_DURATION);
-}
-
-function unsubscribe(params) {
-    const url = `${BASE_URL}/api/v1/legislation-accounts/${LEGISLATION_TYPE}/subscribe/deactivate`;
-    const res = http.post(url, params);
-    check(res, {"status is 200": (res) => res.status === 200});
-    sleep(SLEEP_DURATION);
-}
-
-function getRequestParams(token) {
-    return {
+    const params = {
         headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -84,4 +54,7 @@ function getRequestParams(token) {
             'X-Device-ID': secret.deviceId,
         }
     };
+    const res = http.post(url, null, params);
+    check(res, {"status is 200": (res) => res.status === 200});
+    sleep(SLEEP_DURATION);
 }

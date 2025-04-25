@@ -1,5 +1,9 @@
 package com.barlow.core.scheduler;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
@@ -39,9 +43,11 @@ public class BatchLambdaScheduler {
 
 	@Scheduled(cron = "0 30 15 * * 1-5")
 	public void scheduledTrackingBillInfoBatch() {
+		Map<String, Object> body = new HashMap<>();
+		body.put("startDate", LocalDate.now().minusYears(1).withDayOfMonth(1).toString());
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-		restTemplate.exchange(trackingBillBatchFuncUrl, HttpMethod.POST, new HttpEntity<>(headers), Void.class);
+		restTemplate.exchange(trackingBillBatchFuncUrl, HttpMethod.POST, new HttpEntity<>(body, headers), Void.class);
 	}
 
 	@Scheduled(cron = "0 0 19 * * 1-5")
