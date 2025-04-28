@@ -61,6 +61,10 @@ public enum LegislationType {
 			.toList();
 	}
 
+	public boolean isEmpty() {
+		return this == EMPTY;
+	}
+
 	LegislationType(String value, String chairman, String iconPath) {
 		this.value = value;
 		this.chairman = chairman;
