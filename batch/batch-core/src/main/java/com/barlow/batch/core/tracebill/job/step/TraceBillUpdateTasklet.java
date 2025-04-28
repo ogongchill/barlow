@@ -49,12 +49,12 @@ public class TraceBillUpdateTasklet extends AbstractExecutionContextSharingManag
 
 		UpdatedBills committeeReceived = updatedBills.filterCommitteeReceived();
 		if (!committeeReceived.isEmpty()) {
-			committeeReceived.getCommitteeReceived()
+			updatedBills.getCommitteeReceived()
 				.forEach(billInfo -> {
 					LegislationType committee = client.getCommittee(billInfo.billId());
-					committeeReceived.assignCommittee(billInfo.billId(), committee);
+					updatedBills.assignCommittee(billInfo.billId(), committee);
 				});
-			accountBatchRepository.updateAccountBillCount(committeeReceived);
+			accountBatchRepository.updateAccountBillCount(updatedBills);
 		}
 
 		billPostBatchRepository.updateAllInBatch(updatedBills);
