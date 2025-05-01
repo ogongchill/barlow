@@ -51,7 +51,7 @@ public class BillProposerWriter implements ItemWriter<BillProposer> {
 			.addValue("propose_bill_id", billId)
 			.addValue("proposer_code", lawmaker.code())
 			.addValue("proposer_name", lawmaker.name())
-			.addValue("proposer_profile_image_path", "lawmaker.profileImagePath()") // FIXME : 수정 필요
+			.addValue("proposer_profile_image_path", lawmaker.profileImagePath())
 			.addValue("party_name", PartyName.findByValue(lawmaker.partyName()))
 			.addValue("created_at", LocalDateTime.now(), Types.TIMESTAMP)
 			.addValue("updated_at", LocalDateTime.now(), Types.TIMESTAMP);

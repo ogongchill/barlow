@@ -20,7 +20,7 @@ public record LawmakerProvider(
 		@JsonProperty("MONA_CD") String code,
 		@JsonProperty("HG_NM") String name,
 		@JsonProperty("POLY_NM") String partyName,
-		@JsonProperty("HOMEPAGE") String profileImagePath // fixme : profile image path 로 변경
+		@JsonProperty("PROFILE_IMAGE") String profileImagePath
 	) {
 		boolean matchesNameAndParty(String name, String partyName) {
 			if (partyName == null) {
