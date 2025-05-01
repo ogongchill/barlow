@@ -1,5 +1,6 @@
 package com.barlow.storage.db.core;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -17,7 +18,7 @@ public class BillPostSpecifications {
 	static Specification<BillPostJpaEntity> isPreAnnouncement(boolean isPreAnnouncementMode) {
 		return (root, criteriaQuery, criteriaBuilder)
 			-> isPreAnnouncementMode
-			? criteriaBuilder.isNotNull(root.get("preAnnouncementInfo"))
+			? criteriaBuilder.greaterThanOrEqualTo(root.get("preAnnouncementInfo").get("deadlineDate"), LocalDateTime.now())
 			: criteriaBuilder.conjunction();
 	}
 
