@@ -108,7 +108,7 @@ public class UpdatedBills {
 		LegislationType committee
 	) {
 		boolean isCommitteeAssignedYet(String billId) {
-			return this.billId.equals(billId) && this.committee == null;
+			return this.billId.equals(billId) && this.committee.isEmpty();
 		}
 	}
 }
