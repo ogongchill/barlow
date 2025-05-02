@@ -1,5 +1,72 @@
 # core-notification 모듈
 
+```mermaid
+sequenceDiagram
+    participant 배치 시스템
+    participant NotificationSendWorker
+    participant IOSNotificationSender
+    participant AndroidNotificationSender
+    participant Firebase Cloud Messaging
+    participant RetryWorker
+    participant FailureMessageRetryQueue
+
+    배치 시스템->>NotificationSendWorker: invoke(messageTemplate, topicsWithSubscribers)
+
+    par iOS 알림 전송
+        NotificationSendWorker->>NotificationSendWorker: billNotificationTask 생성 (iOS)
+        NotificationSendWorker->>IOSNotificationSender: CompletableFuture.runAsync()
+        IOSNotificationSender->>IOSNotificationSender: 구독자 필터링 (Subscriber::isIOS)
+        IOSNotificationSender->>IOSNotificationSender: 메시지 생성 (IosMessageProvider)
+        IOSNotificationSender->>Firebase Cloud Messaging: send(messages)
+        Firebase Cloud Messaging-->>IOSNotificationSender: BatchResponse
+
+        alt 실패한 메시지가 있는 경우
+            IOSNotificationSender->>RetryWorker: 생성 및 start(notificationResult)
+            RetryWorker->>FailureMessageRetryQueue: pushAllRetryableMessages()
+            Note right of FailureMessageRetryQueue: 별도 스레드에서 재시도 작업 실행
+            loop 재시도 루프 내에서
+                FailureMessageRetryQueue->>RetryWorker: take()
+                RetryWorker->>Firebase Cloud Messaging: RetryBatchMessages
+                Firebase Cloud Messaging-->>RetryWorker: send(messages)
+                RetryWorker->>Firebase Cloud Messaging: send(messages)
+                Firebase Cloud Messaging-->>RetryWorker: BatchResponse
+                RetryWorker-->>IOSNotificationSender: NotificationResult
+            end
+            alt 여전히 실패한 메시지가 있는 경우
+                RetryWorker->>FailureMessageRetryQueue: pushAllRetryableMessages()
+            else 모든 메시지 성공
+                Note right of RetryWorker: 스레드 종료
+            end
+        end
+    and Android 알림 전송
+        NotificationSendWorker->>NotificationSendWorker: billNotificationTask 생성 (Android)
+        NotificationSendWorker->>AndroidNotificationSender: CompletableFuture.runAsync()
+        AndroidNotificationSender->>AndroidNotificationSender: 구독자 필터링 (Subscriber::isANDROID)
+        AndroidNotificationSender->>AndroidNotificationSender: 메시지 생성 (AndroidMessageProvider)
+        AndroidNotificationSender->>Firebase Cloud Messaging: send(messages)
+        Firebase Cloud Messaging-->>AndroidNotificationSender: BatchResponse
+
+        alt 실패한 메시지가 있는 경우
+            AndroidNotificationSender->>RetryWorker: 생성 및 start(notificationResult)
+            RetryWorker->>FailureMessageRetryQueue: pushAllRetryableMessages()
+            Note right of FailureMessageRetryQueue: 별도 스레드에서 재시도 작업 실행
+            loop 재시도 루프 내에서
+                FailureMessageRetryQueue->>RetryWorker: take()
+                RetryWorker->>Firebase Cloud Messaging: RetryBatchMessages
+                Firebase Cloud Messaging-->>RetryWorker: send(messages)
+                RetryWorker->>Firebase Cloud Messaging: send(messages)
+                Firebase Cloud Messaging-->>RetryWorker: BatchResponse
+                RetryWorker-->>AndroidNotificationSender: NotificationResult
+            end
+            alt 여전히 실패한 메시지가 있는 경우
+                RetryWorker->>FailureMessageRetryQueue: pushAllRetryableMessages()
+            else 모든 메시지 성공
+                Note right of RetryWorker: 스레드 종료
+            end
+        end
+    end
+```
+
 ## 개요
 
 core-notification 모듈은 Barlow 시스템에서 사용자에게 법안 관련 알림을 전송하는 핵심 기능을 담당합니다. 이 모듈은 iOS와 Android 플랫폼 모두에 푸시 알림을 전송하고, 알림 정보를
