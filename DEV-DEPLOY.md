@@ -1,4 +1,4 @@
-# DEV 서버 CI/CD
+# DEV 서버 배포
 
 이 문서는 Barlow 시스템을 위한 **Continuous Integration/Continuous Deployment (CI/CD)** 파이프라인과 배포 프로세스를 설명합니다. 이 문서는 빌드 구성, 배포 사양
 및 애플리케이션을 대상 환경에 배포하는 데 사용되는 스크립트를 다룹니다. 초점은 `AWS CodeBuild` 및 `CodeDeploy` 통합, 배포 스크립트 및 애플리케이션 시작 구성에 맞춰져 있습니다.
