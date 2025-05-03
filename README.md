@@ -67,3 +67,13 @@ Barlow 시스템 아키텍처는 문제를 명확하게 구분한 깨끗하고 �
 - **테스트 가능성**: 구성 요소는 적절한 mock 으로 분리하여 테스트할 수 있습니다
 - **확장성**: 비동기식 처리와 깨끗한 분리로 시스템 확장 가능
 - **유연성**: 모듈식 구조를 통해 구성 요소가 독립적으로 발전할 수 있습니다
+
+
+각 모듈에 대한 자세한 정보는 다음을 참조하세요:
+
+- [core-api](https://github.com/ogongchill/barlow/tree/develop/core/core-api)
+- [core-notification](https://github.com/ogongchill/barlow/tree/develop/core/core-notification)
+- [db-core](https://github.com/ogongchill/barlow/tree/develop/storage/db-core)
+- [support](https://github.com/ogongchill/barlow/tree/develop/support)
+- [batch-core](https://github.com/ogongchill/barlow/tree/develop/batch/batch-core)
+- [dev-deploy](https://github.com/ogongchill/barlow/blob/develop/DEV-DEPLOY.md)
