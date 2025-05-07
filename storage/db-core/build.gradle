@@ -3,9 +3,9 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'
 
-    compileOnly project(':core:core-domain')
+    compileOnly project(':core:domain')
 
     testImplementation project(':core:core-notification')
-    testImplementation project(':core:core-domain')
+    testImplementation project(':core:domain')
     testImplementation 'com.fasterxml.jackson.core:jackson-databind'
 }

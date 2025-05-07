@@ -2,7 +2,7 @@ bootJar.enabled = true
 jar.enabled = false
 
 dependencies {
-    implementation project(":core:core-domain")
+    implementation project(":core:domain")
     implementation project(":storage:db-core")
     implementation project(":core:core-notification")
     implementation project(":clients:client-knal-api")
