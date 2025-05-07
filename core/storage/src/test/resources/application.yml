@@ -1,0 +1,8 @@
+spring.application.name: storage-core-test
+
+spring:
+  config:
+    import:
+      - storage-core.yml
+  profiles:
+    active: test

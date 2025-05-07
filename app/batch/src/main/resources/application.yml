@@ -1,0 +1,43 @@
+spring.application.name: batch-core
+spring.profiles.active: local
+
+file:
+  lawmaker-json: lawmaker/lawmaker-22.json
+
+spring:
+  config:
+    import:
+      - client-knal-api.yml
+      - notification.yml
+      - storage-core-batch.yml
+      - logging.yml
+      - monitoring.yml
+      - alert.yml
+  batch:
+    jdbc:
+      initialize-schema: never
+    job:
+      enabled: false
+  main:
+    banner-mode: off
+
+---
+spring.config.activate.on-profile: local
+spring:
+  batch:
+    jdbc:
+      initialize-schema: always
+
+---
+spring.config.activate.on-profile: local-dev
+
+---
+spring.config.activate.on-profile: dev
+
+
+---
+spring.config.activate.on-profile: staging
+
+
+---
+spring.config.activate.on-profile: live
