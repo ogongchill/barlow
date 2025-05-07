@@ -1,0 +1,53 @@
+spring.application.name: core-api
+spring.profiles.active: local
+
+spring:
+  config:
+    import:
+      - auth.yml
+      - db-core.yml
+      - logging.yml
+      - monitoring.yml
+      - alert.yml
+  web.resources.add-mappings: false
+
+server:
+  tomcat:
+    max-connections: 200
+    threads:
+      max: 600
+      min-spare: 100
+
+---
+spring.config.activate.on-profile: local
+
+
+---
+spring.config.activate.on-profile: local-dev
+
+
+---
+spring.config.activate.on-profile: dev
+
+server:
+  tomcat:
+    max-connections: 8192
+    threads:
+      max: 200
+      min-spare: 100
+    mbeanregistry:
+      enabled: true
+
+scheduler:
+  batch-lambda:
+    url:
+      pre-announce: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/pre-announcement-bill-job
+      tracking-bill: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/tracking-bill-job
+      today-bill: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/today-bill-job
+
+---
+spring.config.activate.on-profile: staging
+
+
+---
+spring.config.activate.on-profile: live
