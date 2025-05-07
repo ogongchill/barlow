@@ -19,7 +19,7 @@ hooks:
       runas: ubuntu
   ApplicationStart:
     - location: deploy.sh
-      timeout: 60
+      timeout: 90
       runas: ubuntu
   ValidateService:
     - location: healthCheck.sh
