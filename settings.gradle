@@ -7,13 +7,12 @@ pluginManagement {
 
 rootProject.name = 'barlow'
 
-include 'app:api'
+include 'app:api', 'app:batch'
 
 include 'core:domain', 'core:storage'
 
 include 'services:auth', 'services:notification'
 
-include 'batch:batch-core'
 include 'batch:batch-admin'
 
 include 'clients:client-knal-api'

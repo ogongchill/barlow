@@ -50,7 +50,7 @@ http/http-client.private.env.json
 infra
 
 ## admin
-batch/batch-admin
+batch
 
 ## k6 부하 테스트 secret
 k6/common-secret.json
