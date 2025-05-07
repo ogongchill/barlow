@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.barlow.batch.core.preannounce.job.NewPreAnnounceBills;
 import com.barlow.batch.core.preannounce.job.PreAnnounceBillPostBatchRepository;
 import com.barlow.batch.core.preannounce.job.PreviousPreAnnounceBillIds;
-import com.barlow.storage.db.core.BillPostJpaEntity;
+import com.barlow.core.storage.BillPostJpaEntity;
 
 @Component
 public class PreAnnounceBillPostBatchRepositoryAdapter implements PreAnnounceBillPostBatchRepository {

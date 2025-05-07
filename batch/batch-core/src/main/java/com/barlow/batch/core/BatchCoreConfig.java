@@ -16,8 +16,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 	"com.barlow.core.enumerate",
 	"com.barlow.client.knal",
 	"com.barlow.storage.db.core.batch",
-	"com.barlow.storage.db.core.notification",
-	"com.barlow.notification",
+	"com.barlow.core.storage.notification",
+	"com.barlow.services.notification",
 	"com.barlow.support.alert"})
 @EnableBatchProcessing(
 	dataSourceRef = "batchCoreDataSource",

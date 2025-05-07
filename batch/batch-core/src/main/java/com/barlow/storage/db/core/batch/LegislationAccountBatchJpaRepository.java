@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.barlow.storage.db.core.LegislationAccountJpaEntity;
+import com.barlow.core.storage.LegislationAccountJpaEntity;
 
 public interface LegislationAccountBatchJpaRepository extends JpaRepository<LegislationAccountJpaEntity, Long> {
 

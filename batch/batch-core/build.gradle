@@ -4,7 +4,7 @@ jar.enabled = false
 dependencies {
     implementation project(":core:domain")
     implementation project(":core:storage")
-    implementation project(":core:core-notification")
+    implementation project(":services:notification")
     implementation project(":clients:client-knal-api")
     implementation project(":support:logging")
     implementation project(":support:monitoring")

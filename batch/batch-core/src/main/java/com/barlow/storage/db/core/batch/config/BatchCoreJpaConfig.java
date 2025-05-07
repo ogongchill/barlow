@@ -18,9 +18,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.barlow.storage.db.core.BillPostJpaEntity;
-import com.barlow.storage.db.core.LegislationAccountJpaEntity;
-import com.barlow.storage.db.core.NotificationConfigJpaEntity;
+import com.barlow.core.storage.BillPostJpaEntity;
+import com.barlow.core.storage.LegislationAccountJpaEntity;
+import com.barlow.core.storage.NotificationConfigJpaEntity;
 
 import jakarta.persistence.EntityManagerFactory;
 
@@ -31,7 +31,7 @@ import jakarta.persistence.EntityManagerFactory;
 	LegislationAccountJpaEntity.class,
 	NotificationConfigJpaEntity.class})
 @EnableJpaRepositories(
-	basePackages = {"com.barlow.storage.db.core.batch", "com.barlow.storage.db.core.notification"},
+	basePackages = {"com.barlow.storage.db.core.batch", "com.barlow.core.storage.notification"},
 	entityManagerFactoryRef = "batchCoreEntityManagerFactory",
 	transactionManagerRef = "batchCoreTransactionManager")
 public class BatchCoreJpaConfig {
@@ -50,7 +50,7 @@ public class BatchCoreJpaConfig {
 		EntityManagerFactoryBuilder builder
 	) {
 		return builder.dataSource(dataSource)
-			.packages("com.barlow.storage.db.core.batch", "com.barlow.storage.db.core.notification")
+			.packages("com.barlow.storage.db.core.batch", "com.barlow.core.storage.notification")
 			.packages(BillPostJpaEntity.class, LegislationAccountJpaEntity.class, NotificationConfigJpaEntity.class)
 			.persistenceUnit("batch-core")
 			.properties(jpaProperties.properties)

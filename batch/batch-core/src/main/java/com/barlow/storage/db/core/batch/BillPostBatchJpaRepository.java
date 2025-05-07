@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.enumerate.ProgressStatus;
-import com.barlow.storage.db.core.BillPostJpaEntity;
+import com.barlow.core.storage.BillPostJpaEntity;
 
 public interface BillPostBatchJpaRepository extends JpaRepository<BillPostJpaEntity, Long> {
 

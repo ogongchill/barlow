@@ -9,9 +9,8 @@ rootProject.name = 'barlow'
 
 include 'core:core-api'
 include 'core:domain', 'core:storage'
-include 'core:core-notification'
 
-include 'services:auth'
+include 'services:auth', 'services:notification'
 
 include 'batch:batch-core'
 include 'batch:batch-admin'

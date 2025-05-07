@@ -9,10 +9,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.barlow.notification.NotificationCenterItemInfo;
+import com.barlow.services.notification.NotificationCenterItemInfo;
 import com.barlow.core.storage.CoreDbContextTest;
-import com.barlow.storage.db.core.NotificationCenterJpaRepository;
-import com.barlow.storage.db.core.notification.NotificationCenterRepositoryAdapter;
+import com.barlow.core.storage.NotificationCenterJpaRepository;
 
 class NotificationCenterRepositoryAdapterTest extends CoreDbContextTest {
 

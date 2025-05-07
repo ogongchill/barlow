@@ -16,10 +16,9 @@ import com.barlow.batch.core.recentbill.job.TodayBillInfoBatchEntity;
 import com.barlow.batch.core.common.AbstractExecutionContextSharingManager;
 import com.barlow.batch.core.recentbill.job.RecentBillJobScopeShareRepository;
 import com.barlow.core.enumerate.NotificationTopic;
-import com.barlow.core.enumerate.ProgressStatus;
-import com.barlow.notification.DefaultBillNotificationRequest;
-import com.barlow.notification.NotificationRequest;
-import com.barlow.notification.NotificationSendPort;
+import com.barlow.services.notification.DefaultBillNotificationRequest;
+import com.barlow.services.notification.NotificationRequest;
+import com.barlow.services.notification.NotificationSendPort;
 
 @Component
 @StepScope

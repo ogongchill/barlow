@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.enumerate.NotificationTopic;
 import com.barlow.core.enumerate.ProgressStatus;
-import com.barlow.notification.NotificationRequest;
+import com.barlow.services.notification.NotificationRequest;
 
 public class UpdatedBills {
 
