@@ -36,12 +36,8 @@ out/
 ### VS Code ###
 .vscode/
 
-### core:core-notification ###
-core/core-notification/src/main/resources/firebase/*.json
-
-### core:core-auth.support.crypto ###
-*.pem
-core/core-auth/src/main/resources/*.properties
+### services:notification ###
+services/notification/src/main/resources/firebase/*.json
 
 ### http client private env json
 http/http-client.private.env.json
@@ -54,7 +50,3 @@ batch
 
 ## k6 부하 테스트 secret
 k6/common-secret.json
-
-## 임시
-.github/workflows/batch-lambda.yml
-
