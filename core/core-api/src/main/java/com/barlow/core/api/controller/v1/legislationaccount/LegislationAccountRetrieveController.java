@@ -13,8 +13,8 @@ import com.barlow.core.domain.User;
 import com.barlow.core.domain.legislationaccount.LegislationAccount;
 import com.barlow.core.domain.legislationaccount.LegislationAccountRetrieveService;
 import com.barlow.core.enumerate.LegislationType;
-import com.barlow.core.support.annotation.PassportUser;
 import com.barlow.core.support.response.ApiResponse;
+import com.barlow.services.support.annotation.PassportUser;
 
 @RestController
 @RequestMapping("/api/v1/legislation-accounts")

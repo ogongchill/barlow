@@ -8,10 +8,10 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.barlow.core.support.interceptor.GuestPassportAuthorizationInterceptor;
-import com.barlow.core.support.interceptor.MemberPassportAuthorizationInterceptor;
-import com.barlow.core.support.interceptor.TraceLoggingInterceptor;
-import com.barlow.core.support.resolver.PassportUserArgumentResolver;
+import com.barlow.services.support.interceptor.GuestPassportAuthorizationInterceptor;
+import com.barlow.services.support.interceptor.MemberPassportAuthorizationInterceptor;
+import com.barlow.services.support.interceptor.TraceLoggingInterceptor;
+import com.barlow.services.support.resolver.PassportUserArgumentResolver;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {

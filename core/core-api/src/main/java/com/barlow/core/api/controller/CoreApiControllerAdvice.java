@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.barlow.core.exception.CoreDomainException;
 import com.barlow.core.support.error.CoreApiException;
 import com.barlow.core.support.error.CoreApiErrorType;
-import com.barlow.core.support.error.CoreAuthException;
 import com.barlow.core.support.response.ApiResponse;
+import com.barlow.services.support.error.CoreAuthException;
 import com.barlow.support.alert.Alerter;
 
 @RestControllerAdvice

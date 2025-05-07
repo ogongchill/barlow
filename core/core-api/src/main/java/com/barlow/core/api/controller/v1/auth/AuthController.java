@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.barlow.core.auth.authentication.token.AccessToken;
-import com.barlow.core.auth.authentication.token.AccessTokenProvider;
+import com.barlow.services.auth.authentication.token.AccessToken;
+import com.barlow.services.auth.authentication.token.AccessTokenProvider;
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.account.AccountCreateService;
 import com.barlow.core.domain.account.AccountLoginService;

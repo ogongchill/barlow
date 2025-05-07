@@ -5,7 +5,7 @@ dependencies {
     runtimeOnly project(":storage:db-core")
 
     implementation project(":core:domain")
-    implementation project(":core:core-auth")
+    implementation project(":services:auth")
     implementation project(":support:logging")
     implementation project(":support:monitoring")
     implementation project(":support:alert")

@@ -10,7 +10,8 @@ rootProject.name = 'barlow'
 include 'core:core-api'
 include 'core:domain'
 include 'core:core-notification'
-include 'core:core-auth'
+
+include 'services:auth'
 
 include 'storage:db-core'
 
