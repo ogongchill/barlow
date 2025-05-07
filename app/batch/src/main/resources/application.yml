@@ -9,7 +9,7 @@ spring:
     import:
       - client-knal-api.yml
       - notification.yml
-      - db-core-batch.yml
+      - storage-core-batch.yml
       - logging.yml
       - monitoring.yml
       - alert.yml
