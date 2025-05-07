@@ -110,7 +110,7 @@ flowchart TD
     step2 --> step3
     step3 --> End
 
-    subgraph step1 [1. traceBillDirtyCheckStep]
+    subgraph step1 [traceBillDirtyCheckStep]
         DC1[Get current bill info from external API]
         DC2[Compare with existing records]
         DC3[Identify bills with status changes]
@@ -118,7 +118,7 @@ flowchart TD
         DC1 --> DC2 --> DC3 --> DC4
     end
 
-    subgraph step2 [2. traceBillUpdateStep]
+    subgraph step2 [traceBillUpdateStep]
         U1[Retrieve updated bills from context]
         U2[Filter committee received bills]
         U3[Get committee info for each bill from external API]
@@ -128,7 +128,7 @@ flowchart TD
         U1 --> U2 --> U3 --> U4 --> U5 --> U6
     end
 
-    subgraph step3 [3. traceBillNotifyStep]
+    subgraph step3 [traceBillNotifyStep]
         N1[Send notifications for updated bills]
     end
 ```
@@ -189,7 +189,7 @@ flowchart TD
     step2 --> step3
     step3 --> End
 %% Step 1 내부 로직
-    subgraph step1 [1. writeTodayBillInfoStep]
+    subgraph step1 [writeTodayBillInfoStep]
         TI1[Retrieve today's bills from external API]
         TI2[Filter bills with few proposers]
         TI3[Create bill posts in database]
@@ -198,7 +198,7 @@ flowchart TD
     end
 
 %% Step 2 내부 로직
-    subgraph step2 [2. writeBillProposerStep]
+    subgraph step2 [writeBillProposerStep]
         BP1[Read bills with few proposers]
         BP2[Retrieve detailed proposer info]
         BP3[Update bill posts with proposer info]
@@ -206,7 +206,7 @@ flowchart TD
     end
 
 %% Step 3 내부 로직
-    subgraph step3 [3. notifyTodayBillStep]
+    subgraph step3 [notifyTodayBillStep]
         N1[Send notifications for updated bills to subscribers]
     end
 ```

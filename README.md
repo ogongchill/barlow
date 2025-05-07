@@ -6,6 +6,8 @@
 
 > Barlow는 문제를 개별 구성 요소로 분리하여 각 모듈의 독립적인 개발, 테스트 및 배포를 가능하게 하는 모듈형 아키텍처를 따릅니다.
 
+<img width="460" alt="스크린샷 2025-05-03 오후 11 05 24" src="https://github.com/user-attachments/assets/4f754265-1536-4809-bece-61c00963c413" />
+
 모듈 구조에는 다음이 포함됩니다:
 
 - **core**: 핵심 비즈니스 로직과 API 구성 요소를 포함합니다
@@ -26,7 +28,7 @@
 
 ## 계층형 구조
 
-Barlow는 서로 다른 시스템 책임 간의 명확한 경계를 가진 깨끗한 계층 구조를 구현합니다:
+Barlow는 서로 다른 시스템 책임 간의 명확한 경계를 가진 계층 구조를 구현합니다:
 
 1. **API 계층(core-api):**
     - 컨트롤러는 HTTP 요청을 처리하고 도메인 서비스에 위임합니다
@@ -52,7 +54,7 @@ Barlow는 서로 다른 시스템 책임 간의 명확한 경계를 가진 깨�
 
 ## 요약
 
-Barlow 시스템 아키텍처는 문제를 명확하게 구분한 깨끗하고 모듈식 설계를 따릅니다. 이 시스템은 다음을 사용합니다:
+Barlow 시스템 아키텍처는 문제를 명확하게 구분한 모듈식 설계를 따릅니다. 이 시스템은 다음을 사용합니다:
 
 1. **모듈 구조**: 코어, 스토리지, 배치, 클라이언트 및 지원 서비스를 위한 별도의 모듈
 2. **Layered Architecture**: API, 도메인, 지속성 계층 간의 경계 명확화
@@ -65,3 +67,13 @@ Barlow 시스템 아키텍처는 문제를 명확하게 구분한 깨끗하고 �
 - **테스트 가능성**: 구성 요소는 적절한 mock 으로 분리하여 테스트할 수 있습니다
 - **확장성**: 비동기식 처리와 깨끗한 분리로 시스템 확장 가능
 - **유연성**: 모듈식 구조를 통해 구성 요소가 독립적으로 발전할 수 있습니다
+
+
+각 모듈에 대한 자세한 정보는 다음을 참조하세요:
+
+- [core-api](https://github.com/ogongchill/barlow/tree/develop/core/core-api)
+- [core-notification](https://github.com/ogongchill/barlow/tree/develop/core/core-notification)
+- [db-core](https://github.com/ogongchill/barlow/tree/develop/storage/db-core)
+- [support](https://github.com/ogongchill/barlow/tree/develop/support)
+- [batch-core](https://github.com/ogongchill/barlow/tree/develop/batch/batch-core)
+- [dev-deploy](https://github.com/ogongchill/barlow/blob/develop/DEV-DEPLOY.md)
