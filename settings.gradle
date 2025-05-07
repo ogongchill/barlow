@@ -8,12 +8,10 @@ pluginManagement {
 rootProject.name = 'barlow'
 
 include 'core:core-api'
-include 'core:domain'
+include 'core:domain', 'core:storage'
 include 'core:core-notification'
 
 include 'services:auth'
-
-include 'storage:db-core'
 
 include 'batch:batch-core'
 include 'batch:batch-admin'

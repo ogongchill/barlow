@@ -2,7 +2,7 @@ bootJar.enabled = true
 jar.enabled = false
 
 dependencies {
-    runtimeOnly project(":storage:db-core")
+    runtimeOnly project(":core:storage")
 
     implementation project(":core:domain")
     implementation project(":services:auth")
