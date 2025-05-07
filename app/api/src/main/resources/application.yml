@@ -5,7 +5,7 @@ spring:
   config:
     import:
       - auth.yml
-      - db-core.yml
+      - storage-core.yml
       - logging.yml
       - monitoring.yml
       - alert.yml
@@ -17,6 +17,13 @@ server:
     threads:
       max: 600
       min-spare: 100
+
+scheduler:
+  batch-lambda:
+    url:
+      pre-announce: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/pre-announcement-bill-job
+      tracking-bill: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/tracking-bill-job
+      today-bill: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/today-bill-job
 
 ---
 spring.config.activate.on-profile: local
@@ -37,13 +44,6 @@ server:
       min-spare: 100
     mbeanregistry:
       enabled: true
-
-scheduler:
-  batch-lambda:
-    url:
-      pre-announce: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/pre-announcement-bill-job
-      tracking-bill: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/tracking-bill-job
-      today-bill: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/today-bill-job
 
 ---
 spring.config.activate.on-profile: staging

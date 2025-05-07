@@ -10,7 +10,7 @@ import com.barlow.services.auth.config.TestKeyConfig;
 @ActiveProfiles("test")
 @Tag("develop")
 @SpringBootTest(
-	classes = {CoreAuthTestApplication.class, TestKeyConfig.class},
+	classes = {ServiceAuthTestApplication.class, TestKeyConfig.class},
 	properties = {"spring.profiles.active=test"})
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 public abstract class DevelopTest {

@@ -1,4 +1,4 @@
-# db-core 모듈
+# storage 모듈
 
 Barlow 시스템의 데이터 계층은 모든 비즈니스 엔티티의 영속성과 **Persistence Entity** 와 **Domain Entity** 간의 **_translation_** 을 담당합니다.
 이 문서에서는 JPA 엔티티, repository 및 repository adapter 를 중심으로 데이터 영속성 계층에 사용되는 아키텍처, 구성 요소 및 패턴을 개략적으로 설명합니다.

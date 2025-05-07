@@ -2,10 +2,10 @@ package com.barlow.services.auth.authentication.token;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.barlow.core.auth.DevelopTest;
-import com.barlow.core.auth.authentication.core.AuthenticationException;
-import com.barlow.core.auth.authentication.core.AuthenticationExceptionType;
-import com.barlow.core.auth.authentication.core.MemberPrincipal;
+import com.barlow.services.auth.DevelopTest;
+import com.barlow.services.auth.authentication.core.AuthenticationException;
+import com.barlow.services.auth.authentication.core.AuthenticationExceptionType;
+import com.barlow.services.auth.authentication.core.MemberPrincipal;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

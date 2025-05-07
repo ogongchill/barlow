@@ -4,9 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.barlow.core.auth.DevelopTest;
-import com.barlow.core.auth.authentication.core.MemberPrincipal;
-import com.barlow.core.auth.config.TestKeyConfig;
+import com.barlow.services.auth.DevelopTest;
+import com.barlow.services.auth.authentication.core.MemberPrincipal;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
 package com.barlow.app.api.controller.v1.preannounce;
 
-import static com.barlow.core.support.TestHttpUtils.AUTHENTICATION_TYPE;
-import static com.barlow.core.support.TestHttpUtils.AUTHORIZATION;
-import static com.barlow.core.support.TestHttpUtils.MANDATORY_DEVICE_HEADERS;
+import static com.barlow.app.support.TestHttpUtils.AUTHENTICATION_TYPE;
+import static com.barlow.app.support.TestHttpUtils.AUTHORIZATION;
+import static com.barlow.app.support.TestHttpUtils.MANDATORY_DEVICE_HEADERS;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -17,10 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.barlow.core.ContextTest;
-import com.barlow.core.support.AcceptanceTest;
-import com.barlow.core.support.TestTokenProvider;
-import com.barlow.core.support.response.ResultType;
+import com.barlow.ContextTest;
+import com.barlow.app.support.AcceptanceTest;
+import com.barlow.app.support.TestTokenProvider;
+import com.barlow.app.support.response.ResultType;
 
 import io.restassured.RestAssured;
 

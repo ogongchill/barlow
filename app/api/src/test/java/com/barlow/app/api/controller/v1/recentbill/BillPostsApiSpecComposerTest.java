@@ -1,6 +1,6 @@
 package com.barlow.app.api.controller.v1.recentbill;
 
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.RECENT_BILL_POSTS_STATUS;
+import static com.barlow.app.api.controller.v1.recentbill.RecentBillPostFixture.RECENT_BILL_POSTS_STATUS;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

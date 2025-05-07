@@ -1,4 +1,4 @@
-spring.application.name: core-auth-test
+spring.application.name: service-auth-test
 
 spring:
   config:

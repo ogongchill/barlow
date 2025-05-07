@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
-import com.barlow.core.ContextTest;
-import com.barlow.core.support.AcceptanceTest;
-import com.barlow.core.support.response.ResultType;
+import com.barlow.ContextTest;
+import com.barlow.app.support.AcceptanceTest;
+import com.barlow.app.support.response.ResultType;
 
 import io.restassured.RestAssured;
 

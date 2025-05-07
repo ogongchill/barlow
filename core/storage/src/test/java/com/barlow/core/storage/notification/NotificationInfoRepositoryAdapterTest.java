@@ -9,10 +9,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.barlow.core.enumerate.NotificationTopic;
-import com.barlow.notification.NotificationInfo;
+import com.barlow.services.notification.NotificationInfo;
 import com.barlow.core.storage.CoreDbContextTest;
 import com.barlow.core.storage.support.StorageTest;
-import com.barlow.storage.db.core.notification.NotificationInfoRepositoryAdapter;
 
 @StorageTest({"dummy/notificationSetting.json", "dummy/device.json"})
 class NotificationInfoRepositoryAdapterTest extends CoreDbContextTest {

@@ -4,7 +4,14 @@ spring:
   config:
     import:
       - auth.yml
-      - db-core.yml
+      - storage-core.yml
       - alert.yml
   profiles:
     active: test
+
+scheduler:
+  batch-lambda:
+    url:
+      pre-announce: /test-url/pre-announcement-bill-job
+      tracking-bill: /test-url/tracking-bill-job
+      today-bill: /test-url/today-bill-job

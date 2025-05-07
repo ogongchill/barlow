@@ -6,9 +6,9 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @ConfigurationPropertiesScan
 @SpringBootApplication
-public class CoreAuthTestApplication {
+public class ServiceAuthTestApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CoreAuthTestApplication.class, args);
+		SpringApplication.run(ServiceAuthTestApplication.class, args);
 	}
 }

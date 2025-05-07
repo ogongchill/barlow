@@ -1,8 +1,8 @@
-spring.application.name: db-core-test
+spring.application.name: storage-core-test
 
 spring:
   config:
     import:
-      - db-core.yml
+      - storage-core.yml
   profiles:
     active: test

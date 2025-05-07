@@ -1,16 +1,16 @@
 package com.barlow.app.api.controller.v1.recentbill;
 
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.BILL_NAME_1;
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.DETAIL;
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.LEGISLATION_TYPE;
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.PARTY_NAME;
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.PROFILE_IMAGE_PATH;
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.PROPOSER;
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.PROPOSERS_SUMMARY;
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.PROPOSER_NAME;
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.PROPOSER_TYPE;
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.RECENT_BILL_POST;
-import static com.barlow.core.api.controller.v1.recentbill.RecentBillPostFixture.SUMMARY;
+import static com.barlow.app.api.controller.v1.recentbill.RecentBillPostFixture.BILL_NAME_1;
+import static com.barlow.app.api.controller.v1.recentbill.RecentBillPostFixture.DETAIL;
+import static com.barlow.app.api.controller.v1.recentbill.RecentBillPostFixture.LEGISLATION_TYPE;
+import static com.barlow.app.api.controller.v1.recentbill.RecentBillPostFixture.PARTY_NAME;
+import static com.barlow.app.api.controller.v1.recentbill.RecentBillPostFixture.PROFILE_IMAGE_PATH;
+import static com.barlow.app.api.controller.v1.recentbill.RecentBillPostFixture.PROPOSER;
+import static com.barlow.app.api.controller.v1.recentbill.RecentBillPostFixture.PROPOSERS_SUMMARY;
+import static com.barlow.app.api.controller.v1.recentbill.RecentBillPostFixture.PROPOSER_NAME;
+import static com.barlow.app.api.controller.v1.recentbill.RecentBillPostFixture.PROPOSER_TYPE;
+import static com.barlow.app.api.controller.v1.recentbill.RecentBillPostFixture.RECENT_BILL_POST;
+import static com.barlow.app.api.controller.v1.recentbill.RecentBillPostFixture.SUMMARY;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

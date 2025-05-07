@@ -1,4 +1,4 @@
-package com.barlow.app;
+package com.barlow;
 
 import org.junit.jupiter.api.Test;
 

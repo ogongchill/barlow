@@ -1,4 +1,4 @@
-# core-notification 모듈
+# notification 모듈
 
 ```mermaid
 sequenceDiagram

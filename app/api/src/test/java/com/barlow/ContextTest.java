@@ -1,4 +1,4 @@
-package com.barlow.app;
+package com.barlow;
 
 import org.junit.jupiter.api.Tag;
 import org.springframework.boot.test.context.SpringBootTest;
