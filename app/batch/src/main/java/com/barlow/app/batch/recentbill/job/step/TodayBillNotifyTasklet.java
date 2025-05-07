@@ -1,0 +1,59 @@
+package com.barlow.app.batch.recentbill.job.step;
+
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.jetbrains.annotations.NotNull;
+import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.scope.context.ChunkContext;
+import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.stereotype.Component;
+
+import com.barlow.app.batch.recentbill.RecentBillConstant;
+import com.barlow.app.batch.recentbill.job.TodayBillInfoBatchEntity;
+import com.barlow.app.batch.recentbill.job.RecentBillJobScopeShareRepository;
+import com.barlow.app.batch.common.AbstractExecutionContextSharingManager;
+import com.barlow.core.enumerate.NotificationTopic;
+import com.barlow.services.notification.DefaultBillNotificationRequest;
+import com.barlow.services.notification.NotificationRequest;
+import com.barlow.services.notification.NotificationSendPort;
+
+@Component
+@StepScope
+public class TodayBillNotifyTasklet extends AbstractExecutionContextSharingManager implements Tasklet {
+
+	private final NotificationSendPort notificationSendPort;
+	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
+
+	public TodayBillNotifyTasklet(
+		NotificationSendPort notificationSendPort,
+		RecentBillJobScopeShareRepository jobScopeShareRepository
+	) {
+		super();
+		this.notificationSendPort = notificationSendPort;
+		this.jobScopeShareRepository = jobScopeShareRepository;
+	}
+
+	@Override
+	public RepeatStatus execute(@NotNull StepContribution contribution, @NotNull ChunkContext chunkContext) {
+		super.setCurrentExecutionContext(contribution.getStepExecution().getJobExecution().getExecutionContext());
+		String hashKey = super.getDataFromJobExecutionContext(RecentBillConstant.TODAY_BILL_INFO_SHARE_KEY);
+		TodayBillInfoBatchEntity todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
+
+		DefaultBillNotificationRequest notificationRequest = DefaultBillNotificationRequest.from(
+			todayBillInfo.items().stream()
+				.map(item -> Map.entry(item.progressStatus(), item))
+				.filter(entry -> NotificationTopic.isNotifiableProgressStatus(entry.getKey()))
+				.collect(Collectors.groupingBy(
+					entry -> NotificationTopic.findByProgressStatus(entry.getKey()),
+					Collectors.mapping(entry -> new NotificationRequest.BillInfo(
+						entry.getValue().billId(), entry.getValue().billName()
+					), Collectors.toList())
+				))
+		);
+		notificationSendPort.sendCall(notificationRequest);
+		return RepeatStatus.FINISHED;
+	}
+}

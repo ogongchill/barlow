@@ -1,0 +1,17 @@
+spring.application.name: core-api-test
+
+spring:
+  config:
+    import:
+      - auth.yml
+      - storage-core.yml
+      - alert.yml
+  profiles:
+    active: test
+
+scheduler:
+  batch-lambda:
+    url:
+      pre-announce: /test-url/pre-announcement-bill-job
+      tracking-bill: /test-url/tracking-bill-job
+      today-bill: /test-url/today-bill-job

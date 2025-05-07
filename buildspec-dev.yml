@@ -5,17 +5,17 @@ phases:
     commands:
       - echo Build Started on `date`
       - chmod +x ./gradlew
-      - ./gradlew :core:core-api:clean :core:core-api:build -x test
+      - ./gradlew :app:api:clean :app:api:build -x test
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo $(basename ./core/core-api/build/libs/*.jar)
+      - echo $(basename ./app/api/build/libs/*.jar)
       - pwd
 
 artifacts:
   files:
     - appspec.yml
-    - core/core-api/build/libs/*.jar
+    - app/api/build/libs/*.jar
     - scripts/dev/**
   discard-paths: yes
 
