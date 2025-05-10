@@ -113,6 +113,6 @@ Barlow 시스템 아키텍처는 문제를 명확하게 구분한 모듈식 설�
 - [app:batch 모듈 README.md](https://github.com/ogongchill/barlow/blob/develop/app/batch/README.md)
 - [app:api 모듈 README.md](https://github.com/ogongchill/barlow/blob/develop/app/api/README.md)
 - [core:storage 모듈 README.md](https://github.com/ogongchill/barlow/blob/develop/core/storage/README.md)
-- [services:notification 모듈 README.md](https://github.com/ogongchill/barlow/tree/develop/core/core-notification)
+- [services:notification 모듈 README.md](https://github.com/ogongchill/barlow/blob/develop/services/notification/README.md)
 - [support 모듈 README.md](https://github.com/ogongchill/barlow/tree/develop/support)
 - [dev-deploy 배포 방법 README.md](https://github.com/ogongchill/barlow/blob/develop/DEV-DEPLOY.md)
