@@ -46,6 +46,7 @@ graph LR
 %% services
     services_noti -.->|compileOnly| core_storage
     services_noti -.->|compileOnly| core_domain
+    services_auth -.->|compileOnly| core_domain
 ```
 
 모듈 구조에는 다음이 포함됩니다:
