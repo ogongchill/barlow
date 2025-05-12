@@ -6,7 +6,7 @@ import org.apache.logging.log4j.ThreadContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.barlow.services.auth.support.Passport;
+import com.barlow.core.domain.Passport;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

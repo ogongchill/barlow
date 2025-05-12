@@ -8,11 +8,10 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.barlow.services.auth.support.Passport;
+import com.barlow.core.domain.Passport;
 import com.barlow.services.auth.support.annotation.PassportUser;
 import com.barlow.services.auth.support.error.CoreAuthErrorType;
 import com.barlow.services.auth.support.error.CoreAuthException;
-import com.barlow.core.domain.User;
 
 @Component
 public class PassportUserArgumentResolver implements HandlerMethodArgumentResolver {
@@ -20,7 +19,7 @@ public class PassportUserArgumentResolver implements HandlerMethodArgumentResolv
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return parameter.hasParameterAnnotation(PassportUser.class)
-			&& parameter.getParameterType().equals(User.class);
+			&& parameter.getParameterType().equals(Passport.class);
 	}
 
 	@Override

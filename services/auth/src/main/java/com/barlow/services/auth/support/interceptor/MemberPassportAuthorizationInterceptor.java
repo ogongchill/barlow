@@ -3,7 +3,7 @@ package com.barlow.services.auth.support.interceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.barlow.services.auth.support.Passport;
+import com.barlow.core.domain.Passport;
 import com.barlow.services.auth.support.error.CoreAuthErrorType;
 import com.barlow.services.auth.support.error.CoreAuthException;
 

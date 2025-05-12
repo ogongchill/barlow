@@ -1,6 +1,5 @@
-package com.barlow.services.auth.support;
+package com.barlow.core.domain;
 
-import com.barlow.core.domain.User;
 import com.barlow.core.enumerate.DeviceOs;
 
 public final class Passport {

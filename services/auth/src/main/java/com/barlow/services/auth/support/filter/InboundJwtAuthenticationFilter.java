@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.barlow.services.auth.support.Passport;
+import com.barlow.core.domain.Passport;
 import com.barlow.services.auth.authentication.core.MemberPrincipal;
 import com.barlow.services.auth.authentication.token.AccessToken;
 import com.barlow.services.auth.authentication.token.AccessTokenAuthenticator;
