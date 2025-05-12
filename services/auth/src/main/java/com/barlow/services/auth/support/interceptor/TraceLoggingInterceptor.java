@@ -1,4 +1,4 @@
-package com.barlow.services.support.interceptor;
+package com.barlow.services.auth.support.interceptor;
 
 import java.util.Map;
 
@@ -6,7 +6,7 @@ import org.apache.logging.log4j.ThreadContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.barlow.services.support.Passport;
+import com.barlow.services.auth.support.Passport;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

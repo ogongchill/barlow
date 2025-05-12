@@ -1,11 +1,11 @@
-package com.barlow.services.support.interceptor;
+package com.barlow.services.auth.support.interceptor;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.barlow.services.support.Passport;
-import com.barlow.services.support.error.CoreAuthErrorType;
-import com.barlow.services.support.error.CoreAuthException;
+import com.barlow.services.auth.support.Passport;
+import com.barlow.services.auth.support.error.CoreAuthErrorType;
+import com.barlow.services.auth.support.error.CoreAuthException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

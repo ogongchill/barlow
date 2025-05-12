@@ -10,7 +10,7 @@ import com.barlow.core.exception.CoreDomainException;
 import com.barlow.app.support.error.CoreApiException;
 import com.barlow.app.support.error.CoreApiErrorType;
 import com.barlow.app.support.response.ApiResponse;
-import com.barlow.services.support.error.CoreAuthException;
+import com.barlow.services.auth.support.error.CoreAuthException;
 import com.barlow.support.alert.Alerter;
 
 @RestControllerAdvice

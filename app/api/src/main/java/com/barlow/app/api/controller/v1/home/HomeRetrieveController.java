@@ -13,7 +13,7 @@ import com.barlow.core.domain.User;
 import com.barlow.core.domain.home.HomeRetrieveFacade;
 import com.barlow.core.enumerate.NotificationTopic;
 import com.barlow.app.support.response.ApiResponse;
-import com.barlow.services.support.annotation.PassportUser;
+import com.barlow.services.auth.support.annotation.PassportUser;
 
 @RestController
 @RequestMapping("/api/v1/home")
