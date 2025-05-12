@@ -1,4 +1,4 @@
-package com.barlow.services.support.resolver;
+package com.barlow.services.auth.support.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -8,11 +8,10 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.barlow.services.support.Passport;
-import com.barlow.services.support.annotation.PassportUser;
-import com.barlow.services.support.error.CoreAuthErrorType;
-import com.barlow.services.support.error.CoreAuthException;
-import com.barlow.core.domain.User;
+import com.barlow.core.domain.Passport;
+import com.barlow.services.auth.support.annotation.PassportUser;
+import com.barlow.services.auth.support.error.CoreAuthErrorType;
+import com.barlow.services.auth.support.error.CoreAuthException;
 
 @Component
 public class PassportUserArgumentResolver implements HandlerMethodArgumentResolver {
@@ -20,7 +19,7 @@ public class PassportUserArgumentResolver implements HandlerMethodArgumentResolv
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return parameter.hasParameterAnnotation(PassportUser.class)
-			&& parameter.getParameterType().equals(User.class);
+			&& parameter.getParameterType().equals(Passport.class);
 	}
 
 	@Override
@@ -32,7 +31,7 @@ public class PassportUserArgumentResolver implements HandlerMethodArgumentResolv
 	) {
 		Passport passport = (Passport)webRequest.getAttribute("passport", RequestAttributes.SCOPE_REQUEST);
 		checkPassportExist(passport, parameter);
-		return passport.getUser();
+		return passport;
 	}
 
 	private void checkPassportExist(Passport passport, MethodParameter parameter) {

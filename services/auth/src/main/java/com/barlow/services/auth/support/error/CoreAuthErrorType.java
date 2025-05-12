@@ -1,10 +1,10 @@
-package com.barlow.services.support.error;
+package com.barlow.services.auth.support.error;
 
-import static com.barlow.services.support.error.CoreAuthErrorCode.E400;
-import static com.barlow.services.support.error.CoreAuthErrorCode.E401;
-import static com.barlow.services.support.error.CoreAuthErrorCode.E404;
-import static com.barlow.services.support.error.CoreAuthErrorCode.E409;
-import static com.barlow.services.support.error.CoreAuthErrorCode.E500;
+import static com.barlow.services.auth.support.error.CoreAuthErrorCode.E400;
+import static com.barlow.services.auth.support.error.CoreAuthErrorCode.E401;
+import static com.barlow.services.auth.support.error.CoreAuthErrorCode.E404;
+import static com.barlow.services.auth.support.error.CoreAuthErrorCode.E409;
+import static com.barlow.services.auth.support.error.CoreAuthErrorCode.E500;
 import static org.springframework.boot.logging.LogLevel.ERROR;
 import static org.springframework.boot.logging.LogLevel.WARN;
 

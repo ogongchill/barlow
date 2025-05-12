@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.barlow.core.domain.User;
+import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.legislationaccount.LegislationAccountSubscribeService;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.app.support.response.ApiResponse;
-import com.barlow.services.support.annotation.PassportUser;
+import com.barlow.services.auth.support.annotation.PassportUser;
 
 @RestController
 @RequestMapping("/api/v1/legislation-accounts/{legislationType}/subscribe")
@@ -30,20 +30,20 @@ public class LegislationAccountSubscribeController {
 	@PostMapping("/activate")
 	public ApiResponse<Void> subscribe(
 		@PathVariable("legislationType") LegislationType legislationType,
-		@PassportUser User user
+		@PassportUser Passport passport
 	) {
 		log.info("Received {} account subscribe request.", legislationType);
-		legislationAccountSubscribeService.subscribeAccount(legislationType, user);
+		legislationAccountSubscribeService.subscribeAccount(legislationType, passport.getUser());
 		return ApiResponse.success();
 	}
 
 	@PostMapping("/deactivate")
 	public ApiResponse<Void> unsubscribe(
 		@PathVariable("legislationType") LegislationType legislationType,
-		@PassportUser User user
+		@PassportUser Passport passport
 	) {
 		log.info("Received {} account unsubscribe request.", legislationType);
-		legislationAccountSubscribeService.unsubscribeAccount(legislationType, user);
+		legislationAccountSubscribeService.unsubscribeAccount(legislationType, passport.getUser());
 		return ApiResponse.success();
 	}
 }

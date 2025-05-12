@@ -1,4 +1,4 @@
-package com.barlow.services.support.error;
+package com.barlow.services.auth.support.error;
 
 public enum CoreAuthErrorCode {
 	E500,

@@ -1,6 +1,5 @@
-package com.barlow.services.support;
+package com.barlow.core.domain;
 
-import com.barlow.core.domain.User;
 import com.barlow.core.enumerate.DeviceOs;
 
 public final class Passport {
@@ -31,6 +30,10 @@ public final class Passport {
 
 	public User getUser() {
 		return user;
+	}
+
+	public long getUserNo() {
+		return user.getUserNo();
 	}
 
 	record Device(
