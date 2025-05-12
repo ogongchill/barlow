@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.barlow.core.domain.User;
+import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.notificationsetting.NotificationSettingService;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.app.support.response.ApiResponse;
@@ -28,20 +28,20 @@ public class LegislationAccountNotificationSettingController {
 	@PostMapping("/activate")
 	public ApiResponse<Void> activate(
 		@PathVariable("legislationType") LegislationType legislationType,
-		@PassportUser User user
+		@PassportUser Passport passport
 	) {
 		log.info("Received {} account notification setting activated", legislationType);
-		notificationSettingService.activateSetting(legislationType, user);
+		notificationSettingService.activateSetting(legislationType, passport.getUser());
 		return ApiResponse.success();
 	}
 
 	@PostMapping("/deactivate")
 	public ApiResponse<Void> deactivate(
 		@PathVariable("legislationType") LegislationType legislationType,
-		@PassportUser User user
+		@PassportUser Passport passport
 	) {
 		log.info("Received {} account notification setting deactivated", legislationType);
-		notificationSettingService.deactivateSetting(legislationType, user);
+		notificationSettingService.deactivateSetting(legislationType, passport.getUser());
 		return ApiResponse.success();
 	}
 }

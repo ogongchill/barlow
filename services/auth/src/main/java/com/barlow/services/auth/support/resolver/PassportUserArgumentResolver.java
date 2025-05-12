@@ -31,7 +31,7 @@ public class PassportUserArgumentResolver implements HandlerMethodArgumentResolv
 	) {
 		Passport passport = (Passport)webRequest.getAttribute("passport", RequestAttributes.SCOPE_REQUEST);
 		checkPassportExist(passport, parameter);
-		return passport.getUser();
+		return passport;
 	}
 
 	private void checkPassportExist(Passport passport, MethodParameter parameter) {

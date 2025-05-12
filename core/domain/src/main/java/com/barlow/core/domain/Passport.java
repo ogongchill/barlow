@@ -32,6 +32,10 @@ public final class Passport {
 		return user;
 	}
 
+	public long getUserNo() {
+		return user.getUserNo();
+	}
+
 	record Device(
 		String deviceId,
 		String osVersion,
