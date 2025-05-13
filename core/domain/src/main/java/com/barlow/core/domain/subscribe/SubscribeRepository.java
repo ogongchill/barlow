@@ -16,4 +16,6 @@ public interface SubscribeRepository {
 	void save(Subscribe subscribe);
 
 	void delete(Subscribe subscribe);
+
+	void deleteAll(User user);
 }

@@ -23,4 +23,8 @@ public interface SubscribeJpaRepository extends JpaRepository<SubscribeJpaEntity
 		@Param("accountNo") Long subscribeLegislationAccountNo,
 		@Param("memberNo") Long memberNo
 	);
+
+	@Modifying
+	@Query("DELETE FROM SubscribeJpaEntity s WHERE s.memberNo = :memberNo")
+	void deleteAllByMemberNo(@Param("memberNo") Long memberNo);
 }
