@@ -73,4 +73,9 @@ public class SubscribeRepositoryAdapter implements SubscribeRepository {
 			subscribe.getSubscriber().getUserNo()
 		);
 	}
+
+	@Override
+	public void deleteAll(User user) {
+		subscribeJpaRepository.deleteAllByMemberNo(user.getUserNo());
+	}
 }
