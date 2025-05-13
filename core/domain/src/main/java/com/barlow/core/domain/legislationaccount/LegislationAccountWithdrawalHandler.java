@@ -3,23 +3,26 @@ package com.barlow.core.domain.legislationaccount;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
+import com.barlow.core.domain.subscribe.SubscribeReader;
 
 @Component
 public class LegislationAccountWithdrawalHandler {
 
-	private final LegislationAccountRepository legislationAccountRepository;
+	private final SubscribeReader subscribeReader;
 	private final LegislationAccountSubscriptionManager legislationAccountSubscriptionManager;
 
 	public LegislationAccountWithdrawalHandler(
-		LegislationAccountRepository legislationAccountRepository,
+		SubscribeReader subscribeReader,
 		LegislationAccountSubscriptionManager legislationAccountSubscriptionManager
 	) {
-		this.legislationAccountRepository = legislationAccountRepository;
+		this.subscribeReader = subscribeReader;
 		this.legislationAccountSubscriptionManager = legislationAccountSubscriptionManager;
 	}
 
 	public void handle(User user) {
-		legislationAccountRepository.retrieveCommitteeAccount()
-			.forEach(account -> legislationAccountSubscriptionManager.unsubscribe(account.getType(), user));
+		subscribeReader.readSubscribes(user)
+			.forEach(subscribe ->
+				legislationAccountSubscriptionManager.unsubscribe(subscribe.getLegislationType(), user)
+			);
 	}
 }
