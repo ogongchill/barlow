@@ -3,6 +3,7 @@ package com.barlow.core.domain.legislationaccount;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
+import com.barlow.core.domain.subscribe.Subscribe;
 import com.barlow.core.domain.subscribe.SubscribeReader;
 
 @Component
@@ -21,6 +22,8 @@ public class LegislationAccountWithdrawalHandler {
 
 	public void handle(User user) {
 		subscribeReader.readSubscribes(user)
+			.stream()
+			.filter(Subscribe::isActive)
 			.forEach(subscribe ->
 				legislationAccountSubscriptionManager.unsubscribe(subscribe.getLegislationType(), user)
 			);
