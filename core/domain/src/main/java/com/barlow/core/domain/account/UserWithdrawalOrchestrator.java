@@ -10,11 +10,11 @@ import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.User;
 
 @Component
-class UserWithdrawalFactory {
+class UserWithdrawalOrchestrator {
 
 	private final Map<User.Role, UserWithdrawalProcessor> processors;
 
-	UserWithdrawalFactory(List<UserWithdrawalProcessor> processors) {
+	UserWithdrawalOrchestrator(List<UserWithdrawalProcessor> processors) {
 		this.processors = processors.stream()
 			.collect(Collectors.toMap(UserWithdrawalProcessor::supportedRole, processor -> processor));
 	}
