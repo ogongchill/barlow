@@ -7,14 +7,13 @@ import com.barlow.core.domain.Passport;
 @Service
 public class AccountWithdrawalService {
 
-	private final UserWithdrawalFactory userWithdrawalFactory;
+	private final UserWithdrawalOrchestrator userWithdrawalOrchestrator;
 
-	AccountWithdrawalService(UserWithdrawalFactory userWithdrawalFactory) {
-		this.userWithdrawalFactory = userWithdrawalFactory;
+	AccountWithdrawalService(UserWithdrawalOrchestrator userWithdrawalOrchestrator) {
+		this.userWithdrawalOrchestrator = userWithdrawalOrchestrator;
 	}
 
 	public void withdraw(Passport passport) {
-		UserWithdrawalProcessor userWithdrawalProcessor = userWithdrawalFactory.getBy(passport.getUser());
-		userWithdrawalProcessor.process(passport);
+		userWithdrawalOrchestrator.process(passport);
 	}
 }
