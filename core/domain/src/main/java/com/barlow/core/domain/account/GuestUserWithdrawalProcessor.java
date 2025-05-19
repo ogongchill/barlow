@@ -45,4 +45,9 @@ class GuestUserWithdrawalProcessor implements UserWithdrawalProcessor {
 		subscribeWithdrawalHandler.handle(user);
 		legislationAccountWithdrawalHandler.handle(user);
 	}
+
+	@Override
+	public User.Role supportedRole() {
+		return User.Role.GUEST;
+	}
 }
