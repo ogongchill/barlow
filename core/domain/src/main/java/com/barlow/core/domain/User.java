@@ -40,6 +40,10 @@ public class User {
 		return role.name();
 	}
 
+	public Role getRole() {
+		return role;
+	}
+
 	public enum Role {
 		ADMIN, MEMBER, GUEST;
 	}

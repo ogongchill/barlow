@@ -39,4 +39,9 @@ public class DeviceRepositoryAdapter implements DeviceRepository {
 	public void update(Device device) {
 		deviceJpaRepository.updateDeviceToken(device.getDeviceId(), device.getDeviceToken());
 	}
+
+	@Override
+	public void deleteById(String deviceId) {
+		deviceJpaRepository.deleteByDeviceId(deviceId);
+	}
 }

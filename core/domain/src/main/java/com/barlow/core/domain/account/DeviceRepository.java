@@ -7,4 +7,6 @@ public interface DeviceRepository {
 	Device readOrNull(DeviceQuery query);
 
 	void update(Device device);
+
+	void deleteById(String deviceId);
 }
