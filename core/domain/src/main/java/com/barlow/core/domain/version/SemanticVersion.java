@@ -22,7 +22,7 @@ public final class SemanticVersion {
 
     public static SemanticVersion of(String versionValue) {
         if(!VERSION_PATTERN.matcher(versionValue).matches()) {
-            throw new IllegalArgumentException();
+            throw ClientVersionException.invalidVersion("지원하지 않는 버전 이름입니다: " + versionValue);
         }
         String[] parts = versionValue.split("[.-]");
         int major = Integer.parseInt(parts[0]);
