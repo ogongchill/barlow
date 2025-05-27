@@ -1,9 +1,0 @@
-{
-  "client_version": [
-    {
-      "device_os": "android",
-      "minimum_supported": "1.0.0-alpha",
-      "latest": "1.0.1"
-    }
-  ]
-}
