@@ -1,7 +1,10 @@
 package com.barlow.core.domain.version;
 
+import org.springframework.stereotype.Component;
+
 import com.barlow.core.enumerate.ClientVersionStatus;
 
+@Component
 public class AllowOnlyOfficialReleaseStrategy implements ClientVersionUpdateStrategy {
 
 	@Override
