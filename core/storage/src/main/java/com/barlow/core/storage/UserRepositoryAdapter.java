@@ -28,4 +28,9 @@ public class UserRepositoryAdapter implements UserRepository {
 			.save(UserJpaEntity.guestOf(command.nickname()))
 			.toUser();
 	}
+
+	@Override
+	public void delete(User user) {
+		userRepositoryJpaRepository.deleteByUserNo(user.getUserNo());
+	}
 }

@@ -10,4 +10,6 @@ public interface UserRepository {
 	User retrieve(UserQuery query);
 
 	User create(UserRegisterCommand command);
+
+	void delete(User user);
 }

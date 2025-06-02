@@ -15,4 +15,8 @@ public interface DeviceJpaRepository extends JpaRepository<DeviceJpaEntity, Long
 	@Modifying
 	@Query("UPDATE DeviceJpaEntity d SET d.token = :deviceToken WHERE d.deviceId = :deviceId")
 	void updateDeviceToken(@Param("deviceId") String deviceId, @Param("deviceToken") String deviceToken);
+
+	@Modifying
+	@Query("DELETE FROM DeviceJpaEntity d WHERE d.deviceId = :deviceId")
+	void deleteByDeviceId(@Param("deviceId") String deviceId);
 }
