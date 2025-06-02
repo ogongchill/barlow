@@ -2,6 +2,7 @@ package com.barlow.core.domain.version;
 
 import com.barlow.core.enumerate.ClientVersionStatus;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,7 +13,7 @@ public class ClientVersionService {
 
 	public ClientVersionService(
 		ClientVersionRepository clientVersionRepository,
-		ClientVersionUpdateStrategy clientVersionUpdateStrategy
+		@Qualifier("allowUnofficialReleaseStrategy") ClientVersionUpdateStrategy clientVersionUpdateStrategy
 	) {
 		this.clientVersionRepository = clientVersionRepository;
 		this.clientVersionUpdateStrategy = clientVersionUpdateStrategy;
