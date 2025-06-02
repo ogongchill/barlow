@@ -4,19 +4,19 @@ import com.barlow.core.enumerate.ClientVersionStatus;
 
 public class ClientVersionCheckApiSpecComposer {
 
-    private final ClientVersionStatus clientVersionStatus;
+	private final ClientVersionStatus clientVersionStatus;
 
-    public ClientVersionCheckApiSpecComposer(ClientVersionStatus clientVersionStatus) {
-        this.clientVersionStatus = clientVersionStatus;
-    }
+	public ClientVersionCheckApiSpecComposer(ClientVersionStatus clientVersionStatus) {
+		this.clientVersionStatus = clientVersionStatus;
+	}
 
-    ClientVersionCheckResponse compose() {
-        if(clientVersionStatus.equals(ClientVersionStatus.LATEST)) {
-            return new ClientVersionCheckResponse(false, false);
-        }
-        if(clientVersionStatus.equals(ClientVersionStatus.UPDATE_AVAILABLE)) {
-            return new ClientVersionCheckResponse(false, true);
-        }
-        return new ClientVersionCheckResponse(true, true);
-    }
+	ClientVersionCheckResponse compose() {
+		if (clientVersionStatus.equals(ClientVersionStatus.LATEST)) {
+			return new ClientVersionCheckResponse(false, false);
+		}
+		if (clientVersionStatus.equals(ClientVersionStatus.UPDATE_AVAILABLE)) {
+			return new ClientVersionCheckResponse(false, true);
+		}
+		return new ClientVersionCheckResponse(true, true);
+	}
 }
