@@ -4,6 +4,5 @@ public enum ClientVersionStatus {
 	LATEST,
 	UPDATE_AVAILABLE,
 	NEED_FORCE_UPDATE,
-	INVALID
-	;
+	INVALID;
 }
