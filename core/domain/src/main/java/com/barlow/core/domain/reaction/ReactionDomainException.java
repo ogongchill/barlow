@@ -18,7 +18,7 @@ public class ReactionDomainException extends CoreDomainException {
 	static ReactionDomainException alreadyReact(String targetType, String targetId) {
 		return new ReactionDomainException(
 			CoreDomainExceptionType.CONFLICT_EXCEPTION,
-			String.format("이미 리액션한 %s - $s 입니다. 리액션은 한 종류만 가능합니다", targetType, targetId)
+			String.format("이미 리액션한 %s - %s 입니다. 리액션은 한 종류만 가능합니다", targetType, targetId)
 		);
 	}
 }

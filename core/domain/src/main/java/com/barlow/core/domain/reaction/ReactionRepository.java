@@ -9,9 +9,9 @@ import com.barlow.core.domain.User;
 @Repository
 public interface ReactionRepository {
 
-	List<Reaction> retrieve(Reaction reaction);
+	List<Reaction> retrieve(ReactionQuery reactionQuery);
 
-	boolean hasReacted(User user, Reaction reaction);
+	Reaction retrieveUserReaction(User user, ReactionQuery reactionQuery);
 
 	Reaction retrieve(User user, Reaction reaction);
 

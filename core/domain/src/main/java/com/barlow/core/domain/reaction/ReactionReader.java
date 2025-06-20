@@ -15,11 +15,11 @@ public class ReactionReader {
 		this.reactionRepository = reactionRepository;
 	}
 
-	public List<Reaction> retrieveReactions(Reaction reaction) {
-		return reactionRepository.retrieve(reaction);
+	public List<Reaction> readReactions(ReactionQuery reactionQuery) {
+		return reactionRepository.retrieve(reactionQuery);
 	}
 
-	public boolean hasReacted(User user, Reaction reaction) {
-		return reactionRepository.hasReacted(user, reaction);
+	public Reaction readUserReaction(User user, ReactionQuery reactionQuery) {
+		return reactionRepository.retrieveUserReaction(user, reactionQuery);
 	}
 }

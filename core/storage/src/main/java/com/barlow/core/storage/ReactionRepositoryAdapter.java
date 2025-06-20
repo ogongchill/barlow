@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.reaction.Reaction;
+import com.barlow.core.domain.reaction.ReactionQuery;
 import com.barlow.core.domain.reaction.ReactionRepository;
 
 import jakarta.annotation.Nullable;
@@ -20,22 +21,26 @@ public class ReactionRepositoryAdapter implements ReactionRepository {
 	}
 
 	@Override
-	public List<Reaction> retrieve(Reaction reaction) {
+	public List<Reaction> retrieve(ReactionQuery query) {
 		return reactionJpaRepository
-			.findAllByTargetIdAndTargetType(reaction.getTargetId(), reaction.getTargetType())
+			.findAllByTargetIdAndTargetType(query.targetId(), query.targetType())
 			.stream()
 			.map(ReactionJpaEntity::toReaction)
 			.toList();
 	}
 
 	@Override
-	public boolean hasReacted(User user, Reaction reaction) {
-		return reactionJpaRepository.findByMemberNoAndTargetIdAndTargetTypeAndType(
+	@Nullable
+	public Reaction retrieveUserReaction(User user, ReactionQuery query) {
+		ReactionJpaEntity reactionJpaEntity = reactionJpaRepository.findByMemberNoAndTargetIdAndTargetType(
 			user.getUserNo(),
-			reaction.getTargetId(),
-			reaction.getTargetType(),
-			reaction.getReactionType()
-		) != null;
+			query.targetId(),
+			query.targetType()
+		);
+		if (reactionJpaEntity == null) {
+			return null;
+		}
+		return reactionJpaEntity.toReaction();
 	}
 
 	@Override

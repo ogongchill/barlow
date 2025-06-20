@@ -17,10 +17,10 @@ public class ReactionService {
 		this.reactionProcessor = reactionProcessor;
 	}
 
-	public ReactionStatus retrieveReactions(User user, Reaction reaction) {
-		List<Reaction> reactions = reactionReader.retrieveReactions(reaction);
-		boolean hasReacted = reactionReader.hasReacted(user, reaction);
-		return new ReactionStatus(reactions, hasReacted);
+	public ReactionStatus retrieveReactions(User user, ReactionQuery reactionQuery) {
+		List<Reaction> reactions = reactionReader.readReactions(reactionQuery);
+		Reaction userReaction = reactionReader.readUserReaction(user, reactionQuery);
+		return new ReactionStatus(reactions, userReaction);
 	}
 
 	public long react(User user, Reaction reaction) {

@@ -12,4 +12,6 @@ public interface ReactionJpaRepository extends JpaRepository<ReactionJpaEntity, 
 	List<ReactionJpaEntity> findAllByTargetIdAndTargetType(String targetId, ReactionTarget targetType);
 
 	ReactionJpaEntity findByMemberNoAndTargetIdAndTargetTypeAndType(Long memberNo, String targetId, ReactionTarget targetType, ReactionType type);
+
+	ReactionJpaEntity findByMemberNoAndTargetIdAndTargetType(Long memberNo, String targetId, ReactionTarget targetType);
 }

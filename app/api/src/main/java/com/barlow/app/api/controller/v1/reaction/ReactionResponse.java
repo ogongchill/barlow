@@ -5,21 +5,35 @@ import java.util.stream.Collectors;
 
 import com.barlow.core.domain.reaction.Reaction;
 import com.barlow.core.domain.reaction.ReactionStatus;
+import com.barlow.core.enumerate.ReactionType;
 
 public record ReactionResponse(
-	Map<String, Integer> reactions,
-	boolean hasReacted
+	Map<ReactionType, Integer> reactions,
+	UserReactionStatus status
 ) {
 	static ReactionResponse from(ReactionStatus reactionStatus) {
-		Map<String, Integer> reactions = reactionStatus.reactions()
+		Map<ReactionType, Integer> reactions = reactionStatus.reactions()
 			.stream()
 			.collect(Collectors.groupingBy(
-				Reaction::getReactionTypeName,
+				Reaction::getReactionType,
 				Collectors.collectingAndThen(Collectors.counting(), Long::intValue))
 			);
-		return new ReactionResponse(
-			reactions,
-			reactionStatus.hasReacted()
-		);
+		if (reactionStatus.hasUserReacted()) {
+			return new ReactionResponse(
+				reactions,
+				new UserReactionStatus(reactionStatus.userReaction().getReactionType(), true)
+			);
+		} else {
+			return new ReactionResponse(
+				reactions,
+				new UserReactionStatus(null, false)
+			);
+		}
+	}
+
+	record UserReactionStatus(
+		ReactionType reactionType,
+		boolean hasReacted
+	) {
 	}
 }

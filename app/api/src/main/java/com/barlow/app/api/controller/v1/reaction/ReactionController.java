@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.barlow.app.support.response.ApiResponse;
 import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.reaction.Reaction;
+import com.barlow.core.domain.reaction.ReactionQuery;
 import com.barlow.core.domain.reaction.ReactionService;
 import com.barlow.core.domain.reaction.ReactionStatus;
 import com.barlow.core.enumerate.ReactionTarget;
@@ -35,16 +36,15 @@ public class ReactionController {
 	public ApiResponse<ReactionResponse> retrieveReaction(
 		@PassportUser Passport passport,
 		@PathVariable("targetId") String targetId,
-		@PathParam("targetType") String targetType,
-		@PathParam("reactionType") String reactionType
+		@PathParam("targetType") String targetType
 	) {
-		log.info("Retrieving reaction for targetId: {}, targetType: {}, reaction: {}", targetId, targetType, reactionType);
-		Reaction reaction = new Reaction(targetId, ReactionTarget.valueOf(targetType), ReactionType.valueOf(reactionType));
-		ReactionStatus status = reactionService.retrieveReactions(passport.getUser(), reaction);
+		log.info("Retrieving reaction for targetId: {}, targetType: {}", targetId, targetType);
+		ReactionQuery reactionQuery = new ReactionQuery(targetId, ReactionTarget.valueOf(targetType));
+		ReactionStatus status = reactionService.retrieveReactions(passport.getUser(), reactionQuery);
 		return ApiResponse.success(ReactionResponse.from(status));
 	}
 
-	@PostMapping("/reaction/{targetId}")
+	@PostMapping("/{targetId}")
 	public ApiResponse<Void> reaction(
 		@PassportUser Passport passport,
 		@PathVariable("targetId") String targetId,
@@ -57,7 +57,7 @@ public class ReactionController {
 		return ApiResponse.success();
 	}
 
-	@PostMapping("/reaction-remove/{targetId}")
+	@PostMapping("/{targetId}/remove")
 	public ApiResponse<Void> reactionRemove(
 		@PassportUser Passport passport,
 		@PathVariable("targetId") String targetId,

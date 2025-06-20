@@ -15,7 +15,7 @@ public class ReactionProcessor {
 	}
 
 	public long react(User user, Reaction reaction) {
-		if (reactionRepository.retrieve(user, reaction) == null) {
+		if (reactionRepository.retrieve(user, reaction) != null) {
 			throw ReactionDomainException.alreadyReact(reaction.getTargetType().name(), reaction.getTargetId());
 		}
 		return reactionRepository.react(user, reaction);
