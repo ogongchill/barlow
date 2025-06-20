@@ -1,0 +1,48 @@
+{
+  "reaction": [
+    {
+      "member_no": 1,
+      "target_id": "PRC_1",
+      "target_type": "BILL_POST",
+      "reaction_type": "LIKE"
+    },
+    {
+      "member_no": 1,
+      "target_id": "PRC_2",
+      "target_type": "BILL_POST",
+      "reaction_type": "DISLIKE"
+    },
+    {
+      "member_no": 1,
+      "target_id": "PRC_3",
+      "target_type": "BILL_POST",
+      "reaction_type": "HMM"
+    },
+
+    {
+      "member_no": 2,
+      "target_id": "PRC_1",
+      "target_type": "BILL_POST",
+      "reaction_type": "LIKE"
+    },
+    {
+      "member_no": 3,
+      "target_id": "PRC_1",
+      "target_type": "BILL_POST",
+      "reaction_type": "DISLIKE"
+    },
+    {
+      "member_no": 4,
+      "target_id": "PRC_1",
+      "target_type": "BILL_POST",
+      "reaction_type": "HMM"
+    },
+
+    {
+      "member_no": 5,
+      "target_id": "PRC_4",
+      "target_type": "BILL_POST",
+      "reaction_type": "HMM"
+    }
+  ]
+}
