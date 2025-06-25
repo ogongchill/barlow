@@ -7,13 +7,9 @@ import java.util.Objects;
 import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.core.enumerate.NotificationTopic;
 
-public class NotificationInfo {
-
-	private final Map<Topic, List<Subscriber>> infos;
-
-	public NotificationInfo(Map<Topic, List<Subscriber>> infos) {
-		this.infos = infos;
-	}
+public record NotificationInfo(
+	Map<Topic, List<Subscriber>> infos
+) {
 
 	void assignBillTotalCountPerTopic(NotificationTopic topic, int totalCount) {
 		infos.keySet().stream()
@@ -34,10 +30,6 @@ public class NotificationInfo {
 			});
 	}
 
-	public Map<Topic, List<Subscriber>> getInfos() {
-		return infos;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -46,11 +38,6 @@ public class NotificationInfo {
 			return false;
 		NotificationInfo that = (NotificationInfo)o;
 		return Objects.equals(infos, that.infos);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(infos);
 	}
 
 	public static class Topic {

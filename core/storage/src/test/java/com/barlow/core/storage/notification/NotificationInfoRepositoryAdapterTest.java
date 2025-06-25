@@ -39,7 +39,7 @@ class NotificationInfoRepositoryAdapterTest extends CoreDbContextTest {
 
 		assertAll(
 			() -> assertThat(info).isNotNull(),
-			() -> assertThat(info.getInfos()).isEmpty()
+			() -> assertThat(info.infos()).isEmpty()
 		);
 	}
 
@@ -53,7 +53,7 @@ class NotificationInfoRepositoryAdapterTest extends CoreDbContextTest {
 
 		assertAll(
 			() -> assertThat(info).isNotNull(),
-			() -> assertThat(info.getInfos()).isNotEmpty().hasSize(1)
+			() -> assertThat(info.infos()).isNotEmpty().hasSize(1)
 		);
 	}
 }

@@ -14,7 +14,7 @@ public class NotificationCenterRegistrar {
 	}
 
 	public void register(NotificationInfo notificationInfo, NotificationRequest request) {
-		List<NotificationCenterItemInfo> notificationCenterItemInfos = notificationInfo.getInfos()
+		List<NotificationCenterItemInfo> notificationCenterItemInfos = notificationInfo.infos()
 			.entrySet()
 			.stream()
 			.flatMap(entry -> entry.getValue()
