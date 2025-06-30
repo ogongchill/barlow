@@ -1,5 +1,8 @@
 package com.barlow.services.notification;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CommitteeMessageTemplate implements MessageTemplate {
 
 	private static final String MESSAGE_TITLE_FORMAT = "%s에서 알려드려요";
@@ -13,5 +16,10 @@ public class CommitteeMessageTemplate implements MessageTemplate {
 	@Override
 	public String getMessageBodyFormat(NotificationInfo.Topic topic) {
 		return String.format(MESSAGE_BODY_FORMAT, topic.getTopic(), topic.getCount());
+	}
+
+	@Override
+	public NotificationType supportedType() {
+		return NotificationType.STANDING_COMMITTEE;
 	}
 }
