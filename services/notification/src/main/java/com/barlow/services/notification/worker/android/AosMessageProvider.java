@@ -1,14 +1,21 @@
-package com.barlow.services.notification.worker;
+package com.barlow.services.notification.worker.android;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Component;
+
+import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.services.notification.NotificationInfo;
+import com.barlow.services.notification.worker.MessageProvider;
+import com.barlow.services.notification.worker.MessageStatus;
 import com.google.firebase.messaging.AndroidConfig;
 import com.google.firebase.messaging.AndroidNotification;
 import com.google.firebase.messaging.Message;
 
-public class AosMessageProvider {
+@Component
+public class AosMessageProvider implements MessageProvider {
 
+	@Override
 	public AosMessage provide(String messageTitle, String messageBody, NotificationInfo.Subscriber subscriber) {
 		AndroidNotification androidNotification = AndroidNotification.builder()
 			.setTitle(messageTitle)
@@ -26,5 +33,10 @@ public class AosMessageProvider {
 				.build(),
 			MessageStatus.CREATED
 		);
+	}
+
+	@Override
+	public DeviceOs supportedOs() {
+		return DeviceOs.ANDROID;
 	}
 }

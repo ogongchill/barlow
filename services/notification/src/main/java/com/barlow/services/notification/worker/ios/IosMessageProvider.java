@@ -1,17 +1,24 @@
-package com.barlow.services.notification.worker;
+package com.barlow.services.notification.worker.ios;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Component;
+
+import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.services.notification.NotificationInfo;
+import com.barlow.services.notification.worker.MessageProvider;
+import com.barlow.services.notification.worker.MessageStatus;
 import com.google.firebase.messaging.ApnsConfig;
 import com.google.firebase.messaging.Aps;
 import com.google.firebase.messaging.ApsAlert;
 import com.google.firebase.messaging.Message;
 
-public class IosMessageProvider {
+@Component
+public class IosMessageProvider implements MessageProvider {
 
 	private static final String ALERT_SOUND = "default";
 
+	@Override
 	public IosMessage provide(String messageTitle, String messageBody, NotificationInfo.Subscriber subscriber) {
 		ApsAlert apsAlert = ApsAlert.builder()
 			.setTitle(messageTitle)
@@ -33,5 +40,10 @@ public class IosMessageProvider {
 				.build(),
 			MessageStatus.CREATED
 		);
+	}
+
+	@Override
+	public DeviceOs supportedOs() {
+		return DeviceOs.IOS;
 	}
 }
