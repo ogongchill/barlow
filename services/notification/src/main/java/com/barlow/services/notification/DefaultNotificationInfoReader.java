@@ -19,11 +19,11 @@ public class DefaultNotificationInfoReader implements NotificationInfoReader {
 	}
 
 	@Override
-	public NotificationInfo readNotificationInfos(NotificationRequest request) {
+	public NotificationInfo readNotificationInfos(NotificationRequest request, int page) {
 		DefaultBillNotificationRequest notificationRequest = checkAndConvert(request);
 		Map<NotificationTopic, BillSummary> topicsWithBillInfos = notificationRequest.topicsWithBillInfos();
 		Set<NotificationTopic> topics = topicsWithBillInfos.keySet();
-		NotificationInfo notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopics(topics);
+		NotificationInfo notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopics(topics, page);
 		topicsWithBillInfos.forEach((topic, billSummary) ->
 			notificationInfos.assignRepresentationBillAndTotalCountPerTopic(
 				topic, billSummary.representationBill(), billSummary.totalCount()
@@ -37,5 +37,10 @@ public class DefaultNotificationInfoReader implements NotificationInfoReader {
 		} else {
 			throw new IllegalArgumentException("request must be DefaultBillNotificationRequest");
 		}
+	}
+
+	@Override
+	public NotificationType supportedType() {
+		return NotificationType.DEFAULT;
 	}
 }

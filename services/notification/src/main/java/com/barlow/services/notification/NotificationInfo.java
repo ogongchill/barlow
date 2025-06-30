@@ -8,7 +8,8 @@ import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.core.enumerate.NotificationTopic;
 
 public record NotificationInfo(
-	Map<Topic, List<Subscriber>> infos
+	Map<Topic, List<Subscriber>> infos,
+	boolean isLast
 ) {
 
 	void assignBillTotalCountPerTopic(NotificationTopic topic, int totalCount) {

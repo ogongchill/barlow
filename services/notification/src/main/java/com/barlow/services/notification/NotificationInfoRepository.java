@@ -9,7 +9,7 @@ import com.barlow.core.enumerate.NotificationTopic;
 @Repository
 public interface NotificationInfoRepository {
 
-	NotificationInfo retrieveNotificationInfosByTopic(String topic);
+	NotificationInfo retrieveNotificationInfosByTopic(String topic, int page);
 
-	NotificationInfo retrieveNotificationInfosByTopics(Set<NotificationTopic> topics);
+	NotificationInfo retrieveNotificationInfosByTopics(Set<NotificationTopic> topics, int page);
 }
