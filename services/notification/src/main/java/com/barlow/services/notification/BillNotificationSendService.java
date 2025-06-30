@@ -1,32 +1,44 @@
 package com.barlow.services.notification;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
-import com.barlow.services.notification.worker.NotificationSendWorker;
+import com.barlow.services.notification.worker.NotificationWorkerPort;
 
 @Component
 public class BillNotificationSendService implements NotificationSendPort {
 
-	private final NotificationInfoReaderFactory notificationInfoReaderFactory;
-	private final NotificationSendWorker notificationSendWorker;
+	private final Map<NotificationType, NotificationInfoReader> readers;
+	private final Map<NotificationType, MessageTemplate> messageTemplates;
+	private final NotificationWorkerPort notificationWorkerPort;
 	private final NotificationCenterRegistrar notificationCenterRegistrar;
 
 	public BillNotificationSendService(
-		NotificationInfoReaderFactory notificationInfoReaderFactory,
-		NotificationSendWorker notificationSendWorker,
+		List<NotificationInfoReader> readers,
+		List<MessageTemplate> templates,
+		NotificationWorkerPort notificationWorkerPort,
 		NotificationCenterRegistrar notificationCenterRegistrar
 	) {
-		this.notificationInfoReaderFactory = notificationInfoReaderFactory;
-		this.notificationSendWorker = notificationSendWorker;
+		this.readers = readers.stream().collect(Collectors.toMap(NotificationInfoReader::supportedType, r -> r));
+		this.messageTemplates = templates.stream().collect(Collectors.toMap(MessageTemplate::supportedType, t -> t));
+		this.notificationWorkerPort = notificationWorkerPort;
 		this.notificationCenterRegistrar = notificationCenterRegistrar;
 	}
 
 	@Override
 	public void sendCall(NotificationRequest request) {
-		MessageTemplate messageTemplate = MessageTemplateFactory.getBy(request.type());
-		NotificationInfoReader reader = notificationInfoReaderFactory.getBy(request.type());
-		NotificationInfo notificationInfo = reader.readNotificationInfos(request);
-		notificationSendWorker.invoke(messageTemplate, notificationInfo.getInfos());
-		notificationCenterRegistrar.register(notificationInfo, request);
+		MessageTemplate messageTemplate = messageTemplates.get(request.type());
+		NotificationInfoReader reader = readers.get(request.type());
+		for (int page = 0; ; page++) {
+			NotificationInfo notificationInfo = reader.readNotificationInfos(request, page);
+			notificationWorkerPort.notify(messageTemplate, notificationInfo);
+			notificationCenterRegistrar.register(notificationInfo, request);
+			if (notificationInfo.isLast()) {
+				break;
+			}
+		}
 	}
 }
