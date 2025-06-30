@@ -1,14 +1,16 @@
 package com.barlow.services.notification.worker;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.barlow.core.enumerate.DeviceOs;
 import com.google.api.core.ApiFuture;
 import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -26,18 +28,15 @@ public abstract class NotificationSender {
 		this.firebaseMessaging = firebaseMessaging;
 	}
 
-	protected NotificationResult send(List<Message> messages) {
-		ApiFuture<BatchResponse> batchResponseFuture = firebaseMessaging.sendEachAsync(messages);
+	public NotificationResult send(List<NotificationMessage> messages) {
+		List<Message> fcmMessages = messages.stream()
+			.map(NotificationMessage::message)
+			.toList();
+		ApiFuture<BatchResponse> batchResponseFuture = firebaseMessaging.sendEachAsync(fcmMessages);
 		BatchResponse batchResponse = getBatchResponse(batchResponseFuture);
 		List<SendResponse> sendResponses = batchResponse.getResponses();
-		Map<Message, MessagingErrorCode> failedMessages = extractFailedMessages(messages, sendResponses);
-		if (!failedMessages.isEmpty()) {
-			logFailedMessages(failedMessages);
-			return new NotificationResult(failedMessages);
-		} else {
-			log.info("{} : 알림 전송 성공", LocalDateTime.now());
-			return new NotificationResult(Map.of());
-		}
+		log.info("{} : 알림 전송 완료", LocalDateTime.now());
+		return mappingNotificationResult(messages, sendResponses);
 	}
 
 	private BatchResponse getBatchResponse(ApiFuture<BatchResponse> batchResponseFuture) {
@@ -46,28 +45,31 @@ public abstract class NotificationSender {
 		} catch (InterruptedException e) {
 			log.warn("알림 결과 조회 중 인터럽트됨: {} - 원인 : {}", e.getMessage(), e);
 			Thread.currentThread().interrupt();
+			throw new NotificationSendException("알림 쓰레드 인터럽트");
 		} catch (ExecutionException e) {
 			Throwable cause = e.getCause();
 			log.error("알림 결과 조회 중 문제 발생: {} - 원인: {}", cause.getClass().getSimpleName(), cause.getMessage(), cause);
+			throw new NotificationSendException("알림 결과 수신 실패", cause);
 		}
-		throw new IllegalStateException("커스텀 예외 만들어서 던질게~"); // todo : 예외처리 다시 하기
 	}
 
-	private Map<Message, MessagingErrorCode> extractFailedMessages(
-		List<Message> messages,
+	private NotificationResult mappingNotificationResult(
+		List<NotificationMessage> messages,
 		List<SendResponse> sendResponses
 	) {
-		return sendResponses.stream()
-			.filter(sendResponse -> !sendResponse.isSuccessful())
-			.collect(Collectors.toMap(
-				sendResponse -> messages.get(sendResponses.indexOf(sendResponse)),
-				sendResponse1 -> sendResponse1.getException().getMessagingErrorCode()
-			));
+		Map<NotificationMessage, MessagingErrorCode> failedMessages = new HashMap<>();
+		List<NotificationMessage> successMessages = new ArrayList<>();
+		for (int i = 0; i < sendResponses.size(); i++) {
+			SendResponse sr = sendResponses.get(i);
+			NotificationMessage msg = messages.get(i); // 입력된 메시지 리스트와 결과 리스트는 순서가 일치함
+			if (sr.isSuccessful()) {
+				successMessages.add(msg);
+			} else {
+				failedMessages.put(msg, sr.getException().getMessagingErrorCode());
+			}
+		}
+		return new NotificationResult(failedMessages, successMessages);
 	}
 
-	private void logFailedMessages(Map<Message, MessagingErrorCode> failedMessages) {
-		failedMessages.forEach((message, errorCode) ->
-			log.info("실패 메시지: {}. 원인: {}", message, errorCode)
-		);
-	}
+	protected abstract DeviceOs supportedOs();
 }

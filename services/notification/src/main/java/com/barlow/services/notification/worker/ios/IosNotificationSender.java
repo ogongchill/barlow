@@ -1,4 +1,4 @@
-package com.barlow.services.notification.worker.android;
+package com.barlow.services.notification.worker.ios;
 
 import org.springframework.stereotype.Component;
 
@@ -7,14 +7,14 @@ import com.barlow.services.notification.worker.NotificationSender;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 @Component
-public class AosNotificationSender extends NotificationSender {
+public class IosNotificationSender extends NotificationSender {
 
-	protected AosNotificationSender(FirebaseMessaging firebaseMessaging) {
+	protected IosNotificationSender(FirebaseMessaging firebaseMessaging) {
 		super(firebaseMessaging);
 	}
 
 	@Override
 	public DeviceOs supportedOs() {
-		return DeviceOs.ANDROID;
+		return DeviceOs.IOS;
 	}
 }
