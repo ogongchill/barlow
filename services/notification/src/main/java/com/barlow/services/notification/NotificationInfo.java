@@ -3,6 +3,7 @@ package com.barlow.services.notification;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.core.enumerate.NotificationTopic;
@@ -29,6 +30,23 @@ public record NotificationInfo(
 				info.setTopicCount(totalCount);
 				info.setRepresentation(representationBillName);
 			});
+	}
+
+	public NotificationInfo filterByOs(DeviceOs deviceOs) {
+		return new NotificationInfo(
+			infos.entrySet().stream()
+				.map(entry -> Map.entry(
+					entry.getKey(),
+					entry.getValue().stream().filter(subscriber -> subscriber.os == deviceOs).toList()
+				))
+				.filter(entry -> !entry.getValue().isEmpty())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
+			isLast
+		);
+	}
+
+	public boolean isEmpty() {
+		return infos.isEmpty();
 	}
 
 	@Override
