@@ -20,7 +20,6 @@ public class NotificationRetryAdapter implements NotificationRetryPort {
 	private static final Logger log = LoggerFactory.getLogger(NotificationRetryAdapter.class);
 
 	private final Map<DeviceOs, NotificationSender> senders;
-	private final Map<MessagingErrorCode, RetryBackOff> retryBackOffs;
 	private final Executor executor;
 	private final IdempotencyRepository idempotencyRepository;
 
@@ -30,11 +29,6 @@ public class NotificationRetryAdapter implements NotificationRetryPort {
 		IdempotencyRepository idempotencyRepository
 	) {
 		this.senders = senders.stream().collect(Collectors.toMap(NotificationSender::supportedOs, s -> s));
-		this.retryBackOffs = Map.of(
-			MessagingErrorCode.INTERNAL, RetryBackOff.createServerError(),
-			MessagingErrorCode.UNAVAILABLE, RetryBackOff.createServerError(),
-			MessagingErrorCode.QUOTA_EXCEEDED, RetryBackOff.createQuotaExceededError()
-		);
 		this.idempotencyRepository = idempotencyRepository;
 		this.executor = executor;
 	}
@@ -45,12 +39,24 @@ public class NotificationRetryAdapter implements NotificationRetryPort {
 		for (Map.Entry<MessagingErrorCode, List<NotificationMessage>> entry
 			: retryMessage.retryableMessages().entrySet()
 		) {
-			CompletableFuture.runAsync(() -> start(entry, sender), executor);
+			RetryBackOff backOff = createBackOff(entry.getKey());
+			CompletableFuture.runAsync(() -> start(entry, backOff, sender), executor);
 		}
 	}
 
-	private void start(Map.Entry<MessagingErrorCode, List<NotificationMessage>> entry, NotificationSender sender) {
-		RetryBackOff backOff = retryBackOffs.get(entry.getKey());
+	private RetryBackOff createBackOff(MessagingErrorCode code) {
+		return switch (code) {
+			case INTERNAL, UNAVAILABLE -> RetryBackOff.createServerError();
+			case QUOTA_EXCEEDED -> RetryBackOff.createQuotaExceededError();
+			default -> throw new UnsupportedOperationException("지원하지 않는 에러 코드");
+		};
+	}
+
+	private void start(
+		Map.Entry<MessagingErrorCode, List<NotificationMessage>> entry,
+		RetryBackOff backOff,
+		NotificationSender sender
+	) {
 		List<NotificationMessage> retryableMessages = entry.getValue().stream()
 			.filter(msg -> idempotencyRepository.checkFailed(msg.id()))
 			.toList();
