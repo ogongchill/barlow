@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.billpost.BillPostDetailQuery;
 import com.barlow.core.domain.billpost.BillPostQuery;
 import com.barlow.core.domain.billpost.BillPost;
 import com.barlow.core.domain.billpost.BillPostRetrieveService;
 import com.barlow.core.domain.billpost.BillPostsStatus;
 import com.barlow.app.support.response.ApiResponse;
+import com.barlow.services.auth.support.annotation.PassportUser;
+import com.barlow.services.post.view.PostViewCountHandler;
 
 @RestController
 @RequestMapping("/api/v1/recent-bill")
@@ -25,9 +28,14 @@ public class RecentBillRetrieveController {
 	private static final Logger log = LoggerFactory.getLogger(RecentBillRetrieveController.class);
 
 	private final BillPostRetrieveService billPostRetrieveService;
+	private final PostViewCountHandler postViewCountHandler;
 
-	public RecentBillRetrieveController(BillPostRetrieveService billPostRetrieveService) {
+	public RecentBillRetrieveController(
+		BillPostRetrieveService billPostRetrieveService,
+		PostViewCountHandler postViewCountHandler
+	) {
 		this.billPostRetrieveService = billPostRetrieveService;
+		this.postViewCountHandler = postViewCountHandler;
 	}
 
 	@GetMapping("/thumbnail")
@@ -45,9 +53,11 @@ public class RecentBillRetrieveController {
 
 	@GetMapping("/detail/{recentBillId}")
 	public ApiResponse<RecentBillPostDetailResponse> retrieveRecentBillDetail(
+		@PassportUser Passport passport,
 		@PathVariable("recentBillId") String recentBillId
 	) {
 		log.info("Received retrieve recent bill {} detail request.", recentBillId);
+		postViewCountHandler.handleViewCount(passport, recentBillId);
 		BillPost billPost = billPostRetrieveService.readBillPostDetail(new BillPostDetailQuery(recentBillId));
 		RecentBillPostDetailApiSpecComposer apiSpecComposer = new RecentBillPostDetailApiSpecComposer(billPost);
 		return ApiResponse.success(apiSpecComposer.compose());

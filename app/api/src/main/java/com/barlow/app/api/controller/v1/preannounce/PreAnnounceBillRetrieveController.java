@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.billpost.BillPost;
 import com.barlow.core.domain.billpost.BillPostDetailQuery;
 import com.barlow.core.domain.billpost.BillPostQuery;
 import com.barlow.core.domain.billpost.BillPostRetrieveService;
 import com.barlow.core.domain.billpost.BillPostsStatus;
 import com.barlow.app.support.response.ApiResponse;
+import com.barlow.services.auth.support.annotation.PassportUser;
+import com.barlow.services.post.view.PostViewCountHandler;
 
 @RestController
 @RequestMapping("/api/v1/pre-announcement-bills")
@@ -25,9 +28,14 @@ public class PreAnnounceBillRetrieveController {
 	private static final Logger log = LoggerFactory.getLogger(PreAnnounceBillRetrieveController.class);
 
 	private final BillPostRetrieveService billPostRetrieveService;
+	private final PostViewCountHandler postViewCountHandler;
 
-	public PreAnnounceBillRetrieveController(BillPostRetrieveService billPostRetrieveService) {
+	public PreAnnounceBillRetrieveController(
+		BillPostRetrieveService billPostRetrieveService,
+		PostViewCountHandler postViewCountHandler
+	) {
 		this.billPostRetrieveService = billPostRetrieveService;
+		this.postViewCountHandler = postViewCountHandler;
 	}
 
 	@GetMapping
@@ -45,9 +53,11 @@ public class PreAnnounceBillRetrieveController {
 
 	@GetMapping("/{billId}")
 	public ApiResponse<PreAnnounceBillPostDetailResponse> retrieveBillPostWithPreAnnouncementBill(
+		@PassportUser Passport passport,
 		@PathVariable("billId") String billId
 	) {
 		log.info("Received retrieve pre-announcement bill {} post detail request.", billId);
+		postViewCountHandler.handleViewCount(passport, billId);
 		BillPost billPost = billPostRetrieveService.readBillPostDetail(new BillPostDetailQuery(billId));
 		PreAnnounceBillPostDetailApiSpecComposer specComposer = new PreAnnounceBillPostDetailApiSpecComposer(billPost);
 		return ApiResponse.success(specComposer.compose(LocalDate.now()));
