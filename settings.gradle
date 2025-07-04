@@ -11,7 +11,7 @@ include 'app:api', 'app:batch'
 
 include 'core:domain', 'core:storage'
 
-include 'services:auth', 'services:notification'
+include 'services:auth', 'services:notification', 'services:post-view'
 
 include 'batch:batch-admin'
 
