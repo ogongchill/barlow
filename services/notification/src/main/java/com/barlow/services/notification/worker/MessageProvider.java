@@ -1,9 +1,11 @@
 package com.barlow.services.notification.worker;
 
-import static com.barlow.services.notification.NotificationInfo.Subscriber;
-
-import com.google.firebase.messaging.Message;
+import com.barlow.core.enumerate.DeviceOs;
+import com.barlow.services.notification.NotificationInfo;
 
 public interface MessageProvider {
-	Message provide(String messageTitle, String messageBody, Subscriber subscriber);
+
+	NotificationMessage provide(String messageTitle, String messageBody, NotificationInfo.Subscriber subscriber);
+
+	DeviceOs supportedOs();
 }

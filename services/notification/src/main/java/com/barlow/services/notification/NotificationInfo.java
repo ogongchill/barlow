@@ -3,17 +3,15 @@ package com.barlow.services.notification;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.core.enumerate.NotificationTopic;
 
-public class NotificationInfo {
-
-	private final Map<Topic, List<Subscriber>> infos;
-
-	public NotificationInfo(Map<Topic, List<Subscriber>> infos) {
-		this.infos = infos;
-	}
+public record NotificationInfo(
+	Map<Topic, List<Subscriber>> infos,
+	boolean isLast
+) {
 
 	void assignBillTotalCountPerTopic(NotificationTopic topic, int totalCount) {
 		infos.keySet().stream()
@@ -34,8 +32,21 @@ public class NotificationInfo {
 			});
 	}
 
-	public Map<Topic, List<Subscriber>> getInfos() {
-		return infos;
+	public NotificationInfo filterByOs(DeviceOs deviceOs) {
+		return new NotificationInfo(
+			infos.entrySet().stream()
+				.map(entry -> Map.entry(
+					entry.getKey(),
+					entry.getValue().stream().filter(subscriber -> subscriber.os == deviceOs).toList()
+				))
+				.filter(entry -> !entry.getValue().isEmpty())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
+			isLast
+		);
+	}
+
+	public boolean isEmpty() {
+		return infos.isEmpty();
 	}
 
 	@Override
@@ -46,11 +57,6 @@ public class NotificationInfo {
 			return false;
 		NotificationInfo that = (NotificationInfo)o;
 		return Objects.equals(infos, that.infos);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(infos);
 	}
 
 	public static class Topic {

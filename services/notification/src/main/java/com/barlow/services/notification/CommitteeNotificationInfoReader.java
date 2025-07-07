@@ -20,11 +20,11 @@ public class CommitteeNotificationInfoReader implements NotificationInfoReader {
 	}
 
 	@Override
-	public NotificationInfo readNotificationInfos(NotificationRequest request) {
+	public NotificationInfo readNotificationInfos(NotificationRequest request, int page) {
 		CommitteeBillNotificationRequest notificationRequest = checkAndConvert(request);
 		Map<NotificationTopic, List<BillInfo>> topicsWithBillInfos = notificationRequest.topicsWithBillInfos();
 		Set<NotificationTopic> topics = topicsWithBillInfos.keySet();
-		NotificationInfo notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopics(topics);
+		NotificationInfo notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopics(topics, page);
 		topicsWithBillInfos.forEach((topic, billInfos) ->
 			notificationInfos.assignBillTotalCountPerTopic(topic, billInfos.size()));
 		return notificationInfos;
@@ -36,5 +36,10 @@ public class CommitteeNotificationInfoReader implements NotificationInfoReader {
 		} else {
 			throw new IllegalArgumentException("request must be CommitteeBillNotificationRequest");
 		}
+	}
+
+	@Override
+	public NotificationType supportedType() {
+		return NotificationType.STANDING_COMMITTEE;
 	}
 }

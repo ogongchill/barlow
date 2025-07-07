@@ -26,7 +26,7 @@ class NotificationInfoRepositoryAdapterTest extends CoreDbContextTest {
 	@Test
 	void retrieveNotificationInfosByTopic1() {
 		NotificationTopic houseSteering = NotificationTopic.HOUSE_STEERING;
-		NotificationInfo notificationInfo = adapter.retrieveNotificationInfosByTopic(houseSteering.getValue());
+		NotificationInfo notificationInfo = adapter.retrieveNotificationInfosByTopic(houseSteering.getValue(), 0);
 
 		assertThat(notificationInfo).isNotNull();
 	}
@@ -35,11 +35,11 @@ class NotificationInfoRepositoryAdapterTest extends CoreDbContextTest {
 	@Test
 	void retrieveNotificationInfosByTopic2() {
 		NotificationTopic topic = NotificationTopic.NATIONAL_POLICY;
-		NotificationInfo info = adapter.retrieveNotificationInfosByTopic(topic.getValue());
+		NotificationInfo info = adapter.retrieveNotificationInfosByTopic(topic.getValue(), 0);
 
 		assertAll(
 			() -> assertThat(info).isNotNull(),
-			() -> assertThat(info.getInfos()).isEmpty()
+			() -> assertThat(info.infos()).isEmpty()
 		);
 	}
 
@@ -49,11 +49,11 @@ class NotificationInfoRepositoryAdapterTest extends CoreDbContextTest {
 		NotificationTopic houseSteering = NotificationTopic.HOUSE_STEERING;
 		NotificationTopic nationalPolicy = NotificationTopic.NATIONAL_POLICY;
 
-		NotificationInfo info = adapter.retrieveNotificationInfosByTopics(Set.of(houseSteering, nationalPolicy));
+		NotificationInfo info = adapter.retrieveNotificationInfosByTopics(Set.of(houseSteering, nationalPolicy), 0);
 
 		assertAll(
 			() -> assertThat(info).isNotNull(),
-			() -> assertThat(info.getInfos()).isNotEmpty().hasSize(1)
+			() -> assertThat(info.infos()).isNotEmpty().hasSize(1)
 		);
 	}
 }

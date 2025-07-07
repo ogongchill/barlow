@@ -2,8 +2,11 @@ package com.barlow.services.notification;
 
 import java.util.Arrays;
 
+import org.springframework.stereotype.Component;
+
 import com.barlow.core.enumerate.NotificationTopic;
 
+@Component
 public class DefaultMessageTemplate implements MessageTemplate {
 
 	private static final String DEFAULT_MESSAGE_TITLE_FORMAT = "바로에서 바로 알려드려요";
@@ -31,6 +34,11 @@ public class DefaultMessageTemplate implements MessageTemplate {
 			topic.getRepresentation(),
 			topic.getCount()
 		);
+	}
+
+	@Override
+	public NotificationType supportedType() {
+		return NotificationType.DEFAULT;
 	}
 
 	enum Default {
