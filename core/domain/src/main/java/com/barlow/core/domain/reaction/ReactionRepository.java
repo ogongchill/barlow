@@ -15,7 +15,7 @@ public interface ReactionRepository {
 
 	Reaction retrieve(User user, Reaction reaction);
 
-	long react(User user, Reaction reaction);
+	void react(User user, Reaction reaction);
 
-	long removeReaction(User user, Reaction reaction);
+	void removeReaction(User user, Reaction reaction);
 }

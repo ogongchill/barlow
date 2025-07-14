@@ -23,11 +23,11 @@ public class ReactionService {
 		return new ReactionStatus(reactions, userReaction);
 	}
 
-	public long react(User user, Reaction reaction) {
-		return reactionProcessor.react(user, reaction);
+	public void react(User user, Reaction reaction) {
+		reactionProcessor.react(user, reaction);
 	}
 
-	public long removeReaction(User user, Reaction reaction) {
-		return reactionProcessor.removeReaction(user, reaction);
+	public void removeReaction(User user, Reaction reaction) {
+		reactionProcessor.removeReaction(user, reaction);
 	}
 }

@@ -59,29 +59,25 @@ public class ReactionRepositoryAdapter implements ReactionRepository {
 	}
 
 	@Override
-	public long react(User user, Reaction reaction) {
-		return reactionJpaRepository.save(
+	public void react(User user, Reaction reaction) {
+		reactionJpaRepository.save(
 			new ReactionJpaEntity(
 				user.getUserNo(),
 				reaction.getTargetId(),
 				reaction.getTargetType(),
 				reaction.getReactionType()
 			)
-		).getNo();
+		);
 	}
 
 	@Override
-	public long removeReaction(User user, Reaction reaction) {
+	public void removeReaction(User user, Reaction reaction) {
 		ReactionJpaEntity reactionJpaEntity = reactionJpaRepository.findByMemberNoAndTargetIdAndTargetTypeAndType(
 			user.getUserNo(),
 			reaction.getTargetId(),
 			reaction.getTargetType(),
 			reaction.getReactionType()
 		);
-		if (reactionJpaEntity == null) {
-			return -1;
-		}
 		reactionJpaRepository.delete(reactionJpaEntity);
-		return reactionJpaEntity.getNo();
 	}
 }
