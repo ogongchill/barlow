@@ -14,6 +14,7 @@ public class ReactionProcessor {
 		this.reactionRepository = reactionRepository;
 	}
 
+	@Transactional
 	public void react(User user, Reaction reaction) {
 		if (reactionRepository.retrieve(user, reaction) != null) {
 			throw ReactionDomainException.alreadyReact(reaction.getTargetType().name(), reaction.getTargetId());
