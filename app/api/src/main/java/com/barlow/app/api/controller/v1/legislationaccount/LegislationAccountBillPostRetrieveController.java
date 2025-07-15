@@ -20,7 +20,6 @@ import com.barlow.core.domain.billpost.BillPostsStatus;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.app.support.response.ApiResponse;
 import com.barlow.services.auth.support.annotation.PassportUser;
-import com.barlow.services.post.view.PostViewCountHandler;
 
 @RestController
 @RequestMapping("/api/v1/legislation-accounts")
@@ -29,14 +28,9 @@ public class LegislationAccountBillPostRetrieveController {
 	private static final Logger log = LoggerFactory.getLogger(LegislationAccountBillPostRetrieveController.class);
 
 	private final BillPostRetrieveService billPostRetrieveService;
-	private final PostViewCountHandler postViewCountHandler;
 
-	public LegislationAccountBillPostRetrieveController(
-		BillPostRetrieveService billPostRetrieveService,
-		PostViewCountHandler postViewCountHandler
-	) {
+	public LegislationAccountBillPostRetrieveController(BillPostRetrieveService billPostRetrieveService) {
 		this.billPostRetrieveService = billPostRetrieveService;
-		this.postViewCountHandler = postViewCountHandler;
 	}
 
 	@GetMapping("/{legislationType}/bill-posts")
@@ -60,8 +54,7 @@ public class LegislationAccountBillPostRetrieveController {
 		@PathVariable("billId") String billId
 	) {
 		log.info("Received retrieve {} account bill post detail request.", billId);
-		postViewCountHandler.handleViewCount(passport, billId);
-		BillPost billPost = billPostRetrieveService.readBillPostDetail(new BillPostDetailQuery(billId));
+		BillPost billPost = billPostRetrieveService.readBillPostDetail(passport, new BillPostDetailQuery(billId));
 		LegislationAccountBillPostDetailApiSpecComposer apiSpecComposer
 			= new LegislationAccountBillPostDetailApiSpecComposer(billPost);
 		return ApiResponse.success(apiSpecComposer.compose());

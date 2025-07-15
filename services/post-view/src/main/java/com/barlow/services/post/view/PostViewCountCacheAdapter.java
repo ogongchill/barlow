@@ -8,19 +8,20 @@ import com.github.benmanes.caffeine.cache.Cache;
 @Component
 public class PostViewCountHandler {
 
-	private final Cache<String, Object> duplicateBlockCache;
-	private final PostViewCountIncreaser postViewCountIncreaser;
+	private static final String PREFIX = "post-view-count:";
 
-	PostViewCountHandler(Cache<String, Object> duplicateBlockCache, PostViewCountIncreaser postViewCountIncreaser) {
+	private final Cache<String, Object> duplicateBlockCache;
+
+	PostViewCountHandler(Cache<String, Object> duplicateBlockCache) {
 		this.duplicateBlockCache = duplicateBlockCache;
-		this.postViewCountIncreaser = postViewCountIncreaser;
 	}
 
-	public void handleViewCount(Passport passport, String postId) {
-		String key = passport.getUserNo() + ":" + postId;
+	public boolean checkAndUpdate(Passport passport, String postId) {
+		String key = PREFIX + passport.getUserNo() + ":" + postId;
 		if (duplicateBlockCache.getIfPresent(key) == null) {
 			duplicateBlockCache.put(key, System.currentTimeMillis());
-			postViewCountIncreaser.increaseCount(postId);
+			return true;
 		}
+		return false;
 	}
 }
