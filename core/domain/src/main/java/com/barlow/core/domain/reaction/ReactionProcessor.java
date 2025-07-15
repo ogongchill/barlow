@@ -23,6 +23,9 @@ public class ReactionProcessor {
 
 	@Transactional
 	public void removeReaction(User user, Reaction reaction) {
+		if (reactionRepository.retrieve(user, reaction) == null) {
+			throw ReactionDomainException.alreadyRemoved(reaction.getTargetType().name(), reaction.getTargetId());
+		}
 		reactionRepository.removeReaction(user, reaction);
 	}
 }

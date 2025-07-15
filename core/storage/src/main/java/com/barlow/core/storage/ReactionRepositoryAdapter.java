@@ -72,12 +72,11 @@ public class ReactionRepositoryAdapter implements ReactionRepository {
 
 	@Override
 	public void removeReaction(User user, Reaction reaction) {
-		ReactionJpaEntity reactionJpaEntity = reactionJpaRepository.findByMemberNoAndTargetIdAndTargetTypeAndType(
+		reactionJpaRepository.deleteByMemberNoTargetIdAndTargetTypeAndReactionType(
 			user.getUserNo(),
 			reaction.getTargetId(),
 			reaction.getTargetType(),
 			reaction.getReactionType()
 		);
-		reactionJpaRepository.delete(reactionJpaEntity);
 	}
 }
