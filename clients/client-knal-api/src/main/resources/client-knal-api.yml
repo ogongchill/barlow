@@ -10,10 +10,21 @@ knal:
       url: https://open.assembly.go.kr/portal/openapi/
       service-key: ${KNAL_OPEN_CONGRESS_API_SERVICE_KEY}
 
+ai:
+  open-ai:
+    api:
+      name: open-ai-api
+      url: https://api.openai.com/v1/responses
+      service-key: ${OPEN_AI_API_SERVICE_KEY}
+
 spring.cloud.openfeign:
   client:
     config:
       national-assembly-legislation-api:
+        connectTimeout: 3000
+        readTimeout: 10000
+        loggerLevel: full
+      open-ai-api:
         connectTimeout: 3000
         readTimeout: 10000
         loggerLevel: full
