@@ -5,12 +5,12 @@ import com.barlow.client.ai.openai.api.common.OpenAiModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatCompletionRequest {
+public class ChatRequest {
 
     private OpenAiModel model;
     private List<ChatMessage> input;
 
-    public ChatCompletionRequest(OpenAiModel model, List<ChatMessage> messages) {
+    public ChatRequest(OpenAiModel model, List<ChatMessage> messages) {
         this.model = model;
         this.input = messages;
     }
@@ -30,7 +30,15 @@ public class ChatCompletionRequest {
     public static class Builder {
 
         private OpenAiModel model;
-        private final List<ChatMessage> messages = new ArrayList<>();
+        private List<ChatMessage> messages = new ArrayList<>();
+
+        private Builder() {
+        }
+
+        private Builder(OpenAiModel model, List<ChatMessage> messages) {
+            this.model = model;
+            this.messages = new ArrayList<>(messages);
+        }
 
         public Builder model(OpenAiModel model) {
             this.model = model;
@@ -38,7 +46,7 @@ public class ChatCompletionRequest {
         }
 
         public Builder messages(List<ChatMessage> messages) {
-            this.messages.addAll(messages);
+            this.messages = messages;
             return this;
         }
 
@@ -47,8 +55,12 @@ public class ChatCompletionRequest {
             return this;
         }
 
-        public ChatCompletionRequest build() {
-            return new ChatCompletionRequest(model, messages);
+        public ChatRequest build() {
+            return new ChatRequest(model, messages);
+        }
+
+        public Builder copy() {
+            return new Builder(this.model, List.copyOf(this.messages));
         }
     }
 }

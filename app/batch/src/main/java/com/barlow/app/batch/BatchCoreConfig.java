@@ -15,6 +15,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 @ComponentScan(basePackages = {
 	"com.barlow.core.enumerate",
 	"com.barlow.client.knal",
+	"com.barlow.client.ai",
 	"com.barlow.core.storage.batch",
 	"com.barlow.core.storage.notification",
 	"com.barlow.services.notification",

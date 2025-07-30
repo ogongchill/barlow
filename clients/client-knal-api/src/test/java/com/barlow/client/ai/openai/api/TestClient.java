@@ -1,6 +1,6 @@
 package com.barlow.client.ai.openai.api;
 
-import com.barlow.client.ai.openai.api.request.ChatCompletionRequest;
+import com.barlow.client.ai.openai.api.request.ChatRequest;
 import com.barlow.client.ai.openai.api.response.OpenAiResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,5 +14,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface TestClient {
 
     @PostMapping
-    OpenAiResponse getChat(@RequestBody ChatCompletionRequest chatCompletionRequest);
+    OpenAiResponse getChat(@RequestBody ChatRequest chatCompletionRequest);
 }

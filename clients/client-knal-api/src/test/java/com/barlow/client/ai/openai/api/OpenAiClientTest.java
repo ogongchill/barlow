@@ -2,7 +2,7 @@ package com.barlow.client.ai.openai.api;
 
 
 import com.barlow.client.ai.openai.api.common.OpenAiModel;
-import com.barlow.client.ai.openai.api.request.ChatCompletionRequest;
+import com.barlow.client.ai.openai.api.request.ChatRequest;
 import com.barlow.client.ai.openai.api.request.ChatMessage;
 import com.barlow.client.ai.openai.api.response.OpenAiResponse;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class OpenAiClientTest {
 
     @Test
     void testChatCompletionLive() {
-        ChatCompletionRequest request = ChatCompletionRequest.builder()
+        ChatRequest request = ChatRequest.builder()
                 .model(OpenAiModel.GPT_4_1_MINI)
                 .addMessage(new ChatMessage("user", "대한민국의 수도는?"))
                 .build();

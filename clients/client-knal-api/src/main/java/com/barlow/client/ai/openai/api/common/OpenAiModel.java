@@ -23,7 +23,7 @@ public enum OpenAiModel {
         return value;
     }
 
-    public OpenAiModel findByValue(String target) {
+    public static OpenAiModel findByValue(String target) {
         return Arrays.stream(values())
                 .filter(model -> model.value.equals(target))
                 .findFirst()
