@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SummarizationConfig {
+public class SummarizationPromptConfig {
 
     @Value("${prompt.summarization.model}")
     private String model;

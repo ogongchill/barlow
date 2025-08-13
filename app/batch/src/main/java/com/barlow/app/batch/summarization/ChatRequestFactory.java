@@ -16,6 +16,14 @@ public class ChatRequestFactory {
     public ChatRequest summarizeRequestFrom(String context) {
         return summarizeChatBuilder.copy()
                 .addMessage(ChatMessage.ofUser(context))
+                .background(false)
+                .build();
+    }
+
+    public ChatRequest backgroundSummaryRequestFrom(String context) {
+        return summarizeChatBuilder.copy()
+                .addMessage(ChatMessage.ofUser(context))
+                .background(true)
                 .build();
     }
 }

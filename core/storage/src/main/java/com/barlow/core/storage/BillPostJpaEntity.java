@@ -107,6 +107,10 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 		return legislationType;
 	}
 
+	public String getDetail() {
+		return detail;
+	}
+
 	@Embeddable
 	static class PreAnnouncementInfo {
 

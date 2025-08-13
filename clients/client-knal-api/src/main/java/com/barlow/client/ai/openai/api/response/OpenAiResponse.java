@@ -1,5 +1,6 @@
 package com.barlow.client.ai.openai.api.response;
 
+import com.barlow.client.ai.openai.api.common.OpenAiResponseStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -8,7 +9,7 @@ public record OpenAiResponse(
         String id,
         String object,
         @JsonProperty("created_at") long createdAt,
-        String status,
+        OpenAiResponseStatus status,
         String error,
         @JsonProperty("incompleted_details") String incompletedDetails,
         String instructions,

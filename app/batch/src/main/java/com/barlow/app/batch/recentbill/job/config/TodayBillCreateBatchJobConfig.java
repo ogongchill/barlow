@@ -1,10 +1,5 @@
 package com.barlow.app.batch.recentbill.job.config;
 
-import static com.barlow.app.batch.recentbill.RecentBillConstant.JOB_NAME;
-import static com.barlow.app.batch.recentbill.RecentBillConstant.TODAY_BILL_NOTIFY_STEP;
-import static com.barlow.app.batch.recentbill.RecentBillConstant.WRITE_BILL_PROPOSER_STEP;
-import static com.barlow.app.batch.recentbill.RecentBillConstant.WRITE_TODAY_BILL_INFO_STEP;
-
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
@@ -28,6 +23,8 @@ import com.barlow.app.batch.recentbill.job.step.BillProposer;
 import com.barlow.app.batch.common.StepLoggingListener;
 import com.barlow.client.knal.opendata.api.OpenDataException;
 
+import static com.barlow.app.batch.recentbill.RecentBillConstant.*;
+
 @Configuration
 public class TodayBillCreateBatchJobConfig {
 
@@ -43,7 +40,8 @@ public class TodayBillCreateBatchJobConfig {
 	) {
 		return new JobBuilder(JOB_NAME, jobRepository)
 			.listener(jobExecutionListener)
-			.start(writeTodayBillInfoStep(null, null, null))
+			.start(requestBackgroundSummaryStep(null, null, null))
+			.next(writeTodayBillInfoStep(null, null, null))
 			.next(writeBillProposerStep(null, null, null, null, null, null))
 			.next(notifyTodayBillStep(null, null, null))
 			.build();
@@ -97,5 +95,18 @@ public class TodayBillCreateBatchJobConfig {
 			.transactionAttribute(transactionAttribute)
 			.listener(stepLoggingListener)
 			.build();
+	}
+
+	@Bean
+	@JobScope
+	public Step requestBackgroundSummaryStep(
+			@Qualifier("billAiSummaryBackgroundRequestTasklet") Tasklet tasklet,
+			@Qualifier("batchCoreTransactionManager") PlatformTransactionManager platformTransactionManager,
+			StepLoggingListener stepLoggingListener
+	) {
+		return new StepBuilder(REQUEST_BACKGROUND_SUMMARY_STEP, jobRepository)
+				.tasklet(tasklet, platformTransactionManager)
+				.listener(stepLoggingListener)
+				.build();
 	}
 }
