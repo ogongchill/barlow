@@ -1,6 +1,4 @@
-package com.barlow.app.batch.summarization;
-
-import com.barlow.app.batch.summarization.common.SummaryRequestStatus;
+package com.barlow.app.batch.summarization.common;
 
 import java.io.Serializable;
 import java.time.LocalDate;

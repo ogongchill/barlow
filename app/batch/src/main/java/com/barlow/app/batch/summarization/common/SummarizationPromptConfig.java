@@ -1,4 +1,4 @@
-package com.barlow.app.batch.summarization;
+package com.barlow.app.batch.summarization.common;
 import com.barlow.client.ai.openai.api.common.OpenAiModel;
 import com.barlow.client.ai.openai.api.request.ChatRequest;
 import com.barlow.client.ai.openai.api.request.ChatMessage;

@@ -12,6 +12,7 @@ dependencies {
 
     implementation 'com.amazonaws.serverless:aws-serverless-java-container-springboot3:2.0.1'
     implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation 'org.springframework.batch:spring-batch-integration'
     implementation ('org.springframework.boot:spring-boot-starter-web') {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
     }

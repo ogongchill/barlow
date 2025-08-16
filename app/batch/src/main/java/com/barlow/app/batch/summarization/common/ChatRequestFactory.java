@@ -1,4 +1,4 @@
-package com.barlow.app.batch.summarization;
+package com.barlow.app.batch.summarization.common;
 
 import com.barlow.client.ai.openai.api.request.ChatRequest;
 import com.barlow.client.ai.openai.api.request.ChatMessage;
@@ -11,13 +11,6 @@ public class ChatRequestFactory {
 
     public ChatRequestFactory(ChatRequest.Builder summarizeChatBuilder) {
         this.summarizeChatBuilder = summarizeChatBuilder;
-    }
-
-    public ChatRequest summarizeRequestFrom(String context) {
-        return summarizeChatBuilder.copy()
-                .addMessage(ChatMessage.ofUser(context))
-                .background(false)
-                .build();
     }
 
     public ChatRequest backgroundSummaryRequestFrom(String context) {

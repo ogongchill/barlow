@@ -1,4 +1,4 @@
-package com.barlow.app.batch.summarization;
+package com.barlow.app.batch.summarization.step.poll;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import java.util.concurrent.Executor;
 
 @Configuration
 @EnableAsync
-public class BillSummaryAsyncConfig {
+public class BillAsyncPollConfig {
 
     private static final int CORE_POOL_SIZE = 4;
 
@@ -18,8 +18,8 @@ public class BillSummaryAsyncConfig {
     public Executor summaryExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 
-        executor.setCorePoolSize(CORE_POOL_SIZE);
-        executor.setMaxPoolSize(8);
+        executor.setCorePoolSize(8);
+        executor.setMaxPoolSize(16);
         executor.setQueueCapacity(100);
         executor.setKeepAliveSeconds(30);
         executor.setThreadNamePrefix("ai-summary-");

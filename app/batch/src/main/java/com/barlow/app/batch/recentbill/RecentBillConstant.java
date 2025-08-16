@@ -10,6 +10,7 @@ public final class RecentBillConstant {
 	public static final String WRITE_BILL_PROPOSER_STEP = "writeBillProposerStep";
 	public static final String TODAY_BILL_NOTIFY_STEP = "todayBillNotifyStep";
 	public static final String REQUEST_BACKGROUND_SUMMARY_STEP = "requestBackgroundSummaryStep";
+	public static final String POLL_SUMMARY_REQUEST_STEP = "pollSummaryRequestStep";
 
 	public static final String BATCH_DATE_JOB_PARAMETER = "batchDate";
 

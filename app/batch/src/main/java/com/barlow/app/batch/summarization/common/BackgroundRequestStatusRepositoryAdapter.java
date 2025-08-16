@@ -1,4 +1,4 @@
-package com.barlow.app.batch.summarization;
+package com.barlow.app.batch.summarization.common;
 
 import org.springframework.stereotype.Component;
 
