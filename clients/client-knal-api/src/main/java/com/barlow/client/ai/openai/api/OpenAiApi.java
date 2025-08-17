@@ -1,0 +1,23 @@
+package com.barlow.client.ai.openai.api;
+
+import com.barlow.client.ai.openai.api.request.ChatRequest;
+import com.barlow.client.ai.openai.api.response.OpenAiResponse;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+@FeignClient(
+        name = "${ai.open-ai.api.name}",
+        url = "${ai.open-ai.api.url}",
+        configuration = OpenAiFeignConfig.class
+)
+public interface OpenAiApi {
+
+    @PostMapping
+    OpenAiResponse getChat(@RequestBody ChatRequest chatCompletionRequest);
+
+    @GetMapping({"/{responseId}"})
+    OpenAiResponse getChat(@PathVariable("responseId") String responseId);
+}

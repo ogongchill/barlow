@@ -13,6 +13,7 @@ spring:
       - logging.yml
       - monitoring.yml
       - alert.yml
+      - prompt.yml
   batch:
     jdbc:
       initialize-schema: never
