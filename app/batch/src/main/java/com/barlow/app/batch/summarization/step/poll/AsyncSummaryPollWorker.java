@@ -10,12 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.LinkedBlockingQueue;
+import java.time.Duration;
+import java.util.concurrent.LinkedBlockingDeque;
 
 @Component
 public class AsyncSummaryPollWorker {
 
     private static final Logger log = LoggerFactory.getLogger(AsyncSummaryPollWorker.class);
+    private static final long RETRY_TIME_THRESHOLD = Duration.ofSeconds(60).toNanos();
     private final OpenAiApiPort api;
 
     public AsyncSummaryPollWorker(OpenAiApiPort api) {
@@ -23,7 +25,8 @@ public class AsyncSummaryPollWorker {
     }
 
     @Async("summaryExecutor")
-    public void runAsync(LinkedBlockingQueue<BillAiPollTask> pollTaskQueue) {
+    public void runAsync(LinkedBlockingDeque<BillAiPollTask> pollTaskQueue) {
+        long deadline = System.nanoTime() + RETRY_TIME_THRESHOLD;
         BillAiPollTask pollTask = null;
         while(true) {
             try {
@@ -34,26 +37,17 @@ public class AsyncSummaryPollWorker {
                 OpenAiResponse response = api.getResponseById(pollTask.status().responseId());
                 switch (response.status()) {
                     case OpenAiResponseStatus.COMPLETED -> complete(pollTask, response);
-                    case OpenAiResponseStatus.IN_PROGRESS, OpenAiResponseStatus.QUEUED -> retry(pollTask, pollTaskQueue);
+                    case OpenAiResponseStatus.IN_PROGRESS, OpenAiResponseStatus.QUEUED -> retry(pollTask, pollTaskQueue, deadline);
                     default -> completeAsNull(pollTask);
                 }
             } catch (InterruptedException e) {
                 log.info("{}가 인터럽트 되어 종료됩니다", pollTask);
                 Thread.currentThread().interrupt();
             } catch (OpenAiException e) {
-                retry(pollTask, pollTaskQueue);
+                retry(pollTask, pollTaskQueue, deadline);
             }
         }
         log.info("{} 종료", Thread.currentThread().getName());
-    }
-
-    public void putPoisonPill(LinkedBlockingQueue<BillAiPollTask> pollTaskQueue) {
-        try {
-            pollTaskQueue.put(BillAiPollTask.ofPoisonPill());
-        } catch (InterruptedException e) {
-            log.error("{}가 POISON_PILL put() 도중 인터럽트되어 종료합니다", Thread.currentThread().getName());
-            Thread.currentThread().interrupt();
-        }
     }
 
     private void complete(BillAiPollTask pollTask, OpenAiResponse response) {
@@ -69,12 +63,16 @@ public class AsyncSummaryPollWorker {
         task.billAiSummaryFuture().complete(null);
     }
 
-    private void retry(BillAiPollTask task, LinkedBlockingQueue<BillAiPollTask> pollTaskQueue) {
+    private void retry(BillAiPollTask task, LinkedBlockingDeque<BillAiPollTask> pollTaskQueue, long deadline) {
         try {
             if(pollTaskQueue.isEmpty()) {
                 Thread.sleep(1000L); // 현재 작업이 하나만 남았다면 1초에 한번씩 요청
             }
-            pollTaskQueue.put(task);
+            if(System.nanoTime() < deadline) {
+                pollTaskQueue.put(task);
+                return;
+            }
+            task.billAiSummaryFuture().complete(null);
         } catch (InterruptedException e) {
             log.info("{}가 retry 도중 인터럽트 되어 종료됩니다", task);
             Thread.currentThread().interrupt();

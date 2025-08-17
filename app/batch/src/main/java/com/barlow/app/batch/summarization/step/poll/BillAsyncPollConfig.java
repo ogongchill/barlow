@@ -18,11 +18,11 @@ public class BillAsyncPollConfig {
     public Executor summaryExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 
-        executor.setCorePoolSize(8);
-        executor.setMaxPoolSize(16);
+        executor.setCorePoolSize(4);
+        executor.setMaxPoolSize(8);
         executor.setQueueCapacity(100);
         executor.setKeepAliveSeconds(30);
-        executor.setThreadNamePrefix("ai-summary-");
+        executor.setThreadNamePrefix("ai-summary-poll-");
         executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.setAwaitTerminationSeconds(60);
 
