@@ -3,6 +3,11 @@ auth:
     crypto:
       private-key: ${JWT_CRYPTO_PRIVATE_KEY}
       public-key: ${JWT_CRYPTO_PUBLIC_KEY}
+  oidc:
+    kakao:
+      jwk-uri: ${KAKAO_OIDC_JWK_URL}
+      iss: ${KAKAO_OIDC_ISS}
+      aud: ${KAKAO_OIDC_AUD}
 
 ---
 spring.config.activate.on-profile:
