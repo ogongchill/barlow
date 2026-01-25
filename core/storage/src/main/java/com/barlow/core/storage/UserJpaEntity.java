@@ -2,6 +2,7 @@ package com.barlow.core.storage;
 
 import com.barlow.core.domain.User;
 
+import com.barlow.core.domain.account.UserRegisterCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -42,11 +43,15 @@ public class UserJpaEntity extends BaseTimeJpaEntity {
 		return no;
 	}
 
-	static UserJpaEntity guestOf(String nickname) {
+	public static UserJpaEntity fromCommand(UserRegisterCommand command) {
+		return new UserJpaEntity(command.nickname(), command.role());
+	}
+
+	public static UserJpaEntity guestOf(String nickname) {
 		return new UserJpaEntity(nickname, User.Role.GUEST);
 	}
 
-	static UserJpaEntity memberOf(String nickname) {
+	public static UserJpaEntity memberOf(String nickname) {
 		return new UserJpaEntity(nickname, User.Role.MEMBER);
 	}
 }

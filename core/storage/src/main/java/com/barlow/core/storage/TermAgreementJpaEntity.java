@@ -1,13 +1,15 @@
 package com.barlow.core.storage;
 
-import com.barlow.core.domain.registration.Term;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 public class TermAgreementJpaEntity extends BaseTimeJpaEntity{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "term_agreement_no")
+    private Long no;
 
     @Column(name = "member_no", nullable = false)
     private Long memberNo;
@@ -20,8 +22,4 @@ public class TermAgreementJpaEntity extends BaseTimeJpaEntity{
 
     @Column(name = "agreed_at", nullable = false)
     private LocalDate agreedAt;
-
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "term_type", nullable = false)
-    private Term.Type termType;
 }

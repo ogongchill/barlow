@@ -2,8 +2,8 @@ package com.barlow.core.domain.account;
 
 import com.barlow.core.domain.User;
 
-public record UserRegisterCommand(
-	String nickname,
-	User.Role role
+public record UserRoleChangeCommand(
+        Long userNo,
+        User.Role role
 ) {
 }

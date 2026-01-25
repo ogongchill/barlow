@@ -24,9 +24,11 @@ public class TermsPolicy {
                 .filter(TermAgreement::agreed)
                 .map(TermAgreement::termId)
                 .collect(Collectors.toSet());
-
-        if(!agreedTermIds.containsAll(requiredTermIds)) {
-            throw RegistrationException.RequiredTermsNotAcceptedException();
+        if (!agreedTermIds.containsAll(requiredTermIds)) {
+            Set<Long> missingTermIds = requiredTermIds.stream()
+                    .filter(id -> !agreedTermIds.contains(id))
+                    .collect(Collectors.toSet());
+            throw RegistrationException.requiredTermsNotAccepted(missingTermIds);
         }
     }
 }

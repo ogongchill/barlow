@@ -42,7 +42,7 @@ public class AuthController {
 	public ApiResponse<LoginResponse> guestSignup(@RequestBody SignupRequest request) {
 		log.info("Received guest signup request.");
 		request.validate();
-		User guest = accountCreateService.createGuest(request.toCommand());
+		User guest = accountCreateService.createGuest(request.toGuestCommand());
 		AccessToken accessToken = accessTokenProvider.issue(guest);
 		return ApiResponse.success(new LoginResponse(accessToken.getValue()));
 	}

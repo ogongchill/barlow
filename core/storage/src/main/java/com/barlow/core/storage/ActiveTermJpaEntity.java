@@ -11,6 +11,7 @@ public class ActiveTermJpaEntity extends BaseTimeJpaEntity {
 
     @Id
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "term_type", nullable = false)
     private Term.Type termType;
 
     @Column(name = "term_id", nullable = false)

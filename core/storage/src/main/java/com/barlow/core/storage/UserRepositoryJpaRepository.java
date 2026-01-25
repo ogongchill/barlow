@@ -1,5 +1,6 @@
 package com.barlow.core.storage;
 
+import com.barlow.core.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,4 +13,8 @@ public interface UserRepositoryJpaRepository extends JpaRepository<UserJpaEntity
 	@Modifying
 	@Query("DELETE FROM UserJpaEntity u WHERE u.no = :userNo")
 	void deleteByUserNo(@Param("userNo") Long userNo);
+
+	@Modifying
+	@Query("UPDATE UserJpaEntity u SET u.role = :role where u.no = :userNo")
+	int changeRole(@Param("userNo") Long userNo, @Param("Role")User.Role role);
 }

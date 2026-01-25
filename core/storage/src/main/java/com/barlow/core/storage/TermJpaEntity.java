@@ -1,10 +1,20 @@
 package com.barlow.core.storage;
 
-import jakarta.persistence.Column;
+import com.barlow.core.domain.registration.Term;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 public class TermJpaEntity extends BaseTimeJpaEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "term_no")
+    private Long no;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private Term.Type type;
 
     @Column(name = "title", nullable = false)
     private String title;

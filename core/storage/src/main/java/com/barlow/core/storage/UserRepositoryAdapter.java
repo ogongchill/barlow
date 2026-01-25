@@ -1,5 +1,6 @@
 package com.barlow.core.storage;
 
+import com.barlow.core.domain.account.UserRoleChangeCommand;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
@@ -25,8 +26,14 @@ public class UserRepositoryAdapter implements UserRepository {
 	@Override
 	public User create(UserRegisterCommand command) {
 		return userRepositoryJpaRepository
-			.save(UserJpaEntity.guestOf(command.nickname()))
+			.save(UserJpaEntity.fromCommand(command))
 			.toUser();
+	}
+
+	@Override
+	public User changeRole(UserRoleChangeCommand command) {
+		int result = userRepositoryJpaRepository.changeRole(command.userNo(), command.role());
+		return userRepositoryJpaRepository.findByNo(command.userNo()).toUser();
 	}
 
 	@Override

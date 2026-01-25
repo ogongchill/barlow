@@ -1,14 +1,18 @@
 package com.barlow.core.storage;
 
 import com.barlow.core.enumerate.AuthProvider;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
 
 public class AuthProviderJpaEntity extends BaseTimeJpaEntity{
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "no")
+    private Long no;
+
+    @Column(name = "user_no", nullable = false)
+    private Long userNo;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "provider", nullable = false)

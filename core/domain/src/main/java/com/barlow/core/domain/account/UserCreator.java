@@ -21,7 +21,7 @@ public class UserCreator {
 		if (deviceRepository.readOrNull(command.toDeviceQuery()) != null) {
 			throw new AccountDomainException(CONFLICT_EXCEPTION, "해당 디바이스로 등록된 회원이 이미 존재함");
 		}
-		User user = userRepository.create(command.toUserCommand());
+		User user = userRepository.create(command.toUserRegisterCommand());
 		deviceRepository.save(command.toDeviceCommand(user.getUserNo()));
 		return user;
 	}

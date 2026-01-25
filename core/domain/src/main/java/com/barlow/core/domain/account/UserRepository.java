@@ -11,5 +11,7 @@ public interface UserRepository {
 
 	User create(UserRegisterCommand command);
 
+	User changeRole(UserRoleChangeCommand command);
+
 	void delete(User user);
 }

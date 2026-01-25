@@ -1,5 +1,6 @@
 package com.barlow.app.api.controller.v1.auth;
 
+import com.barlow.core.domain.User;
 import com.barlow.core.domain.account.UserCreateCommand;
 import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.app.support.validate.Validatable;
@@ -11,12 +12,23 @@ public record SignupRequest(
 	String nickname
 ) implements Validatable {
 
-	UserCreateCommand toCommand() {
+	UserCreateCommand toGuestCommand() {
 		return new UserCreateCommand(
 			DeviceOs.valueOf(deviceOs.toUpperCase()),
 			deviceId,
 			deviceToken,
-			nickname
+			nickname,
+			User.Role.GUEST
+		);
+	}
+
+	UserCreateCommand toMemberCommand() {
+		return new UserCreateCommand(
+				DeviceOs.valueOf(deviceOs.toUpperCase()),
+				deviceId,
+				deviceToken,
+				nickname,
+				User.Role.MEMBER
 		);
 	}
 

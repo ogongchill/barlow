@@ -5,7 +5,7 @@ public record Term(
         String title,
         String version,
         String linkUrl,
-        String required
+        boolean required
 ) {
 
     public enum Type {
