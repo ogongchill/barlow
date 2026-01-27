@@ -36,7 +36,7 @@ class UserRepositoryAdapterTest extends CoreDbContextTest {
 	@Test
 	void create() {
 		User user = adapter.create(
-			new UserRegisterCommand("newNickname")
+			new UserRegisterCommand("newNickname", User.Role.GUEST)
 		);
 
 		assertAll(

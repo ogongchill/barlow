@@ -1,0 +1,45 @@
+{
+  "term": [
+    {
+      "term_no": 1,
+      "type": "Service",
+      "title": "서비스 이용약관",
+      "required": true,
+      "link_url": "https://example.com/terms/service",
+      "version": "1.0",
+      "effective_at": "2024-01-01T00:00:00"
+    },
+    {
+      "term_no": 2,
+      "type": "Privacy",
+      "title": "개인정보 처리방침",
+      "required": true,
+      "link_url": "https://example.com/terms/privacy",
+      "version": "1.0",
+      "effective_at": "2024-01-01T00:00:00"
+    },
+    {
+      "term_no": 3,
+      "type": "Marketing",
+      "title": "마케팅 정보 수신 동의",
+      "required": false,
+      "link_url": "https://example.com/terms/marketing",
+      "version": "1.0",
+      "effective_at": "2024-01-01T00:00:00"
+    }
+  ],
+  "active_term": [
+    {
+      "term_type": "Service",
+      "term_no": 1
+    },
+    {
+      "term_type": "Privacy",
+      "term_no": 2
+    },
+    {
+      "term_type": "Marketing",
+      "term_no": 3
+    }
+  ]
+}

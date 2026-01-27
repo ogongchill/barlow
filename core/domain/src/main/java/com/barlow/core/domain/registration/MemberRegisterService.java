@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class MemberRegisterOrchestrator {
+public class MemberRegisterService {
 
     private final MemberCreator memberCreator;
 
-    public MemberRegisterOrchestrator(MemberCreator memberCreator) {
+    public MemberRegisterService(MemberCreator memberCreator) {
         this.memberCreator = memberCreator;
     }
 

@@ -78,6 +78,8 @@ public class StorageTestExecutionListener extends AbstractTestExecutionListener 
 	@Override
 	public void afterTestMethod(TestContext testContext) {
 		JdbcTemplate jdbcTemplate = testContext.getApplicationContext().getBean(JdbcTemplate.class);
+		StorageTest.DatabaseType dbType = getDbType(testContext);
+
 		List<String> truncateQueries = jdbcTemplate.queryForList(
 			"""
 				SELECT Concat('TRUNCATE TABLE ', TABLE_NAME, ';') AS q
@@ -85,12 +87,26 @@ public class StorageTestExecutionListener extends AbstractTestExecutionListener 
 				WHERE TABLE_SCHEMA = 'PUBLIC'
 				""",
 			String.class);
-		truncateTables(jdbcTemplate, truncateQueries);
+		truncateTables(jdbcTemplate, truncateQueries, dbType);
 	}
 
-	private void truncateTables(JdbcTemplate jdbcTemplate, List<String> truncateQueries) {
-		jdbcTemplate.execute("SET FOREIGN_KEY_CHECKS = 0");
-		truncateQueries.forEach(jdbcTemplate::execute);
-		jdbcTemplate.execute("SET FOREIGN_KEY_CHECKS = 1");
+	private StorageTest.DatabaseType getDbType(TestContext testContext) {
+		return TestContextAnnotationUtils.getMergedRepeatableAnnotations(testContext.getTestClass(), StorageTest.class)
+			.stream()
+			.findFirst()
+			.map(StorageTest::dbType)
+			.orElse(StorageTest.DatabaseType.MYSQL);
+	}
+
+	private void truncateTables(JdbcTemplate jdbcTemplate, List<String> truncateQueries, StorageTest.DatabaseType dbType) {
+		if (dbType == StorageTest.DatabaseType.H2) {
+			jdbcTemplate.execute("SET REFERENTIAL_INTEGRITY FALSE");
+			truncateQueries.forEach(jdbcTemplate::execute);
+			jdbcTemplate.execute("SET REFERENTIAL_INTEGRITY TRUE");
+		} else {
+			jdbcTemplate.execute("SET FOREIGN_KEY_CHECKS = 0");
+			truncateQueries.forEach(jdbcTemplate::execute);
+			jdbcTemplate.execute("SET FOREIGN_KEY_CHECKS = 1");
+		}
 	}
 }

@@ -1,0 +1,19 @@
+{
+  "auth_provider": [
+    {
+      "member_no": 1,
+      "provider": "KAKAO",
+      "sub": "kakao_sub_1"
+    },
+    {
+      "member_no": 1,
+      "provider": "NAVER",
+      "sub": "naver_sub_1"
+    },
+    {
+      "member_no": 2,
+      "provider": "KAKAO",
+      "sub": "kakao_sub_2"
+    }
+  ]
+}

@@ -9,7 +9,5 @@ public interface TermRepository {
 
     List<Term> retrieveRequirements();
 
-    List<Term> retrieveAll();
-
     List<TermAgreement> saveUserAgreement(UserTermAgreementCommand termAgreementCommand);
 }

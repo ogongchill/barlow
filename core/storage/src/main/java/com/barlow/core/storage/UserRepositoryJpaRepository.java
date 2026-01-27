@@ -16,5 +16,5 @@ public interface UserRepositoryJpaRepository extends JpaRepository<UserJpaEntity
 
 	@Modifying
 	@Query("UPDATE UserJpaEntity u SET u.role = :role where u.no = :userNo")
-	int changeRole(@Param("userNo") Long userNo, @Param("Role")User.Role role);
+	int changeRole(@Param("userNo") Long userNo, @Param("role")User.Role role);
 }

@@ -20,4 +20,10 @@ public @interface StorageTest {
 
 	@AliasFor("value")
 	String[] setUpScripts() default {};
+
+	DatabaseType dbType() default DatabaseType.MYSQL;
+
+	enum DatabaseType {
+		MYSQL, H2
+	}
 }
