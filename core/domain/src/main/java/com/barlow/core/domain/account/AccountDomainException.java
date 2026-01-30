@@ -15,4 +15,8 @@ public class AccountDomainException extends CoreDomainException {
 	protected AccountDomainException(CoreDomainExceptionType exceptionType, String message) {
 		super(exceptionType, message);
 	}
+
+	public static AccountDomainException accountModificationException(String message) {
+		return new AccountDomainException(CoreDomainExceptionType.CONFLICT_EXCEPTION, message);
+	}
 }

@@ -1,6 +1,7 @@
 package com.barlow.core.storage;
 
-import com.barlow.core.domain.account.UserRoleChangeCommand;
+import com.barlow.core.domain.account.AccountDomainException;
+import com.barlow.core.domain.registration.GuestToMemberCommand;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
@@ -31,8 +32,11 @@ public class UserRepositoryAdapter implements UserRepository {
 	}
 
 	@Override
-	public User changeRole(UserRoleChangeCommand command) {
-		int result = userRepositoryJpaRepository.changeRole(command.userNo(), command.role());
+	public User promoteToMember(GuestToMemberCommand command) {
+		int result = userRepositoryJpaRepository.changeRole(command.userNo(), User.Role.MEMBER);
+		if(result == 0) {
+			throw AccountDomainException.accountModificationException(command.userNo() + "를 MEMBER로 변경하지 못했습니다.");
+		}
 		return userRepositoryJpaRepository.findByNo(command.userNo()).toUser();
 	}
 

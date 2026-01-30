@@ -1,5 +1,6 @@
 package com.barlow.core.domain.account;
 
+import com.barlow.core.domain.registration.GuestToMemberCommand;
 import org.springframework.stereotype.Repository;
 
 import com.barlow.core.domain.User;
@@ -11,7 +12,7 @@ public interface UserRepository {
 
 	User create(UserRegisterCommand command);
 
-	User changeRole(UserRoleChangeCommand command);
+	User promoteToMember(GuestToMemberCommand command);
 
 	void delete(User user);
 }

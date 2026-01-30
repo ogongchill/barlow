@@ -71,4 +71,24 @@ public class OidcPrincipal extends Principal {
             );
         }
     }
+
+    public String getIss() {
+        return iss;
+    }
+
+    public String getSub() {
+        return sub;
+    }
+
+    public String getAud() {
+        return aud;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public OauthProvider getOauthProvider() {
+        return oauthProvider;
+    }
 }

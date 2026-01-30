@@ -8,19 +8,11 @@ public record TermAgreement(
         LocalDateTime agreedAt
 ) {
 
-    public static TermAgreement agree(Term term) {
-        return new TermAgreement(
-                term.id(),
-                true,
-                LocalDateTime.now()
-        );
+    public static TermAgreement agreedAt(Long termId, LocalDateTime agreedAt) {
+        return new TermAgreement(termId, true, agreedAt);
     }
 
-    public static TermAgreement disagree(Term term) {
-        return new TermAgreement(
-                term.id(),
-                false,
-                LocalDateTime.now()
-        );
+    public static TermAgreement disagreedAt(Long termId, LocalDateTime agreedAt) {
+        return new TermAgreement(termId, false, agreedAt);
     }
 }
