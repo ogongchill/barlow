@@ -2,9 +2,11 @@ package com.barlow.app.support;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.core.io.ClassPathResource;
@@ -19,6 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 
 public class AcceptanceTestExecutionListener extends AbstractTestExecutionListener {
+
+	private static final Pattern DATETIME = Pattern.compile("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$");
+	private static final Pattern DATE = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
 
 	@Override
 	public void beforeTestClass(TestContext testContext) {
@@ -81,8 +86,15 @@ public class AcceptanceTestExecutionListener extends AbstractTestExecutionListen
 		if (value == null) {
 			return "NULL";
 		}
+		if (value instanceof Boolean) {
+			return (Boolean) value ? "TRUE" : "FALSE";
+		}
 		if (value instanceof String && "now()".equalsIgnoreCase((String)value)) {
 			return "now()";
+		}
+		if (value instanceof String && DATETIME.matcher((String)value).matches()) {
+			String s = (String)value.toString().replace('T', ' ');
+			return "TIMESTAMP '" + s + "'";
 		}
 		return "'" + value + "'";
 	}

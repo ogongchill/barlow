@@ -1,8 +1,45 @@
 {
   "barlow_user": [
     {
+      "no": 1,
       "nickname": "nickname",
       "role": "GUEST"
+    },
+    {
+      "no": 2,
+      "nickname": "existing_member",
+      "role": "MEMBER"
+    }
+  ],
+  "auth_provider": [
+    {
+      "no": 1,
+      "member_no": 2,
+      "provider": "KAKAO",
+      "sub": "existing_sub_123"
+    }
+  ],
+  "term_agreement": [
+    {
+      "term_agreement_no": 1,
+      "member_no": 2,
+      "term_no": 1,
+      "agreed": true,
+      "agreed_at": "2026-01-01T00:00:00"
+    },
+    {
+      "term_agreement_no": 2,
+      "member_no": 2,
+      "term_no": 3,
+      "agreed": true,
+      "agreed_at": "2026-01-01T00:00:00"
+    },
+    {
+      "term_agreement_no": 3,
+      "member_no": 2,
+      "term_no": 3,
+      "agreed": true,
+      "agreed_at": "2026-01-01T00:00:00"
     }
   ]
 }

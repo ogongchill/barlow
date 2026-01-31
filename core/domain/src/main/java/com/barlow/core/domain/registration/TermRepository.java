@@ -10,4 +10,6 @@ public interface TermRepository {
     List<Term> retrieveRequirements();
 
     List<TermAgreement> saveUserAgreement(UserTermAgreementCommand termAgreementCommand);
+
+    void deleteByUserNo(long userNo);
 }

@@ -1,7 +1,5 @@
 package com.barlow.core.enumerate;
 
-import com.barlow.core.domain.registration.RegistrationException;
-
 import java.util.Map;
 
 public enum AuthProvider {
@@ -26,10 +24,6 @@ public enum AuthProvider {
     }
 
     public static AuthProvider ofIssuer(String issuer) {
-        AuthProvider provider =  ISSUER_MAP.get(issuer);
-        if(provider == null) {
-            throw RegistrationException.externalAuthenticationException(issuer + "는 지원되지 않는 외부 인증입니다.");
-        }
-        return provider;
+        return ISSUER_MAP.get(issuer);
     }
 }

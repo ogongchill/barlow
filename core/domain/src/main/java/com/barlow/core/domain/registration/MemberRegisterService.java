@@ -45,4 +45,5 @@ public class MemberRegisterService {
         authProviderService.create(new UserAuthProviderCreateCommand(command.principal().authProvider(), command.principal().sub(), existingUser.getUserNo()));
         return userRepository.promoteToMember(promoteCommand);
     }
+
 }

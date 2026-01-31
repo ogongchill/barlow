@@ -1,11 +1,10 @@
 package com.barlow.app.api.controller.v1.auth;
 
 import com.barlow.core.domain.registration.MemberCreateCommand;
-import com.barlow.services.auth.authentication.oauth.OidcAuthenticationRequest;
 import com.barlow.core.enumerate.DeviceOs;
 
 public record OidcSignupRequest(
-        OidcAuthenticationRequest oidcRequest,
+        OidcRequest oidcRequest,
         TermAgreementRequest termAgreementRequest,
         SignupRequest signupRequest
 ) {

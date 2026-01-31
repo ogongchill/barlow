@@ -44,4 +44,9 @@ public class AuthProviderRepositoryAdapter implements AuthProviderRepository {
                 .toList();
         return new UserAuthProvider(userQuery.userNo(), principals);
     }
+
+    @Override
+    public void deleteByUserNo(long userNo) {
+        authProviderJpaRepository.deleteAllByMemberNo(userNo);
+    }
 }

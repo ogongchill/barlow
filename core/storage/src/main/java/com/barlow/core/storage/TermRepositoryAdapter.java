@@ -35,4 +35,9 @@ public class TermRepositoryAdapter implements TermRepository {
                 .map(TermAgreementJpaEntity::toTermAgreement)
                 .toList();
     }
+
+    @Override
+    public void deleteByUserNo(long userNo) {
+        termAgreementJpaRepository.deleteAllByMemberNo(userNo);
+    }
 }

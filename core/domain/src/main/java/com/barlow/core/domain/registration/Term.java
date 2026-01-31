@@ -10,9 +10,9 @@ public record Term(
 
     public enum Type {
 
-        Service,
-        Privacy,
-        Marketing,
+        SERVICE,
+        PRIVACY,
+        MARKETING,
         ;
     }
 }

@@ -1,5 +1,6 @@
 package com.barlow.app.api.controller.v1.auth;
 
+import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.registration.ExternalPrincipal;
 import com.barlow.core.domain.registration.MemberCreateCommand;
 import com.barlow.core.domain.registration.MemberPromoteCommand;
@@ -78,7 +79,7 @@ public class AuthController {
 	public ApiResponse<LoginResponse> oidcSignup(@RequestBody OidcSignupRequest request) {
 		log.info("Received oidc signup request.");
 		request.signupRequest().validate();
-		ExternalPrincipal principal = oidcAuthenticationService.authenticate(new OidcAuthenticationRequest(request.oidcRequest().authProvider(), request.oidcRequest().idToken()));
+		ExternalPrincipal principal = oidcAuthenticationService.authenticate(new OidcAuthenticationRequest(request.oidcRequest().toAuthProvider(), request.oidcRequest().idToken()));
 		MemberCreateCommand command = new MemberCreateCommand(
 				principal,
 				request.toPayload(),
@@ -90,7 +91,8 @@ public class AuthController {
 	}
 
 	@PostMapping("/oidc/promote")
-	public ApiResponse<LoginResponse> oidcPromote(@PassportUser User existingUser, @RequestBody OidcRolePromoteRequest request) {
+	public ApiResponse<LoginResponse> oidcPromote(@PassportUser Passport passport, @RequestBody OidcRolePromoteRequest request) {
+		User existingUser = passport.getUser();
 		log.info("Received oidc promote request.");
 		ExternalPrincipal principal = oidcAuthenticationService.authenticate(new OidcAuthenticationRequest(request.oidcRequest().toAuthProvider(), request.oidcRequest().idToken()));
 		MemberPromoteCommand command = new MemberPromoteCommand(

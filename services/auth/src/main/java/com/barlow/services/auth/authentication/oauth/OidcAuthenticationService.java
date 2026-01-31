@@ -18,8 +18,16 @@ public class OidcAuthenticationService {
     public ExternalPrincipal authenticate(OidcAuthenticationRequest oidcRequest) {
         if(oidcRequest.authProvider() == AuthProvider.KAKAO) {
             OidcPrincipal principal = kakaoOidcAuthenticator.authenticate(new KakaoIdToken(oidcRequest.idToken()));
-            return new ExternalPrincipal(AuthProvider.ofIssuer(principal.getIss()), principal.getSub());
+            AuthProvider provider = AuthProvider.ofIssuer(principal.getIss());
+            validateProvider(oidcRequest, provider);
+            return new ExternalPrincipal(provider, principal.getSub());
         }
         throw new AuthenticationException(oidcRequest.authProvider().name() + "은 지원되지 않는 AuthProvider입니다.", AuthenticationExceptionType.INVALID_CREDENTIAL);
+    }
+
+    private static void validateProvider(OidcAuthenticationRequest oidcRequest, AuthProvider provider) {
+        if(provider == null) {
+            throw new AuthenticationException(oidcRequest.authProvider().name() + "은 지원되지 않는 AuthProvider입니다.", AuthenticationExceptionType.INVALID_CREDENTIAL);
+        }
     }
 }

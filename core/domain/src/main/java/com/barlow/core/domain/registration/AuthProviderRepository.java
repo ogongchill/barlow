@@ -13,4 +13,6 @@ public interface AuthProviderRepository {
     boolean existsByUserIdAndProvider(UserAuthProviderCreateCommand command);
 
     UserAuthProvider retrieveByUser(UserQuery userQuery);
+
+    void deleteByUserNo(long userNo);
 }

@@ -12,5 +12,7 @@ public interface AuthProviderJpaRepository extends JpaRepository<AuthProviderJpa
     boolean existsByMemberNoAndProvider(Long memberNo, AuthProvider provider);
 
     List<AuthProviderJpaEntity> findAllByMemberNo(Long memberNo);
+
+    void deleteAllByMemberNo(Long memberNo);
 }
 

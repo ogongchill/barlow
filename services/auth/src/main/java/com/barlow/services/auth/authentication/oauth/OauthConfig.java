@@ -24,13 +24,11 @@ public class OauthConfig {
     @Bean
     public Map<String, String> kakaoOidcClaims(
             @Value("${auth.oidc.kakao.iss}") String iss,
-            @Value("${auth.oidc.kakao.aud}") String aud,
-            @Value("${auth.oidc.kakao.nonce}") String nonce
+            @Value("${auth.oidc.kakao.aud}") String aud
     ) {
         HashMap<String, String> claims = new HashMap<>();
         claims.put("iss", iss);
         claims.put("aud", aud);
-        claims.put("nonce", nonce);
         return claims;
     }
 }

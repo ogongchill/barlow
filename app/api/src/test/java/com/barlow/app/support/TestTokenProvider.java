@@ -18,4 +18,9 @@ public class TestTokenProvider {
 		User user = User.of(1L, User.Role.GUEST);
 		return accessTokenProvider.issue(user).getValue();
 	}
+
+	public String getAccessTokenValue(Long userNo, User.Role role) {
+		User user = User.of(userNo, role);
+		return accessTokenProvider.issue(user).getValue();
+	}
 }

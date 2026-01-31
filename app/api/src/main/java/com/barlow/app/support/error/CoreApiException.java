@@ -24,4 +24,8 @@ public class CoreApiException extends RuntimeException {
 	public Object getData() {
 		return data;
 	}
+
+	public static CoreApiException badRequest(String message) {
+		return new CoreApiException(CoreApiErrorType.BAD_REQUEST, message);
+	}
 }

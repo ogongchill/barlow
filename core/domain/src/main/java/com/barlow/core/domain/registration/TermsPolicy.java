@@ -14,6 +14,7 @@ public class TermsPolicy {
 
     public static TermsPolicy from(List<Term> requirements) {
         Set<Long> requiredTermIds = requirements.stream()
+                .filter(Term::required)
                 .map(Term::id)
                 .collect(Collectors.toSet());
         return new TermsPolicy(requiredTermIds);
