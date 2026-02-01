@@ -2,7 +2,7 @@ package com.barlow.app.api.controller.v1.auth;
 
 import com.barlow.app.support.error.CoreApiException;
 import com.barlow.core.domain.User;
-import com.barlow.core.domain.account.UserCreateCommand;
+import com.barlow.core.domain.account.create.UserCreateCommand;
 import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.app.support.validate.Validatable;
 

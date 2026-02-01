@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.account.UserQuery;
-import com.barlow.core.domain.account.UserRegisterCommand;
+import com.barlow.core.domain.account.create.UserRegisterCommand;
 import com.barlow.core.storage.support.StorageTest;
 
 @StorageTest("dummy/user.json")

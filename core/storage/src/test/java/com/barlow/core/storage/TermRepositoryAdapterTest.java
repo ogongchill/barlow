@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
-import com.barlow.core.domain.registration.Term;
-import com.barlow.core.domain.registration.TermAgreement;
-import com.barlow.core.domain.registration.UserTermAgreementCommand;
+import com.barlow.core.domain.account.term.Term;
+import com.barlow.core.domain.account.term.TermAgreement;
+import com.barlow.core.domain.account.term.UserTermAgreementCommand;
 import com.barlow.core.storage.support.StorageTest;
 
 @DataJpaTest

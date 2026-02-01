@@ -1,6 +1,6 @@
 package com.barlow.app.api.controller.v1.term;
 
-import com.barlow.core.domain.registration.Term;
+import com.barlow.core.domain.account.term.Term;
 
 import java.time.LocalDateTime;
 import java.util.List;

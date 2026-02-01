@@ -10,8 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import com.barlow.core.domain.account.UserQuery;
-import com.barlow.core.domain.registration.UserAuthProvider;
-import com.barlow.core.domain.registration.UserAuthProviderCreateCommand;
+import com.barlow.core.domain.account.authprovider.UserAuthProvider;
+import com.barlow.core.domain.account.authprovider.UserAuthProviderCreateCommand;
 import com.barlow.core.enumerate.AuthProvider;
 import com.barlow.core.storage.support.StorageTest;
 

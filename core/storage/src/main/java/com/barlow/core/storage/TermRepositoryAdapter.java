@@ -1,9 +1,9 @@
 package com.barlow.core.storage;
 
-import com.barlow.core.domain.registration.Term;
-import com.barlow.core.domain.registration.TermAgreement;
-import com.barlow.core.domain.registration.TermRepository;
-import com.barlow.core.domain.registration.UserTermAgreementCommand;
+import com.barlow.core.domain.account.term.Term;
+import com.barlow.core.domain.account.term.TermAgreement;
+import com.barlow.core.domain.account.term.TermRepository;
+import com.barlow.core.domain.account.term.UserTermAgreementCommand;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

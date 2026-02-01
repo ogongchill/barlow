@@ -16,11 +16,19 @@ public class AccountDomainException extends CoreDomainException {
 		super(exceptionType, message);
 	}
 
-	public static AccountDomainException accountModificationException(String message) {
+	public static AccountDomainException modificationException(String message) {
 		return new AccountDomainException(CoreDomainExceptionType.CONFLICT_EXCEPTION, message);
 	}
 
 	public static AccountDomainException accountNotFound() {
 		return new AccountDomainException(CoreDomainExceptionType.NOT_FOUND_EXCEPTION, "계정이 존재하지 않습니다");
+	}
+
+	public static AccountDomainException notFound(String message) {
+		return new AccountDomainException(CoreDomainExceptionType.NOT_FOUND_EXCEPTION, message);
+	}
+
+	public static AccountDomainException forbidden(String message) {
+		return new AccountDomainException(CoreDomainExceptionType.FORBIDDEN_EXCEPTION, message);
 	}
 }

@@ -1,6 +1,6 @@
 package com.barlow.core.storage;
 
-import com.barlow.core.domain.account.Device;
+import com.barlow.core.domain.account.device.Device;
 import com.barlow.core.enumerate.DeviceOs;
 
 import jakarta.persistence.Column;

@@ -2,10 +2,10 @@ package com.barlow.core.storage;
 
 import org.springframework.stereotype.Component;
 
-import com.barlow.core.domain.account.Device;
-import com.barlow.core.domain.account.DeviceQuery;
-import com.barlow.core.domain.account.DeviceRegisterCommand;
-import com.barlow.core.domain.account.DeviceRepository;
+import com.barlow.core.domain.account.device.Device;
+import com.barlow.core.domain.account.device.DeviceQuery;
+import com.barlow.core.domain.account.device.DeviceRegisterCommand;
+import com.barlow.core.domain.account.device.DeviceRepository;
 
 @Component
 public class DeviceRepositoryAdapter implements DeviceRepository {

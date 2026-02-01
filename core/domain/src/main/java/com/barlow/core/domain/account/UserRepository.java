@@ -1,7 +1,8 @@
 package com.barlow.core.domain.account;
 
-import com.barlow.core.domain.registration.GuestToMemberCommand;
-import com.barlow.core.domain.registration.ProviderAndSubQuery;
+import com.barlow.core.domain.account.create.GuestToMemberCommand;
+import com.barlow.core.domain.account.authprovider.ProviderAndSubQuery;
+import com.barlow.core.domain.account.create.UserRegisterCommand;
 import org.springframework.stereotype.Repository;
 
 import com.barlow.core.domain.User;

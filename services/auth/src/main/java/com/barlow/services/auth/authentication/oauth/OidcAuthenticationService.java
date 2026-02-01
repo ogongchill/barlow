@@ -1,6 +1,6 @@
 package com.barlow.services.auth.authentication.oauth;
 
-import com.barlow.core.domain.registration.ExternalPrincipal;
+import com.barlow.core.domain.account.authprovider.ExternalPrincipal;
 import com.barlow.core.enumerate.AuthProvider;
 import com.barlow.services.auth.authentication.core.AuthenticationException;
 import com.barlow.services.auth.authentication.core.AuthenticationExceptionType;

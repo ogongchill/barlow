@@ -1,7 +1,7 @@
 package com.barlow.core.domain;
 
 import com.barlow.core.domain.account.AccountDomainException;
-import com.barlow.core.domain.registration.GuestToMemberCommand;
+import com.barlow.core.domain.account.create.GuestToMemberCommand;
 
 import java.util.Objects;
 
@@ -17,7 +17,7 @@ public class User {
 
 	public GuestToMemberCommand toGuestToMemberCommand() {
 		if(!role.equals(Role.GUEST)) {
-			throw AccountDomainException.accountModificationException("GUEST만 MEMBER로 변경 가능합니다");
+			throw AccountDomainException.modificationException("GUEST만 MEMBER로 변경 가능합니다");
 		}
 		return new GuestToMemberCommand(userNo);
 	}

@@ -1,7 +1,11 @@
 package com.barlow.core.storage;
 
+import com.barlow.core.domain.account.RegistrationException;
 import com.barlow.core.domain.account.UserQuery;
-import com.barlow.core.domain.registration.*;
+import com.barlow.core.domain.account.authprovider.AuthProviderRepository;
+import com.barlow.core.domain.account.authprovider.ExternalPrincipal;
+import com.barlow.core.domain.account.authprovider.UserAuthProvider;
+import com.barlow.core.domain.account.authprovider.UserAuthProviderCreateCommand;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 

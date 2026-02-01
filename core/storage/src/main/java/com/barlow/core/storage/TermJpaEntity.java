@@ -1,6 +1,6 @@
 package com.barlow.core.storage;
 
-import com.barlow.core.domain.registration.Term;
+import com.barlow.core.domain.account.term.Term;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

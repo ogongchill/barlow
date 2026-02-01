@@ -1,6 +1,6 @@
 package com.barlow.app.api.controller.v1.auth;
 
-import com.barlow.core.domain.registration.TermAgreement;
+import com.barlow.core.domain.account.term.TermAgreement;
 
 import java.time.LocalDateTime;
 import java.util.List;

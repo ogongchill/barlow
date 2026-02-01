@@ -1,7 +1,7 @@
 package com.barlow.core.storage;
 
-import com.barlow.core.domain.registration.ExternalPrincipal;
-import com.barlow.core.domain.registration.UserAuthProviderCreateCommand;
+import com.barlow.core.domain.account.authprovider.ExternalPrincipal;
+import com.barlow.core.domain.account.authprovider.UserAuthProviderCreateCommand;
 import com.barlow.core.enumerate.AuthProvider;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
