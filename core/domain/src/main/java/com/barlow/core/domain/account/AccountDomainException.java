@@ -19,4 +19,8 @@ public class AccountDomainException extends CoreDomainException {
 	public static AccountDomainException accountModificationException(String message) {
 		return new AccountDomainException(CoreDomainExceptionType.CONFLICT_EXCEPTION, message);
 	}
+
+	public static AccountDomainException accountNotFound() {
+		return new AccountDomainException(CoreDomainExceptionType.NOT_FOUND_EXCEPTION, "계정이 존재하지 않습니다");
+	}
 }

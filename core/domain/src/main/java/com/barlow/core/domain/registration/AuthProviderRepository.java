@@ -8,11 +8,11 @@ public interface AuthProviderRepository {
 
     UserAuthProvider create(UserAuthProviderCreateCommand command);
 
+    UserAuthProvider retrieveByUser(UserQuery userQuery);
+
     boolean existsByProviderAndSub(UserAuthProviderCreateCommand command);
 
     boolean existsByUserIdAndProvider(UserAuthProviderCreateCommand command);
-
-    UserAuthProvider retrieveByUser(UserQuery userQuery);
 
     void deleteByUserNo(long userNo);
 }

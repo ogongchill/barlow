@@ -1,11 +1,10 @@
 package com.barlow.app.api.controller.v1.auth;
 
 import com.barlow.core.domain.Passport;
-import com.barlow.core.domain.registration.ExternalPrincipal;
+import com.barlow.core.domain.account.MemberLoginCommand;
 import com.barlow.core.domain.registration.MemberCreateCommand;
 import com.barlow.core.domain.registration.MemberPromoteCommand;
 import com.barlow.core.domain.registration.MemberRegisterService;
-import com.barlow.services.auth.authentication.oauth.OidcAuthenticationRequest;
 import com.barlow.services.auth.authentication.oauth.OidcAuthenticationService;
 import com.barlow.services.auth.support.annotation.PassportUser;
 import org.slf4j.Logger;
@@ -79,11 +78,9 @@ public class AuthController {
 	public ApiResponse<LoginResponse> oidcSignup(@RequestBody OidcSignupRequest request) {
 		log.info("Received oidc signup request.");
 		request.signupRequest().validate();
-		ExternalPrincipal principal = oidcAuthenticationService.authenticate(new OidcAuthenticationRequest(request.oidcRequest().toAuthProvider(), request.oidcRequest().idToken()));
-		MemberCreateCommand command = new MemberCreateCommand(
-				principal,
-				request.toPayload(),
-				request.termAgreementRequest().toTermAgreements(LocalDateTime.now())
+		MemberCreateCommand command = request.toCommand(
+				oidcAuthenticationService::authenticate,
+				LocalDateTime.now()
 		);
 		User member = memberRegisterService.createNewMember(command);
 		AccessToken accessToken = accessTokenProvider.issue(member);
@@ -92,15 +89,22 @@ public class AuthController {
 
 	@PostMapping("/oidc/promote")
 	public ApiResponse<LoginResponse> oidcPromote(@PassportUser Passport passport, @RequestBody OidcRolePromoteRequest request) {
-		User existingUser = passport.getUser();
 		log.info("Received oidc promote request.");
-		ExternalPrincipal principal = oidcAuthenticationService.authenticate(new OidcAuthenticationRequest(request.oidcRequest().toAuthProvider(), request.oidcRequest().idToken()));
-		MemberPromoteCommand command = new MemberPromoteCommand(
-				principal,
-				existingUser,
-				request.termAgreementRequest().toTermAgreements(LocalDateTime.now())
+		MemberPromoteCommand command = request.toCommand(
+				passport::getUser,
+				oidcAuthenticationService::authenticate,
+				LocalDateTime.now()
 		);
 		User member = memberRegisterService.promoteToMember(command);
+		AccessToken accessToken = accessTokenProvider.issue(member);
+		return ApiResponse.success(new LoginResponse(accessToken.getValue()));
+	}
+
+	@PostMapping("/oidc/login")
+	public ApiResponse<LoginResponse> oidcLogin(@RequestBody OidcLoginRequest request) {
+		log.info("Received oidc login request.");
+		MemberLoginCommand command = request.toCommand(oidcAuthenticationService::authenticate);
+		User member = accountLoginService.memberLogin(command);
 		AccessToken accessToken = accessTokenProvider.issue(member);
 		return ApiResponse.success(new LoginResponse(accessToken.getValue()));
 	}

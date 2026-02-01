@@ -1,10 +1,15 @@
 package com.barlow.app.api.controller.v1.auth;
 
+import com.barlow.core.domain.registration.ExternalPrincipal;
 import com.barlow.core.domain.registration.MemberCreateCommand;
 import com.barlow.core.enumerate.DeviceOs;
+import com.barlow.services.auth.authentication.oauth.OidcAuthenticationRequest;
+
+import java.time.LocalDateTime;
+import java.util.function.Function;
 
 public record OidcSignupRequest(
-        OidcRequest oidcRequest,
+        OidcPayload oidcPayload,
         TermAgreementRequest termAgreementRequest,
         SignupRequest signupRequest
 ) {
@@ -14,6 +19,17 @@ public record OidcSignupRequest(
                 signupRequest().deviceId(),
                 signupRequest().deviceToken(),
                 signupRequest.nickname()
+        );
+    }
+
+    public MemberCreateCommand toCommand(
+            Function<OidcAuthenticationRequest, ExternalPrincipal> authenticator,
+            LocalDateTime submittedAt
+    ) {
+        return new MemberCreateCommand(
+                authenticator.apply(oidcPayload.toAuthenticationRequest()),
+                toPayload(),
+                termAgreementRequest.toTermAgreements(submittedAt)
         );
     }
 }

@@ -27,6 +27,13 @@
       "token": "device_token_4",
       "member_no": 3,
       "device_status": "ACTIVE"
+    },
+    {
+      "device_id": "device_id_5",
+      "device_os": "IOS",
+      "token": "device_token_5",
+      "member_no": 2,
+      "device_status": "INACTIVE"
     }
   ]
 }

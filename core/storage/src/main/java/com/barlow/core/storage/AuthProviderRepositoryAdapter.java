@@ -27,6 +27,15 @@ public class AuthProviderRepositoryAdapter implements AuthProviderRepository {
     }
 
     @Override
+    public UserAuthProvider retrieveByUser(UserQuery userQuery) {
+        List<AuthProviderJpaEntity> entities = authProviderJpaRepository.findAllByMemberNo(userQuery.userNo());
+        List<ExternalPrincipal> principals = entities.stream()
+                .map(AuthProviderJpaEntity::toExternalPrincipal)
+                .toList();
+        return new UserAuthProvider(userQuery.userNo(), principals);
+    }
+
+    @Override
     public boolean existsByProviderAndSub(UserAuthProviderCreateCommand command) {
         return authProviderJpaRepository.existsByProviderAndSub(command.authProvider(), command.sub());
     }
@@ -34,15 +43,6 @@ public class AuthProviderRepositoryAdapter implements AuthProviderRepository {
     @Override
     public boolean existsByUserIdAndProvider(UserAuthProviderCreateCommand command) {
         return authProviderJpaRepository.existsByMemberNoAndProvider(command.userNo(), command.authProvider());
-    }
-
-    @Override
-    public UserAuthProvider retrieveByUser(UserQuery userQuery) {
-        List<AuthProviderJpaEntity> entities = authProviderJpaRepository.findAllByMemberNo(userQuery.userNo());
-        List<ExternalPrincipal> principals = entities.stream()
-                .map(AuthProviderJpaEntity::toExternalPrincipal)
-                .toList();
-        return new UserAuthProvider(userQuery.userNo(), principals);
     }
 
     @Override

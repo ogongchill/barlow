@@ -12,8 +12,8 @@ public class TermsPolicy {
         this.requiredTermIds = requiredTermIds;
     }
 
-    public static TermsPolicy from(List<Term> requirements) {
-        Set<Long> requiredTermIds = requirements.stream()
+    public static TermsPolicy from(List<Term> activeTerms) {
+        Set<Long> requiredTermIds = activeTerms.stream()
                 .filter(Term::required)
                 .map(Term::id)
                 .collect(Collectors.toSet());

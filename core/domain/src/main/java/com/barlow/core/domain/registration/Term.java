@@ -1,11 +1,15 @@
 package com.barlow.core.domain.registration;
 
+import java.time.LocalDateTime;
+
 public record Term(
         Long id,
         String title,
         String version,
         String linkUrl,
-        boolean required
+        Type termType,
+        boolean required,
+        LocalDateTime effectiveAt
 ) {
 
     public enum Type {

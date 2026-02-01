@@ -46,7 +46,9 @@ public class TermJpaEntity extends BaseTimeJpaEntity {
                 title,
                 version,
                 linkUrl,
-                required
+                type,
+                required,
+                effectiveAt
         );
     }
 }

@@ -2,6 +2,7 @@ package com.barlow.core.storage;
 
 import com.barlow.core.domain.account.AccountDomainException;
 import com.barlow.core.domain.registration.GuestToMemberCommand;
+import com.barlow.core.domain.registration.ProviderAndSubQuery;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
@@ -38,6 +39,15 @@ public class UserRepositoryAdapter implements UserRepository {
 			throw AccountDomainException.accountModificationException(command.userNo() + "를 MEMBER로 변경하지 못했습니다.");
 		}
 		return userRepositoryJpaRepository.findByNo(command.userNo()).toUser();
+	}
+
+	@Override
+	public User findByProviderAndSub(ProviderAndSubQuery query) {
+		UserJpaEntity userJpaEntity = userRepositoryJpaRepository.findByProviderAndSub(query.authProvider(), query.sub());
+		if(userJpaEntity == null) {
+			throw AccountDomainException.accountNotFound();
+		}
+		return userJpaEntity.toUser();
 	}
 
 	@Override

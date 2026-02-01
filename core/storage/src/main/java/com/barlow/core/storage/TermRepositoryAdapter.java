@@ -20,7 +20,7 @@ public class TermRepositoryAdapter implements TermRepository {
     }
 
     @Override
-    public List<Term> retrieveRequirements() {
+    public List<Term> retrieveActiveTerms() {
         return termJpaRepository.findAllByActiveTerms()
                 .stream()
                 .map(TermJpaEntity::toTerm)

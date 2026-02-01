@@ -151,7 +151,7 @@ class AuthControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.when()
 				.body(Map.of(
-					"oidcRequest", Map.of(
+					"oidcPayload", Map.of(
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
@@ -214,7 +214,7 @@ class AuthControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.when()
 				.body(Map.of(
-					"oidcRequest", Map.of(
+					"oidcPayload", Map.of(
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
@@ -266,7 +266,7 @@ class AuthControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.when()
 				.body(Map.of(
-					"oidcRequest", Map.of(
+					"oidcPayload", Map.of(
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
@@ -314,7 +314,7 @@ class AuthControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.when()
 				.body(Map.of(
-					"oidcRequest", Map.of(
+					"oidcPayload", Map.of(
 						"authProvider", "GOOGLE",
 						"idToken", "mock_id_token"
 					),
@@ -360,7 +360,7 @@ class AuthControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.when()
 				.body(Map.of(
-					"oidcRequest", Map.of(
+					"oidcPayload", Map.of(
 						"authProvider", "KAKAO",
 						"idToken", "invalid_token"
 					),
@@ -410,7 +410,7 @@ class AuthControllerTest extends ContextTest {
 				.headers(MANDATORY_DEVICE_HEADERS)
 				.when()
 				.body(Map.of(
-					"oidcRequest", Map.of(
+					"oidcPayload", Map.of(
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
@@ -471,7 +471,7 @@ class AuthControllerTest extends ContextTest {
 				.headers(MANDATORY_DEVICE_HEADERS)
 				.when()
 				.body(Map.of(
-					"oidcRequest", Map.of(
+					"oidcPayload", Map.of(
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
@@ -511,7 +511,7 @@ class AuthControllerTest extends ContextTest {
 				.headers(MANDATORY_DEVICE_HEADERS)
 				.when()
 				.body(Map.of(
-					"oidcRequest", Map.of(
+					"oidcPayload", Map.of(
 						"authProvider", "GOOGLE",
 						"idToken", "mock_id_token"
 					),
@@ -559,7 +559,7 @@ class AuthControllerTest extends ContextTest {
 				.headers(MANDATORY_DEVICE_HEADERS)
 				.when()
 				.body(Map.of(
-					"oidcRequest", Map.of(
+					"oidcPayload", Map.of(
 						"authProvider", "KAKAO",
 						"idToken", "invalid_token"
 					),
@@ -588,6 +588,195 @@ class AuthControllerTest extends ContextTest {
 				() -> assertThat(userRole).isEqualTo("GUEST"),
 				() -> assertThat(authProviderCreated).isFalse()
 			);
+		}
+	}
+
+	@DisplayName("OIDC 로그인")
+	@Nested
+	class OidcLoginTest {
+
+		@DisplayName("등록된 Member 사용자가 OIDC로 로그인하면 access token을 반환한다")
+		@Test
+		void oidcLogin_success() {
+			// given - member_no=2는 이미 KAKAO provider로 등록됨 (existing_sub_123)
+			String existingSub = "existing_sub_123";
+			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
+				.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, existingSub));
+
+			// when
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.when()
+				.body(Map.of(
+					"deviceOs", "android",
+					"deviceId", "device_id_3",
+					"deviceToken", "device_token_3",
+					"oidcPayload", Map.of(
+						"authProvider", "KAKAO",
+						"idToken", "mock_id_token"
+					)
+				))
+				.post("/api/v1/auth/oidc/login")
+				.then().log().all().extract()
+				.jsonPath().getMap(".");
+
+			// then
+			assertAll(
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
+				() -> assertThat(responseMap.get("data")).isNotNull(),
+				() -> assertThat(responseMap.get("error")).isNull()
+			);
+		}
+
+		@DisplayName("등록되지 않은 provider+sub로 로그인 시 실패한다")
+		@Test
+		void oidcLogin_failWhenNotRegistered() {
+			// given - 등록되지 않은 sub
+			String unregisteredSub = "unregistered_sub";
+			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
+				.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, unregisteredSub));
+
+			// when
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.when()
+				.body(Map.of(
+					"deviceOs", "ios",
+					"deviceId", "new_device_id",
+					"deviceToken", "new_device_token",
+					"oidcPayload", Map.of(
+						"authProvider", "KAKAO",
+						"idToken", "mock_id_token"
+					)
+				))
+				.post("/api/v1/auth/oidc/login")
+				.then().log().all().extract()
+				.jsonPath().getMap(".");
+
+			// then
+			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
+		}
+
+		@DisplayName("OIDC 토큰 검증 실패 시 로그인에 실패한다")
+		@Test
+		void oidcLogin_failWhenTokenVerificationFails() {
+			// given
+			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
+				.willThrow(new AuthenticationException("토큰 검증 실패", AuthenticationExceptionType.INVALID_CREDENTIAL));
+
+			// when
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.when()
+				.body(Map.of(
+					"deviceOs", "ios",
+					"deviceId", "device_id",
+					"deviceToken", "device_token",
+					"oidcPayload", Map.of(
+						"authProvider", "KAKAO",
+						"idToken", "invalid_token"
+					)
+				))
+				.post("/api/v1/auth/oidc/login")
+				.then().log().all().extract()
+				.jsonPath().getMap(".");
+
+			// then
+			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
+		}
+
+		@DisplayName("지원하지 않는 authProvider로 로그인 시 실패한다")
+		@Test
+		void oidcLogin_failWhenUnsupportedAuthProvider() {
+			// when
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.when()
+				.body(Map.of(
+					"deviceOs", "ios",
+					"deviceId", "device_id",
+					"deviceToken", "device_token",
+					"oidcPayload", Map.of(
+						"authProvider", "GOOGLE",
+						"idToken", "mock_id_token"
+					)
+				))
+				.post("/api/v1/auth/oidc/login")
+				.then().log().all().extract()
+				.jsonPath().getMap(".");
+
+			// then
+			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
+		}
+
+		@DisplayName("OIDC 로그인 시 디바이스 토큰이 바뀌었다면 로그인 절차 중 디바이스 토큰을 변경한 후 access token을 반환한다")
+		@Test
+		void oidcLogin_tokenChanged() {
+			// given - member_no=2는 이미 KAKAO provider로 등록됨 (existing_sub_123)
+			String existingSub = "existing_sub_123";
+			String changedToken = "changed_device_token_for_member";
+			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
+				.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, existingSub));
+
+			// when
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.when()
+				.body(Map.of(
+					"deviceOs", "android",
+					"deviceId", "device_id_3",
+					"deviceToken", changedToken,
+					"oidcPayload", Map.of(
+						"authProvider", "KAKAO",
+						"idToken", "mock_id_token"
+					)
+				))
+				.post("/api/v1/auth/oidc/login")
+				.then().log().all().extract()
+				.jsonPath().getMap(".");
+
+			// then - API 응답 검증
+			assertAll(
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
+				() -> assertThat(responseMap.get("data")).isNotNull(),
+				() -> assertThat(responseMap.get("error")).isNull()
+			);
+
+			// then - 디바이스 토큰이 변경되었음을 검증
+			String updatedToken = jdbcTemplate.queryForObject(
+				"SELECT token FROM device WHERE device_id = ?", String.class, "device_id_3"
+			);
+			assertThat(updatedToken).isEqualTo(changedToken);
+		}
+
+		@DisplayName("OIDC 로그인 시 디바이스가 비활성화 상태라면 예외를 발생시킨다")
+		@Test
+		void oidcLogin_deviceInactive() {
+			// given - member_no=2는 이미 KAKAO provider로 등록됨 (existing_sub_123)
+			// device_id_5는 member_no=2의 INACTIVE 디바이스
+			String existingSub = "existing_sub_123";
+			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
+				.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, existingSub));
+
+			// when
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.when()
+				.body(Map.of(
+					"deviceOs", "ios",
+					"deviceId", "device_id_5",
+					"deviceToken", "device_token_5",
+					"oidcPayload", Map.of(
+						"authProvider", "KAKAO",
+						"idToken", "mock_id_token"
+					)
+				))
+				.post("/api/v1/auth/oidc/login")
+				.then().log().all().extract()
+				.jsonPath().getMap(".");
+
+			// then
+			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
 		}
 	}
 

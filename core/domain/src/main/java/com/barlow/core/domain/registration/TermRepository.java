@@ -7,7 +7,7 @@ import java.util.List;
 @Repository
 public interface TermRepository {
 
-    List<Term> retrieveRequirements();
+    List<Term> retrieveActiveTerms();
 
     List<TermAgreement> saveUserAgreement(UserTermAgreementCommand termAgreementCommand);
 

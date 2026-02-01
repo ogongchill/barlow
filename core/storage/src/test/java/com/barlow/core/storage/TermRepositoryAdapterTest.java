@@ -30,8 +30,8 @@ class TermRepositoryAdapterTest {
 
 	@DisplayName("활성화된 약관 목록을 조회한다")
 	@Test
-	void retrieveRequirements() {
-		List<Term> terms = adapter.retrieveRequirements();
+	void retrieveActiveTerms() {
+		List<Term> terms = adapter.retrieveActiveTerms();
 
 		assertAll(
 			() -> assertThat(terms).hasSize(3),
