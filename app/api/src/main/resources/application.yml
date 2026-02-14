@@ -48,6 +48,22 @@ server:
 ---
 spring.config.activate.on-profile: staging
 
+server:
+  tomcat:
+    max-connections: 8192
+    threads:
+      max: 200
+      min-spare: 100
+    mbeanregistry:
+      enabled: true
+
+scheduler:
+  batch-lambda:
+    url:
+      pre-announce: IGNORED
+      tracking-bill: IGNORED
+      today-bill: IGNORED
+
 
 ---
 spring.config.activate.on-profile: live

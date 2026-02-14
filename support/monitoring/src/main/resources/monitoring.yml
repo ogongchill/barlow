@@ -15,3 +15,15 @@ management:
   metrics:
     enable:
       tomcat: true
+
+---
+spring.config.activate.on-profile: staging
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    enable:
+      tomcat: true
