@@ -3,20 +3,23 @@ version: 0.2
 phases:
   build:
     commands:
-      - echo Build Started on `date`
+      - echo "Build Started on $(date)"
       - chmod +x ./gradlew
       - ./gradlew :app:api:clean :app:api:build -x test
 
   post_build:
     commands:
-      - echo Build completed on `date`
-      - pwd
-      - ls -al app/api/build/libs
-      - JAR_PATH=$(ls -1 app/api/build/libs/*.jar | grep -v "plain" | head -n 1)
-      - echo "Selected jar: $JAR_PATH"
-      - mkdir -p out
-      - cp "$JAR_PATH" out/app.jar
-      - ls -al out
+      - |
+        echo "Build completed on $(date)"
+        pwd
+        ls -al app/api/build/libs
+
+        JAR_PATH=$(ls -1 app/api/build/libs/*.jar | grep -v plain | head -n 1)
+        echo "Selected jar: $JAR_PATH"
+
+        mkdir -p out
+        cp "$JAR_PATH" out/app.jar
+        ls -al out
 
 artifacts:
   files:
@@ -25,4 +28,4 @@ artifacts:
 
 cache:
   paths:
-    - '/root/.gradle/caches/**/*'
+    - "/root/.gradle/caches/**/*"
