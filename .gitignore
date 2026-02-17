@@ -50,3 +50,6 @@ batch
 
 ## k6 부하 테스트 secret
 k6/common-secret.json
+
+## env
+env/

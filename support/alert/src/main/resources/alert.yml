@@ -3,7 +3,9 @@ alert:
     webhook-url: ${SUPPORT_ALERT_SLACK_WEBHOOK_URL}
 
 ---
-spring.config.activate.on-profile: test
+spring.config.activate.on-profile:
+  - test
+  - staging
 
 alert:
   slack:

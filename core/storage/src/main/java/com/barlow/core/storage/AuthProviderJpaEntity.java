@@ -18,8 +18,8 @@ public class AuthProviderJpaEntity extends BaseTimeJpaEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "no")
-    private Long no;
+    @Column(name = "auth_provider_no")
+    private Long authProviderNo;
 
     @Column(name = "member_no", nullable = false)
     private Long memberNo;

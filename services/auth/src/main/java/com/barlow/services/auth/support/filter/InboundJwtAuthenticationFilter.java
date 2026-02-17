@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -23,6 +24,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class InboundJwtAuthenticationFilter extends OncePerRequestFilter {
 
+	private static final AntPathMatcher matcher = new AntPathMatcher();
 	private static final String AUTHENTICATION_TYPE = "Bearer ";
 	private static final String X_CLIENT_OS = "X-Client-OS";
 	private static final String X_CLIENT_OS_VERSION = "X-Client-OS-Version";
@@ -76,14 +78,18 @@ public class InboundJwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) {
-		String requestURI = request.getRequestURI();
-		return requestURI.startsWith("/api/v1/auth/guest/signup")
-			|| requestURI.startsWith("/api/v1/auth/guest/login")
-		   	|| requestURI.startsWith("/api/v1/auth/oidc/signup")
-		   	|| requestURI.startsWith("/api/v1/auth/oidc/login")
-		   	|| requestURI.startsWith("/api/v1/term")
-			|| requestURI.startsWith("/health")
-			|| requestURI.startsWith("/h2-console")
-			|| requestURI.startsWith("/actuator");
+		return match("/api/v1/auth/guest/signup", request)
+			   || match("/api/v1/auth/guest/login", request)
+			   || match("/api/v1/auth/oidc/signup", request)
+			   || match("/api/v1/auth/oidc/login", request)
+			   || match("/api/v1/term/**", request)
+			   || match("/health", request)
+			   || match("/h2-console", request)
+			   || match("/actuator/**", request)
+			   || match("/error", request);
+	}
+
+	private boolean match(String pattern, HttpServletRequest req) {
+		return matcher.match(pattern, req.getRequestURI());
 	}
 }
