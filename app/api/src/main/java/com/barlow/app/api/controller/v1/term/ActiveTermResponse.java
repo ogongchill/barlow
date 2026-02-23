@@ -9,6 +9,7 @@ public record ActiveTermResponse(
         List<TermInfo> activeTerms
 ) {
     public record TermInfo(
+            long id,
             String title,
             String linkUrl,
             String type,
@@ -20,6 +21,7 @@ public record ActiveTermResponse(
     public static ActiveTermResponse fromTerms(List<Term> activeTerms) {
         List<TermInfo> terms = activeTerms.stream()
                 .map(term -> new TermInfo(
+                        term.id(),
                         term.title(),
                         term.linkUrl(),
                         term.termType().name(),
