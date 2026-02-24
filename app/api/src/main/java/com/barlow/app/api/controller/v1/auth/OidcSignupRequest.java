@@ -9,16 +9,16 @@ import java.time.LocalDateTime;
 import java.util.function.Function;
 
 public record OidcSignupRequest(
-        OidcPayload oidcPayload,
-        TermAgreementRequest termAgreementRequest,
-        SignupRequest signupRequest
+    OidcPayload oidcPayload,
+    TermAgreementRequest termAgreement,
+    SignupRequest signupPayload
 ) {
     public MemberCreateCommand.UserPayload toPayload() {
         return new MemberCreateCommand.UserPayload(
-                DeviceOs.valueOf(signupRequest.deviceOs().toUpperCase()),
-                signupRequest().deviceId(),
-                signupRequest().deviceToken(),
-                signupRequest.nickname()
+                DeviceOs.valueOf(signupPayload.deviceOs().toUpperCase()),
+                signupPayload().deviceId(),
+                signupPayload().deviceToken(),
+                signupPayload.nickname()
         );
     }
 
@@ -29,7 +29,7 @@ public record OidcSignupRequest(
         return new MemberCreateCommand(
                 authenticator.apply(oidcPayload.toAuthenticationRequest()),
                 toPayload(),
-                termAgreementRequest.toTermAgreements(submittedAt)
+                termAgreement.toTermAgreements(submittedAt)
         );
     }
 }

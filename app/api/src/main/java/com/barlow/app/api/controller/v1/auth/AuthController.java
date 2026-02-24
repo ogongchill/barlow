@@ -77,7 +77,7 @@ public class AuthController {
 	@PostMapping("/oidc/signup")
 	public ApiResponse<LoginResponse> oidcSignup(@RequestBody OidcSignupRequest request) {
 		log.info("Received oidc signup request.");
-		request.signupRequest().validate();
+		request.signupPayload().validate();
 		MemberCreateCommand command = request.toCommand(
 				oidcAuthenticationService::authenticate,
 				LocalDateTime.now()

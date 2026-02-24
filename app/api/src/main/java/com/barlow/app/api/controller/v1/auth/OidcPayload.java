@@ -5,8 +5,8 @@ import com.barlow.core.enumerate.AuthProvider;
 import com.barlow.services.auth.authentication.oauth.OidcAuthenticationRequest;
 
 public record OidcPayload(
-        String authProvider,
-        String idToken
+    String authProvider,
+    String idToken
 ) {
     public AuthProvider toAuthProvider() {
         if(authProvider.equals("KAKAO")  || authProvider.equals("kakao")) {

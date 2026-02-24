@@ -10,8 +10,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public record OidcRolePromoteRequest(
-        TermAgreementRequest termAgreementRequest,
-        OidcPayload oidcPayload
+    TermAgreementRequest termAgreement,
+    OidcPayload oidcPayload
 ) {
 
     MemberPromoteCommand toCommand(
@@ -22,7 +22,7 @@ public record OidcRolePromoteRequest(
         return new MemberPromoteCommand(
                 authenticator.apply(oidcPayload.toAuthenticationRequest()),
                 userSupplier.get(),
-                termAgreementRequest.toTermAgreements(submittedAt)
+                termAgreement.toTermAgreements(submittedAt)
         );
     }
 }

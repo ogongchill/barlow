@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public record TermAgreementRequest(
-        Map<Long, Boolean> termAgreements
+    Map<Long, Boolean> termAgreements
 ) {
     public List<TermAgreement> toTermAgreements(LocalDateTime submittedAt) {
         return termAgreements.entrySet()

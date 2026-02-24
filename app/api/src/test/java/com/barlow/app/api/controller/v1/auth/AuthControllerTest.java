@@ -155,14 +155,14 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
-					"termAgreementRequest", Map.of(
+					"termAgreement", Map.of(
 						"termAgreements", Map.of(
 							"1", true,
 							"2", true,
 							"3", false
 						)
 					),
-					"signupRequest", Map.of(
+					"signupPayload", Map.of(
 						"deviceOs", "ios",
 						"deviceId", "oidc_device_id",
 						"deviceToken", "oidc_device_token",
@@ -218,14 +218,14 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
-					"termAgreementRequest", Map.of(
+					"termAgreement", Map.of(
 						"termAgreements", Map.of(
 							"1", false,
 							"2", true,
 							"3", false
 						)
 					),
-					"signupRequest", Map.of(
+					"signupPayload", Map.of(
 						"deviceOs", "ios",
 						"deviceId", "oidc_device_id_2",
 						"deviceToken", "oidc_device_token_2",
@@ -270,14 +270,14 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
-					"termAgreementRequest", Map.of(
+					"termAgreement", Map.of(
 						"termAgreements", Map.of(
 							"1", true,
 							"2", true,
 							"3", false
 						)
 					),
-					"signupRequest", Map.of(
+					"signupPayload", Map.of(
 						"deviceOs", "ios",
 						"deviceId", "duplicate_device_id",
 						"deviceToken", "duplicate_device_token",
@@ -318,14 +318,14 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "GOOGLE",
 						"idToken", "mock_id_token"
 					),
-					"termAgreementRequest", Map.of(
+					"termAgreement", Map.of(
 						"termAgreements", Map.of(
 							"1", true,
 							"2", true,
 							"3", false
 						)
 					),
-					"signupRequest", Map.of(
+					"signupPayload", Map.of(
 						"deviceOs", "ios",
 						"deviceId", "unsupported_device_id",
 						"deviceToken", "unsupported_device_token",
@@ -364,14 +364,14 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "KAKAO",
 						"idToken", "invalid_token"
 					),
-					"termAgreementRequest", Map.of(
+					"termAgreement", Map.of(
 						"termAgreements", Map.of(
 							"1", true,
 							"2", true,
 							"3", false
 						)
 					),
-					"signupRequest", Map.of(
+					"signupPayload", Map.of(
 						"deviceOs", "ios",
 						"deviceId", "invalid_token_device_id",
 						"deviceToken", "invalid_token_device_token",
@@ -414,7 +414,7 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
-					"termAgreementRequest", Map.of(
+					"termAgreement", Map.of(
 						"termAgreements", Map.of(
 							"1", true,
 							"2", true,
@@ -475,7 +475,7 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
-					"termAgreementRequest", Map.of(
+					"termAgreement", Map.of(
 						"termAgreements", Map.of(
 							"1", true,
 							"2", true,
@@ -515,7 +515,7 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "GOOGLE",
 						"idToken", "mock_id_token"
 					),
-					"termAgreementRequest", Map.of(
+					"termAgreement", Map.of(
 						"termAgreements", Map.of(
 							"1", true,
 							"2", true,
@@ -563,7 +563,7 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "KAKAO",
 						"idToken", "invalid_token"
 					),
-					"termAgreementRequest", Map.of(
+					"termAgreement", Map.of(
 						"termAgreements", Map.of(
 							"1", true,
 							"2", true,

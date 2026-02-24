@@ -10,10 +10,10 @@ import com.barlow.services.auth.authentication.oauth.OidcAuthenticationRequest;
 import java.util.function.Function;
 
 public record OidcLoginRequest (
-        String deviceOs,
-        String deviceId,
-        String deviceToken,
-        OidcPayload oidcPayload
+    String deviceOs,
+    String deviceId,
+    String deviceToken,
+    OidcPayload oidcPayload
 ) implements Validatable {
 
     MemberLoginCommand toCommand(Function<OidcAuthenticationRequest, ExternalPrincipal> authenticator) {
