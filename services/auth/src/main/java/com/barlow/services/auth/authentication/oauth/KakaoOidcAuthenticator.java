@@ -49,7 +49,6 @@ public class KakaoOidcAuthenticator implements OidcAuthenticator<KakaoIdToken>{
         JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer(kakaoOidcClaims.get("iss"))
                 .withAudience(kakaoOidcClaims.get("aud"))
-                .withClaim("nonce", kakaoOidcClaims.get("nonce"))
                 .build();
         return verifier.verify(kakaoIdToken.getValue());
     }
