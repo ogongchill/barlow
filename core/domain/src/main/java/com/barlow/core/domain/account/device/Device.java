@@ -38,8 +38,16 @@ public class Device {
 		return deviceId;
 	}
 
+	public DeviceOs getDeviceOs() {
+		return deviceOs;
+	}
+
 	public String getDeviceToken() {
 		return deviceToken;
+	}
+
+	public Status getStatus() {
+		return status;
 	}
 
 	public enum Status {

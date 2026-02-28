@@ -1,5 +1,7 @@
 package com.barlow.core.domain.account.device;
 
+import java.util.List;
+
 public interface DeviceRepository {
 
 	void save(DeviceRegisterCommand command);
@@ -9,4 +11,6 @@ public interface DeviceRepository {
 	void update(Device device);
 
 	void deleteById(String deviceId);
+
+	List<Device> findAllByUserNo(long userNo);
 }

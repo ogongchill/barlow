@@ -13,7 +13,7 @@
   ],
   "auth_provider": [
     {
-      "no": 1,
+      "auth_provider_no": 1,
       "member_no": 2,
       "provider": "KAKAO",
       "sub": "existing_sub_123"

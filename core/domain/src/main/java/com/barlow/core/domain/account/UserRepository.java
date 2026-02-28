@@ -3,6 +3,7 @@ package com.barlow.core.domain.account;
 import com.barlow.core.domain.account.create.GuestToMemberCommand;
 import com.barlow.core.domain.account.authprovider.ProviderAndSubQuery;
 import com.barlow.core.domain.account.create.UserRegisterCommand;
+import com.barlow.core.domain.account.myinfo.AccountProfile;
 import org.springframework.stereotype.Repository;
 
 import com.barlow.core.domain.User;
@@ -11,6 +12,8 @@ import com.barlow.core.domain.User;
 public interface UserRepository {
 
 	User retrieve(UserQuery query);
+
+	AccountProfile retrieveProfile(UserQuery query);
 
 	User create(UserRegisterCommand command);
 

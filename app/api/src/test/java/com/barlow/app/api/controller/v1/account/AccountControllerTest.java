@@ -9,6 +9,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.DisplayName;
@@ -44,6 +45,82 @@ class AccountControllerTest extends ContextTest {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+
+	@DisplayName("내 계정 조회")
+	@Nested
+	class GetMyAccountTest {
+
+		@DisplayName("GUEST 사용자가 내 계정을 조회하면 사용자 정보, 빈 authProvider 목록, 연결된 기기 목록을 반환한다")
+		@Test
+		void getMyAccount_guest() {
+			// given
+			Long targetUserNo = 1L;
+			String targetDeviceId = "device_id_1";
+
+			// when
+			Map<String, Object> responseMap = RestAssured
+				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
+				.headers(X_CLIENT_OS, "ios")
+				.headers(X_CLIENT_OS_VERSION, "device_os_version")
+				.headers(X_DEVICE_ID, targetDeviceId)
+				.when()
+				.get("/api/v1/account/my")
+				.then().log().all().extract()
+				.jsonPath().getMap(".");
+
+			// then
+			Map<String, Object> data = (Map<String, Object>) responseMap.get("data");
+			Map<String, Object> user = (Map<String, Object>) data.get("user");
+			List<Map<String, Object>> authProviders = (List<Map<String, Object>>) data.get("authProviders");
+			List<Map<String, Object>> devices = (List<Map<String, Object>>) data.get("devices");
+
+			assertAll(
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
+				() -> assertThat(user.get("userNo")).isEqualTo(targetUserNo.intValue()),
+				() -> assertThat(user.get("nickname")).isEqualTo("nickname"),
+				() -> assertThat(user.get("role")).isEqualTo("GUEST"),
+				() -> assertThat(authProviders).isEmpty(),
+				() -> assertThat(devices).hasSize(2)
+			);
+		}
+
+		@DisplayName("MEMBER 사용자가 내 계정을 조회하면 사용자 정보, authProvider 목록, 연결된 기기 목록을 반환한다")
+		@Test
+		void getMyAccount_member() {
+			// given
+			Long targetUserNo = 2L;
+			String targetDeviceId = "device_id_3";
+
+			// when
+			Map<String, Object> responseMap = RestAssured
+				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue(targetUserNo, User.Role.MEMBER))
+				.headers(X_CLIENT_OS, "android")
+				.headers(X_CLIENT_OS_VERSION, "device_os_version")
+				.headers(X_DEVICE_ID, targetDeviceId)
+				.when()
+				.get("/api/v1/account/my")
+				.then().log().all().extract()
+				.jsonPath().getMap(".");
+
+			// then
+			Map<String, Object> data = (Map<String, Object>) responseMap.get("data");
+			Map<String, Object> user = (Map<String, Object>) data.get("user");
+			List<Map<String, Object>> authProviders = (List<Map<String, Object>>) data.get("authProviders");
+			List<Map<String, Object>> devices = (List<Map<String, Object>>) data.get("devices");
+
+			assertAll(
+				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
+				() -> assertThat(user.get("userNo")).isEqualTo(targetUserNo.intValue()),
+				() -> assertThat(user.get("nickname")).isEqualTo("existing_member"),
+				() -> assertThat(user.get("role")).isEqualTo("MEMBER"),
+				() -> assertThat(authProviders).hasSize(1),
+				() -> assertThat(authProviders.get(0).get("provider")).isEqualTo("KAKAO"),
+				() -> assertThat(devices).hasSize(2)
+			);
+		}
+	}
 
 	@DisplayName("회원 탈퇴")
 	@Nested

@@ -3,6 +3,7 @@ package com.barlow.core.storage;
 import com.barlow.core.domain.account.AccountDomainException;
 import com.barlow.core.domain.account.create.GuestToMemberCommand;
 import com.barlow.core.domain.account.authprovider.ProviderAndSubQuery;
+import com.barlow.core.domain.account.myinfo.AccountProfile;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
@@ -23,6 +24,12 @@ public class UserRepositoryAdapter implements UserRepository {
 	public User retrieve(UserQuery query) {
 		return userRepositoryJpaRepository.findByNo(query.userNo())
 			.toUser();
+	}
+
+	@Override
+	public AccountProfile retrieveProfile(UserQuery query) {
+		return userRepositoryJpaRepository.findByNo(query.userNo())
+			.toAccountProfile();
 	}
 
 	@Override

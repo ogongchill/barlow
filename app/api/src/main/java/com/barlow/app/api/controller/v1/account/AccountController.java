@@ -2,12 +2,15 @@ package com.barlow.app.api.controller.v1.account;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.app.support.response.ApiResponse;
 import com.barlow.core.domain.Passport;
+import com.barlow.core.domain.account.myinfo.MyAccountInfo;
+import com.barlow.core.domain.account.myinfo.MyAccountRetrieveService;
 import com.barlow.core.domain.account.withdrawal.AccountWithdrawalService;
 import com.barlow.services.auth.support.annotation.PassportUser;
 
@@ -18,9 +21,20 @@ public class AccountController {
 	private static final Logger log = LoggerFactory.getLogger(AccountController.class);
 
 	private final AccountWithdrawalService accountWithdrawalService;
+	private final MyAccountRetrieveService myAccountRetrieveService;
 
-	public AccountController(AccountWithdrawalService accountWithdrawalService) {
+	public AccountController(
+		AccountWithdrawalService accountWithdrawalService,
+		MyAccountRetrieveService myAccountRetrieveService
+	) {
 		this.accountWithdrawalService = accountWithdrawalService;
+		this.myAccountRetrieveService = myAccountRetrieveService;
+	}
+
+	@GetMapping("/my")
+	public ApiResponse<MyAccountResponse> getMyAccount(@PassportUser Passport passport) {
+		MyAccountInfo myAccountInfo = myAccountRetrieveService.retrieve(passport);
+		return ApiResponse.success(MyAccountResponse.from(myAccountInfo));
 	}
 
 	@PostMapping("/withdraw")

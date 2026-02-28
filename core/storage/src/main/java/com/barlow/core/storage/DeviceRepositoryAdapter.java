@@ -7,6 +7,8 @@ import com.barlow.core.domain.account.device.DeviceQuery;
 import com.barlow.core.domain.account.device.DeviceRegisterCommand;
 import com.barlow.core.domain.account.device.DeviceRepository;
 
+import java.util.List;
+
 @Component
 public class DeviceRepositoryAdapter implements DeviceRepository {
 
@@ -43,5 +45,12 @@ public class DeviceRepositoryAdapter implements DeviceRepository {
 	@Override
 	public void deleteById(String deviceId) {
 		deviceJpaRepository.deleteByDeviceId(deviceId);
+	}
+
+	@Override
+	public List<Device> findAllByUserNo(long userNo) {
+		return deviceJpaRepository.findAllByMemberNo(userNo).stream()
+			.map(DeviceJpaEntity::toDevice)
+			.toList();
 	}
 }

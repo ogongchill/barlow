@@ -3,6 +3,7 @@ package com.barlow.core.storage;
 import com.barlow.core.domain.User;
 
 import com.barlow.core.domain.account.create.UserRegisterCommand;
+import com.barlow.core.domain.account.myinfo.AccountProfile;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -37,6 +38,10 @@ public class UserJpaEntity extends BaseTimeJpaEntity {
 
 	User toUser() {
 		return User.of(no, role);
+	}
+
+	AccountProfile toAccountProfile() {
+		return new AccountProfile(no, nickname, role);
 	}
 
 	Long getNo() {
