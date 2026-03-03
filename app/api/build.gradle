@@ -6,6 +6,7 @@ dependencies {
 
     implementation project(":core:domain")
     implementation project(":services:auth")
+    implementation project(":services:post-view")
     implementation project(":support:logging")
     implementation project(":support:monitoring")
     implementation project(":support:alert")

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.billpost.BillPost;
 import com.barlow.core.domain.billpost.BillPostDetailQuery;
 import com.barlow.core.domain.billpost.BillPostQuery;
@@ -18,6 +19,7 @@ import com.barlow.core.domain.billpost.BillPostRetrieveService;
 import com.barlow.core.domain.billpost.BillPostsStatus;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.app.support.response.ApiResponse;
+import com.barlow.services.auth.support.annotation.PassportUser;
 
 @RestController
 @RequestMapping("/api/v1/legislation-accounts")
@@ -48,10 +50,11 @@ public class LegislationAccountBillPostRetrieveController {
 
 	@GetMapping("/bill-posts/{billId}")
 	public ApiResponse<LegislationAccountBillPostDetailResponse> retrieveBillPostDetail(
+		@PassportUser Passport passport,
 		@PathVariable("billId") String billId
 	) {
 		log.info("Received retrieve {} account bill post detail request.", billId);
-		BillPost billPost = billPostRetrieveService.readBillPostDetail(new BillPostDetailQuery(billId));
+		BillPost billPost = billPostRetrieveService.readBillPostDetail(passport, new BillPostDetailQuery(billId));
 		LegislationAccountBillPostDetailApiSpecComposer apiSpecComposer
 			= new LegislationAccountBillPostDetailApiSpecComposer(billPost);
 		return ApiResponse.success(apiSpecComposer.compose());

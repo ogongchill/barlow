@@ -67,4 +67,9 @@ public class BillPostRepositoryAdapter implements BillPostRepository {
 		billPost.setBillProposers(billProposers);
 		return billPost;
 	}
+
+	@Override
+	public void updateViewCount(String billId) {
+		billPostJpaRepository.updateViewCount(billId);
+	}
 }
