@@ -1,6 +1,7 @@
 package com.barlow.core.domain.billpost;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class BillPostReader {
@@ -15,10 +16,14 @@ public class BillPostReader {
 		return billPostRepository.retrieveRecentBillPosts(query);
 	}
 
-	public BillPost readBillPostDetail(BillPostDetailQuery query) {
+	@Transactional
+	public BillPost readBillPostDetail(BillPostDetailQuery query, boolean shouldCountView) {
 		BillPost billPost = billPostRepository.retrieveRecentBillPost(query);
 		if (billPost == null) {
 			throw BillPostDomainException.notFound(query.billId());
+		}
+		if (shouldCountView) {
+			billPostRepository.updateViewCount(billPost.getBillId());
 		}
 		return billPost;
 	}
