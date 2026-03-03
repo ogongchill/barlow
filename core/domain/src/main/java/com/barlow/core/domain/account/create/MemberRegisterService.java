@@ -42,8 +42,6 @@ public class MemberRegisterService {
     public User promoteToMember(MemberPromoteCommand command) {
         User existingUser = userRepository.retrieve(new UserQuery(command.user().getUserNo()));
         GuestToMemberCommand promoteCommand = existingUser.toGuestToMemberCommand();
-        termManager.validateAgreements(command.agreements());
-        termManager.saveAgreements(command.agreements(), existingUser);
         authProviderService.create(new UserAuthProviderCreateCommand(command.principal().authProvider(), command.principal().sub(), existingUser.getUserNo()));
         return userRepository.promoteToMember(promoteCommand);
     }

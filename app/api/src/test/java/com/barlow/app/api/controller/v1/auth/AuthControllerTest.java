@@ -63,15 +63,37 @@ class AuthControllerTest extends ContextTest {
 				"deviceOs", "ios",
 				"deviceId", "device_id_new",
 				"deviceToken", "device_token_new",
-				"nickname", "nickname"
+				"nickname", "nniicckknnaammee",
+				"termAgreements", Map.of(
+					"1", true,
+					"2", true,
+					"3", false
+					)
 			))
 			.post("/api/v1/auth/guest/signup")
 			.then().log().all().extract()
 			.jsonPath().getMap(".");
+
+		// then - API 응답 검증
 		assertAll(
 			() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 			() -> assertThat(responseMap.get("data")).isNotNull(),
 			() -> assertThat(responseMap.get("error")).isNull()
+		);
+
+		// then - DB 저장 검증
+		Map<String, Object> savedUser = jdbcTemplate.queryForMap(
+			"SELECT * FROM barlow_user WHERE nickname = ?", "nniicckknnaammee"
+		);
+		Long memberNo = ((Number) savedUser.get("NO")).longValue();
+
+		List<Map<String, Object>> termAgreements = jdbcTemplate.queryForList(
+			"SELECT * FROM term_agreement WHERE member_no = ?", memberNo
+		);
+
+		assertAll(
+			() -> assertThat(savedUser).containsEntry("ROLE", "GUEST"),
+			() -> assertThat(termAgreements).hasSize(3)
 		);
 	}
 
@@ -155,13 +177,11 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
-					"termAgreement", Map.of(
-						"termAgreements", Map.of(
-							"1", true,
-							"2", true,
-							"3", false
-						)
-					),
+					"termAgreements", Map.of(
+						"1", true,
+						"2", true,
+						"3", false
+						),
 					"signupPayload", Map.of(
 						"deviceOs", "ios",
 						"deviceId", "oidc_device_id",
@@ -197,7 +217,6 @@ class AuthControllerTest extends ContextTest {
 			assertAll(
 				() -> assertThat(savedUser).containsEntry("ROLE", "MEMBER"),
 				() -> assertThat(savedUser).containsEntry("NICKNAME", "oidc_user"),
-				() -> assertThat(termAgreements).hasSize(3),
 				() -> assertThat(authProvider).containsEntry("PROVIDER", "KAKAO"),
 				() -> assertThat(authProvider).containsEntry("SUB", TEST_SUB)
 			);
@@ -218,13 +237,11 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
-					"termAgreement", Map.of(
-						"termAgreements", Map.of(
-							"1", false,
-							"2", true,
-							"3", false
-						)
-					),
+					"termAgreements", Map.of(
+						"1", false,
+						"2", true,
+						"3", false
+						),
 					"signupPayload", Map.of(
 						"deviceOs", "ios",
 						"deviceId", "oidc_device_id_2",
@@ -270,13 +287,11 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
 					),
-					"termAgreement", Map.of(
-						"termAgreements", Map.of(
-							"1", true,
-							"2", true,
-							"3", false
-						)
-					),
+					"termAgreements", Map.of(
+						"1", true,
+						"2", true,
+						"3", false
+						),
 					"signupPayload", Map.of(
 						"deviceOs", "ios",
 						"deviceId", "duplicate_device_id",
@@ -318,13 +333,11 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "GOOGLE",
 						"idToken", "mock_id_token"
 					),
-					"termAgreement", Map.of(
-						"termAgreements", Map.of(
-							"1", true,
-							"2", true,
-							"3", false
-						)
-					),
+					"termAgreements", Map.of(
+						"1", true,
+						"2", true,
+						"3", false
+						),
 					"signupPayload", Map.of(
 						"deviceOs", "ios",
 						"deviceId", "unsupported_device_id",
@@ -364,13 +377,11 @@ class AuthControllerTest extends ContextTest {
 						"authProvider", "KAKAO",
 						"idToken", "invalid_token"
 					),
-					"termAgreement", Map.of(
-						"termAgreements", Map.of(
-							"1", true,
-							"2", true,
-							"3", false
-						)
-					),
+					"termAgreements", Map.of(
+						"1", true,
+						"2", true,
+						"3", false
+						),
 					"signupPayload", Map.of(
 						"deviceOs", "ios",
 						"deviceId", "invalid_token_device_id",
@@ -413,13 +424,6 @@ class AuthControllerTest extends ContextTest {
 					"oidcPayload", Map.of(
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
-					),
-					"termAgreement", Map.of(
-						"termAgreements", Map.of(
-							"1", true,
-							"2", true,
-							"3", false
-						)
 					)
 				))
 				.post("/api/v1/auth/oidc/promote")
@@ -438,17 +442,12 @@ class AuthControllerTest extends ContextTest {
 				"SELECT * FROM barlow_user WHERE no = ?", 1L
 			);
 
-			List<Map<String, Object>> termAgreements = jdbcTemplate.queryForList(
-				"SELECT * FROM term_agreement WHERE member_no = ?", 1L
-			);
-
 			Map<String, Object> authProvider = jdbcTemplate.queryForMap(
 				"SELECT * FROM auth_provider WHERE member_no = ?", 1L
 			);
 
 			assertAll(
 				() -> assertThat(updatedUser).containsEntry("ROLE", "MEMBER"),
-				() -> assertThat(termAgreements).hasSize(3),
 				() -> assertThat(authProvider).containsEntry("PROVIDER", "KAKAO"),
 				() -> assertThat(authProvider).containsEntry("SUB", TEST_SUB)
 			);
@@ -474,13 +473,6 @@ class AuthControllerTest extends ContextTest {
 					"oidcPayload", Map.of(
 						"authProvider", "KAKAO",
 						"idToken", "mock_id_token"
-					),
-					"termAgreement", Map.of(
-						"termAgreements", Map.of(
-							"1", true,
-							"2", true,
-							"3", false
-						)
 					)
 				))
 				.post("/api/v1/auth/oidc/promote")
@@ -514,13 +506,6 @@ class AuthControllerTest extends ContextTest {
 					"oidcPayload", Map.of(
 						"authProvider", "GOOGLE",
 						"idToken", "mock_id_token"
-					),
-					"termAgreement", Map.of(
-						"termAgreements", Map.of(
-							"1", true,
-							"2", true,
-							"3", false
-						)
 					)
 				))
 				.post("/api/v1/auth/oidc/promote")
@@ -562,13 +547,6 @@ class AuthControllerTest extends ContextTest {
 					"oidcPayload", Map.of(
 						"authProvider", "KAKAO",
 						"idToken", "invalid_token"
-					),
-					"termAgreement", Map.of(
-						"termAgreements", Map.of(
-							"1", true,
-							"2", true,
-							"3", false
-						)
 					)
 				))
 				.post("/api/v1/auth/oidc/promote")

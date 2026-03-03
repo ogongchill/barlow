@@ -57,7 +57,10 @@ public class AuthController {
 	public ApiResponse<LoginResponse> guestSignup(@RequestBody SignupRequest request) {
 		log.info("Received guest signup request.");
 		request.validate();
-		User guest = accountCreateService.createGuest(request.toGuestCommand());
+		User guest = accountCreateService.createGuest(
+			request.toGuestCommand(),
+			request.toTermAgreements(LocalDateTime.now())
+		);
 		AccessToken accessToken = accessTokenProvider.issue(guest);
 		return ApiResponse.success(new LoginResponse(accessToken.getValue()));
 	}
@@ -92,8 +95,7 @@ public class AuthController {
 		log.info("Received oidc promote request.");
 		MemberPromoteCommand command = request.toCommand(
 				passport::getUser,
-				oidcAuthenticationService::authenticate,
-				LocalDateTime.now()
+				oidcAuthenticationService::authenticate
 		);
 		User member = memberRegisterService.promoteToMember(command);
 		AccessToken accessToken = accessTokenProvider.issue(member);

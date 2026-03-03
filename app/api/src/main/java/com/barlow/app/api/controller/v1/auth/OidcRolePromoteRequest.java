@@ -5,24 +5,20 @@ import com.barlow.core.domain.account.authprovider.ExternalPrincipal;
 import com.barlow.core.domain.account.create.MemberPromoteCommand;
 import com.barlow.services.auth.authentication.oauth.OidcAuthenticationRequest;
 
-import java.time.LocalDateTime;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public record OidcRolePromoteRequest(
-    TermAgreementRequest termAgreement,
     OidcPayload oidcPayload
 ) {
 
     MemberPromoteCommand toCommand(
             Supplier<User> userSupplier,
-            Function<OidcAuthenticationRequest, ExternalPrincipal> authenticator,
-            LocalDateTime submittedAt
+            Function<OidcAuthenticationRequest, ExternalPrincipal> authenticator
     ) {
         return new MemberPromoteCommand(
                 authenticator.apply(oidcPayload.toAuthenticationRequest()),
-                userSupplier.get(),
-                termAgreement.toTermAgreements(submittedAt)
+                userSupplier.get()
         );
     }
 }
