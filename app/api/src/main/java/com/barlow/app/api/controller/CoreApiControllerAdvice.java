@@ -50,21 +50,25 @@ public class CoreApiControllerAdvice {
 			default -> log.info(CORE_AUTH_EXCEPTION_MESSAGE_TEMPLATE, e.getMessage(), e);
 		}
 		return new ResponseEntity<>(
-			ApiResponse.error(e.getErrorCode(), e.getErrorMessage(), e.getData()),
+			ApiResponse.error(e.getErrorCode(), e.getErrorType().getMessage(), e.getData()),
 			e.getErrorStatus()
 		);
 	}
 
 	@ExceptionHandler(CoreDomainException.class)
 	public ResponseEntity<ApiResponse<Void>> handleCoreException(CoreDomainException e) {
+		CoreApiErrorType errorType = CoreApiErrorType.findByErrorCode(e.getCode());
 		switch (e.getLevel()) {
 			case BUSINESS -> log.warn("Business exception : {}", e.getMessage(), e);
-			case IMPLEMENTATION -> log.warn("Implementation exception : {}", e.getMessage(), e);
+			case IMPLEMENTATION -> {
+				log.error("Implementation exception : {}", e.getMessage(), e);
+				alerter.alert(String.format("CoreDomainException(IMPLEMENTATION) : %s", e.getMessage()));
+			}
 			default -> log.warn("Unknown exception : {}", e.getMessage(), e);
 		}
 		return new ResponseEntity<>(
-			ApiResponse.error(e.getCode().name(), e.getMessage()),
-			CoreApiErrorType.findByErrorCode(e.getCode()).getStatus()
+			ApiResponse.error(errorType),
+			errorType.getStatus()
 		);
 	}
 

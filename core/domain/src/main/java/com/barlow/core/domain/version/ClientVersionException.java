@@ -11,6 +11,6 @@ public class ClientVersionException extends CoreDomainException {
     }
 
     public static ClientVersionException invalidVersion(String message) {
-        return new ClientVersionException(CoreDomainExceptionCode.E400, CoreDomainExceptionLevel.IMPLEMENTATION, message);
+        return new ClientVersionException(CoreDomainExceptionCode.E400, CoreDomainExceptionLevel.BUSINESS, message);
     }
 }

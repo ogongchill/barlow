@@ -6,5 +6,6 @@ public enum CoreDomainExceptionCode {
 	E403,
 	E404,
 	E409,
+	E500,
 	;
 }
