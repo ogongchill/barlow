@@ -3,9 +3,9 @@ jar.enabled = false
 
 dependencies {
     implementation project(":core:domain")
-    implementation project(":core:storage")
-    implementation project(":services:notification")
-    implementation project(":clients:client-knal-api")
+    implementation project(":infra:storage")
+    implementation project(":infra:notification")
+    implementation project(":infra:clients:knal-api")
     implementation project(":support:logging")
     implementation project(":support:monitoring")
     implementation project(":support:alert")
@@ -22,9 +22,9 @@ dependencies {
 }
 
 tasks.register('copyResourcesConfig', Copy) {
-    from project(':core:storage').file('src/main/resources')
-    from project(':services:notification').file('src/main/resources')
-    from project(':clients:client-knal-api').file('src/main/resources')
+    from project(':infra:storage').file('src/main/resources')
+    from project(':infra:notification').file('src/main/resources')
+    from project(':infra:clients:knal-api').file('src/main/resources')
     from project(':support:alert').file('src/main/resources')
     from project(':support:monitoring').file('src/main/resources')
     from project(':support:logging').file('src/main/resources')

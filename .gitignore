@@ -42,11 +42,7 @@ services/notification/src/main/resources/firebase/*.json
 ### http client private env json
 http/http-client.private.env.json
 
-### localstack
-infra
 
-## admin
-batch
 
 ## k6 부하 테스트 secret
 k6/common-secret.json
