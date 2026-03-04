@@ -15,7 +15,7 @@ import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.billpost.BillPost;
 import com.barlow.core.domain.billpost.BillPostDetailQuery;
 import com.barlow.core.domain.billpost.BillPostQuery;
-import com.barlow.core.service.business.billpost.BillPostRetrieveService;
+import com.barlow.core.service.billpost.BillPostRetrieveService;
 import com.barlow.core.domain.billpost.BillPostsStatus;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.app.support.response.ApiResponse;

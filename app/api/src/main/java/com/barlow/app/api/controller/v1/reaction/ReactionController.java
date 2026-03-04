@@ -12,7 +12,7 @@ import com.barlow.app.support.response.ApiResponse;
 import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.reaction.Reaction;
 import com.barlow.core.domain.reaction.ReactionQuery;
-import com.barlow.core.service.business.reaction.ReactionService;
+import com.barlow.core.service.reaction.ReactionService;
 import com.barlow.core.domain.reaction.ReactionStatus;
 import com.barlow.core.enumerate.ReactionTarget;
 import com.barlow.core.enumerate.ReactionType;

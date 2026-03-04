@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.core.domain.Passport;
-import com.barlow.core.service.business.home.HomeRetrieveFacade;
+import com.barlow.core.service.home.HomeRetrieveFacade;
 import com.barlow.core.enumerate.NotificationTopic;
 import com.barlow.app.support.response.ApiResponse;
 import com.barlow.infra.auth.support.annotation.PassportUser;

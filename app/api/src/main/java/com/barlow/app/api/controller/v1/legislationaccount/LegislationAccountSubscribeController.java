@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.core.domain.Passport;
-import com.barlow.core.service.business.legislationaccount.LegislationAccountSubscribeService;
+import com.barlow.core.service.legislationaccount.LegislationAccountSubscribeService;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.app.support.response.ApiResponse;
 import com.barlow.infra.auth.support.annotation.PassportUser;

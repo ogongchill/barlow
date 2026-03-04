@@ -23,7 +23,7 @@ import org.mockito.Mock;
 import org.springframework.util.LinkedMultiValueMap;
 
 import com.barlow.DevelopTest;
-import com.barlow.core.service.implement.billpost.BillPostReader;
+import com.barlow.core.service.billpost.BillPostReader;
 import com.barlow.core.support.SortKey;
 
 class BillPostReaderTest extends DevelopTest {
