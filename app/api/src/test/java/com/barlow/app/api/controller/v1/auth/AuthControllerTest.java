@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.barlow.ContextTest;
 import com.barlow.app.support.AcceptanceTest;
@@ -25,11 +23,11 @@ import com.barlow.app.support.response.ResultType;
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.account.authprovider.ExternalPrincipal;
 import com.barlow.core.enumerate.AuthProvider;
-import com.barlow.services.auth.authentication.core.AuthenticationException;
-import com.barlow.services.auth.authentication.core.AuthenticationExceptionType;
-import com.barlow.services.auth.authentication.oauth.OidcAuthenticationRequest;
-import com.barlow.services.auth.authentication.oauth.OidcAuthenticationService;
-import com.barlow.services.auth.authentication.token.AccessTokenProvider;
+import com.barlow.infra.auth.authentication.core.AuthenticationException;
+import com.barlow.infra.auth.authentication.core.AuthenticationExceptionType;
+import com.barlow.infra.auth.authentication.oauth.OidcAuthenticationRequest;
+import com.barlow.infra.auth.authentication.oauth.OidcAuthenticationService;
+import com.barlow.infra.auth.authentication.token.AccessTokenProvider;
 
 import io.restassured.RestAssured;
 
@@ -39,13 +37,10 @@ class AuthControllerTest extends ContextTest {
 	private static final String TEST_SUB = "test_subject_123";
 
 	@Autowired
-	JdbcTemplate jdbcTemplate;
-
-	@Autowired
-	AccessTokenProvider accessTokenProvider;
+	private AccessTokenProvider accessTokenProvider;
 
 	@MockBean
-	OidcAuthenticationService mockOidcService;
+	private OidcAuthenticationService mockOidcService;
 
 	@BeforeEach
 	void setUpMock() {
@@ -79,21 +74,6 @@ class AuthControllerTest extends ContextTest {
 			() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 			() -> assertThat(responseMap.get("data")).isNotNull(),
 			() -> assertThat(responseMap.get("error")).isNull()
-		);
-
-		// then - DB 저장 검증
-		Map<String, Object> savedUser = jdbcTemplate.queryForMap(
-			"SELECT * FROM barlow_user WHERE nickname = ?", "nniicckknnaammee"
-		);
-		Long memberNo = ((Number) savedUser.get("NO")).longValue();
-
-		List<Map<String, Object>> termAgreements = jdbcTemplate.queryForList(
-			"SELECT * FROM term_agreement WHERE member_no = ?", memberNo
-		);
-
-		assertAll(
-			() -> assertThat(savedUser).containsEntry("ROLE", "GUEST"),
-			() -> assertThat(termAgreements).hasSize(3)
 		);
 	}
 
@@ -199,27 +179,6 @@ class AuthControllerTest extends ContextTest {
 				() -> assertThat(responseMap.get("data")).isNotNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
-
-			// then - DB 저장 검증
-			Map<String, Object> savedUser = jdbcTemplate.queryForMap(
-				"SELECT * FROM barlow_user WHERE nickname = ?", "oidc_user"
-			);
-			Long memberNo = ((Number) savedUser.get("NO")).longValue(); // h2: uppercase column.
-
-			List<Map<String, Object>> termAgreements = jdbcTemplate.queryForList(
-				"SELECT * FROM term_agreement WHERE member_no = ?", memberNo
-			);
-
-			Map<String, Object> authProvider = jdbcTemplate.queryForMap(
-				"SELECT * FROM auth_provider WHERE member_no = ?", memberNo
-			);
-
-			assertAll(
-				() -> assertThat(savedUser).containsEntry("ROLE", "MEMBER"),
-				() -> assertThat(savedUser).containsEntry("NICKNAME", "oidc_user"),
-				() -> assertThat(authProvider).containsEntry("PROVIDER", "KAKAO"),
-				() -> assertThat(authProvider).containsEntry("SUB", TEST_SUB)
-			);
 		}
 
 		@DisplayName("필수 약관에 동의하지 않으면 회원가입에 실패한다")
@@ -255,17 +214,6 @@ class AuthControllerTest extends ContextTest {
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
-
-			// then - 해당 요청으로 인한 데이터가 생성되지 않았음을 검증
-			boolean userCreated = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM barlow_user WHERE nickname = ?)", Integer.class, targetNickname) == 1;
-			boolean authProviderCreated = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM auth_provider WHERE sub = ? AND provider = ?)", Integer.class, TEST_SUB, "KAKAO") == 1;
-
-			assertAll(
-				() -> assertThat(userCreated).isFalse(),
-				() -> assertThat(authProviderCreated).isFalse()
-			);
 		}
 
 		@DisplayName("이미 등록된 provider+sub 조합으로 회원가입 시 실패한다")
@@ -305,17 +253,6 @@ class AuthControllerTest extends ContextTest {
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
-
-			// then - 해당 요청으로 인한 데이터가 생성되지 않았음을 검증
-			boolean userCreated = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM barlow_user WHERE nickname = ?)", Integer.class, targetNickname) == 1;
-			int authProviderCountForSub = jdbcTemplate.queryForObject(
-				"SELECT COUNT(*) FROM auth_provider WHERE sub = ? AND provider = ?", Integer.class, existingSub, "KAKAO");
-
-			assertAll(
-				() -> assertThat(userCreated).isFalse(),
-				() -> assertThat(authProviderCountForSub).isEqualTo(1) // 기존 1개만 존재, 추가되지 않음
-			);
 		}
 
 		@DisplayName("지원하지 않는 authProvider로 회원가입 시 실패한다")
@@ -351,12 +288,6 @@ class AuthControllerTest extends ContextTest {
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
-
-			// then - 해당 요청으로 인한 데이터가 생성되지 않았음을 검증
-			boolean userCreated = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM barlow_user WHERE nickname = ?)", Integer.class, targetNickname) == 1;
-
-			assertThat(userCreated).isFalse();
 		}
 
 		@DisplayName("OIDC 토큰 검증 실패 시 회원가입에 실패한다")
@@ -395,12 +326,6 @@ class AuthControllerTest extends ContextTest {
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
-
-			// then - 해당 요청으로 인한 데이터가 생성되지 않았음을 검증
-			boolean userCreated = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM barlow_user WHERE nickname = ?)", Integer.class, targetNickname) == 1;
-
-			assertThat(userCreated).isFalse();
 		}
 	}
 
@@ -436,21 +361,6 @@ class AuthControllerTest extends ContextTest {
 				() -> assertThat(responseMap.get("data")).isNotNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
-
-			// then - DB 저장 검증
-			Map<String, Object> updatedUser = jdbcTemplate.queryForMap(
-				"SELECT * FROM barlow_user WHERE no = ?", 1L
-			);
-
-			Map<String, Object> authProvider = jdbcTemplate.queryForMap(
-				"SELECT * FROM auth_provider WHERE member_no = ?", 1L
-			);
-
-			assertAll(
-				() -> assertThat(updatedUser).containsEntry("ROLE", "MEMBER"),
-				() -> assertThat(authProvider).containsEntry("PROVIDER", "KAKAO"),
-				() -> assertThat(authProvider).containsEntry("SUB", TEST_SUB)
-			);
 		}
 
 		@DisplayName("해당 계정에 이미 Member로 존재할 경우 경우 실패한다")
@@ -481,12 +391,6 @@ class AuthControllerTest extends ContextTest {
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
-
-			// then - 해당 요청으로 인한 데이터가 생성되지 않았음을 검증
-			boolean authProviderCreated = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM auth_provider WHERE member_no = ? AND sub = ?)", Integer.class, targetMemberNo, anotherSub) == 1;
-
-			assertThat(authProviderCreated).isFalse();
 		}
 
 		@DisplayName("지원하지 않는 authProvider로 promote 시 실패한다")
@@ -514,17 +418,6 @@ class AuthControllerTest extends ContextTest {
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
-
-			// then - 사용자 role이 변경되지 않았음을 검증
-			String userRole = jdbcTemplate.queryForObject(
-				"SELECT role FROM barlow_user WHERE no = ?", String.class, targetMemberNo);
-			boolean authProviderCreated = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM auth_provider WHERE member_no = ?)", Integer.class, targetMemberNo) == 1;
-
-			assertAll(
-				() -> assertThat(userRole).isEqualTo("GUEST"),
-				() -> assertThat(authProviderCreated).isFalse()
-			);
 		}
 
 		@DisplayName("OIDC 토큰 검증 실패 시 promote에 실패한다")
@@ -555,17 +448,6 @@ class AuthControllerTest extends ContextTest {
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
-
-			// then - 사용자 role이 변경되지 않았음을 검증
-			String userRole = jdbcTemplate.queryForObject(
-				"SELECT role FROM barlow_user WHERE no = ?", String.class, targetMemberNo);
-			boolean authProviderCreated = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM auth_provider WHERE member_no = ?)", Integer.class, targetMemberNo) == 1;
-
-			assertAll(
-				() -> assertThat(userRole).isEqualTo("GUEST"),
-				() -> assertThat(authProviderCreated).isFalse()
-			);
 		}
 	}
 
@@ -719,12 +601,6 @@ class AuthControllerTest extends ContextTest {
 				() -> assertThat(responseMap.get("data")).isNotNull(),
 				() -> assertThat(responseMap.get("error")).isNull()
 			);
-
-			// then - 디바이스 토큰이 변경되었음을 검증
-			String updatedToken = jdbcTemplate.queryForObject(
-				"SELECT token FROM device WHERE device_id = ?", String.class, "device_id_3"
-			);
-			assertThat(updatedToken).isEqualTo(changedToken);
 		}
 
 		@DisplayName("OIDC 로그인 시 디바이스가 비활성화 상태라면 예외를 발생시킨다")

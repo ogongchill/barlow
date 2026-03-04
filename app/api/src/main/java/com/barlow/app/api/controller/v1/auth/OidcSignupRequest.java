@@ -4,7 +4,7 @@ import com.barlow.core.domain.account.authprovider.ExternalPrincipal;
 import com.barlow.core.domain.account.create.MemberCreateCommand;
 import com.barlow.core.domain.account.term.TermAgreement;
 import com.barlow.core.enumerate.DeviceOs;
-import com.barlow.services.auth.authentication.oauth.OidcAuthenticationRequest;
+import com.barlow.infra.auth.authentication.oauth.OidcAuthenticationRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;

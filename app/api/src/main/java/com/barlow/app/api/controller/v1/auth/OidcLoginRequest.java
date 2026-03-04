@@ -5,7 +5,7 @@ import com.barlow.app.support.validate.Validatable;
 import com.barlow.core.domain.account.login.MemberLoginCommand;
 import com.barlow.core.domain.account.authprovider.ExternalPrincipal;
 import com.barlow.core.enumerate.DeviceOs;
-import com.barlow.services.auth.authentication.oauth.OidcAuthenticationRequest;
+import com.barlow.infra.auth.authentication.oauth.OidcAuthenticationRequest;
 
 import java.util.function.Function;
 

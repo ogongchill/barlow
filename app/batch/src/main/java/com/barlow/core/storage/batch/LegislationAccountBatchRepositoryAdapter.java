@@ -1,4 +1,4 @@
-package com.barlow.core.storage.batch;
+package com.barlow.infra.storage.batch;
 
 import org.springframework.stereotype.Component;
 

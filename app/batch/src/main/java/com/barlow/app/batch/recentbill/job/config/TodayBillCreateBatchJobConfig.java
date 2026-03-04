@@ -26,7 +26,7 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import com.barlow.app.batch.recentbill.job.listener.BillProposerReaderStepExecutionContextSharingListener;
 import com.barlow.app.batch.recentbill.job.step.BillProposer;
 import com.barlow.app.batch.common.StepLoggingListener;
-import com.barlow.client.knal.opendata.api.OpenDataException;
+import com.barlow.infra.knal.opendata.api.OpenDataException;
 
 @Configuration
 public class TodayBillCreateBatchJobConfig {

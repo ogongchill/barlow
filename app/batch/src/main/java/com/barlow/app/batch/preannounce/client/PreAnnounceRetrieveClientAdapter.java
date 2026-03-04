@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 import com.barlow.app.batch.preannounce.job.CurrentPreAnnounceBills;
 import com.barlow.app.batch.preannounce.job.PreAnnounceRetrieveClient;
 import com.barlow.app.batch.preannounce.job.PreAnnounceBatchEntity;
-import com.barlow.client.knal.opencongress.api.OpenCongressApiPort;
-import com.barlow.client.knal.opencongress.api.common.DefaultRequest;
-import com.barlow.client.knal.opencongress.api.preannounce.PreAnnouncementResponse;
+import com.barlow.infra.knal.opencongress.api.OpenCongressApiPort;
+import com.barlow.infra.knal.opencongress.api.common.DefaultRequest;
+import com.barlow.infra.knal.opencongress.api.preannounce.PreAnnouncementResponse;
 import com.barlow.core.enumerate.LegislationType;
 
 @Component

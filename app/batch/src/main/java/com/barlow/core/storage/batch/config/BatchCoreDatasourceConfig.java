@@ -1,4 +1,4 @@
-package com.barlow.core.storage.batch.config;
+package com.barlow.infra.storage.batch.config;
 
 import javax.sql.DataSource;
 

@@ -2,7 +2,7 @@ package com.barlow.app.api.controller.v1.version;
 
 import com.barlow.app.support.response.ApiResponse;
 import com.barlow.core.domain.version.ClientVersionQuery;
-import com.barlow.core.domain.version.ClientVersionService;
+import com.barlow.core.service.business.version.ClientVersionService;
 import com.barlow.core.enumerate.ClientVersionStatus;
 import com.barlow.core.enumerate.DeviceOs;
 

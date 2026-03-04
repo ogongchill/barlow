@@ -18,15 +18,15 @@ public class Device {
 		this.status = status;
 	}
 
-	boolean isInactive() {
+	public boolean isInactive() {
 		return status == Status.INACTIVE;
 	}
 
-	boolean isChanged(String token) {
+	public boolean isChanged(String token) {
 		return !deviceToken.equals(token);
 	}
 
-	Device modifyToken(String newToken) {
+	public Device modifyToken(String newToken) {
 		return new Device(userNo, deviceId, deviceOs, newToken, status);
 	}
 

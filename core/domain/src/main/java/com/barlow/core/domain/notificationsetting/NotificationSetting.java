@@ -15,11 +15,11 @@ public class NotificationSetting {
 		this.isNotifiable = isNotifiable;
 	}
 
-	NotificationSetting activate() {
+	public NotificationSetting activate() {
 		return new NotificationSetting(user, notificationTopic, true);
 	}
 
-	NotificationSetting deactivate() {
+	public NotificationSetting deactivate() {
 		return new NotificationSetting(user, notificationTopic, false);
 	}
 

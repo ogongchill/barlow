@@ -14,10 +14,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 @ComponentScan(basePackages = {
 	"com.barlow.core.enumerate",
-	"com.barlow.client.knal",
-	"com.barlow.core.storage.batch",
-	"com.barlow.core.storage.notification",
-	"com.barlow.services.notification",
+	"com.barlow.infra.knal",
+	"com.barlow.infra.storage.batch",
+	"com.barlow.infra.storage.notification",
+	"com.barlow.infra.notification",
 	"com.barlow.support.alert"})
 @EnableBatchProcessing(
 	dataSourceRef = "batchCoreDataSource",

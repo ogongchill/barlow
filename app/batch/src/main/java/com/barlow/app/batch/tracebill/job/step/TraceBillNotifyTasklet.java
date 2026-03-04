@@ -1,6 +1,6 @@
 package com.barlow.app.batch.tracebill.job.step;
 
-import static com.barlow.services.notification.NotificationRequest.BillInfo;
+import static com.barlow.infra.notification.NotificationRequest.BillInfo;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -18,8 +18,8 @@ import com.barlow.app.batch.tracebill.TraceBillConstant;
 import com.barlow.app.batch.tracebill.job.UpdatedBillShareRepository;
 import com.barlow.app.batch.tracebill.job.UpdatedBills;
 import com.barlow.core.enumerate.NotificationTopic;
-import com.barlow.services.notification.DefaultBillNotificationRequest;
-import com.barlow.services.notification.NotificationSendPort;
+import com.barlow.infra.notification.DefaultBillNotificationRequest;
+import com.barlow.infra.notification.NotificationSendPort;
 
 @Component
 @StepScope

@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 
 import com.barlow.app.batch.tracebill.job.BillTrackingClient;
 import com.barlow.app.batch.tracebill.job.CurrentBillInfoResult;
-import com.barlow.client.knal.opendata.api.OpenDataApiPort;
-import com.barlow.client.knal.opendata.api.request.BillInfoListRequest;
-import com.barlow.client.knal.opendata.api.request.BillPreliminaryExaminationInfoRequest;
-import com.barlow.client.knal.opendata.api.response.BillInfoListResponse;
-import com.barlow.client.knal.opendata.api.response.BillPreliminaryExaminationInfoResponse;
-import com.barlow.client.knal.opendata.api.response.item.BillInfoListItem;
-import com.barlow.client.knal.opendata.api.response.item.BillPreliminaryExaminationInfoItem;
+import com.barlow.infra.knal.opendata.api.OpenDataApiPort;
+import com.barlow.infra.knal.opendata.api.request.BillInfoListRequest;
+import com.barlow.infra.knal.opendata.api.request.BillPreliminaryExaminationInfoRequest;
+import com.barlow.infra.knal.opendata.api.response.BillInfoListResponse;
+import com.barlow.infra.knal.opendata.api.response.BillPreliminaryExaminationInfoResponse;
+import com.barlow.infra.knal.opendata.api.response.item.BillInfoListItem;
+import com.barlow.infra.knal.opendata.api.response.item.BillPreliminaryExaminationInfoItem;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.enumerate.ProgressStatus;
 

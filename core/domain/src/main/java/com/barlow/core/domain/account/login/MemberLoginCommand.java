@@ -10,7 +10,7 @@ public record MemberLoginCommand(
     String deviceToken,
     ExternalPrincipal externalPrincipal
 ) {
-    DeviceQuery toDeviceQuery() {
+    public DeviceQuery toDeviceQuery() {
         return new DeviceQuery(deviceId, deviceOs);
     }
 }

@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.core.domain.Passport;
-import com.barlow.core.domain.notificationsetting.NotificationSettingService;
+import com.barlow.core.service.business.notificationsetting.NotificationSettingService;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.app.support.response.ApiResponse;
-import com.barlow.services.auth.support.annotation.PassportUser;
+import com.barlow.infra.auth.support.annotation.PassportUser;
 
 @RestController
 @RequestMapping("/api/v1/legislation-accounts/{legislationType}/notification-setting")

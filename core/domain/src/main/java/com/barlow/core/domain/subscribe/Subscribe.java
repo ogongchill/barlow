@@ -18,11 +18,11 @@ public class Subscribe {
 		this.info = new SubscriptionInfo(subscribeAccountNo, subscribeAccountType, isSubscribed);
 	}
 
-	Subscribe activate() {
+	public Subscribe activate() {
 		return new Subscribe(subscriber, info.subscribeAccountNo, info.subscribeAccountType, true);
 	}
 
-	Subscribe deactivate() {
+	public Subscribe deactivate() {
 		return new Subscribe(subscriber, info.subscribeAccountNo, info.subscribeAccountType, false);
 	}
 

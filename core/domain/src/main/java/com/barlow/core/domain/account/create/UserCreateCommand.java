@@ -43,15 +43,15 @@ public record UserCreateCommand(
 		);
 	}
 
-	DeviceQuery toDeviceQuery() {
+	public DeviceQuery toDeviceQuery() {
 		return new DeviceQuery(deviceId, os);
 	}
 
-	UserRegisterCommand toUserRegisterCommand() {
+	public UserRegisterCommand toUserRegisterCommand() {
 		return new UserRegisterCommand(nickname, role);
 	}
 
-	DeviceRegisterCommand toDeviceCommand(long userNo) {
+	public DeviceRegisterCommand toDeviceCommand(long userNo) {
 		return new DeviceRegisterCommand(deviceId, os, deviceToken, userNo);
 	}
 }

@@ -21,7 +21,7 @@ import com.barlow.app.batch.recentbill.job.TodayBillRetrieveClient;
 import com.barlow.app.batch.recentbill.job.TodayBillInfoBatchEntity;
 import com.barlow.app.batch.recentbill.job.RecentBillJobScopeShareRepository;
 import com.barlow.app.batch.common.AbstractExecutionContextSharingManager;
-import com.barlow.client.knal.opendata.api.OpenDataException;
+import com.barlow.infra.knal.opendata.api.OpenDataException;
 
 @Component
 @StepScope

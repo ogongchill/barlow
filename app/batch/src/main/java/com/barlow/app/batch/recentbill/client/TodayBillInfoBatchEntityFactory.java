@@ -4,7 +4,7 @@ import static com.barlow.app.batch.recentbill.job.TodayBillInfoBatchEntity.*;
 
 import java.util.Optional;
 
-import com.barlow.client.knal.opendata.api.response.item.BillInfoListItem;
+import com.barlow.infra.knal.opendata.api.response.item.BillInfoListItem;
 import com.barlow.core.enumerate.ProgressStatus;
 import com.barlow.core.enumerate.ProposerType;
 

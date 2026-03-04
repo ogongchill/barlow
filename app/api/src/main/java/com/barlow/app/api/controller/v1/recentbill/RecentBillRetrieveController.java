@@ -15,10 +15,10 @@ import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.billpost.BillPostDetailQuery;
 import com.barlow.core.domain.billpost.BillPostQuery;
 import com.barlow.core.domain.billpost.BillPost;
-import com.barlow.core.domain.billpost.BillPostRetrieveService;
+import com.barlow.core.service.business.billpost.BillPostRetrieveService;
 import com.barlow.core.domain.billpost.BillPostsStatus;
 import com.barlow.app.support.response.ApiResponse;
-import com.barlow.services.auth.support.annotation.PassportUser;
+import com.barlow.infra.auth.support.annotation.PassportUser;
 
 @RestController
 @RequestMapping("/api/v1/recent-bill")

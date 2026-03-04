@@ -8,7 +8,7 @@ public record LoginCommand(
 	DeviceOs deviceOs,
 	String deviceToken
 ) {
-	DeviceQuery toDeviceQuery() {
+	public DeviceQuery toDeviceQuery() {
 		return new DeviceQuery(deviceId, deviceOs);
 	}
 }

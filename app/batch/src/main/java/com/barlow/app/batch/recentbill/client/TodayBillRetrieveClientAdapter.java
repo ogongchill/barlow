@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 import com.barlow.app.batch.recentbill.job.BillProposerInfoBatchEntity;
 import com.barlow.app.batch.recentbill.job.TodayBillRetrieveClient;
 import com.barlow.app.batch.recentbill.job.TodayBillInfoBatchEntity;
-import com.barlow.client.knal.opendata.api.OpenDataApiPort;
-import com.barlow.client.knal.opendata.api.request.BillInfoListRequest;
-import com.barlow.client.knal.opendata.api.request.BillPetitionMemberListRequest;
-import com.barlow.client.knal.opendata.api.response.BillInfoListResponse;
-import com.barlow.client.knal.opendata.api.response.BillPetitionMemberListResponse;
+import com.barlow.infra.knal.opendata.api.OpenDataApiPort;
+import com.barlow.infra.knal.opendata.api.request.BillInfoListRequest;
+import com.barlow.infra.knal.opendata.api.request.BillPetitionMemberListRequest;
+import com.barlow.infra.knal.opendata.api.response.BillInfoListResponse;
+import com.barlow.infra.knal.opendata.api.response.BillPetitionMemberListResponse;
 
 @Component
 public class TodayBillRetrieveClientAdapter implements TodayBillRetrieveClient {

@@ -4,8 +4,8 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.barlow.services.auth.support.filter.FilterExceptionHandler;
-import com.barlow.services.auth.support.filter.InboundJwtAuthenticationFilter;
+import com.barlow.infra.auth.support.filter.FilterExceptionHandler;
+import com.barlow.infra.auth.support.filter.InboundJwtAuthenticationFilter;
 
 @Configuration
 public class WebFilterConfiguration {
