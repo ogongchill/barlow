@@ -1,6 +1,6 @@
-package com.barlow.services.notification;
+package com.barlow.infra.notification;
 
-import static com.barlow.services.notification.DefaultMessageTemplate.Default;
+import static com.barlow.infra.notification.DefaultMessageTemplate.Default;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 

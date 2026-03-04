@@ -1,4 +1,4 @@
-package com.barlow.services.notification.worker;
+package com.barlow.infra.notification.worker;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
