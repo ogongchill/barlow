@@ -14,11 +14,8 @@ public class WebFilterConfiguration {
 	private final FilterExceptionHandler filterExceptionHandler;
 	private final InboundJwtAuthenticationFilter inboundJwtAuthenticationFilter;
 
-	public WebFilterConfiguration(
-		HandlerValidationFilter handlerValidationFilter,
-		FilterExceptionHandler filterExceptionHandler,
-		InboundJwtAuthenticationFilter inboundJwtAuthenticationFilter
-	) {
+	public WebFilterConfiguration(HandlerValidationFilter handlerValidationFilter,
+		FilterExceptionHandler filterExceptionHandler, InboundJwtAuthenticationFilter inboundJwtAuthenticationFilter) {
 		this.handlerValidationFilter = handlerValidationFilter;
 		this.filterExceptionHandler = filterExceptionHandler;
 		this.inboundJwtAuthenticationFilter = inboundJwtAuthenticationFilter;

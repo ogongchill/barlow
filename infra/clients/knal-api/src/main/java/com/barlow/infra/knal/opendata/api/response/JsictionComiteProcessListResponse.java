@@ -5,8 +5,6 @@ import com.barlow.infra.knal.opendata.api.response.common.OpenDataResponse;
 import com.barlow.infra.knal.opendata.api.response.common.SuccessHeader;
 import com.barlow.infra.knal.opendata.api.response.item.JsictionComiteProcessListItem;
 
-public record JsictionComiteProcessListResponse(
-	SuccessHeader header,
-	ItemResponseBody<JsictionComiteProcessListItem> body
-) implements OpenDataResponse<JsictionComiteProcessListItem> {
+public record JsictionComiteProcessListResponse(SuccessHeader header,
+	ItemResponseBody<JsictionComiteProcessListItem> body) implements OpenDataResponse<JsictionComiteProcessListItem> {
 }

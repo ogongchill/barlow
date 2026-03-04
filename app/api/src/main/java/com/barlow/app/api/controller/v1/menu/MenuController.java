@@ -27,21 +27,19 @@ public class MenuController {
 	}
 
 	@PostMapping("/notifications/{legislationType}/activate")
-	public ApiResponse<Void> activateNotify(
-		@PathVariable LegislationType legislationType,
-		@PassportUser Passport passport
-	) {
-		log.info("Received {} account notification setting activated for user {}", legislationType, passport.getUserNo());
+	public ApiResponse<Void> activateNotify(@PathVariable LegislationType legislationType,
+		@PassportUser Passport passport) {
+		log.info(
+			"Received {} account notification setting activated for user {}", legislationType, passport.getUserNo());
 		menuFacade.activateNotify(legislationType, passport.getUser());
 		return ApiResponse.success();
 	}
 
 	@PostMapping("/notifications/{legislationType}/deactivate")
-	public ApiResponse<Void> deactivateNotify(
-		@PathVariable LegislationType legislationType,
-		@PassportUser Passport passport
-	) {
-		log.info("Received {} account notification setting deactivated for user {}", legislationType, passport.getUserNo());
+	public ApiResponse<Void> deactivateNotify(@PathVariable LegislationType legislationType,
+		@PassportUser Passport passport) {
+		log.info(
+			"Received {} account notification setting deactivated for user {}", legislationType, passport.getUserNo());
 		menuFacade.deactivateNotify(legislationType, passport.getUser());
 		return ApiResponse.success();
 	}
@@ -49,6 +47,7 @@ public class MenuController {
 	@GetMapping("/notifications")
 	public ApiResponse<NotificationMenuResponse> retrieveNotifications(@PassportUser Passport passport) {
 		log.info("Received user {} notification setting request.", passport.getUserNo());
-		return ApiResponse.success(NotificationMenuResponse.from(menuFacade.retrieveNotificationSettingMenu(passport.getUser())));
+		return ApiResponse
+			.success(NotificationMenuResponse.from(menuFacade.retrieveNotificationSettingMenu(passport.getUser())));
 	}
 }

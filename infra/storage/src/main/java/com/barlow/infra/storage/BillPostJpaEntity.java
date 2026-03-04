@@ -55,16 +55,12 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 	@Embedded
 	private PreAnnouncementInfo preAnnouncementInfo;
 
-	protected BillPostJpaEntity() {
-	}
+	protected BillPostJpaEntity() {}
 
 	BillPost toBillPost() {
 		BillPost billPost = new BillPost(
-			new BillPost.BillInfo(billId, billName),
-			new BillPost.ProposerInfo(proposerType, proposers),
-			new BillPost.LegislationInfo(legislationType, progressStatus),
-			summary, detail, getCreatedAt(), viewCount
-		);
+			new BillPost.BillInfo(billId, billName), new BillPost.ProposerInfo(proposerType, proposers),
+			new BillPost.LegislationInfo(legislationType, progressStatus), summary, detail, getCreatedAt(), viewCount);
 		if (hasPreAnnouncementInfo()) {
 			billPost.assignPreAnnouncementInfo(getPreAnnouncementInfo());
 		}
@@ -77,18 +73,11 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 
 	private BillPost.PreAnnouncementInfo getPreAnnouncementInfo() {
 		return new BillPost.PreAnnouncementInfo(
-			preAnnouncementInfo.linkUrl,
-			preAnnouncementInfo.deadlineDate.toLocalDate()
-		);
+			preAnnouncementInfo.linkUrl, preAnnouncementInfo.deadlineDate.toLocalDate());
 	}
 
 	TodayBillPostThumbnail toTodayBillPostThumbnail() {
-		return new TodayBillPostThumbnail(
-			billId,
-			billName,
-			proposers,
-			getCreatedAt().toLocalDate()
-		);
+		return new TodayBillPostThumbnail(billId, billName, proposers, getCreatedAt().toLocalDate());
 	}
 
 	public String getBillId() {
@@ -116,7 +105,6 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 		@Column(name = "pre_announce_link_url")
 		private String linkUrl;
 
-		protected PreAnnouncementInfo() {
-		}
+		protected PreAnnouncementInfo() {}
 	}
 }

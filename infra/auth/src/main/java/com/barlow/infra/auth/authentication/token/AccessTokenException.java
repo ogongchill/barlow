@@ -14,9 +14,7 @@ public class AccessTokenException extends AuthenticationException {
 	}
 
 	public static AccessTokenException expired(long expiration) {
-		LocalDateTime dateTime = Instant.ofEpochMilli(expiration)
-			.atZone(ZoneId.systemDefault())
-			.toLocalDateTime();
+		LocalDateTime dateTime = Instant.ofEpochMilli(expiration).atZone(ZoneId.systemDefault()).toLocalDateTime();
 		return new AccessTokenException("토큰 만료됨 exp:" + dateTime, AuthenticationExceptionType.EXPIRED_CREDENTIAL);
 	}
 

@@ -37,24 +37,17 @@ class LegislationAccountBillPostRetrieveControllerTest extends ContextTest {
 		@DisplayName("사용자가 상임위원회 게시글을 전체 조회하면 게시글 전체 썸네일을 조회한다")
 		@Test
 		void retrieveBillPostThumbnail() {
-			Map<String, Object> responseMap = RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.queryParams(Map.of(
-					"page", 0,
-					"size", 10
-				))
-				.get("/api/v1/legislation-accounts/{legislationType}/bill-posts", LegislationType.HOUSE_STEERING)
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.headers(MANDATORY_DEVICE_HEADERS).when().queryParams(Map.of("page", 0, "size", 10))
+				.get("/api/v1/legislation-accounts/{legislationType}/bill-posts", LegislationType.HOUSE_STEERING).then()
+				.log().all().extract().jsonPath().getMap(".");
 
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 	}
 
@@ -70,8 +63,7 @@ class LegislationAccountBillPostRetrieveControllerTest extends ContextTest {
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 
 		@DisplayName("사용자가 존재하지 않는 법안 id 로 상임위원회 게시글을 상세 조회하면 예외를 발생시킨다")
@@ -82,14 +74,11 @@ class LegislationAccountBillPostRetrieveControllerTest extends ContextTest {
 		}
 
 		private Map<String, Object> retrievePostDetail(String billId) {
-			return RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.get("/api/v1/legislation-accounts/bill-posts/{billId}", billId)
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.headers(MANDATORY_DEVICE_HEADERS).when()
+				.get("/api/v1/legislation-accounts/bill-posts/{billId}", billId).then().log().all().extract().jsonPath()
+				.getMap(".");
 		}
 	}
 }

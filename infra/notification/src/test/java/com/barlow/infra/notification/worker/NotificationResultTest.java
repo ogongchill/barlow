@@ -20,8 +20,7 @@ class NotificationResultTest {
 		Message.builder().setToken("test").build(), MessagingErrorCode.QUOTA_EXCEEDED,
 		Message.builder().setToken("test").build(), MessagingErrorCode.SENDER_ID_MISMATCH,
 		Message.builder().setToken("test").build(), MessagingErrorCode.UNAVAILABLE,
-		Message.builder().setToken("test").build(), MessagingErrorCode.UNREGISTERED
-	);
+		Message.builder().setToken("test").build(), MessagingErrorCode.UNREGISTERED);
 	private final NotificationResult result = new NotificationResult(failedMessages);
 
 	@DisplayName("재시도 가능한 ErrorCode 들에 대한 메시지들을 반환한다")
@@ -48,16 +47,15 @@ class NotificationResultTest {
 		assertThat(actual).isTrue();
 	}
 
-
 	@DisplayName("재시도 가능한 ErrorCode 를 포함하고 있지 않으면 false 를 반환한다")
 	@Test
 	void hasRetryableFailure_false() {
-		NotificationResult givenResult = new NotificationResult(Map.of(
-			Message.builder().setToken("test").build(), MessagingErrorCode.THIRD_PARTY_AUTH_ERROR,
-			Message.builder().setToken("test").build(), MessagingErrorCode.INVALID_ARGUMENT,
-			Message.builder().setToken("test").build(), MessagingErrorCode.SENDER_ID_MISMATCH,
-			Message.builder().setToken("test").build(), MessagingErrorCode.UNREGISTERED
-		));
+		NotificationResult givenResult = new NotificationResult(
+			Map.of(
+				Message.builder().setToken("test").build(), MessagingErrorCode.THIRD_PARTY_AUTH_ERROR,
+				Message.builder().setToken("test").build(), MessagingErrorCode.INVALID_ARGUMENT,
+				Message.builder().setToken("test").build(), MessagingErrorCode.SENDER_ID_MISMATCH,
+				Message.builder().setToken("test").build(), MessagingErrorCode.UNREGISTERED));
 		boolean actual = givenResult.hasRetryableFailure();
 
 		assertThat(actual).isFalse();

@@ -36,7 +36,8 @@ public class ApiResponse<T> {
 	}
 
 	public static ApiResponse<Object> error(String errorCode, String errorMessage, Object errorData) {
-		return new ApiResponse<>(ResultType.ERROR, errorData, new CoreApiErrorMessage(errorCode, errorMessage, errorData));
+		return new ApiResponse<>(
+			ResultType.ERROR, errorData, new CoreApiErrorMessage(errorCode, errorMessage, errorData));
 	}
 
 	public ResultType getResult() {

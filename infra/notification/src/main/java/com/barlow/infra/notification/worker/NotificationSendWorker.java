@@ -22,11 +22,9 @@ public class NotificationSendWorker {
 	private final AndroidNotificationSender androidNotificationSender;
 	private final Executor sendExecutor;
 
-	public NotificationSendWorker(
-		IOSNotificationSender iosNotificationSender,
+	public NotificationSendWorker(IOSNotificationSender iosNotificationSender,
 		AndroidNotificationSender androidNotificationSender,
-		@Qualifier("asyncThreadPoolExecutor") Executor sendExecutor
-	) {
+		@Qualifier("asyncThreadPoolExecutor") Executor sendExecutor) {
 		this.iosNotificationSender = iosNotificationSender;
 		this.androidNotificationSender = androidNotificationSender;
 		this.sendExecutor = sendExecutor;
@@ -34,34 +32,27 @@ public class NotificationSendWorker {
 
 	public void invoke(MessageTemplate messageTemplate, Map<Topic, List<Subscriber>> topicsWithSubscribers) {
 		CompletableFuture.runAsync(
-			billNotificationTask(messageTemplate, topicsWithSubscribers, Subscriber::isIOS,
-				new IosMessageProvider(), iosNotificationSender
-			), sendExecutor
-		);
+			billNotificationTask(
+				messageTemplate, topicsWithSubscribers, Subscriber::isIOS, new IosMessageProvider(),
+				iosNotificationSender),
+			sendExecutor);
 		CompletableFuture.runAsync(
-			billNotificationTask(messageTemplate, topicsWithSubscribers, Subscriber::isANDROID,
-				new AndroidMessageProvider(), androidNotificationSender
-			), sendExecutor
-		);
+			billNotificationTask(
+				messageTemplate, topicsWithSubscribers, Subscriber::isANDROID, new AndroidMessageProvider(),
+				androidNotificationSender),
+			sendExecutor);
 	}
 
-	private Runnable billNotificationTask(
-		MessageTemplate messageTemplate,
-		Map<Topic, List<Subscriber>> topicsWithSubscribers,
-		Predicate<Subscriber> subscriberOsPredicate,
-		MessageProvider messageProvider,
-		NotificationSender notificationSender
-	) {
+	private Runnable billNotificationTask(MessageTemplate messageTemplate,
+		Map<Topic, List<Subscriber>> topicsWithSubscribers, Predicate<Subscriber> subscriberOsPredicate,
+		MessageProvider messageProvider, NotificationSender notificationSender) {
 		return () -> {
 			List<Message> messages = topicsWithSubscribers.entrySet().stream()
-				.flatMap(entry -> entry.getValue().stream()
-					.filter(subscriberOsPredicate)
-					.map(subscriber -> messageProvider.provide(
-						messageTemplate.getMessageTitleFormat(entry.getKey()),
-						messageTemplate.getMessageBodyFormat(entry.getKey()),
-						subscriber
-					))
-				)
+				.flatMap(
+					entry -> entry.getValue().stream().filter(subscriberOsPredicate).map(
+						subscriber -> messageProvider.provide(
+							messageTemplate.getMessageTitleFormat(entry.getKey()),
+							messageTemplate.getMessageBodyFormat(entry.getKey()), subscriber)))
 				.toList();
 			NotificationResult notificationResult = notificationSender.send(messages);
 			if (notificationResult.hasRetryableFailure()) {

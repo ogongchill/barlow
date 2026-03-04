@@ -28,12 +28,8 @@ public class RecentBillBatchJobExecutor {
 	private final Job job;
 	private final Integer chunkSize;
 
-	public RecentBillBatchJobExecutor(
-		Alerter alerter,
-		JobLauncher jobLauncher,
-		@Qualifier(RecentBillConstant.JOB_NAME) Job job,
-		@Value("${chunkSize:10}") Integer chunkSize
-	) {
+	public RecentBillBatchJobExecutor(Alerter alerter, JobLauncher jobLauncher,
+		@Qualifier(RecentBillConstant.JOB_NAME) Job job, @Value("${chunkSize:10}") Integer chunkSize) {
 		this.alerter = alerter;
 		this.jobLauncher = jobLauncher;
 		this.job = job;
@@ -41,10 +37,10 @@ public class RecentBillBatchJobExecutor {
 	}
 
 	public void execute(LocalDate now) {
-		JobParameters jobParameters = new JobParameters(Map.of(
-			RecentBillConstant.BATCH_DATE_JOB_PARAMETER, new JobParameter<>(now, LocalDate.class),
-			"chunkSize", new JobParameter<>(chunkSize, Integer.class)
-		));
+		JobParameters jobParameters = new JobParameters(
+			Map.of(
+				RecentBillConstant.BATCH_DATE_JOB_PARAMETER, new JobParameter<>(now, LocalDate.class), "chunkSize",
+				new JobParameter<>(chunkSize, Integer.class)));
 		try {
 			alerter.alert(String.format("오늘 접수된 법안 게시글 생성 Batch 시작 : %s", LocalDateTime.now()));
 			log.info("{} : 오늘 접수된 법안 게시글 생성 Batch 시작", LocalDateTime.now());

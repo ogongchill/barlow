@@ -16,39 +16,31 @@ import java.time.LocalDateTime;
 @Table(name = "term")
 public class TermJpaEntity extends BaseTimeJpaEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "term_no")
-    private Long no;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "term_no")
+	private Long no;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private Term.Type type;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type", nullable = false)
+	private Term.Type type;
 
-    @Column(name = "title", nullable = false)
-    private String title;
+	@Column(name = "title", nullable = false)
+	private String title;
 
-    @Column(name = "required", nullable = false)
-    private boolean required;
+	@Column(name = "required", nullable = false)
+	private boolean required;
 
-    @Column(name = "link_url", nullable = false)
-    private String linkUrl;
+	@Column(name = "link_url", nullable = false)
+	private String linkUrl;
 
-    @Column(name = "version", nullable = false)
-    private String version;
+	@Column(name = "version", nullable = false)
+	private String version;
 
-    @Column(name = "effective_at", nullable = false)
-    private LocalDateTime effectiveAt;
+	@Column(name = "effective_at", nullable = false)
+	private LocalDateTime effectiveAt;
 
-    public Term toTerm() {
-        return new Term(
-                no,
-                title,
-                version,
-                linkUrl,
-                type,
-                required,
-                effectiveAt
-        );
-    }
+	public Term toTerm() {
+		return new Term(no, title, version, linkUrl, type, required, effectiveAt);
+	}
 }

@@ -16,22 +16,15 @@ public class NotificationInfo {
 	}
 
 	void assignBillTotalCountPerTopic(NotificationTopic topic, int totalCount) {
-		infos.keySet().stream()
-			.filter(info -> info.isSame(topic))
-			.forEach(info -> info.setTopicCount(totalCount));
+		infos.keySet().stream().filter(info -> info.isSame(topic)).forEach(info -> info.setTopicCount(totalCount));
 	}
 
-	void assignRepresentationBillAndTotalCountPerTopic(
-		NotificationTopic topic,
-		String representationBillName,
-		int totalCount
-	) {
-		infos.keySet().stream()
-			.filter(info -> info.isSame(topic))
-			.forEach(info -> {
-				info.setTopicCount(totalCount);
-				info.setRepresentation(representationBillName);
-			});
+	void assignRepresentationBillAndTotalCountPerTopic(NotificationTopic topic, String representationBillName,
+		int totalCount) {
+		infos.keySet().stream().filter(info -> info.isSame(topic)).forEach(info -> {
+			info.setTopicCount(totalCount);
+			info.setRepresentation(representationBillName);
+		});
 	}
 
 	public Map<Topic, List<Subscriber>> getInfos() {
@@ -113,11 +106,7 @@ public class NotificationInfo {
 		}
 	}
 
-	public record Subscriber(
-		Long memberNo,
-		DeviceOs os,
-		String token
-	) {
+	public record Subscriber(Long memberNo, DeviceOs os, String token) {
 		public boolean isIOS() {
 			return os.isIOS();
 		}

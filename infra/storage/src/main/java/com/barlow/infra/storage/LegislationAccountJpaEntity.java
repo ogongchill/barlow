@@ -35,31 +35,19 @@ public class LegislationAccountJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "subscriber_count", nullable = false)
 	private Integer subscriberCount;
 
-	protected LegislationAccountJpaEntity() {
-	}
+	protected LegislationAccountJpaEntity() {}
 
 	boolean isCommittee() {
-		return !legislationType.equals(LegislationType.GOVERNMENT)
-			&& !legislationType.equals(LegislationType.SPEAKER)
+		return !legislationType.equals(LegislationType.GOVERNMENT) && !legislationType.equals(LegislationType.SPEAKER)
 			&& !legislationType.equals(LegislationType.EMPTY)
 			&& !legislationType.equals(LegislationType.SPECIAL_COMMITTEE);
 	}
 
 	LegislationAccount toLegislationAccount() {
-		return new LegislationAccount(
-			no,
-			legislationType,
-			description,
-			postCount,
-			subscriberCount
-		);
+		return new LegislationAccount(no, legislationType, description, postCount, subscriberCount);
 	}
 
 	MyLegislationAccount toMyLegislationAccount() {
-		return new MyLegislationAccount(
-			no,
-			legislationType.getValue(),
-			legislationType.getIconPath()
-		);
+		return new MyLegislationAccount(no, legislationType.getValue(), legislationType.getIconPath());
 	}
 }

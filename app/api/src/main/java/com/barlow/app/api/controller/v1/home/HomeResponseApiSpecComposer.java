@@ -17,27 +17,19 @@ public class HomeResponseApiSpecComposer {
 	}
 
 	public HomeResponse compose(LocalDate today) {
-		List<HomeResponse.SubscribeLegislationBody> subscribeLegislationBodies = myHomeStatus
-			.myLegislationAccounts()
+		List<HomeResponse.SubscribeLegislationBody> subscribeLegislationBodies = myHomeStatus.myLegislationAccounts()
 			.stream()
-			.map(status -> new HomeResponse.SubscribeLegislationBody(
-				status.getNo(),
-				status.getBodyType(),
-				status.getIconImagePath()
-			))
+			.map(
+				status -> new HomeResponse.SubscribeLegislationBody(
+					status.getNo(), status.getBodyType(), status.getIconImagePath()))
 			.toList();
 		List<HomeResponse.BillPostThumbnail> billPostThumbnails = postThumbnails.stream()
-			.map(thumbnail -> new HomeResponse.BillPostThumbnail(
-				thumbnail.billId(),
-				thumbnail.billName(),
-				thumbnail.proposers(),
-				thumbnail.createdAt()
-			))
+			.map(
+				thumbnail -> new HomeResponse.BillPostThumbnail(
+					thumbnail.billId(), thumbnail.billName(), thumbnail.proposers(), thumbnail.createdAt()))
 			.toList();
 		return new HomeResponse(
-			myHomeStatus.isNotificationArrived(),
-			HomeResponse.SubscribeSection.from(subscribeLegislationBodies),
-			HomeResponse.TodayBillPostSection.of(today, billPostThumbnails)
-		);
+			myHomeStatus.isNotificationArrived(), HomeResponse.SubscribeSection.from(subscribeLegislationBodies),
+			HomeResponse.TodayBillPostSection.of(today, billPostThumbnails));
 	}
 }

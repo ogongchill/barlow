@@ -24,10 +24,9 @@ public class DefaultNotificationInfoReader implements NotificationInfoReader {
 		Map<NotificationTopic, BillSummary> topicsWithBillInfos = notificationRequest.topicsWithBillInfos();
 		Set<NotificationTopic> topics = topicsWithBillInfos.keySet();
 		NotificationInfo notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopics(topics);
-		topicsWithBillInfos.forEach((topic, billSummary) ->
-			notificationInfos.assignRepresentationBillAndTotalCountPerTopic(
-				topic, billSummary.representationBill(), billSummary.totalCount()
-			));
+		topicsWithBillInfos.forEach(
+			(topic, billSummary) -> notificationInfos.assignRepresentationBillAndTotalCountPerTopic(
+				topic, billSummary.representationBill(), billSummary.totalCount()));
 		return notificationInfos;
 	}
 

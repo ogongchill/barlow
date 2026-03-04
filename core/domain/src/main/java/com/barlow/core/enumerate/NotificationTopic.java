@@ -46,8 +46,7 @@ public enum NotificationTopic {
 	 * 사용자 상호작용 알림
 	 */
 	REACTION("리액션", "default/icon-image-url"),
-	COMMENT("댓글", "default/icon-image-url"),
-	;
+	COMMENT("댓글", "default/icon-image-url"),;
 
 	private static final int MAX_LEGISLATION_BODY_ORD = 17;
 
@@ -56,41 +55,31 @@ public enum NotificationTopic {
 
 	public static NotificationTopic findByValue(String value) {
 		return Arrays.stream(NotificationTopic.values())
-			.filter(notificationTopic -> notificationTopic.value.equals(value))
-			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException(
-				String.format("기존에 존재하지 않던 NotificationTopic 입니다 : %s", value)
-			));
+			.filter(notificationTopic -> notificationTopic.value.equals(value)).findFirst().orElseThrow(
+				() -> new IllegalArgumentException(String.format("기존에 존재하지 않던 NotificationTopic 입니다 : %s", value)));
 	}
 
 	public static List<NotificationTopic> findDisableLegislationTopics(List<NotificationTopic> enableTopics) {
 		return Arrays.stream(NotificationTopic.values())
-			.filter(topic -> topic.ordinal() <= MAX_LEGISLATION_BODY_ORD && !enableTopics.contains(topic))
-			.toList();
+			.filter(topic -> topic.ordinal() <= MAX_LEGISLATION_BODY_ORD && !enableTopics.contains(topic)).toList();
 	}
 
 	public static NotificationTopic findByLegislationType(LegislationType legislationType) {
-		return Arrays.stream(NotificationTopic.values())
-			.filter(topic -> topic.value.equals(legislationType.getValue()))
-			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException(
-				String.format("%s 에 대응하는 NotificationTopic 이 존재하지 않습니다", legislationType)
-			));
+		return Arrays.stream(NotificationTopic.values()).filter(topic -> topic.value.equals(legislationType.getValue()))
+			.findFirst().orElseThrow(
+				() -> new IllegalArgumentException(
+					String.format("%s 에 대응하는 NotificationTopic 이 존재하지 않습니다", legislationType)));
 	}
 
 	public static NotificationTopic findByProgressStatus(ProgressStatus progressStatus) {
-		return Arrays.stream(NotificationTopic.values())
-			.filter(topic -> topic.value.equals(progressStatus.getValue()))
-			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException(
-				String.format("%s 에 대응하는 NotificationTopic 이 존재하지 않습니다", progressStatus)
-			));
+		return Arrays.stream(NotificationTopic.values()).filter(topic -> topic.value.equals(progressStatus.getValue()))
+			.findFirst().orElseThrow(
+				() -> new IllegalArgumentException(
+					String.format("%s 에 대응하는 NotificationTopic 이 존재하지 않습니다", progressStatus)));
 	}
 
 	public static List<NotificationTopic> findByDefaultTopic() {
-		return Arrays.stream(NotificationTopic.values())
-			.filter(NotificationTopic::isDefault)
-			.toList();
+		return Arrays.stream(NotificationTopic.values()).filter(NotificationTopic::isDefault).toList();
 	}
 
 	private boolean isDefault() {

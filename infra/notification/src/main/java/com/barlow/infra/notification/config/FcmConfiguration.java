@@ -27,9 +27,7 @@ public class FcmConfiguration {
 	public FirebaseApp firebaseApp() throws IOException {
 		ClassPathResource firebaseResource = new ClassPathResource(firebaseConfigPath);
 		GoogleCredentials credentials = GoogleCredentials.fromStream(firebaseResource.getInputStream());
-		FirebaseOptions options = FirebaseOptions.builder()
-			.setCredentials(credentials)
-			.build();
+		FirebaseOptions options = FirebaseOptions.builder().setCredentials(credentials).build();
 		if (FirebaseApp.getApps().isEmpty()) {
 			return FirebaseApp.initializeApp(options, FIREBASE_APP_NAME);
 		}

@@ -2,8 +2,7 @@ package com.barlow.infra.notification;
 
 public class MessageTemplateFactory {
 
-	private MessageTemplateFactory() {
-	}
+	private MessageTemplateFactory() {}
 
 	public static MessageTemplate getBy(NotificationType type) {
 		if (type.isCommittee()) {

@@ -32,11 +32,7 @@ public class JwtConfig {
 
 	public enum Claims {
 
-		ISSUER("iss"),
-		ROLE("role"),
-		MEMBER_NO("memberNo"),
-		EXPIRATION("exp"),
-		ISSUED_AT("iat");
+		ISSUER("iss"), ROLE("role"), MEMBER_NO("memberNo"), EXPIRATION("exp"), ISSUED_AT("iat");
 
 		private final String name;
 

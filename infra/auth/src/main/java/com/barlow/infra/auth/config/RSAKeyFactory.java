@@ -29,18 +29,14 @@ public final class RSAKeyFactory {
 	}
 
 	RSAPrivateKey createPrivateKey(String keyString) throws InvalidKeySpecException {
-		String refinedKey = keyString.replace(PKCS8_HEADER, "")
-			.replace(PKCS8_FOOTER, "")
-			.replaceAll(SPACE, "");
+		String refinedKey = keyString.replace(PKCS8_HEADER, "").replace(PKCS8_FOOTER, "").replaceAll(SPACE, "");
 		byte[] decoded = Base64.getDecoder().decode(refinedKey);
 		PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(decoded);
 		return (RSAPrivateKey)keyFactory.generatePrivate(privateKeySpec);
 	}
 
 	RSAPublicKey createPublicKey(String keyString) throws InvalidKeySpecException {
-		String refinedKey = keyString.replace(X509_HEADER, "")
-			.replace(X509_FOOTER, "")
-			.replaceAll(SPACE, "");
+		String refinedKey = keyString.replace(X509_HEADER, "").replace(X509_FOOTER, "").replaceAll(SPACE, "");
 		byte[] decoded = Base64.getDecoder().decode(refinedKey);
 		X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(decoded);
 		return (RSAPublicKey)keyFactory.generatePublic(publicKeySpec);

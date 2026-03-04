@@ -17,40 +17,34 @@ import jakarta.persistence.Table;
 @Table(name = "subscribe")
 public class SubscribeJpaEntity extends BaseTimeJpaEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "subscribe_no")
-    private Long no;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "subscribe_no")
+	private Long no;
 
-    @Column(name = "subscribe_legislation_account_no", nullable = false)
-    private Long subscribeLegislationAccountNo;
+	@Column(name = "subscribe_legislation_account_no", nullable = false)
+	private Long subscribeLegislationAccountNo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(100)", name = "legislation_type", nullable = false)
-    private LegislationType legislationType;
+	@Enumerated(EnumType.STRING)
+	@Column(columnDefinition = "varchar(100)", name = "legislation_type", nullable = false)
+	private LegislationType legislationType;
 
-    @Column(name = "subscriber_no", nullable = false)
-    private Long memberNo;
+	@Column(name = "subscriber_no", nullable = false)
+	private Long memberNo;
 
-    protected SubscribeJpaEntity() {
-    }
+	protected SubscribeJpaEntity() {}
 
-    SubscribeJpaEntity(Long subscribeLegislationAccountNo, LegislationType legislationType, Long memberNo) {
-        this.subscribeLegislationAccountNo = subscribeLegislationAccountNo;
-        this.legislationType = legislationType;
-        this.memberNo = memberNo;
-    }
+	SubscribeJpaEntity(Long subscribeLegislationAccountNo, LegislationType legislationType, Long memberNo) {
+		this.subscribeLegislationAccountNo = subscribeLegislationAccountNo;
+		this.legislationType = legislationType;
+		this.memberNo = memberNo;
+	}
 
-    Subscribe toSubscribe(User user) {
-        return new Subscribe(
-            user,
-			subscribeLegislationAccountNo,
-			legislationType,
-			true
-        );
-    }
+	Subscribe toSubscribe(User user) {
+		return new Subscribe(user, subscribeLegislationAccountNo, legislationType, true);
+	}
 
-    LegislationType getLegislationType() {
-        return legislationType;
-    }
+	LegislationType getLegislationType() {
+		return legislationType;
+	}
 }

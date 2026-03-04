@@ -17,14 +17,10 @@ public class AccessTokenValidator {
 
 	private final JWTVerifier jwtVerifier;
 
-	public AccessTokenValidator(
-		@Qualifier("jwtPublicKeyAlgorithm") Algorithm publicKeyAlgorithm,
-		@Qualifier("accessTokenConfig") JwtConfig accessTokenConfig
-	) {
-		this.jwtVerifier = JWT.require(publicKeyAlgorithm)
-			.withIssuer(accessTokenConfig.getIssuer())
-			.withClaimPresence(JwtConfig.Claims.MEMBER_NO.getName())
-			.withClaimPresence(JwtConfig.Claims.ROLE.getName())
+	public AccessTokenValidator(@Qualifier("jwtPublicKeyAlgorithm") Algorithm publicKeyAlgorithm,
+		@Qualifier("accessTokenConfig") JwtConfig accessTokenConfig) {
+		this.jwtVerifier = JWT.require(publicKeyAlgorithm).withIssuer(accessTokenConfig.getIssuer())
+			.withClaimPresence(JwtConfig.Claims.MEMBER_NO.getName()).withClaimPresence(JwtConfig.Claims.ROLE.getName())
 			.build();
 	}
 

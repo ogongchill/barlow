@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface ClientVersionJpaRepository extends JpaRepository<ClientVersionJpaEntity, Long> {
 
-    @Query("SELECT d FROM ClientVersionJpaEntity d WHERE d.deviceOs = :deviceOs")
-    ClientVersionJpaEntity findByDeviceOs(@Param("deviceOs")DeviceOs deviceOs);
+	@Query("SELECT d FROM ClientVersionJpaEntity d WHERE d.deviceOs = :deviceOs")
+	ClientVersionJpaEntity findByDeviceOs(@Param("deviceOs") DeviceOs deviceOs);
 }

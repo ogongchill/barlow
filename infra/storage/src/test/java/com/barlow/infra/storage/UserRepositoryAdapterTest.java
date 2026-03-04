@@ -17,10 +17,8 @@ class UserRepositoryAdapterTest extends CoreDbContextTest {
 	private final UserRepositoryAdapter adapter;
 	private final UserRepositoryJpaRepository userRepositoryJpaRepository;
 
-	public UserRepositoryAdapterTest(
-		UserRepositoryAdapter adapter,
-		UserRepositoryJpaRepository userRepositoryJpaRepository
-	) {
+	public UserRepositoryAdapterTest(UserRepositoryAdapter adapter,
+		UserRepositoryJpaRepository userRepositoryJpaRepository) {
 		this.adapter = adapter;
 		this.userRepositoryJpaRepository = userRepositoryJpaRepository;
 	}
@@ -28,21 +26,16 @@ class UserRepositoryAdapterTest extends CoreDbContextTest {
 	@DisplayName("등록되어 있는 회원을 조회한다")
 	@Test
 	void retrieve() {
-		assertThat(adapter.retrieve(new UserQuery(1L)))
-			.isNotNull();
+		assertThat(adapter.retrieve(new UserQuery(1L))).isNotNull();
 	}
 
 	@DisplayName("새로운 회원을 등록하면 게스트 회원으로 저장한다")
 	@Test
 	void create() {
-		User user = adapter.create(
-			new UserRegisterCommand("newNickname", User.Role.GUEST)
-		);
+		User user = adapter.create(new UserRegisterCommand("newNickname", User.Role.GUEST));
 
 		assertAll(
-			() -> assertThat(user).isNotNull(),
-			() -> assertThat(user.isGuestUser()).isTrue(),
-			() -> assertThat(userRepositoryJpaRepository.count()).isEqualTo(2)
-		);
+			() -> assertThat(user).isNotNull(), () -> assertThat(user.isGuestUser()).isTrue(),
+			() -> assertThat(userRepositoryJpaRepository.count()).isEqualTo(2));
 	}
 }

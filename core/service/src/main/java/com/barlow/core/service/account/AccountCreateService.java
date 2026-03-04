@@ -12,7 +12,6 @@ import com.barlow.core.service.notificationsetting.impl.NotificationSettingActiv
 
 import java.util.List;
 
-
 @Service
 public class AccountCreateService {
 
@@ -20,11 +19,8 @@ public class AccountCreateService {
 	private final NotificationSettingActivator notificationSettingActivator;
 	private final TermManager termManager;
 
-	public AccountCreateService(
-		UserCreator userCreator,
-		NotificationSettingActivator notificationSettingActivator,
-		TermManager termManager
-	) {
+	public AccountCreateService(UserCreator userCreator, NotificationSettingActivator notificationSettingActivator,
+		TermManager termManager) {
 		this.userCreator = userCreator;
 		this.notificationSettingActivator = notificationSettingActivator;
 		this.termManager = termManager;
@@ -32,7 +28,7 @@ public class AccountCreateService {
 
 	@Transactional
 	public User createGuest(UserCreateCommand command, List<TermAgreement> agreements) {
-		if(command.role() != User.Role.GUEST) {
+		if (command.role() != User.Role.GUEST) {
 			throw AccountDomainException.modificationException("Guest User 요청이 아닌 상태로 User를 생성 할 수 없습니다.");
 		}
 		termManager.validateAgreements(agreements);

@@ -23,12 +23,9 @@ public class ClientVersionCheckController {
 
 	@GetMapping("/check")
 	public ApiResponse<ClientVersionCheckResponse> retrieveVersionCheckResponse(
-		@RequestHeader("X-App-Version") String appVersion,
-		@RequestHeader("X-Device-Os") String deviceOs
-	) {
-		ClientVersionStatus status = clientVersionService.checkClientVersion(
-			new ClientVersionQuery(DeviceOs.valueOf(deviceOs), appVersion)
-		);
+		@RequestHeader("X-App-Version") String appVersion, @RequestHeader("X-Device-Os") String deviceOs) {
+		ClientVersionStatus status = clientVersionService
+			.checkClientVersion(new ClientVersionQuery(DeviceOs.valueOf(deviceOs), appVersion));
 		ClientVersionCheckApiSpecComposer composer = new ClientVersionCheckApiSpecComposer(status);
 		return ApiResponse.success(composer.compose());
 	}

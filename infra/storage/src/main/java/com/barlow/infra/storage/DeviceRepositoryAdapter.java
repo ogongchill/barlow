@@ -20,12 +20,8 @@ public class DeviceRepositoryAdapter implements DeviceRepository {
 
 	@Override
 	public void save(DeviceRegisterCommand command) {
-		deviceJpaRepository.save(new DeviceJpaEntity(
-			command.deviceId(),
-			command.os(),
-			command.deviceToken(),
-			command.userNo())
-		);
+		deviceJpaRepository
+			.save(new DeviceJpaEntity(command.deviceId(), command.os(), command.deviceToken(), command.userNo()));
 	}
 
 	@Override
@@ -49,8 +45,6 @@ public class DeviceRepositoryAdapter implements DeviceRepository {
 
 	@Override
 	public List<Device> findAllByUserNo(long userNo) {
-		return deviceJpaRepository.findAllByMemberNo(userNo).stream()
-			.map(DeviceJpaEntity::toDevice)
-			.toList();
+		return deviceJpaRepository.findAllByMemberNo(userNo).stream().map(DeviceJpaEntity::toDevice).toList();
 	}
 }

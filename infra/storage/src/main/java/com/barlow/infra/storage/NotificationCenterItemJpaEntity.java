@@ -37,16 +37,9 @@ public class NotificationCenterItemJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "body", nullable = false)
 	private String body;
 
-	protected NotificationCenterItemJpaEntity() {
-	}
+	protected NotificationCenterItemJpaEntity() {}
 
 	NotificationCenterItem toNotificationItem() {
-		return new NotificationCenterItem(
-			billId,
-			notificationTopic,
-			title,
-			body,
-			getCreatedAt()
-		);
+		return new NotificationCenterItem(billId, notificationTopic, title, body, getCreatedAt());
 	}
 }

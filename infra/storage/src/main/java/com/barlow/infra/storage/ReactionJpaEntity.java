@@ -35,8 +35,7 @@ public class ReactionJpaEntity extends BaseTimeJpaEntity {
 	@Column(columnDefinition = "varchar(20)", name = "reaction_type", nullable = false)
 	private ReactionType type;
 
-	protected ReactionJpaEntity() {
-	}
+	protected ReactionJpaEntity() {}
 
 	public ReactionJpaEntity(Long memberNo, String targetId, ReactionTarget targetType, ReactionType type) {
 		this.memberNo = memberNo;

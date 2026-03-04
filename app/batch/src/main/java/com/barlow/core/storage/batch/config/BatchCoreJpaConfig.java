@@ -26,35 +26,26 @@ import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
 @EnableTransactionManagement
-@EntityScan(basePackageClasses = {
-	BillPostJpaEntity.class,
-	LegislationAccountJpaEntity.class,
+@EntityScan(basePackageClasses = {BillPostJpaEntity.class, LegislationAccountJpaEntity.class,
 	NotificationConfigJpaEntity.class})
-@EnableJpaRepositories(
-	basePackages = {"com.barlow.infra.storage.batch", "com.barlow.infra.storage.notification"},
-	entityManagerFactoryRef = "batchCoreEntityManagerFactory",
-	transactionManagerRef = "batchCoreTransactionManager")
+@EnableJpaRepositories(basePackages = {"com.barlow.infra.storage.batch",
+	"com.barlow.infra.storage.notification"}, entityManagerFactoryRef = "batchCoreEntityManagerFactory", transactionManagerRef = "batchCoreTransactionManager")
 public class BatchCoreJpaConfig {
 
 	@Bean("batchCoreTransactionManager")
 	public PlatformTransactionManager platformTransactionManager(
-		@Qualifier("batchCoreEntityManagerFactory") EntityManagerFactory emf
-	) {
+		@Qualifier("batchCoreEntityManagerFactory") EntityManagerFactory emf) {
 		return new JpaTransactionManager(emf);
 	}
 
 	@Bean("batchCoreEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-		@Qualifier("batchCoreDataSource") DataSource dataSource,
-		BatchCoreJpaProperties jpaProperties,
-		EntityManagerFactoryBuilder builder
-	) {
+		@Qualifier("batchCoreDataSource") DataSource dataSource, BatchCoreJpaProperties jpaProperties,
+		EntityManagerFactoryBuilder builder) {
 		return builder.dataSource(dataSource)
 			.packages("com.barlow.infra.storage.batch", "com.barlow.infra.storage.notification")
 			.packages(BillPostJpaEntity.class, LegislationAccountJpaEntity.class, NotificationConfigJpaEntity.class)
-			.persistenceUnit("batch-core")
-			.properties(jpaProperties.properties)
-			.build();
+			.persistenceUnit("batch-core").properties(jpaProperties.properties).build();
 	}
 
 	@Component

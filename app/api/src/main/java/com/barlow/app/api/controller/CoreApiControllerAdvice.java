@@ -50,9 +50,7 @@ public class CoreApiControllerAdvice {
 			default -> log.info(CORE_AUTH_EXCEPTION_MESSAGE_TEMPLATE, e.getMessage(), e);
 		}
 		return new ResponseEntity<>(
-			ApiResponse.error(e.getErrorCode(), e.getErrorType().getMessage(), e.getData()),
-			e.getErrorStatus()
-		);
+			ApiResponse.error(e.getErrorCode(), e.getErrorType().getMessage(), e.getData()), e.getErrorStatus());
 	}
 
 	@ExceptionHandler(CoreDomainException.class)
@@ -66,19 +64,14 @@ public class CoreApiControllerAdvice {
 			}
 			default -> log.warn("Unknown exception : {}", e.getMessage(), e);
 		}
-		return new ResponseEntity<>(
-			ApiResponse.error(errorType),
-			errorType.getStatus()
-		);
+		return new ResponseEntity<>(ApiResponse.error(errorType), errorType.getStatus());
 	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
 		log.error("Exception : {}", e.getMessage(), e);
 		alerter.alert(String.format("Unexpected Exception : %s", e.getMessage()));
-		return new ResponseEntity<>(ApiResponse.error(
-			CoreApiErrorType.DEFAULT_ERROR),
-			CoreApiErrorType.DEFAULT_ERROR.getStatus()
-		);
+		return new ResponseEntity<>(
+			ApiResponse.error(CoreApiErrorType.DEFAULT_ERROR), CoreApiErrorType.DEFAULT_ERROR.getStatus());
 	}
 }

@@ -17,18 +17,13 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
 
 	private final HandlerExceptionResolver resolver;
 
-	public FilterExceptionHandler(
-		@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver
-	) {
+	public FilterExceptionHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
 		this.resolver = resolver;
 	}
 
 	@Override
-	protected void doFilterInternal(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		FilterChain filterChain
-	) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+		throws ServletException, IOException {
 		try {
 			filterChain.doFilter(request, response);
 		} catch (Exception e) {

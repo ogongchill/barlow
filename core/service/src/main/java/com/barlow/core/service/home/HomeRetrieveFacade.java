@@ -19,11 +19,9 @@ public class HomeRetrieveFacade {
 	private final TodayBillPostThumbnailRetrieveService todayBillPostThumbnailRetrieveService;
 	private final NotificationCenterItemRetrieveService notificationCenterItemRetrieveService;
 
-	public HomeRetrieveFacade(
-		MyHomeInfoRetrieveService myHomeInfoRetrieveService,
+	public HomeRetrieveFacade(MyHomeInfoRetrieveService myHomeInfoRetrieveService,
 		TodayBillPostThumbnailRetrieveService todayBillPostThumbnailRetrieveService,
-		NotificationCenterItemRetrieveService notificationCenterItemRetrieveService
-	) {
+		NotificationCenterItemRetrieveService notificationCenterItemRetrieveService) {
 		this.myHomeInfoRetrieveService = myHomeInfoRetrieveService;
 		this.todayBillPostThumbnailRetrieveService = todayBillPostThumbnailRetrieveService;
 		this.notificationCenterItemRetrieveService = notificationCenterItemRetrieveService;

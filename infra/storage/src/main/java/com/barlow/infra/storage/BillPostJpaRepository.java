@@ -10,8 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface BillPostJpaRepository
-	extends JpaRepository<BillPostJpaEntity, Long>,
-	JpaSpecificationExecutor<BillPostJpaEntity> {
+	extends JpaRepository<BillPostJpaEntity, Long>, JpaSpecificationExecutor<BillPostJpaEntity> {
 
 	BillPostJpaEntity findByBillId(String billId);
 

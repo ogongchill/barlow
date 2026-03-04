@@ -28,10 +28,8 @@ public class TraceBillNotifyTasklet extends AbstractExecutionContextSharingManag
 	private final NotificationSendPort notificationSendPort;
 	private final UpdatedBillShareRepository billShareRepository;
 
-	public TraceBillNotifyTasklet(
-		NotificationSendPort notificationSendPort,
-		UpdatedBillShareRepository billShareRepository
-	) {
+	public TraceBillNotifyTasklet(NotificationSendPort notificationSendPort,
+		UpdatedBillShareRepository billShareRepository) {
 		this.notificationSendPort = notificationSendPort;
 		this.billShareRepository = billShareRepository;
 	}
@@ -46,7 +44,8 @@ public class TraceBillNotifyTasklet extends AbstractExecutionContextSharingManag
 			Map<NotificationTopic, List<BillInfo>> notificationTopicMap = new EnumMap<>(NotificationTopic.class);
 
 			notificationTopicMap.putAll(updatedBills.filterCommitteeReceived().groupByCommitteeNotificationTopic());
-			notificationTopicMap.putAll(updatedBills.filterNonCommitteeReceived().groupByNonCommitteeNotificationTopic());
+			notificationTopicMap
+				.putAll(updatedBills.filterNonCommitteeReceived().groupByNonCommitteeNotificationTopic());
 
 			notificationSendPort.sendCall(DefaultBillNotificationRequest.from(notificationTopicMap));
 		}

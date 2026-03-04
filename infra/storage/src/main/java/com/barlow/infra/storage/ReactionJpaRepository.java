@@ -16,12 +16,8 @@ public interface ReactionJpaRepository extends JpaRepository<ReactionJpaEntity, 
 
 	ReactionJpaEntity findByMemberNoAndTargetIdAndTargetType(Long memberNo, String targetId, ReactionTarget targetType);
 
-	ReactionJpaEntity findByMemberNoAndTargetIdAndTargetTypeAndType(
-		Long memberNo,
-		String targetId,
-		ReactionTarget targetType,
-		ReactionType type
-	);
+	ReactionJpaEntity findByMemberNoAndTargetIdAndTargetTypeAndType(Long memberNo, String targetId,
+		ReactionTarget targetType, ReactionType type);
 
 	@Modifying
 	@Query("""
@@ -33,6 +29,5 @@ public interface ReactionJpaRepository extends JpaRepository<ReactionJpaEntity, 
 		@Param("memberNo") Long memberNo,
 		@Param("targetId") String targetId,
 		@Param("targetType") ReactionTarget targetType,
-		@Param("reactionType") ReactionType reactionType
-	);
+		@Param("reactionType") ReactionType reactionType);
 }

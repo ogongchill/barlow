@@ -12,9 +12,7 @@ public class CurrentPreAnnounceBills {
 
 	public NewPreAnnounceBills dirtyCheck(PreviousPreAnnounceBillIds previousBills) {
 		return new NewPreAnnounceBills(
-			values.stream()
-				.filter(currentBill -> previousBills.doesNotContainSameBillId(currentBill.billId()))
-				.toList()
-		);
+			values.stream().filter(currentBill -> previousBills.doesNotContainSameBillId(currentBill.billId()))
+				.toList());
 	}
 }

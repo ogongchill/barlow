@@ -29,9 +29,7 @@ public enum BillKindCode {
 	}
 
 	public BillKindCode find(String target) {
-		return Arrays.stream(BillKindCode.values())
-			.filter(billCode -> billCode.description.equals(target))
-			.findFirst()
+		return Arrays.stream(BillKindCode.values()).filter(billCode -> billCode.description.equals(target)).findFirst()
 			.orElseThrow(() -> new NoSuchElementException("no such bill resultCode : " + target));
 	}
 }

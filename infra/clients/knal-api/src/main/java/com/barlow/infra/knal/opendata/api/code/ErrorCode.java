@@ -13,12 +13,10 @@ public enum ErrorCode {
 	SERVICE_KEY_IS_NOT_REGISTERED_ERROR("30", "등록되지 않은 서비스키"),
 	DEADLINE_HAS_EXPIRED_ERROR("31", "활용기간 만료"),
 	UNREGISTERED_IP_ERROR("32", "등록되지 않은 IP"),
-	UNKNOWN_ERROR("99", "기타 에러"),
-	;
+	UNKNOWN_ERROR("99", "기타 에러"),;
 
 	public static boolean isNameContainedInValue(String xmlResponseBody) {
-		return Arrays.stream(values())
-			.anyMatch(errorCode -> xmlResponseBody.contains(errorCode.name()));
+		return Arrays.stream(values()).anyMatch(errorCode -> xmlResponseBody.contains(errorCode.name()));
 	}
 
 	public String getCode() {

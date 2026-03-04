@@ -5,10 +5,8 @@ import com.barlow.infra.knal.opendata.api.response.common.SingleItemBody;
 import com.barlow.infra.knal.opendata.api.response.common.SuccessHeader;
 import com.barlow.infra.knal.opendata.api.response.item.BillReceiptInfoItem;
 
-public record BillReceiptInfoResponse(
-	SuccessHeader header,
-	SingleItemBody<BillReceiptInfoItem> body
-) implements OpenDataResponse<BillReceiptInfoItem> {
+public record BillReceiptInfoResponse(SuccessHeader header,
+	SingleItemBody<BillReceiptInfoItem> body) implements OpenDataResponse<BillReceiptInfoItem> {
 
 	@Override
 	public String toString() {

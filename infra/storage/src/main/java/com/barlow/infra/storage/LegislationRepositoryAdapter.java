@@ -19,17 +19,13 @@ public class LegislationRepositoryAdapter implements LegislationAccountRepositor
 
 	@Override
 	public LegislationAccount retrieve(LegislationType legislationType) {
-		return legislationAccountJpaRepository.findByNo(legislationType.getLegislationNo())
-			.toLegislationAccount();
+		return legislationAccountJpaRepository.findByNo(legislationType.getLegislationNo()).toLegislationAccount();
 	}
 
 	@Override
 	public List<LegislationAccount> retrieveCommitteeAccount() {
-		return legislationAccountJpaRepository.findAll()
-			.stream()
-			.filter(LegislationAccountJpaEntity::isCommittee)
-			.map(LegislationAccountJpaEntity::toLegislationAccount)
-			.toList();
+		return legislationAccountJpaRepository.findAll().stream().filter(LegislationAccountJpaEntity::isCommittee)
+			.map(LegislationAccountJpaEntity::toLegislationAccount).toList();
 	}
 
 	@Override

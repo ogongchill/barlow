@@ -23,10 +23,8 @@ class NotificationSettingRepositoryAdapterTest extends CoreDbContextTest {
 	private final NotificationSettingRepositoryAdapter adapter;
 	private final NotificationConfigJpaRepository notificationConfigJpaRepository;
 
-	public NotificationSettingRepositoryAdapterTest(
-		NotificationSettingRepositoryAdapter adapter,
-		NotificationConfigJpaRepository notificationConfigJpaRepository
-	) {
+	public NotificationSettingRepositoryAdapterTest(NotificationSettingRepositoryAdapter adapter,
+		NotificationConfigJpaRepository notificationConfigJpaRepository) {
 		this.adapter = adapter;
 		this.notificationConfigJpaRepository = notificationConfigJpaRepository;
 	}
@@ -37,15 +35,13 @@ class NotificationSettingRepositoryAdapterTest extends CoreDbContextTest {
 	void retrieveNotificationSetting(String legislationTypeName, boolean expect) {
 		User user = User.of(1L, User.Role.GUEST);
 		LegislationNotificationSettingQuery query = new LegislationNotificationSettingQuery(
-			LegislationType.valueOf(legislationTypeName), user
-		);
+			LegislationType.valueOf(legislationTypeName), user);
 
 		NotificationSetting notificationSetting = adapter.retrieveNotificationSetting(query);
 
 		assertAll(
 			() -> assertThat(notificationSetting).isNotNull(),
-			() -> assertThat(notificationSetting.isNotifiable()).isEqualTo(expect)
-		);
+			() -> assertThat(notificationSetting.isNotifiable()).isEqualTo(expect));
 	}
 
 	@DisplayName("회원이 입법계정에 대해 설정한 모든 알림설정을 조회한다")
@@ -53,9 +49,7 @@ class NotificationSettingRepositoryAdapterTest extends CoreDbContextTest {
 	void retrieveNotificationSettings() {
 		User user = User.of(1L, User.Role.GUEST);
 
-		assertThat(adapter.retrieveNotificationSettings(user))
-			.isNotEmpty()
-			.hasSize(18);
+		assertThat(adapter.retrieveNotificationSettings(user)).isNotEmpty().hasSize(18);
 	}
 
 	@DisplayName("회원이 알림주제(topic)을 통해 새롭게 알림을 설정한다")
@@ -64,13 +58,9 @@ class NotificationSettingRepositoryAdapterTest extends CoreDbContextTest {
 	void saveNotificationSetting() {
 		User user = User.of(1L, User.Role.GUEST);
 
-		adapter.saveNotificationSetting(
-			new NotificationSetting(user, NotificationTopic.STRATEGY_AND_FINANCE, true)
-		);
+		adapter.saveNotificationSetting(new NotificationSetting(user, NotificationTopic.STRATEGY_AND_FINANCE, true));
 
-		assertThat(notificationConfigJpaRepository.findAllByMemberNo(user.getUserNo()))
-			.isNotEmpty()
-			.hasSize(4);
+		assertThat(notificationConfigJpaRepository.findAllByMemberNo(user.getUserNo())).isNotEmpty().hasSize(4);
 	}
 
 	@DisplayName("회원이 알림주제(topic)을 통해 기존의 알림을 삭제한다")
@@ -79,12 +69,8 @@ class NotificationSettingRepositoryAdapterTest extends CoreDbContextTest {
 	void deleteNotificationSetting() {
 		User user = User.of(1L, User.Role.GUEST);
 
-		adapter.deleteNotificationSetting(
-			new NotificationSetting(user, NotificationTopic.HOUSE_STEERING, false)
-		);
+		adapter.deleteNotificationSetting(new NotificationSetting(user, NotificationTopic.HOUSE_STEERING, false));
 
-		assertThat(notificationConfigJpaRepository.findAllByMemberNo(user.getUserNo()))
-			.isNotEmpty()
-			.hasSize(2);
+		assertThat(notificationConfigJpaRepository.findAllByMemberNo(user.getUserNo())).isNotEmpty().hasSize(2);
 	}
 }

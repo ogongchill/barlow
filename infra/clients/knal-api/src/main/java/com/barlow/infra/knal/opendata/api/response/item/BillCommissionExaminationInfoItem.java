@@ -6,21 +6,15 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 public record BillCommissionExaminationInfoItem(
 
-	@JacksonXmlProperty(localName = "JurisdictionExamination")
-	List<JurisdictionExaminationItem> jurisdictionExamination,// 소관위 심사 정보
-	@JacksonXmlProperty(localName = "JurisdictionMeeting")
-	List<JurisdictionMeetingItem> jurisdictionMeeting,// 소관위 회의 정보
-	@JacksonXmlProperty(localName = "procExamination")
-	List<ProcExaminationItem> procExamination, // 법사위 체계 자구심사 정보
-	@JacksonXmlProperty(localName = "procMeeting")
-	List<ProcMeetingItem> procMeeting, // 법사위 회의 정보
-	@JacksonXmlProperty(localName = "comitExamination")
-	List<ComitExaminationItem> comitExamination, // 관련위 심사 정보
-	@JacksonXmlProperty(localName = "commitMeeting")
-	List<CommitMeetingItem> commitMeeting // 관련위 회의 정보
+	@JacksonXmlProperty(localName = "JurisdictionExamination") List<JurisdictionExaminationItem> jurisdictionExamination, // 소관위 심사 정보
+	@JacksonXmlProperty(localName = "JurisdictionMeeting") List<JurisdictionMeetingItem> jurisdictionMeeting, // 소관위 회의 정보
+	@JacksonXmlProperty(localName = "procExamination") List<ProcExaminationItem> procExamination, // 법사위 체계 자구심사 정보
+	@JacksonXmlProperty(localName = "procMeeting") List<ProcMeetingItem> procMeeting, // 법사위 회의 정보
+	@JacksonXmlProperty(localName = "comitExamination") List<ComitExaminationItem> comitExamination, // 관련위 심사 정보
+	@JacksonXmlProperty(localName = "commitMeeting") List<CommitMeetingItem> commitMeeting // 관련위 회의 정보
+
 ) {
-	public record JurisdictionExaminationItem(
-		String committeeName, //소관위원회
+	public record JurisdictionExaminationItem(String committeeName, //소관위원회
 		String submitDt, // 회부일
 		String presentDt, // 상정일
 		String procDt, // 처리일
@@ -34,8 +28,7 @@ public record BillCommissionExaminationInfoItem(
 	) {
 	}
 
-	public record JurisdictionMeetingItem(
-		String confName, // 회의명
+	public record JurisdictionMeetingItem(String confName, // 회의명
 		String confDt, // 회의일
 		String confResult, //회의 결과
 		String pdfUrl, // 회의록 PDF파일 경로
@@ -43,8 +36,7 @@ public record BillCommissionExaminationInfoItem(
 	) {
 	}
 
-	public record ProcExaminationItem(
-		String submitDt, // 회부일
+	public record ProcExaminationItem(String submitDt, // 회부일
 		String presentDt, // 상정일
 		String procDt, // 처리일
 		String procResultCd, // 처리결과
@@ -53,8 +45,7 @@ public record BillCommissionExaminationInfoItem(
 	) {
 	}
 
-	public record ProcMeetingItem(
-		String confName, // 회의명
+	public record ProcMeetingItem(String confName, // 회의명
 		String confDt, // 회의일
 		String confResult, // 회의결과
 		String pdfUrl, // 회의록 PDF 파일 경로
@@ -62,8 +53,7 @@ public record BillCommissionExaminationInfoItem(
 	) {
 	}
 
-	public record ComitExaminationItem(
-		String comitName, // 관련위원회
+	public record ComitExaminationItem(String comitName, // 관련위원회
 		String submitDt, // 회부일
 		String presentDt, // 상정일
 		String procDt, // 의견서제시일
@@ -71,8 +61,7 @@ public record BillCommissionExaminationInfoItem(
 	) {
 	}
 
-	public record CommitMeetingItem(
-		String confName, // 회의명
+	public record CommitMeetingItem(String confName, // 회의명
 		String confDt, // 회의일
 		String confResult, // 회의 결과
 		String fileName // 회의록

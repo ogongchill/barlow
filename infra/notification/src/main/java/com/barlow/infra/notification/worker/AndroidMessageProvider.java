@@ -9,14 +9,9 @@ public class AndroidMessageProvider implements MessageProvider {
 
 	@Override
 	public Message provide(String messageTitle, String messageBody, NotificationInfo.Subscriber subscriber) {
-		AndroidNotification androidNotification = AndroidNotification.builder()
-			.setTitle(messageTitle)
-			.setBody(messageBody)
-			.setDefaultSound(true)
-			.build();
-		return Message.builder()
-			.setToken(subscriber.token())
-			.setAndroidConfig(AndroidConfig.builder().setNotification(androidNotification).build())
-			.build();
+		AndroidNotification androidNotification = AndroidNotification.builder().setTitle(messageTitle)
+			.setBody(messageBody).setDefaultSound(true).build();
+		return Message.builder().setToken(subscriber.token())
+			.setAndroidConfig(AndroidConfig.builder().setNotification(androidNotification).build()).build();
 	}
 }

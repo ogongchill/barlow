@@ -10,23 +10,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthProviderService {
 
-    private final AuthProviderRepository authProviderRepository;
+	private final AuthProviderRepository authProviderRepository;
 
-    public AuthProviderService(AuthProviderRepository authProviderRepository) {
-        this.authProviderRepository = authProviderRepository;
-    }
+	public AuthProviderService(AuthProviderRepository authProviderRepository) {
+		this.authProviderRepository = authProviderRepository;
+	}
 
-    public UserAuthProvider retrieveAll(UserQuery query) {
-        return authProviderRepository.retrieveByUser(query);
-    }
+	public UserAuthProvider retrieveAll(UserQuery query) {
+		return authProviderRepository.retrieveByUser(query);
+	}
 
-    public UserAuthProvider create(UserAuthProviderCreateCommand command) {
-        if (authProviderRepository.existsByUserIdAndProvider(command)) {
-            throw RegistrationException.authProviderExists(command.authProvider());
-        }
-        if (authProviderRepository.existsByProviderAndSub(command)) {
-            throw RegistrationException.oauthAlreadyRegistered();
-        }
-        return authProviderRepository.create(command);
-    }
+	public UserAuthProvider create(UserAuthProviderCreateCommand command) {
+		if (authProviderRepository.existsByUserIdAndProvider(command)) {
+			throw RegistrationException.authProviderExists(command.authProvider());
+		}
+		if (authProviderRepository.existsByProviderAndSub(command)) {
+			throw RegistrationException.oauthAlreadyRegistered();
+		}
+		return authProviderRepository.create(command);
+	}
 }

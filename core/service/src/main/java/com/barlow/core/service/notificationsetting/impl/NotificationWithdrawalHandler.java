@@ -13,11 +13,9 @@ public class NotificationWithdrawalHandler {
 	private final NotificationSettingRepository notificationSettingRepository;
 	private final NotificationCenterItemRepository notificationCenterItemRepository;
 
-	public NotificationWithdrawalHandler(
-		NotificationSettingReader notificationSettingReader,
+	public NotificationWithdrawalHandler(NotificationSettingReader notificationSettingReader,
 		NotificationSettingRepository notificationSettingRepository,
-		NotificationCenterItemRepository notificationCenterItemRepository
-	) {
+		NotificationCenterItemRepository notificationCenterItemRepository) {
 		this.notificationSettingReader = notificationSettingReader;
 		this.notificationSettingRepository = notificationSettingRepository;
 		this.notificationCenterItemRepository = notificationCenterItemRepository;

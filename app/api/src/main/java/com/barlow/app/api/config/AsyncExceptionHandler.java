@@ -22,7 +22,7 @@ public class AsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
 	}
 
 	@Override
-	public void handleUncaughtException(@NotNull Throwable ex, @NotNull Method method, Object @NotNull ... params) {
+	public void handleUncaughtException(@NotNull Throwable ex, @NotNull Method method, Object @NotNull... params) {
 		if (ex instanceof CoreApiException coreApiException) {
 			switch (coreApiException.getErrorType().getLogLevel()) {
 				case ERROR -> {

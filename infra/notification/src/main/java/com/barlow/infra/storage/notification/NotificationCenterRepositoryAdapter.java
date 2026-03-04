@@ -23,17 +23,14 @@ public class NotificationCenterRepositoryAdapter implements NotificationCenterRe
 	private final SimpleJdbcInsert simpleJdbcInsert;
 
 	public NotificationCenterRepositoryAdapter(@Qualifier("batchCoreDataSource") DataSource dataSource) {
-		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-			.withTableName("notification_center_item")
+		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("notification_center_item")
 			.usingGeneratedKeyColumns("notification_center_item_no");
 	}
 
 	@Override
 	public void registerAll(List<NotificationCenterItemInfo> notificationCenterItemInfos) {
-		SqlParameterSource[] sqlParameterSources = notificationCenterItemInfos.stream()
-			.map(this::toSqlParameterSources)
-			.flatMap(Arrays::stream)
-			.toArray(SqlParameterSource[]::new);
+		SqlParameterSource[] sqlParameterSources = notificationCenterItemInfos.stream().map(this::toSqlParameterSources)
+			.flatMap(Arrays::stream).toArray(SqlParameterSource[]::new);
 		simpleJdbcInsert.executeBatch(sqlParameterSources);
 	}
 
@@ -44,18 +41,11 @@ public class NotificationCenterRepositoryAdapter implements NotificationCenterRe
 			.toArray(MapSqlParameterSource[]::new);
 	}
 
-	private MapSqlParameterSource createSqlParameterSource(
-		Long memberNo,
-		NotificationTopic topic,
-		NotificationCenterItemInfo.BillItemInfo billItemInfo
-	) {
-		return new MapSqlParameterSource()
-			.addValue("member_no", memberNo)
-			.addValue("notification_topic", topic.name())
-			.addValue("title", topic.getValue())
-			.addValue("body", billItemInfo.billName())
-			.addValue("bill_id", billItemInfo.billId())
-			.addValue("created_at", LocalDateTime.now(), Types.TIMESTAMP)
+	private MapSqlParameterSource createSqlParameterSource(Long memberNo, NotificationTopic topic,
+		NotificationCenterItemInfo.BillItemInfo billItemInfo) {
+		return new MapSqlParameterSource().addValue("member_no", memberNo).addValue("notification_topic", topic.name())
+			.addValue("title", topic.getValue()).addValue("body", billItemInfo.billName())
+			.addValue("bill_id", billItemInfo.billId()).addValue("created_at", LocalDateTime.now(), Types.TIMESTAMP)
 			.addValue("updated_at", LocalDateTime.now(), Types.TIMESTAMP);
 	}
 }

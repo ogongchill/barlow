@@ -23,9 +23,7 @@ import com.barlow.core.enumerate.LegislationType;
 
 import io.restassured.RestAssured;
 
-@AcceptanceTest({
-	"acceptance/legislationAccount.json",
-	"acceptance/legislationAccountSubscribe.json"})
+@AcceptanceTest({"acceptance/legislationAccount.json", "acceptance/legislationAccountSubscribe.json"})
 @Import(TestTokenProvider.class)
 class LegislationAccountSubscribeControllerTest extends ContextTest {
 
@@ -43,8 +41,7 @@ class LegislationAccountSubscribeControllerTest extends ContextTest {
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 
 		@DisplayName("사용자가 이미 활성화된 상임위원회의 구독을 활성화하면 예외를 발생시키고 실패한다")
@@ -55,14 +52,11 @@ class LegislationAccountSubscribeControllerTest extends ContextTest {
 		}
 
 		private Map<String, Object> activateSubscription(LegislationType legislationType) {
-			return RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.post("/api/v1/legislation-accounts/{legislationType}/subscribe/activate", legislationType)
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.headers(MANDATORY_DEVICE_HEADERS).when()
+				.post("/api/v1/legislation-accounts/{legislationType}/subscribe/activate", legislationType).then().log()
+				.all().extract().jsonPath().getMap(".");
 		}
 	}
 
@@ -77,8 +71,7 @@ class LegislationAccountSubscribeControllerTest extends ContextTest {
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 
 		@DisplayName("사용자가 이미 비활성화된 상임위원회의 구독을 비활성화하면 예외를 발생시키고 실패한다")
@@ -89,14 +82,11 @@ class LegislationAccountSubscribeControllerTest extends ContextTest {
 		}
 
 		private Map<String, Object> deactivateSubscription(LegislationType legislationType) {
-			return RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.post("/api/v1/legislation-accounts/{legislationType}/subscribe/deactivate", legislationType)
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.headers(MANDATORY_DEVICE_HEADERS).when()
+				.post("/api/v1/legislation-accounts/{legislationType}/subscribe/deactivate", legislationType).then()
+				.log().all().extract().jsonPath().getMap(".");
 		}
 	}
 }

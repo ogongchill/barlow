@@ -16,7 +16,7 @@ public class AccountLoginService {
 	public AccountLoginService(DeviceRefresher deviceRefresher, UserReader userReader) {
 		this.deviceRefresher = deviceRefresher;
 		this.userReader = userReader;
-    }
+	}
 
 	public User guestLogin(LoginCommand command) {
 		Device device = deviceRefresher.refresh(command.toDeviceQuery(), command.deviceToken());

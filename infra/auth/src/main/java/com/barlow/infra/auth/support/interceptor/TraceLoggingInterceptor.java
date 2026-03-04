@@ -15,26 +15,16 @@ import jakarta.servlet.http.HttpServletResponse;
 public class TraceLoggingInterceptor implements HandlerInterceptor {
 
 	@Override
-	public boolean preHandle(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		Object handler
-	) {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		Passport passport = (Passport)request.getAttribute("passport");
-		ThreadContext.putAll(Map.of(
-			"api", request.getRequestURI(),
-			"user", String.valueOf(passport.getUser().getUserNo())
-		));
+		ThreadContext
+			.putAll(Map.of("api", request.getRequestURI(), "user", String.valueOf(passport.getUser().getUserNo())));
 		return true;
 	}
 
 	@Override
-	public void afterCompletion(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		Object handler,
-		Exception ex
-	) {
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+		Exception ex) {
 		ThreadContext.clearAll();
 	}
 }

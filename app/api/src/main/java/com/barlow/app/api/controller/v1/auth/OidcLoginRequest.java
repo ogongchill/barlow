@@ -9,35 +9,28 @@ import com.barlow.infra.auth.authentication.oauth.OidcAuthenticationRequest;
 
 import java.util.function.Function;
 
-public record OidcLoginRequest (
-    String deviceOs,
-    String deviceId,
-    String deviceToken,
-    OidcPayload oidcPayload
-) implements Validatable {
+public record OidcLoginRequest(String deviceOs, String deviceId, String deviceToken,
+	OidcPayload oidcPayload) implements Validatable {
 
-    MemberLoginCommand toCommand(Function<OidcAuthenticationRequest, ExternalPrincipal> authenticator) {
-        return new MemberLoginCommand(
-                deviceId,
-                DeviceOs.valueOf(deviceOs.toUpperCase()),
-                deviceToken,
-                authenticator.apply(oidcPayload.toAuthenticationRequest())
-        );
-    }
+	MemberLoginCommand toCommand(Function<OidcAuthenticationRequest, ExternalPrincipal> authenticator) {
+		return new MemberLoginCommand(
+			deviceId, DeviceOs.valueOf(deviceOs.toUpperCase()), deviceToken,
+			authenticator.apply(oidcPayload.toAuthenticationRequest()));
+	}
 
-    @Override
-    public void validate() {
-        if (deviceId == null || deviceId.isBlank()) {
-            throw CoreApiException.badRequest("Device ID cannot be null or empty");
-        }
-        if (deviceToken == null || deviceToken.isBlank()) {
-            throw CoreApiException.badRequest("Device token cannot be null or empty");
-        }
-        if (deviceOs == null || deviceOs.isBlank()) {
-            throw CoreApiException.badRequest("Device Os cannot be null or empty");
-        }
-        if (!deviceOs.matches("^(?i)(ios|android)$")) {
-            throw CoreApiException.badRequest("os 는 대소문자 관계 없이 'ios' 와 'android' 타입만 허용됨");
-        }
-    }
+	@Override
+	public void validate() {
+		if (deviceId == null || deviceId.isBlank()) {
+			throw CoreApiException.badRequest("Device ID cannot be null or empty");
+		}
+		if (deviceToken == null || deviceToken.isBlank()) {
+			throw CoreApiException.badRequest("Device token cannot be null or empty");
+		}
+		if (deviceOs == null || deviceOs.isBlank()) {
+			throw CoreApiException.badRequest("Device Os cannot be null or empty");
+		}
+		if (!deviceOs.matches("^(?i)(ios|android)$")) {
+			throw CoreApiException.badRequest("os 는 대소문자 관계 없이 'ios' 와 'android' 타입만 허용됨");
+		}
+	}
 }

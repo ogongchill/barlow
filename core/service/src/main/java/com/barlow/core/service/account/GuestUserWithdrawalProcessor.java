@@ -22,12 +22,10 @@ class GuestUserWithdrawalProcessor implements UserWithdrawalProcessor {
 	private final SubscribeWithdrawalHandler subscribeWithdrawalHandler;
 	private final LegislationAccountWithdrawalHandler legislationAccountWithdrawalHandler;
 
-	public GuestUserWithdrawalProcessor(
-		UserRepository userRepository, DeviceRepository deviceRepository,
+	public GuestUserWithdrawalProcessor(UserRepository userRepository, DeviceRepository deviceRepository,
 		NotificationWithdrawalHandler notificationWithdrawalHandler,
 		SubscribeWithdrawalHandler subscribeWithdrawalHandler,
-		LegislationAccountWithdrawalHandler legislationAccountWithdrawalHandler
-	) {
+		LegislationAccountWithdrawalHandler legislationAccountWithdrawalHandler) {
 		this.userRepository = userRepository;
 		this.deviceRepository = deviceRepository;
 		this.notificationWithdrawalHandler = notificationWithdrawalHandler;

@@ -10,8 +10,7 @@ import com.barlow.core.enumerate.ProposerType;
 
 public class TodayBillInfoBatchEntityFactory {
 
-	private TodayBillInfoBatchEntityFactory() {
-	}
+	private TodayBillInfoBatchEntityFactory() {}
 
 	public static BillInfoItem make(BillInfoListItem listItem) {
 		Optional<ParsedBillName> parsedOpt = BillNameParser.parse(listItem.billName());
@@ -54,75 +53,34 @@ public class TodayBillInfoBatchEntityFactory {
 	private static BillInfoItem buildFromInstitutionalProposal(BillInfoListItem item, ParsedBillName parsed,
 		ProposerType proposerType) {
 		String proposer = parsed.secondParens() == null ? parsed.firstParens() : parsed.secondParens();
-		return BillInfoItem.builder()
-			.billId(item.billId())
-			.billNo(item.billNo())
-			.billName(parsed.fullMatch())
-			.generalResult(item.generalResult())
-			.processingType(item.passGubn())
-			.proposerType(proposerType)
-			.proposers(proposer)
-			.proposeDateStr(item.proposeDt())
-			.progressStatusCode(ProgressStatus.findByValue(item.procStageCd()))
-			.summary(item.summary())
-			.build();
+		return BillInfoItem.builder().billId(item.billId()).billNo(item.billNo()).billName(parsed.fullMatch())
+			.generalResult(item.generalResult()).processingType(item.passGubn()).proposerType(proposerType)
+			.proposers(proposer).proposeDateStr(item.proposeDt())
+			.progressStatusCode(ProgressStatus.findByValue(item.procStageCd())).summary(item.summary()).build();
 	}
 
-	private static BillInfoItem buildFromAlternativeBill(
-		BillInfoListItem item,
-		ParsedBillName parsed,
-		ProposerType proposerType
-	) {
-		return BillInfoItem.builder()
-			.billId(item.billId())
-			.billNo(item.billNo())
-			.billName(String.format("%s(%s)", parsed.title(), parsed.firstParens()))
-			.generalResult(item.generalResult())
-			.processingType(item.passGubn())
-			.proposerType(proposerType)
-			.proposers(parsed.secondParens())
-			.proposeDateStr(item.proposeDt())
-			.progressStatusCode(ProgressStatus.findByValue(item.procStageCd()))
-			.summary(item.summary())
-			.build();
+	private static BillInfoItem buildFromAlternativeBill(BillInfoListItem item, ParsedBillName parsed,
+		ProposerType proposerType) {
+		return BillInfoItem.builder().billId(item.billId()).billNo(item.billNo())
+			.billName(String.format("%s(%s)", parsed.title(), parsed.firstParens())).generalResult(item.generalResult())
+			.processingType(item.passGubn()).proposerType(proposerType).proposers(parsed.secondParens())
+			.proposeDateStr(item.proposeDt()).progressStatusCode(ProgressStatus.findByValue(item.procStageCd()))
+			.summary(item.summary()).build();
 	}
 
-	private static BillInfoItem buildFromSanctionProposal(
-		BillInfoListItem item,
-		ParsedBillName parsed,
-		ProposerType proposerType
-	) {
-		return BillInfoItem.builder()
-			.billId(item.billId())
-			.billNo(item.billNo())
-			.billName(parsed.fullMatch())
-			.generalResult(item.generalResult())
-			.processingType(item.passGubn())
-			.proposerType(proposerType)
-			.proposers(parsed.secondParens())
-			.proposeDateStr(item.proposeDt())
-			.progressStatusCode(ProgressStatus.findByValue(item.procStageCd()))
-			.summary(item.summary())
-			.build();
+	private static BillInfoItem buildFromSanctionProposal(BillInfoListItem item, ParsedBillName parsed,
+		ProposerType proposerType) {
+		return BillInfoItem.builder().billId(item.billId()).billNo(item.billNo()).billName(parsed.fullMatch())
+			.generalResult(item.generalResult()).processingType(item.passGubn()).proposerType(proposerType)
+			.proposers(parsed.secondParens()).proposeDateStr(item.proposeDt())
+			.progressStatusCode(ProgressStatus.findByValue(item.procStageCd())).summary(item.summary()).build();
 	}
 
-	private static BillInfoItem buildFromNormalBill(
-		BillInfoListItem item,
-		ParsedBillName parsed,
-		ProposerType proposerType
-	) {
-		return BillInfoItem.builder()
-			.billId(item.billId())
-			.billNo(item.billNo())
-			.billName(parsed.title())
-			.generalResult(item.generalResult())
-			.processingType(item.passGubn())
-			.proposerType(proposerType)
-			.proposers(parsed.firstParens())
-			.proposeDateStr(item.proposeDt())
-			.progressStatusCode(ProgressStatus.findByValue(item.procStageCd()))
-			.summary(item.summary())
-			.build();
+	private static BillInfoItem buildFromNormalBill(BillInfoListItem item, ParsedBillName parsed,
+		ProposerType proposerType) {
+		return BillInfoItem.builder().billId(item.billId()).billNo(item.billNo()).billName(parsed.title())
+			.generalResult(item.generalResult()).processingType(item.passGubn()).proposerType(proposerType)
+			.proposers(parsed.firstParens()).proposeDateStr(item.proposeDt())
+			.progressStatusCode(ProgressStatus.findByValue(item.procStageCd())).summary(item.summary()).build();
 	}
 }
-

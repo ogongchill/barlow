@@ -22,8 +22,6 @@ class MyLegislationAccountRepositoryAdapterTest extends CoreDbContextTest {
 	void retrieveMyLegislationAccounts() {
 		User user = User.of(1L, User.Role.GUEST);
 
-		assertThat(adapter.retrieveMyLegislationAccounts(user))
-			.isNotEmpty()
-			.hasSize(1);
+		assertThat(adapter.retrieveMyLegislationAccounts(user)).isNotEmpty().hasSize(1);
 	}
 }

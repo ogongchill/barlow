@@ -23,10 +23,8 @@ public class AccountController {
 	private final AccountWithdrawalService accountWithdrawalService;
 	private final MyAccountRetrieveService myAccountRetrieveService;
 
-	public AccountController(
-		AccountWithdrawalService accountWithdrawalService,
-		MyAccountRetrieveService myAccountRetrieveService
-	) {
+	public AccountController(AccountWithdrawalService accountWithdrawalService,
+		MyAccountRetrieveService myAccountRetrieveService) {
 		this.accountWithdrawalService = accountWithdrawalService;
 		this.myAccountRetrieveService = myAccountRetrieveService;
 	}
@@ -39,7 +37,8 @@ public class AccountController {
 
 	@PostMapping("/withdraw")
 	public ApiResponse<Void> withdraw(@PassportUser Passport passport) {
-		log.info("Received [guest-user:{}, device-id:{}] withdrawal request", passport.getUserNo(), passport.getDeviceId());
+		log.info(
+			"Received [guest-user:{}, device-id:{}] withdrawal request", passport.getUserNo(), passport.getDeviceId());
 		accountWithdrawalService.withdraw(passport);
 		return ApiResponse.success();
 	}

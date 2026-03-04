@@ -23,12 +23,9 @@ public class BatchLambdaScheduler {
 	private final String trackingBillBatchFuncUrl;
 	private final String updateBillBatchFuncUrl;
 
-	public BatchLambdaScheduler(
-		@Value("${scheduler.batch-lambda.url.pre-announce}") String preAnnounceBatchFuncUrl,
+	public BatchLambdaScheduler(@Value("${scheduler.batch-lambda.url.pre-announce}") String preAnnounceBatchFuncUrl,
 		@Value("${scheduler.batch-lambda.url.tracking-bill}") String trackingBillBatchFuncUrl,
-		@Value("${scheduler.batch-lambda.url.today-bill}") String updateBillBatchFuncUrl,
-		RestTemplate restTemplate
-	) {
+		@Value("${scheduler.batch-lambda.url.today-bill}") String updateBillBatchFuncUrl, RestTemplate restTemplate) {
 		this.preAnnounceBatchFuncUrl = preAnnounceBatchFuncUrl;
 		this.trackingBillBatchFuncUrl = trackingBillBatchFuncUrl;
 		this.updateBillBatchFuncUrl = updateBillBatchFuncUrl;

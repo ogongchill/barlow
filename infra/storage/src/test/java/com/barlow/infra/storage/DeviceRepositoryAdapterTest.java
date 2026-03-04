@@ -28,9 +28,7 @@ class DeviceRepositoryAdapterTest extends CoreDbContextTest {
 	@DisplayName("새로운 디바이즈 정보를 받아 저장한다")
 	@Test
 	void save() {
-		adapter.save(new DeviceRegisterCommand(
-			"new_device_id", DeviceOs.IOS, "new_device_token", 100
-		));
+		adapter.save(new DeviceRegisterCommand("new_device_id", DeviceOs.IOS, "new_device_token", 100));
 
 		assertThat(deviceJpaRepository.count()).isEqualTo(5);
 	}
@@ -41,10 +39,8 @@ class DeviceRepositoryAdapterTest extends CoreDbContextTest {
 		Device device = adapter.readOrNull(new DeviceQuery("device_id_1", DeviceOs.IOS));
 
 		assertAll(
-			() -> assertThat(device).isNotNull(),
-			() -> assertThat(device.getDeviceId()).isEqualTo("device_id_1"),
-			() -> assertThat(device.getDeviceToken()).isEqualTo("device_token_1")
-		);
+			() -> assertThat(device).isNotNull(), () -> assertThat(device.getDeviceId()).isEqualTo("device_id_1"),
+			() -> assertThat(device.getDeviceToken()).isEqualTo("device_token_1"));
 	}
 
 	@Transactional
@@ -56,9 +52,9 @@ class DeviceRepositoryAdapterTest extends CoreDbContextTest {
 
 		adapter.update(modifiedDevice);
 
-		assertThat(deviceJpaRepository.findByDeviceIdAndOs(modifiedDevice.getDeviceId(), DeviceOs.IOS)
-			.toDevice()
-			.getDeviceToken()
-		).isEqualTo(modifiedToken);
+		assertThat(
+			deviceJpaRepository.findByDeviceIdAndOs(modifiedDevice.getDeviceId(), DeviceOs.IOS).toDevice()
+				.getDeviceToken())
+			.isEqualTo(modifiedToken);
 	}
 }

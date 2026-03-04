@@ -22,17 +22,12 @@ public class MyNotificationCenterRepositoryAdapter implements MyNotificationCent
 	public boolean existsTodayNotification(User user) {
 		LocalDate todayDate = LocalDate.now();
 		return notificationCenterJpaRepository.existsByCreatedAtBetweenAndMemberNo(
-			todayDate.atStartOfDay(),
-			todayDate.plusDays(1).atStartOfDay(),
-			user.getUserNo()
-		);
+			todayDate.atStartOfDay(), todayDate.plusDays(1).atStartOfDay(), user.getUserNo());
 	}
 
 	@Override
 	public List<NotificationCenterItem> retrieveNotificationItems(User user) {
-		return notificationCenterJpaRepository.findByMemberNo(user.getUserNo())
-			.stream()
-			.map(NotificationCenterItemJpaEntity::toNotificationItem)
-			.toList();
+		return notificationCenterJpaRepository.findByMemberNo(user.getUserNo()).stream()
+			.map(NotificationCenterItemJpaEntity::toNotificationItem).toList();
 	}
 }

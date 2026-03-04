@@ -16,18 +16,14 @@ import com.barlow.core.domain.version.AvailableClientVersion;
 import com.barlow.core.domain.version.ClientVersionUpdateStrategy;
 import com.barlow.core.domain.version.SemanticVersion;
 import com.barlow.core.enumerate.ClientVersionStatus;
-import com.barlow.core.service.version.impl.AllowUnofficialReleaseStrategy;
 
 class AllowUnofficialReleaseStrategyTest {
 
 	@DisplayName("버전 정보에 따라 업데이트 여부를 반환하는지 확인")
 	@ParameterizedTest
 	@MethodSource("generateVersionData")
-	void evaluate(
-		SemanticVersion clientVersion,
-		AvailableClientVersion availableClientVersion,
-		ClientVersionStatus expected
-	) {
+	void evaluate(SemanticVersion clientVersion, AvailableClientVersion availableClientVersion,
+		ClientVersionStatus expected) {
 		ClientVersionUpdateStrategy strategy = new AllowUnofficialReleaseStrategy();
 		ClientVersionStatus actual = strategy.evaluate(clientVersion, availableClientVersion);
 		assertThat(actual).isEqualTo(expected);
@@ -35,14 +31,11 @@ class AllowUnofficialReleaseStrategyTest {
 
 	private static Stream<Arguments> generateVersionData() {
 		AvailableClientVersion availableClientVersion = new AvailableClientVersion(
-			SemanticVersion.of("1.1.0"),
-			SemanticVersion.of("2.0.0")
-		);
+			SemanticVersion.of("1.1.0"), SemanticVersion.of("2.0.0"));
 		return Stream.of(
 			Arguments.of(SemanticVersion.of("1.0.0-rc"), availableClientVersion, NEED_FORCE_UPDATE),
 			Arguments.of(SemanticVersion.of("1.0.0"), availableClientVersion, NEED_FORCE_UPDATE),
 			Arguments.of(SemanticVersion.of("2.0.0"), availableClientVersion, LATEST),
-			Arguments.of(SemanticVersion.of("1.1.0"), availableClientVersion, UPDATE_AVAILABLE)
-		);
+			Arguments.of(SemanticVersion.of("1.1.0"), availableClientVersion, UPDATE_AVAILABLE));
 	}
 }

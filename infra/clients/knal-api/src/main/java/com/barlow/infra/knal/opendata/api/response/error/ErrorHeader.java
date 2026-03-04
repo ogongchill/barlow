@@ -2,11 +2,7 @@ package com.barlow.infra.knal.opendata.api.response.error;
 
 import com.barlow.infra.knal.opendata.api.response.common.Header;
 
-public record ErrorHeader(
-	String errMsg,
-	String returnAuthMsg,
-	String returnReasonCode
-) implements Header {
+public record ErrorHeader(String errMsg, String returnAuthMsg, String returnReasonCode) implements Header {
 
 	@Override
 	public String resultCode() {

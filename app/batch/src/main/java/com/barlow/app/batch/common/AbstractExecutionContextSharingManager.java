@@ -6,8 +6,7 @@ public abstract class AbstractExecutionContextSharingManager {
 
 	private ExecutionContext executionContext;
 
-	protected AbstractExecutionContextSharingManager() {
-	}
+	protected AbstractExecutionContextSharingManager() {}
 
 	protected void setCurrentExecutionContext(ExecutionContext executionContext) {
 		this.executionContext = executionContext;

@@ -12,10 +12,8 @@ import com.barlow.core.enumerate.NotificationTopic;
  * @param topicsWithBillInfos {key:소관위원회명 value:[key]에 해당하는 {법안 ID, 법안 이름} 리스트}
  * @see NotificationType
  */
-public record CommitteeBillNotificationRequest(
-	@NotNull NotificationType type,
-	@NotNull Map<NotificationTopic, List<BillInfo>> topicsWithBillInfos
-) implements NotificationRequest {
+public record CommitteeBillNotificationRequest(@NotNull NotificationType type,
+	@NotNull Map<NotificationTopic, List<BillInfo>> topicsWithBillInfos) implements NotificationRequest {
 
 	public static CommitteeBillNotificationRequest from(Map<NotificationTopic, List<BillInfo>> topicsWithBillInfos) {
 		if (topicsWithBillInfos == null) {

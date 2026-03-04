@@ -37,11 +37,8 @@ public class InboundJwtAuthenticationFilter extends OncePerRequestFilter {
 	}
 
 	@Override
-	protected void doFilterInternal(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		FilterChain filterChain
-	) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+		throws ServletException, IOException {
 		String bearerAccessTokenValue = request.getHeader(HttpHeaders.AUTHORIZATION);
 		checkHeaderHasToken(bearerAccessTokenValue);
 		checkIsBearerType(bearerAccessTokenValue);
@@ -51,11 +48,8 @@ public class InboundJwtAuthenticationFilter extends OncePerRequestFilter {
 		User user = User.of(memberPrincipal.getMemberNo(), memberPrincipal.getRole());
 
 		Passport passport = Passport.create(
-			user,
-			request.getHeader(X_DEVICE_ID),
-			request.getHeader(X_CLIENT_OS_VERSION),
-			request.getHeader(X_CLIENT_OS)
-		);
+			user, request.getHeader(X_DEVICE_ID), request.getHeader(X_CLIENT_OS_VERSION),
+			request.getHeader(X_CLIENT_OS));
 		request.setAttribute("passport", passport);
 
 		filterChain.doFilter(request, response);
@@ -70,23 +64,16 @@ public class InboundJwtAuthenticationFilter extends OncePerRequestFilter {
 	private void checkIsBearerType(String bearerAccessTokenValue) {
 		if (!bearerAccessTokenValue.startsWith(AUTHENTICATION_TYPE)) {
 			throw new CoreAuthException(
-				CoreAuthErrorType.UNAUTHORIZED,
-				"Bearer token does not start with " + AUTHENTICATION_TYPE
-			);
+				CoreAuthErrorType.UNAUTHORIZED, "Bearer token does not start with " + AUTHENTICATION_TYPE);
 		}
 	}
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) {
-		return match("/api/v1/auth/guest/signup", request)
-			   || match("/api/v1/auth/guest/login", request)
-			   || match("/api/v1/auth/oidc/signup", request)
-			   || match("/api/v1/auth/oidc/login", request)
-			   || match("/api/v1/term/**", request)
-			   || match("/health", request)
-			   || match("/h2-console", request)
-			   || match("/actuator/**", request)
-			   || match("/error", request);
+		return match("/api/v1/auth/guest/signup", request) || match("/api/v1/auth/guest/login", request)
+			|| match("/api/v1/auth/oidc/signup", request) || match("/api/v1/auth/oidc/login", request)
+			|| match("/api/v1/term/**", request) || match("/health", request) || match("/h2-console", request)
+			|| match("/actuator/**", request) || match("/error", request);
 	}
 
 	private boolean match(String pattern, HttpServletRequest req) {

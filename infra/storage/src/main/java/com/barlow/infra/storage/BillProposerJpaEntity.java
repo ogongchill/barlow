@@ -37,15 +37,9 @@ public class BillProposerJpaEntity extends BaseTimeJpaEntity {
 	@Column(columnDefinition = "varchar(50)", name = "party_name", nullable = false)
 	private PartyName partyName;
 
-	protected BillProposerJpaEntity() {
-	}
+	protected BillProposerJpaEntity() {}
 
 	BillProposer toBillProposer() {
-		return new BillProposer(
-			proposerCode,
-			proposerName,
-			partyName.getValue(),
-			proposerProfileImagePath
-		);
+		return new BillProposer(proposerCode, proposerName, partyName.getValue(), proposerProfileImagePath);
 	}
 }

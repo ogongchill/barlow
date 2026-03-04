@@ -8,14 +8,14 @@ import com.barlow.infra.knal.opendata.api.request.RecentRceptListRequest;
  * @see Operation
  * @see RecentRceptListRequest
  */
-public record RecentPasageListItem(
-    String billId, // 의안 ID
-    String billNo, // 의안번호
-    String billName, // 의안명
-    String proposerKind, // 제안자 구분
-    String proposeDt, // 제안일
-    String committeeName, // 소관위원회명
-    String procDt, // 본회의 의결일자
-    String generalResult // 본회의 의결 결과
+public record RecentPasageListItem(String billId, // 의안 ID
+	String billNo, // 의안번호
+	String billName, // 의안명
+	String proposerKind, // 제안자 구분
+	String proposeDt, // 제안일
+	String committeeName, // 소관위원회명
+	String procDt, // 본회의 의결일자
+	String generalResult // 본회의 의결 결과
+
 ) {
 }

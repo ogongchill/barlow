@@ -26,20 +26,16 @@ public class LegislationAccountNotificationSettingController {
 	}
 
 	@PostMapping("/activate")
-	public ApiResponse<Void> activate(
-		@PathVariable("legislationType") LegislationType legislationType,
-		@PassportUser Passport passport
-	) {
+	public ApiResponse<Void> activate(@PathVariable("legislationType") LegislationType legislationType,
+		@PassportUser Passport passport) {
 		log.info("Received {} account notification setting activated", legislationType);
 		notificationSettingService.activateSetting(legislationType, passport.getUser());
 		return ApiResponse.success();
 	}
 
 	@PostMapping("/deactivate")
-	public ApiResponse<Void> deactivate(
-		@PathVariable("legislationType") LegislationType legislationType,
-		@PassportUser Passport passport
-	) {
+	public ApiResponse<Void> deactivate(@PathVariable("legislationType") LegislationType legislationType,
+		@PassportUser Passport passport) {
 		log.info("Received {} account notification setting deactivated", legislationType);
 		notificationSettingService.deactivateSetting(legislationType, passport.getUser());
 		return ApiResponse.success();

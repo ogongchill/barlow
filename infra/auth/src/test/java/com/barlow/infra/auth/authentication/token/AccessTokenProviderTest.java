@@ -40,7 +40,6 @@ class AccessTokenProviderTest extends DevelopTest {
 		assertAll(
 			() -> assertThat(decodedJWT.getIssuer()).isEqualTo("barlow-core-auth"),
 			() -> assertThat(decodedJWT.getClaim("role").asString()).isEqualTo("GUEST"),
-			() -> assertThat(decodedJWT.getClaim("memberNo").asLong()).isEqualTo(1L)
-		);
+			() -> assertThat(decodedJWT.getClaim("memberNo").asLong()).isEqualTo(1L));
 	}
 }

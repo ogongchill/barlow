@@ -33,9 +33,6 @@ public class ClientVersionJpaEntity {
 	private String latest;
 
 	AvailableClientVersion toAvailableClientVersion() {
-		return new AvailableClientVersion(
-			SemanticVersion.of(minimumSupported),
-			SemanticVersion.of(latest)
-		);
+		return new AvailableClientVersion(SemanticVersion.of(minimumSupported), SemanticVersion.of(latest));
 	}
 }

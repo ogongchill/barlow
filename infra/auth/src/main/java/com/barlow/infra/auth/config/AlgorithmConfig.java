@@ -19,19 +19,15 @@ public class AlgorithmConfig {
 	}
 
 	@Bean
-	public Algorithm jwtPrivateKeyAlgorithm(
-		@Value("${auth.jwt.crypto.private-key}") String privateKeyStr,
-		RSAKeyFactory rsaKeyFactory
-	) throws InvalidKeySpecException {
+	public Algorithm jwtPrivateKeyAlgorithm(@Value("${auth.jwt.crypto.private-key}") String privateKeyStr,
+		RSAKeyFactory rsaKeyFactory) throws InvalidKeySpecException {
 		RSAPrivateKey privateKey = rsaKeyFactory.createPrivateKey(privateKeyStr);
 		return Algorithm.RSA256(privateKey);
 	}
 
 	@Bean
-	public Algorithm jwtPublicKeyAlgorithm(
-		@Value("${auth.jwt.crypto.public-key}") String publicKeyStr,
-		RSAKeyFactory rsaKeyFactory
-	) throws InvalidKeySpecException {
+	public Algorithm jwtPublicKeyAlgorithm(@Value("${auth.jwt.crypto.public-key}") String publicKeyStr,
+		RSAKeyFactory rsaKeyFactory) throws InvalidKeySpecException {
 		RSAPublicKey publicKey = rsaKeyFactory.createPublicKey(publicKeyStr);
 		return Algorithm.RSA256(publicKey);
 	}

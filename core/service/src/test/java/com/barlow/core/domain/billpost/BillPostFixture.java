@@ -22,9 +22,7 @@ public class BillPostFixture {
 	static final int VIEW_COUNT = 1;
 
 	static final BillPost RECENT_BILL_POST_1 = new BillPost(
-		new BillPost.BillInfo(BILL_ID_1, BILL_NAME_1),
-		new BillPost.ProposerInfo(PROPOSER_TYPE, PROPOSERS),
-		new BillPost.LegislationInfo(LEGISLATION_TYPE, LEGISLATION_PROCESS_STATUS),
-		SUMMARY, DETAIL, LocalDateTime.of(2025, 1, 1, 0, 0), VIEW_COUNT
-	);
+		new BillPost.BillInfo(BILL_ID_1, BILL_NAME_1), new BillPost.ProposerInfo(PROPOSER_TYPE, PROPOSERS),
+		new BillPost.LegislationInfo(LEGISLATION_TYPE, LEGISLATION_PROCESS_STATUS), SUMMARY, DETAIL,
+		LocalDateTime.of(2025, 1, 1, 0, 0), VIEW_COUNT);
 }

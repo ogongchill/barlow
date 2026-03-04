@@ -82,8 +82,7 @@ public class LawmakerJpaEntity extends BaseTimeJpaEntity {
 	@Column(columnDefinition = "text", name = "biography")
 	private String biography;
 
-	protected LawmakerJpaEntity() {
-	}
+	protected LawmakerJpaEntity() {}
 
 	enum BirthCalenderType {
 		LUNAR, SOLAR

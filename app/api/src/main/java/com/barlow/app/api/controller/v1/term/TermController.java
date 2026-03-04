@@ -15,18 +15,18 @@ import java.util.List;
 @RequestMapping("/api/v1/term")
 public class TermController {
 
-    private static final Logger log = LoggerFactory.getLogger(TermController.class);
+	private static final Logger log = LoggerFactory.getLogger(TermController.class);
 
-    private final TermManager termManager;
+	private final TermManager termManager;
 
-    public TermController(TermManager termManager) {
-        this.termManager = termManager;
-    }
+	public TermController(TermManager termManager) {
+		this.termManager = termManager;
+	}
 
-    @GetMapping("/active")
-    public ApiResponse<ActiveTermResponse> getActiveTerms() {
-        log.info("Received active term request.");
-        List<Term> activeTerms = termManager.retrieveActiveTerms();
-        return ApiResponse.success(ActiveTermResponse.fromTerms(activeTerms));
-    }
+	@GetMapping("/active")
+	public ApiResponse<ActiveTermResponse> getActiveTerms() {
+		log.info("Received active term request.");
+		List<Term> activeTerms = termManager.retrieveActiveTerms();
+		return ApiResponse.success(ActiveTermResponse.fromTerms(activeTerms));
+	}
 }

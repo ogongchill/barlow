@@ -19,10 +19,8 @@ public interface SubscribeJpaRepository extends JpaRepository<SubscribeJpaEntity
 		DELETE FROM SubscribeJpaEntity s
 		WHERE s.subscribeLegislationAccountNo = :accountNo
 		AND s.memberNo = :memberNo""")
-	void deleteBySubscribeLegislationAccountNoAndMemberNo(
-		@Param("accountNo") Long subscribeLegislationAccountNo,
-		@Param("memberNo") Long memberNo
-	);
+	void deleteBySubscribeLegislationAccountNoAndMemberNo(@Param("accountNo") Long subscribeLegislationAccountNo,
+		@Param("memberNo") Long memberNo);
 
 	@Modifying
 	@Query("DELETE FROM SubscribeJpaEntity s WHERE s.memberNo = :memberNo")

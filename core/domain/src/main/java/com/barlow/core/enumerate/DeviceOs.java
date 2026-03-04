@@ -1,8 +1,7 @@
 package com.barlow.core.enumerate;
 
 public enum DeviceOs {
-	IOS, ANDROID,
-	;
+	IOS, ANDROID,;
 
 	public boolean isIOS() {
 		return this.equals(IOS);

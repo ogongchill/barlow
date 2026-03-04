@@ -34,8 +34,7 @@ public class BillPetitionMemberListRequest {
 		private String gbn1;
 		private String gbn2;
 
-		private Builder() {
-		}
+		private Builder() {}
 
 		public Builder billId(String billId) {
 			this.billId = billId;

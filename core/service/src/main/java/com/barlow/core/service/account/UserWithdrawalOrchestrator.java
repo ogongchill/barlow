@@ -21,7 +21,6 @@ public class UserWithdrawalOrchestrator {
 	}
 
 	public void process(Passport passport) {
-		processors.get(passport.getUser().getRole())
-			.process(passport);
+		processors.get(passport.getUser().getRole()).process(passport);
 	}
 }

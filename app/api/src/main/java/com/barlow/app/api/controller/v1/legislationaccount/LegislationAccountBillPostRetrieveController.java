@@ -36,27 +36,24 @@ public class LegislationAccountBillPostRetrieveController {
 	@GetMapping("/{legislationType}/bill-posts")
 	public ApiResponse<LegislationAccountBillPostsResponse> retrieveBillPostThumbnail(
 		@PathVariable("legislationType") LegislationType legislationType,
-		@RequestParam MultiValueMap<String, String> params
-	) {
+		@RequestParam MultiValueMap<String, String> params) {
 		log.info("Received retrieve {} account bill post thumbnail request.", legislationType);
 		LegislationAccountBillPostsRequest request = LegislationAccountBillPostsRequest.sanitizeFrom(params);
-		BillPostQuery query = BillPostQuery.legislationOf(legislationType, request.getPage(), request.getSize(),
-			request.getSort(), request.getFilters());
+		BillPostQuery query = BillPostQuery.legislationOf(
+			legislationType, request.getPage(), request.getSize(), request.getSort(), request.getFilters());
 		BillPostsStatus billPostsStatus = billPostRetrieveService.readBillPosts(query);
-		LegislationAccountBillPostsApiSpecComposer apiSpecComposer
-			= new LegislationAccountBillPostsApiSpecComposer(billPostsStatus);
+		LegislationAccountBillPostsApiSpecComposer apiSpecComposer = new LegislationAccountBillPostsApiSpecComposer(
+			billPostsStatus);
 		return ApiResponse.success(apiSpecComposer.compose(LocalDate.now()));
 	}
 
 	@GetMapping("/bill-posts/{billId}")
-	public ApiResponse<LegislationAccountBillPostDetailResponse> retrieveBillPostDetail(
-		@PassportUser Passport passport,
-		@PathVariable("billId") String billId
-	) {
+	public ApiResponse<LegislationAccountBillPostDetailResponse> retrieveBillPostDetail(@PassportUser Passport passport,
+		@PathVariable("billId") String billId) {
 		log.info("Received retrieve {} account bill post detail request.", billId);
 		BillPost billPost = billPostRetrieveService.readBillPostDetail(passport, new BillPostDetailQuery(billId));
-		LegislationAccountBillPostDetailApiSpecComposer apiSpecComposer
-			= new LegislationAccountBillPostDetailApiSpecComposer(billPost);
+		LegislationAccountBillPostDetailApiSpecComposer apiSpecComposer = new LegislationAccountBillPostDetailApiSpecComposer(
+			billPost);
 		return ApiResponse.success(apiSpecComposer.compose());
 	}
 }

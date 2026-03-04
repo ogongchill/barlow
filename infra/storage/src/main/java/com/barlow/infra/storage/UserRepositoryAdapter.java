@@ -22,27 +22,23 @@ public class UserRepositoryAdapter implements UserRepository {
 
 	@Override
 	public User retrieve(UserQuery query) {
-		return userRepositoryJpaRepository.findByNo(query.userNo())
-			.toUser();
+		return userRepositoryJpaRepository.findByNo(query.userNo()).toUser();
 	}
 
 	@Override
 	public AccountProfile retrieveProfile(UserQuery query) {
-		return userRepositoryJpaRepository.findByNo(query.userNo())
-			.toAccountProfile();
+		return userRepositoryJpaRepository.findByNo(query.userNo()).toAccountProfile();
 	}
 
 	@Override
 	public User create(UserRegisterCommand command) {
-		return userRepositoryJpaRepository
-			.save(UserJpaEntity.fromCommand(command))
-			.toUser();
+		return userRepositoryJpaRepository.save(UserJpaEntity.fromCommand(command)).toUser();
 	}
 
 	@Override
 	public User promoteToMember(GuestToMemberCommand command) {
 		int result = userRepositoryJpaRepository.changeRole(command.userNo(), User.Role.MEMBER);
-		if(result == 0) {
+		if (result == 0) {
 			throw AccountDomainException.modificationException(command.userNo() + "를 MEMBER로 변경하지 못했습니다.");
 		}
 		return userRepositoryJpaRepository.findByNo(command.userNo()).toUser();
@@ -50,8 +46,9 @@ public class UserRepositoryAdapter implements UserRepository {
 
 	@Override
 	public User findByProviderAndSub(ProviderAndSubQuery query) {
-		UserJpaEntity userJpaEntity = userRepositoryJpaRepository.findByProviderAndSub(query.authProvider(), query.sub());
-		if(userJpaEntity == null) {
+		UserJpaEntity userJpaEntity = userRepositoryJpaRepository
+			.findByProviderAndSub(query.authProvider(), query.sub());
+		if (userJpaEntity == null) {
 			throw AccountDomainException.accountNotFound();
 		}
 		return userJpaEntity.toUser();

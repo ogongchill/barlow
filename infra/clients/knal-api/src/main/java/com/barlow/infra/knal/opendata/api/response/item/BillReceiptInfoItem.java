@@ -1,10 +1,7 @@
 package com.barlow.infra.knal.opendata.api.response.item;
 
-public record BillReceiptInfoItem(
-    Receipt receipt
-) {
-	public record Receipt(
-		String billName, // 의안명
+public record BillReceiptInfoItem(Receipt receipt) {
+	public record Receipt(String billName, // 의안명
 		String billNo, // 의안번호
 		String proposeDt, // 제안일자
 		String proposer, // 제안자

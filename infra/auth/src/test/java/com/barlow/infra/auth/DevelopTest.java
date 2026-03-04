@@ -9,9 +9,7 @@ import com.barlow.infra.auth.config.TestKeyConfig;
 
 @ActiveProfiles("test")
 @Tag("develop")
-@SpringBootTest(
-	classes = {ServiceAuthTestApplication.class, TestKeyConfig.class},
-	properties = {"spring.profiles.active=test"})
+@SpringBootTest(classes = {ServiceAuthTestApplication.class, TestKeyConfig.class}, properties = {
+	"spring.profiles.active=test"})
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-public abstract class DevelopTest {
-}
+public abstract class DevelopTest {}

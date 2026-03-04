@@ -23,30 +23,21 @@ import jakarta.persistence.EntityManagerFactory;
 @Configuration
 @EnableTransactionManagement
 @EntityScan(basePackages = "com.barlow.infra.storage")
-@EnableJpaRepositories(
-	basePackages = "com.barlow.infra.storage",
-	entityManagerFactoryRef = "coreEntityManagerFactory",
-	transactionManagerRef = "coreTransactionManager")
+@EnableJpaRepositories(basePackages = "com.barlow.infra.storage", entityManagerFactoryRef = "coreEntityManagerFactory", transactionManagerRef = "coreTransactionManager")
 public class CoreJpaConfig {
 
 	@Bean("coreTransactionManager")
 	public PlatformTransactionManager platformTransactionManager(
-		@Qualifier("coreEntityManagerFactory") EntityManagerFactory emf
-	) {
+		@Qualifier("coreEntityManagerFactory") EntityManagerFactory emf) {
 		return new JpaTransactionManager(emf);
 	}
 
 	@Bean("coreEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-		@Qualifier("coreDataSource") DataSource dataSource,
-		CoreJpaProperties jpaProperties,
-		EntityManagerFactoryBuilder builder
-	) {
-		return builder.dataSource(dataSource)
-			.packages("com.barlow.infra.storage")
-			.persistenceUnit("core")
-			.properties(jpaProperties.properties)
-			.build();
+		@Qualifier("coreDataSource") DataSource dataSource, CoreJpaProperties jpaProperties,
+		EntityManagerFactoryBuilder builder) {
+		return builder.dataSource(dataSource).packages("com.barlow.infra.storage").persistenceUnit("core")
+			.properties(jpaProperties.properties).build();
 	}
 
 	@Component

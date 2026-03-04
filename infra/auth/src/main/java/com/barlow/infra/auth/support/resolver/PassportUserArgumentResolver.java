@@ -27,8 +27,7 @@ public class PassportUserArgumentResolver implements HandlerMethodArgumentResolv
 		MethodParameter parameter,
 		ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest,
-		WebDataBinderFactory binderFactory
-	) {
+		WebDataBinderFactory binderFactory) {
 		Passport passport = (Passport)webRequest.getAttribute("passport", RequestAttributes.SCOPE_REQUEST);
 		checkPassportExist(passport, parameter);
 		return passport;

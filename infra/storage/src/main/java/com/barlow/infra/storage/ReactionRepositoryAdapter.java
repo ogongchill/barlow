@@ -22,21 +22,15 @@ public class ReactionRepositoryAdapter implements ReactionRepository {
 
 	@Override
 	public List<Reaction> retrieve(ReactionQuery query) {
-		return reactionJpaRepository
-			.findAllByTargetIdAndTargetType(query.targetId(), query.targetType())
-			.stream()
-			.map(ReactionJpaEntity::toReaction)
-			.toList();
+		return reactionJpaRepository.findAllByTargetIdAndTargetType(query.targetId(), query.targetType()).stream()
+			.map(ReactionJpaEntity::toReaction).toList();
 	}
 
 	@Override
 	@Nullable
 	public Reaction retrieveUserReaction(User user, ReactionQuery query) {
-		ReactionJpaEntity reactionJpaEntity = reactionJpaRepository.findByMemberNoAndTargetIdAndTargetType(
-			user.getUserNo(),
-			query.targetId(),
-			query.targetType()
-		);
+		ReactionJpaEntity reactionJpaEntity = reactionJpaRepository
+			.findByMemberNoAndTargetIdAndTargetType(user.getUserNo(), query.targetId(), query.targetType());
 		if (reactionJpaEntity == null) {
 			return null;
 		}
@@ -47,11 +41,7 @@ public class ReactionRepositoryAdapter implements ReactionRepository {
 	@Nullable
 	public Reaction retrieve(User user, Reaction reaction) {
 		ReactionJpaEntity reactionJpaEntity = reactionJpaRepository.findByMemberNoAndTargetIdAndTargetTypeAndType(
-			user.getUserNo(),
-			reaction.getTargetId(),
-			reaction.getTargetType(),
-			reaction.getReactionType()
-		);
+			user.getUserNo(), reaction.getTargetId(), reaction.getTargetType(), reaction.getReactionType());
 		if (reactionJpaEntity == null) {
 			return null;
 		}
@@ -62,21 +52,12 @@ public class ReactionRepositoryAdapter implements ReactionRepository {
 	public void react(User user, Reaction reaction) {
 		reactionJpaRepository.save(
 			new ReactionJpaEntity(
-				user.getUserNo(),
-				reaction.getTargetId(),
-				reaction.getTargetType(),
-				reaction.getReactionType()
-			)
-		);
+				user.getUserNo(), reaction.getTargetId(), reaction.getTargetType(), reaction.getReactionType()));
 	}
 
 	@Override
 	public void removeReaction(User user, Reaction reaction) {
 		reactionJpaRepository.deleteByMemberNoTargetIdAndTargetTypeAndReactionType(
-			user.getUserNo(),
-			reaction.getTargetId(),
-			reaction.getTargetType(),
-			reaction.getReactionType()
-		);
+			user.getUserNo(), reaction.getTargetId(), reaction.getTargetType(), reaction.getReactionType());
 	}
 }

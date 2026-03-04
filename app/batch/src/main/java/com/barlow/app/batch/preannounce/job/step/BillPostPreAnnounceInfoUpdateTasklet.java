@@ -27,10 +27,8 @@ public class BillPostPreAnnounceInfoUpdateTasklet extends AbstractExecutionConte
 	private final PreAnnounceBillShareRepository shareRepository;
 	private final PreAnnounceBillPostBatchRepository batchRepository;
 
-	public BillPostPreAnnounceInfoUpdateTasklet(
-		PreAnnounceBillShareRepository shareRepository,
-		PreAnnounceBillPostBatchRepository batchRepository
-	) {
+	public BillPostPreAnnounceInfoUpdateTasklet(PreAnnounceBillShareRepository shareRepository,
+		PreAnnounceBillPostBatchRepository batchRepository) {
 		super();
 		this.shareRepository = shareRepository;
 		this.batchRepository = batchRepository;

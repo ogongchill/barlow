@@ -16,10 +16,8 @@ class LegislationRepositoryAdapterTest extends CoreDbContextTest {
 	private final LegislationRepositoryAdapter adapter;
 	private final LegislationAccountJpaRepository legislationAccountJpaRepository;
 
-	public LegislationRepositoryAdapterTest(
-		LegislationRepositoryAdapter adapter,
-		LegislationAccountJpaRepository legislationAccountJpaRepository
-	) {
+	public LegislationRepositoryAdapterTest(LegislationRepositoryAdapter adapter,
+		LegislationAccountJpaRepository legislationAccountJpaRepository) {
 		this.adapter = adapter;
 		this.legislationAccountJpaRepository = legislationAccountJpaRepository;
 	}
@@ -33,9 +31,7 @@ class LegislationRepositoryAdapterTest extends CoreDbContextTest {
 	@DisplayName("모든 입법계정에서 모든 상임위원회 계정을 조회한다")
 	@Test
 	void retrieveCommitteeAccount() {
-		assertThat(adapter.retrieveCommitteeAccount())
-			.isNotEmpty()
-			.hasSize(2);
+		assertThat(adapter.retrieveCommitteeAccount()).isNotEmpty().hasSize(2);
 	}
 
 	@DisplayName("상임위원회 계정 구독자를 1만큼 증가시킨다")
@@ -45,10 +41,10 @@ class LegislationRepositoryAdapterTest extends CoreDbContextTest {
 		LegislationType houseSteering = LegislationType.HOUSE_STEERING;
 		adapter.incrementSubscriber(houseSteering);
 
-		assertThat(legislationAccountJpaRepository.findByNo(houseSteering.getLegislationNo())
-			.toLegislationAccount()
-			.getSubscriberCount()
-		).isEqualTo(301);
+		assertThat(
+			legislationAccountJpaRepository.findByNo(houseSteering.getLegislationNo()).toLegislationAccount()
+				.getSubscriberCount())
+			.isEqualTo(301);
 	}
 
 	@DisplayName("상임위원회 계정 구독자를 1만큼 감소시킨다")
@@ -58,9 +54,9 @@ class LegislationRepositoryAdapterTest extends CoreDbContextTest {
 		LegislationType houseSteering = LegislationType.HOUSE_STEERING;
 		adapter.decrementSubscriber(houseSteering);
 
-		assertThat(legislationAccountJpaRepository.findByNo(houseSteering.getLegislationNo())
-			.toLegislationAccount()
-			.getSubscriberCount()
-		).isEqualTo(299);
+		assertThat(
+			legislationAccountJpaRepository.findByNo(houseSteering.getLegislationNo()).toLegislationAccount()
+				.getSubscriberCount())
+			.isEqualTo(299);
 	}
 }

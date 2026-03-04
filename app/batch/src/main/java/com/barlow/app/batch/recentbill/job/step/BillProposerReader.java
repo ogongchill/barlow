@@ -25,8 +25,7 @@ import com.barlow.infra.knal.opendata.api.OpenDataException;
 
 @Component
 @StepScope
-public class BillProposerReader
-	extends AbstractExecutionContextSharingManager
+public class BillProposerReader extends AbstractExecutionContextSharingManager
 	implements ItemReader<BillProposer>, ItemStream {
 
 	private static final String BILL_PROPOSER_READER_INDEX_KEY = "BillProposerReader.currentIndex";
@@ -36,11 +35,8 @@ public class BillProposerReader
 	private final LawmakerProvider lawmakerProvider;
 	private int currentIndex = 0;
 
-	public BillProposerReader(
-		RecentBillJobScopeShareRepository jobScopeShareRepository,
-		TodayBillRetrieveClient client,
-		LawmakerProvider lawmakerProvider
-	) {
+	public BillProposerReader(RecentBillJobScopeShareRepository jobScopeShareRepository, TodayBillRetrieveClient client,
+		LawmakerProvider lawmakerProvider) {
 		super();
 		this.jobScopeShareRepository = jobScopeShareRepository;
 		this.lawmakerProvider = lawmakerProvider;
@@ -59,18 +55,16 @@ public class BillProposerReader
 	}
 
 	@Override
-	public BillProposer read() throws OpenDataException, UnexpectedInputException, ParseException, NonTransientResourceException {
+	public BillProposer read()
+		throws OpenDataException, UnexpectedInputException, ParseException, NonTransientResourceException {
 		String hashKey = super.getDataFromJobExecutionContext(BILL_WITH_FEW_PROPOSERS_SHARE_KEY);
 		TodayBillInfoBatchEntity billWithFewProposers = jobScopeShareRepository.findByKey(hashKey);
 		if (currentIndex >= billWithFewProposers.itemSize()) {
 			return null;
 		}
 		String billId = billWithFewProposers.items().get(currentIndex).billId();
-		List<LawmakerProvider.Lawmaker> billProposeLawmakers = client.getBillProposerInfo(billId)
-			.billProposerInfos()
-			.stream()
-			.map(info -> lawmakerProvider.provide(info.name(), info.partyName()))
-			.filter(Objects::nonNull)
+		List<LawmakerProvider.Lawmaker> billProposeLawmakers = client.getBillProposerInfo(billId).billProposerInfos()
+			.stream().map(info -> lawmakerProvider.provide(info.name(), info.partyName())).filter(Objects::nonNull)
 			.toList();
 		currentIndex++;
 		return new BillProposer(billId, billProposeLawmakers);

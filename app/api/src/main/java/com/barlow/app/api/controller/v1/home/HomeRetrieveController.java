@@ -33,20 +33,16 @@ public class HomeRetrieveController {
 		LocalDate today = LocalDate.now();
 		HomeResponseApiSpecComposer apiSpecComposer = new HomeResponseApiSpecComposer(
 			homeRetrieveFacade.retrieveHome(passport.getUser()),
-			homeRetrieveFacade.retrieveTodayBillPostThumbnail(today)
-		);
+			homeRetrieveFacade.retrieveTodayBillPostThumbnail(today));
 		return ApiResponse.success(apiSpecComposer.compose(today));
 	}
 
 	@GetMapping("/notification-center")
-	public ApiResponse<NotificationCenterResponse> retrieveNotificationCenter(
-		@PassportUser Passport passport,
-		@RequestParam(name = "filterTopic", required = false) NotificationTopic filterTopic
-	) {
+	public ApiResponse<NotificationCenterResponse> retrieveNotificationCenter(@PassportUser Passport passport,
+		@RequestParam(name = "filterTopic", required = false) NotificationTopic filterTopic) {
 		log.info("Received retrieving notification center request.");
 		NotificationCenterApiSpecComposer notificationCenterApiSpecComposer = new NotificationCenterApiSpecComposer(
-			homeRetrieveFacade.retrieveNotificationCenter(passport.getUser())
-		);
+			homeRetrieveFacade.retrieveNotificationCenter(passport.getUser()));
 		return ApiResponse.success(notificationCenterApiSpecComposer.compose(filterTopic));
 	}
 }

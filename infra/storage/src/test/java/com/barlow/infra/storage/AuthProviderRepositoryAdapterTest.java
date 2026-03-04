@@ -30,25 +30,21 @@ class AuthProviderRepositoryAdapterTest {
 	@Test
 	void create() {
 		UserAuthProviderCreateCommand command = new UserAuthProviderCreateCommand(
-			AuthProvider.KAKAO, "new_kakao_sub", 3L
-		);
+			AuthProvider.KAKAO, "new_kakao_sub", 3L);
 
 		UserAuthProvider result = adapter.create(command);
 
 		assertAll(
-			() -> assertThat(result).isNotNull(),
-			() -> assertThat(result.userNo()).isEqualTo(3L),
+			() -> assertThat(result).isNotNull(), () -> assertThat(result.userNo()).isEqualTo(3L),
 			() -> assertThat(result.externalPrincipals()).hasSize(1),
-			() -> assertThat(authProviderJpaRepository.count()).isEqualTo(4)
-		);
+			() -> assertThat(authProviderJpaRepository.count()).isEqualTo(4));
 	}
 
 	@DisplayName("제공자와 sub로 인증 제공자 존재 여부를 확인한다 - 존재하는 경우")
 	@Test
 	void existsByProviderAndSub_exists() {
 		UserAuthProviderCreateCommand command = new UserAuthProviderCreateCommand(
-			AuthProvider.KAKAO, "kakao_sub_1", 1L
-		);
+			AuthProvider.KAKAO, "kakao_sub_1", 1L);
 
 		boolean exists = adapter.existsByProviderAndSub(command);
 
@@ -59,8 +55,7 @@ class AuthProviderRepositoryAdapterTest {
 	@Test
 	void existsByProviderAndSub_notExists() {
 		UserAuthProviderCreateCommand command = new UserAuthProviderCreateCommand(
-			AuthProvider.KAKAO, "non_existent_sub", 1L
-		);
+			AuthProvider.KAKAO, "non_existent_sub", 1L);
 
 		boolean exists = adapter.existsByProviderAndSub(command);
 
@@ -70,9 +65,7 @@ class AuthProviderRepositoryAdapterTest {
 	@DisplayName("사용자 ID와 제공자로 인증 제공자 존재 여부를 확인한다 - 존재하는 경우")
 	@Test
 	void existsByUserIdAndProvider_exists() {
-		UserAuthProviderCreateCommand command = new UserAuthProviderCreateCommand(
-			AuthProvider.KAKAO, "any_sub", 1L
-		);
+		UserAuthProviderCreateCommand command = new UserAuthProviderCreateCommand(AuthProvider.KAKAO, "any_sub", 1L);
 
 		boolean exists = adapter.existsByUserIdAndProvider(command);
 
@@ -82,9 +75,7 @@ class AuthProviderRepositoryAdapterTest {
 	@DisplayName("사용자 ID와 제공자로 인증 제공자 존재 여부를 확인한다 - 존재하지 않는 경우")
 	@Test
 	void existsByUserIdAndProvider_notExists() {
-		UserAuthProviderCreateCommand command = new UserAuthProviderCreateCommand(
-			AuthProvider.NAVER, "any_sub", 2L
-		);
+		UserAuthProviderCreateCommand command = new UserAuthProviderCreateCommand(AuthProvider.NAVER, "any_sub", 2L);
 
 		boolean exists = adapter.existsByUserIdAndProvider(command);
 
@@ -97,10 +88,8 @@ class AuthProviderRepositoryAdapterTest {
 		UserAuthProvider result = adapter.retrieveByUser(new UserQuery(1L));
 
 		assertAll(
-			() -> assertThat(result).isNotNull(),
-			() -> assertThat(result.userNo()).isEqualTo(1L),
-			() -> assertThat(result.externalPrincipals()).hasSize(2)
-		);
+			() -> assertThat(result).isNotNull(), () -> assertThat(result.userNo()).isEqualTo(1L),
+			() -> assertThat(result.externalPrincipals()).hasSize(2));
 	}
 
 	@DisplayName("인증 제공자가 없는 사용자를 조회하면 빈 목록을 반환한다")
@@ -109,9 +98,7 @@ class AuthProviderRepositoryAdapterTest {
 		UserAuthProvider result = adapter.retrieveByUser(new UserQuery(999L));
 
 		assertAll(
-			() -> assertThat(result).isNotNull(),
-			() -> assertThat(result.userNo()).isEqualTo(999L),
-			() -> assertThat(result.externalPrincipals()).isEmpty()
-		);
+			() -> assertThat(result).isNotNull(), () -> assertThat(result.userNo()).isEqualTo(999L),
+			() -> assertThat(result.externalPrincipals()).isEmpty());
 	}
 }

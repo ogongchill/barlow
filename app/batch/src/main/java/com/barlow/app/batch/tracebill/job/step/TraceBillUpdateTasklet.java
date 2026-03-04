@@ -25,12 +25,8 @@ public class TraceBillUpdateTasklet extends AbstractExecutionContextSharingManag
 	private final BillPostBatchRepository billPostBatchRepository;
 	private final LegislationAccountBatchRepository accountBatchRepository;
 
-	public TraceBillUpdateTasklet(
-		BillTrackingClient client,
-		UpdatedBillShareRepository billShareRepository,
-		BillPostBatchRepository billPostBatchRepository,
-		LegislationAccountBatchRepository accountBatchRepository
-	) {
+	public TraceBillUpdateTasklet(BillTrackingClient client, UpdatedBillShareRepository billShareRepository,
+		BillPostBatchRepository billPostBatchRepository, LegislationAccountBatchRepository accountBatchRepository) {
 		this.client = client;
 		this.billShareRepository = billShareRepository;
 		this.billPostBatchRepository = billPostBatchRepository;
@@ -49,11 +45,10 @@ public class TraceBillUpdateTasklet extends AbstractExecutionContextSharingManag
 
 		UpdatedBills committeeReceived = updatedBills.filterCommitteeReceived();
 		if (!committeeReceived.isEmpty()) {
-			updatedBills.getCommitteeReceived()
-				.forEach(billInfo -> {
-					LegislationType committee = client.getCommittee(billInfo.billId());
-					updatedBills.assignCommittee(billInfo.billId(), committee);
-				});
+			updatedBills.getCommitteeReceived().forEach(billInfo -> {
+				LegislationType committee = client.getCommittee(billInfo.billId());
+				updatedBills.assignCommittee(billInfo.billId(), committee);
+			});
 			accountBatchRepository.updateAccountBillCount(updatedBills);
 		}
 

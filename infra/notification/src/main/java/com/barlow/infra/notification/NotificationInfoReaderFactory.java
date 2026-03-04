@@ -8,10 +8,8 @@ public class NotificationInfoReaderFactory {
 	private final DefaultNotificationInfoReader defaultNotificationInfoReader;
 	private final CommitteeNotificationInfoReader committeeNotificationInfoReader;
 
-	public NotificationInfoReaderFactory(
-		DefaultNotificationInfoReader defaultNotificationInfoReader,
-		CommitteeNotificationInfoReader committeeNotificationInfoReader
-	) {
+	public NotificationInfoReaderFactory(DefaultNotificationInfoReader defaultNotificationInfoReader,
+		CommitteeNotificationInfoReader committeeNotificationInfoReader) {
 		this.defaultNotificationInfoReader = defaultNotificationInfoReader;
 		this.committeeNotificationInfoReader = committeeNotificationInfoReader;
 	}

@@ -17,95 +17,95 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SessionRequestListRequest {
 
-    private Integer numOfRows;
-    private Integer pageNo;
-    @JsonProperty(value = "start_age_cd")
-    private Integer startAgeCode;
-    @JsonProperty(value = "bill_kind_cd")
-    private String billKindCode;
-    @JsonProperty(value = "curr_committee")
-    private String currCommittee;
-    @JsonProperty(value = "bill_name")
-    private String billName;
+	private Integer numOfRows;
+	private Integer pageNo;
+	@JsonProperty(value = "start_age_cd")
+	private Integer startAgeCode;
+	@JsonProperty(value = "bill_kind_cd")
+	private String billKindCode;
+	@JsonProperty(value = "curr_committee")
+	private String currCommittee;
+	@JsonProperty(value = "bill_name")
+	private String billName;
 
-    private SessionRequestListRequest(Builder builder) {
-        this.numOfRows = builder.numOfRows;
-        this.pageNo = builder.pageNo;
-        this.startAgeCode = builder.startAgeCode;
-        this.billKindCode = builder.billKindCode;
-        this.currCommittee = builder.currCommittee;
-        this.billName = builder.billName;
-    }
+	private SessionRequestListRequest(Builder builder) {
+		this.numOfRows = builder.numOfRows;
+		this.pageNo = builder.pageNo;
+		this.startAgeCode = builder.startAgeCode;
+		this.billKindCode = builder.billKindCode;
+		this.currCommittee = builder.currCommittee;
+		this.billName = builder.billName;
+	}
 
-    public static Builder builder() {
-        return new Builder();
-    }
+	public static Builder builder() {
+		return new Builder();
+	}
 
-    public static class Builder {
+	public static class Builder {
 
-        private Integer numOfRows;
-        private Integer pageNo;
-        private Integer startAgeCode;
-        private String billKindCode;
-        private String currCommittee;
-        private String billName;
+		private Integer numOfRows;
+		private Integer pageNo;
+		private Integer startAgeCode;
+		private String billKindCode;
+		private String currCommittee;
+		private String billName;
 
-        public Builder numOfRows(Integer numOfRows) {
-            this.numOfRows = numOfRows;
-            return this;
-        }
+		public Builder numOfRows(Integer numOfRows) {
+			this.numOfRows = numOfRows;
+			return this;
+		}
 
-        public Builder pageNo(Integer pageNo) {
-            this.pageNo = pageNo;
-            return this;
-        }
+		public Builder pageNo(Integer pageNo) {
+			this.pageNo = pageNo;
+			return this;
+		}
 
-        public Builder startAgeCode(Integer startAgeCode) {
-            this.startAgeCode = startAgeCode;
-            return this;
-        }
+		public Builder startAgeCode(Integer startAgeCode) {
+			this.startAgeCode = startAgeCode;
+			return this;
+		}
 
-        public Builder billKindCode(BillKindCode billCode) {
-            this.billKindCode = billCode.name();
-            return this;
-        }
+		public Builder billKindCode(BillKindCode billCode) {
+			this.billKindCode = billCode.name();
+			return this;
+		}
 
-        public Builder currentCommittee(CommitteeCode currentCommitteeCode) {
-            this.currCommittee = currentCommitteeCode.getCode();
-            return this;
-        }
+		public Builder currentCommittee(CommitteeCode currentCommitteeCode) {
+			this.currCommittee = currentCommitteeCode.getCode();
+			return this;
+		}
 
-        public Builder billName(String billName) {
-            this.billName = billName;
-            return this;
-        }
+		public Builder billName(String billName) {
+			this.billName = billName;
+			return this;
+		}
 
-        public SessionRequestListRequest build() {
-            return new SessionRequestListRequest(this);
-        }
-    }
+		public SessionRequestListRequest build() {
+			return new SessionRequestListRequest(this);
+		}
+	}
 
-    public Integer getNumOfRows() {
-        return numOfRows;
-    }
+	public Integer getNumOfRows() {
+		return numOfRows;
+	}
 
-    public Integer getPageNo() {
-        return pageNo;
-    }
+	public Integer getPageNo() {
+		return pageNo;
+	}
 
-    public Integer getStartAgeCode() {
-        return startAgeCode;
-    }
+	public Integer getStartAgeCode() {
+		return startAgeCode;
+	}
 
-    public String getBillKindCode() {
-        return billKindCode;
-    }
+	public String getBillKindCode() {
+		return billKindCode;
+	}
 
-    public String getCurrCommittee() {
-        return currCommittee;
-    }
+	public String getCurrCommittee() {
+		return currCommittee;
+	}
 
-    public String getBillName() {
-        return billName;
-    }
+	public String getBillName() {
+		return billName;
+	}
 }

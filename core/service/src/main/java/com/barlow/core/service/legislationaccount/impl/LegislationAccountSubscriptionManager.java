@@ -14,10 +14,8 @@ public class LegislationAccountSubscriptionManager {
 	private final LegislationAccountRepository legislationAccountRepository;
 	private final SubscribeActivator subscribeActivator;
 
-	public LegislationAccountSubscriptionManager(
-		LegislationAccountRepository legislationAccountRepository,
-		SubscribeActivator subscribeActivator
-	) {
+	public LegislationAccountSubscriptionManager(LegislationAccountRepository legislationAccountRepository,
+		SubscribeActivator subscribeActivator) {
 		this.legislationAccountRepository = legislationAccountRepository;
 		this.subscribeActivator = subscribeActivator;
 	}

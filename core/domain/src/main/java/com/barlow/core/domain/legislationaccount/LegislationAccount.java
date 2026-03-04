@@ -12,25 +12,12 @@ public class LegislationAccount {
 	private final boolean isSubscribed;
 	private final boolean isNotifiable;
 
-	public LegislationAccount(
-		long no,
-		LegislationType type,
-		String description,
-		int postCount,
-		int subscriberCount
-	) {
+	public LegislationAccount(long no, LegislationType type, String description, int postCount, int subscriberCount) {
 		this(no, type, description, postCount, subscriberCount, false, false);
 	}
 
-	private LegislationAccount(
-		long no,
-		LegislationType type,
-		String description,
-		int postCount,
-		int subscriberCount,
-		boolean isSubscribed,
-		boolean isNotifiable
-	) {
+	private LegislationAccount(long no, LegislationType type, String description, int postCount, int subscriberCount,
+		boolean isSubscribed, boolean isNotifiable) {
 		this.no = no;
 		this.type = type;
 		this.description = description;

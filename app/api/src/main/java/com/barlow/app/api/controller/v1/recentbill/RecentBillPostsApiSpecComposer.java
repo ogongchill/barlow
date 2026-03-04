@@ -21,20 +21,15 @@ public class RecentBillPostsApiSpecComposer {
 		return new RecentBillPostsResponse(
 			composeByDatePredicate(recentBillPost -> recentBillPost.getCreatedAt().toLocalDate().isEqual(today)),
 			composeByDatePredicate(recentBillPost -> recentBillPost.getCreatedAt().toLocalDate().isBefore(today)),
-			billPostsStatus.isLastPage()
-		);
+			billPostsStatus.isLastPage());
 	}
 
 	private List<RecentBillPostThumbnail> composeByDatePredicate(Predicate<BillPost> filterCondition) {
-		return billPostsStatus.billPosts()
-			.stream()
-			.filter(filterCondition)
-			.map(recentBillPost -> new RecentBillPostThumbnail(
-				recentBillPost.getBillId(),
-				recentBillPost.getBillName(),
-				recentBillPost.getProposers(),
-				recentBillPost.getLegislationProcessStatus()
-			))
+		return billPostsStatus.billPosts().stream().filter(filterCondition)
+			.map(
+				recentBillPost -> new RecentBillPostThumbnail(
+					recentBillPost.getBillId(), recentBillPost.getBillName(), recentBillPost.getProposers(),
+					recentBillPost.getLegislationProcessStatus()))
 			.toList();
 	}
 }

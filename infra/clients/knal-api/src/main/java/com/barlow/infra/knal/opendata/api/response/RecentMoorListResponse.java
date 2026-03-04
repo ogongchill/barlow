@@ -5,8 +5,6 @@ import com.barlow.infra.knal.opendata.api.response.common.OpenDataResponse;
 import com.barlow.infra.knal.opendata.api.response.common.SuccessHeader;
 import com.barlow.infra.knal.opendata.api.response.item.RecentMoorListItem;
 
-public record RecentMoorListResponse(
-	SuccessHeader header,
-	ItemResponseBody<RecentMoorListItem> body
-) implements OpenDataResponse<RecentMoorListItem> {
+public record RecentMoorListResponse(SuccessHeader header,
+	ItemResponseBody<RecentMoorListItem> body) implements OpenDataResponse<RecentMoorListItem> {
 }

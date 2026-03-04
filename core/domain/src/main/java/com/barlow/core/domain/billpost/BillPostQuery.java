@@ -15,28 +15,15 @@ import com.barlow.core.enumerate.ProgressStatus;
 import com.barlow.core.enumerate.ProposerType;
 import com.barlow.core.support.SortKey;
 
-public record BillPostQuery(
-	@NotNull Integer page,
-	@NotNull Integer size,
-	@NotNull SortKey sortKey,
-	@NotNull BillPostFilterTag tags
-) {
-	public static BillPostQuery defaultOf(
-		@NotNull Integer page,
-		@NotNull Integer size,
-		@NotNull String sortKey,
-		@NotNull MultiValueMap<String, String> tags
-	) {
+public record BillPostQuery(@NotNull Integer page, @NotNull Integer size, @NotNull SortKey sortKey,
+	@NotNull BillPostFilterTag tags) {
+	public static BillPostQuery defaultOf(@NotNull Integer page, @NotNull Integer size, @NotNull String sortKey,
+		@NotNull MultiValueMap<String, String> tags) {
 		return new BillPostQuery(page, size, new SortKey(sortKey), BillPostFilterTag.from(tags));
 	}
 
-	public static BillPostQuery legislationOf(
-		@NotNull LegislationType legislationType,
-		@NotNull Integer page,
-		@NotNull Integer size,
-		@NotNull String sortKey,
-		@NotNull MultiValueMap<String, String> tags
-	) {
+	public static BillPostQuery legislationOf(@NotNull LegislationType legislationType, @NotNull Integer page,
+		@NotNull Integer size, @NotNull String sortKey, @NotNull MultiValueMap<String, String> tags) {
 		if (tags.isEmpty()) {
 			tags = new LinkedMultiValueMap<>();
 			tags.put(LEGISLATION_TYPE_TAG, List.of(legislationType.name()));
@@ -48,12 +35,8 @@ public record BillPostQuery(
 		return new BillPostQuery(page, size, new SortKey(sortKey), BillPostFilterTag.from(tags));
 	}
 
-	public static BillPostQuery preAnnounceOf(
-		@NotNull Integer page,
-		@NotNull Integer size,
-		@NotNull String sortKey,
-		@NotNull MultiValueMap<String, String> tags
-	) {
+	public static BillPostQuery preAnnounceOf(@NotNull Integer page, @NotNull Integer size, @NotNull String sortKey,
+		@NotNull MultiValueMap<String, String> tags) {
 		return new BillPostQuery(page, size, new SortKey(sortKey), BillPostFilterTag.preAnnounceFrom(tags));
 	}
 }

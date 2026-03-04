@@ -13,17 +13,14 @@ import com.barlow.app.batch.preannounce.job.PreAnnounceRetrieveClient;
 import com.barlow.app.batch.utils.HashUtil;
 
 @Component
-public class PreAnnounceBillDirtyCheckJobListener
-	extends AbstractExecutionContextSharingManager
+public class PreAnnounceBillDirtyCheckJobListener extends AbstractExecutionContextSharingManager
 	implements JobExecutionListener {
 
 	private final PreAnnounceRetrieveClient client;
 	private final PreAnnounceBillShareRepository shareRepository;
 
-	public PreAnnounceBillDirtyCheckJobListener(
-		PreAnnounceRetrieveClient client,
-		PreAnnounceBillShareRepository shareRepository
-	) {
+	public PreAnnounceBillDirtyCheckJobListener(PreAnnounceRetrieveClient client,
+		PreAnnounceBillShareRepository shareRepository) {
 		super();
 		this.client = client;
 		this.shareRepository = shareRepository;

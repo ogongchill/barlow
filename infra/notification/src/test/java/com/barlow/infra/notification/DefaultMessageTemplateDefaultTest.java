@@ -26,18 +26,14 @@ class DefaultMessageTemplateDefaultTest {
 	@DisplayName("기본법안알림 주제를 받아서 해당하는 Default 타입이 없으면 예외를 발생시킨다")
 	@Test
 	void Default_findByValue_failure() {
-		assertThatThrownBy(() -> Default.findByValue("notExist"))
-			.isInstanceOf(IllegalArgumentException.class)
+		assertThatThrownBy(() -> Default.findByValue("notExist")).isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("존재하지 않는 Default 법안 알림 주제입니다");
 	}
 
 	private static Stream<Arguments> provideDefaultNotificationTopicAndExpectDefaultType() {
 		return Stream.of(
-			Arguments.of("접수", Default.RECEIPT),
-			Arguments.of("본회의부의안건", Default.SUBMISSION_PLENARY_SESSION),
+			Arguments.of("접수", Default.RECEIPT), Arguments.of("본회의부의안건", Default.SUBMISSION_PLENARY_SESSION),
 			Arguments.of("본회의의결", Default.RESOLUTION_PLENARY_SESSION),
-			Arguments.of("재의요구", Default.RECONSIDERATION_GOVERNMENT),
-			Arguments.of("공포", Default.PROMULGATION)
-		);
+			Arguments.of("재의요구", Default.RECONSIDERATION_GOVERNMENT), Arguments.of("공포", Default.PROMULGATION));
 	}
 }

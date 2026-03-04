@@ -5,14 +5,14 @@ import com.barlow.infra.auth.authentication.core.CredentialType;
 
 public class IdToken extends Credential {
 
-    private final String value;
+	private final String value;
 
-    public IdToken(CredentialType authenticationType, String value) {
-        super(authenticationType);
-        this.value = value;
-    }
+	public IdToken(CredentialType authenticationType, String value) {
+		super(authenticationType);
+		this.value = value;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	public String getValue() {
+		return value;
+	}
 }

@@ -14,10 +14,8 @@ import com.barlow.core.enumerate.NotificationTopic;
  * @see BillSummary
  * @see NotificationType
  */
-public record DefaultBillNotificationRequest(
-	@NotNull NotificationType type,
-	@NotNull Map<NotificationTopic, BillSummary> topicsWithBillInfos
-) implements NotificationRequest {
+public record DefaultBillNotificationRequest(@NotNull NotificationType type,
+	@NotNull Map<NotificationTopic, BillSummary> topicsWithBillInfos) implements NotificationRequest {
 
 	public static DefaultBillNotificationRequest from(Map<NotificationTopic, List<BillInfo>> topicsWithBillInfos) {
 		if (topicsWithBillInfos == null) {
@@ -25,12 +23,9 @@ public record DefaultBillNotificationRequest(
 		}
 		return new DefaultBillNotificationRequest(
 			NotificationType.DEFAULT,
-			topicsWithBillInfos.entrySet().stream()
-				.collect(Collectors.toMap(
-					Map.Entry::getKey,
-					entry -> DefaultBillNotificationRequest.BillSummary.from(entry.getValue())
-				))
-		);
+			topicsWithBillInfos.entrySet().stream().collect(
+				Collectors.toMap(
+					Map.Entry::getKey, entry -> DefaultBillNotificationRequest.BillSummary.from(entry.getValue()))));
 	}
 
 	@Override
@@ -44,17 +39,11 @@ public record DefaultBillNotificationRequest(
 	 * @param representationBill [topic]을 대표하는 하나의 법안 이름
 	 * @param totalCount [topic] 조건에 해당하는 법안의 총 개수
 	 */
-	record BillSummary(
-		@NotNull List<BillInfo> billInfos,
-		@NotNull String representationBill,
-		@NotNull Integer totalCount
-	) {
+	record BillSummary(@NotNull List<BillInfo> billInfos, @NotNull String representationBill,
+		@NotNull Integer totalCount) {
 		static DefaultBillNotificationRequest.BillSummary from(List<BillInfo> billInfos) {
 			return new DefaultBillNotificationRequest.BillSummary(
-				billInfos,
-				billInfos.getFirst().billName(),
-				billInfos.size()
-			);
+				billInfos, billInfos.getFirst().billName(), billInfos.size());
 		}
 	}
 }

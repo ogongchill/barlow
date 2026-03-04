@@ -16,9 +16,9 @@ public interface OpenDataResponse<T> {
 		}
 		Body<T> body = body();
 		if (body != null) {
-			builder.append("body.pageNo: ").append(body.pageNo()).append(linedSeparator)
-				.append("body.numOfRows: ").append(body.numOfRows()).append(linedSeparator)
-				.append("body.totalCount: ").append(body.totalCount()).append(linedSeparator);
+			builder.append("body.pageNo: ").append(body.pageNo()).append(linedSeparator).append("body.numOfRows: ")
+				.append(body.numOfRows()).append(linedSeparator).append("body.totalCount: ").append(body.totalCount())
+				.append(linedSeparator);
 			for (T item : body.items()) {
 				builder.append(item).append(linedSeparator);
 			}

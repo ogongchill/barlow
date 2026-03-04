@@ -22,11 +22,8 @@ public class LegislationAccountReader {
 	private final NotificationSettingReader notificationSettingReader;
 	private final SubscribeReader subscribeReader;
 
-	public LegislationAccountReader(
-		LegislationAccountRepository legislationAccountRepository,
-		NotificationSettingReader notificationSettingReader,
-		SubscribeReader subscribeReader
-	) {
+	public LegislationAccountReader(LegislationAccountRepository legislationAccountRepository,
+		NotificationSettingReader notificationSettingReader, SubscribeReader subscribeReader) {
 		this.legislationAccountRepository = legislationAccountRepository;
 		this.notificationSettingReader = notificationSettingReader;
 		this.subscribeReader = subscribeReader;
@@ -34,20 +31,18 @@ public class LegislationAccountReader {
 
 	public LegislationAccount read(LegislationType legislationType, User user) {
 		LegislationAccount legislationAccount = legislationAccountRepository.retrieve(legislationType);
-		legislationAccount = legislationAccount.withNotifiable(notificationSettingReader
-			.readNotificationSetting(legislationAccount.getType(), user)
-			.isNotifiable());
-		legislationAccount = legislationAccount.withSubscribed(subscribeReader
-			.readSubscribe(legislationType, user)
-			.isActive());
+		legislationAccount = legislationAccount.withNotifiable(
+			notificationSettingReader.readNotificationSetting(legislationAccount.getType(), user).isNotifiable());
+		legislationAccount = legislationAccount
+			.withSubscribed(subscribeReader.readSubscribe(legislationType, user).isActive());
 		return legislationAccount;
 	}
 
 	public List<LegislationAccount> readAllCommittees(User user) {
 		List<LegislationAccount> legislationAccounts = legislationAccountRepository.retrieveCommitteeAccount();
 
-		Map<String, Boolean> memberNotificationSetting = notificationSettingReader.readNotificationSettings(user).stream()
-			.collect(Collectors.toMap(NotificationSetting::getTopicName, NotificationSetting::isNotifiable));
+		Map<String, Boolean> memberNotificationSetting = notificationSettingReader.readNotificationSettings(user)
+			.stream().collect(Collectors.toMap(NotificationSetting::getTopicName, NotificationSetting::isNotifiable));
 		Map<String, Boolean> memberSubscription = subscribeReader.readSubscribes(user).stream()
 			.collect(Collectors.toMap(Subscribe::getLegislationAccountType, Subscribe::isActive));
 

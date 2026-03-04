@@ -53,21 +53,15 @@ public abstract class NotificationSender {
 		throw new IllegalStateException("커스텀 예외 만들어서 던질게~"); // todo : 예외처리 다시 하기
 	}
 
-	private Map<Message, MessagingErrorCode> extractFailedMessages(
-		List<Message> messages,
-		List<SendResponse> sendResponses
-	) {
-		return sendResponses.stream()
-			.filter(sendResponse -> !sendResponse.isSuccessful())
-			.collect(Collectors.toMap(
+	private Map<Message, MessagingErrorCode> extractFailedMessages(List<Message> messages,
+		List<SendResponse> sendResponses) {
+		return sendResponses.stream().filter(sendResponse -> !sendResponse.isSuccessful()).collect(
+			Collectors.toMap(
 				sendResponse -> messages.get(sendResponses.indexOf(sendResponse)),
-				sendResponse1 -> sendResponse1.getException().getMessagingErrorCode()
-			));
+				sendResponse1 -> sendResponse1.getException().getMessagingErrorCode()));
 	}
 
 	private void logFailedMessages(Map<Message, MessagingErrorCode> failedMessages) {
-		failedMessages.forEach((message, errorCode) ->
-			log.info("실패 메시지: {}. 원인: {}", message, errorCode)
-		);
+		failedMessages.forEach((message, errorCode) -> log.info("실패 메시지: {}. 원인: {}", message, errorCode));
 	}
 }

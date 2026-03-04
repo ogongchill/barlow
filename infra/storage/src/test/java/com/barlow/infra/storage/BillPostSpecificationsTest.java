@@ -59,13 +59,10 @@ class BillPostSpecificationsTest extends CoreDbContextTest {
 
 	private static Stream<Arguments> provideLegislationTypeTagsAndExpectSize() {
 		return Stream.of(
-			Arguments.of(Set.of(), 4),
-			Arguments.of(Set.of(EMPTY), 1),
-			Arguments.of(Set.of(HOUSE_STEERING), 2),
+			Arguments.of(Set.of(), 4), Arguments.of(Set.of(EMPTY), 1), Arguments.of(Set.of(HOUSE_STEERING), 2),
 			Arguments.of(Set.of(LEGISLATION_AND_JUDICIARY), 1),
 			Arguments.of(Set.of(HOUSE_STEERING, LEGISLATION_AND_JUDICIARY), 3),
-			Arguments.of(Set.of(HOUSE_STEERING, LEGISLATION_AND_JUDICIARY, EMPTY), 4)
-		);
+			Arguments.of(Set.of(HOUSE_STEERING, LEGISLATION_AND_JUDICIARY, EMPTY), 4));
 	}
 
 	@DisplayName("입법프로세스 상태 tag 가 있으면 IN 절이 추가되고, tag 가 없으면 조건이 무시된다")
@@ -81,15 +78,11 @@ class BillPostSpecificationsTest extends CoreDbContextTest {
 
 	private static Stream<Arguments> provideProgressStatusTagsAndExpectSize() {
 		return Stream.of(
-			Arguments.of(Set.of(), 4),
-			Arguments.of(Set.of(RECEIVED), 1),
-			Arguments.of(Set.of(COMMITTEE_RECEIVED), 1),
-			Arguments.of(Set.of(COMMITTEE_REVIEW), 1),
-			Arguments.of(Set.of(PLENARY_DECIDED), 1),
+			Arguments.of(Set.of(), 4), Arguments.of(Set.of(RECEIVED), 1), Arguments.of(Set.of(COMMITTEE_RECEIVED), 1),
+			Arguments.of(Set.of(COMMITTEE_REVIEW), 1), Arguments.of(Set.of(PLENARY_DECIDED), 1),
 			Arguments.of(Set.of(RECEIVED, COMMITTEE_RECEIVED), 2),
 			Arguments.of(Set.of(RECEIVED, COMMITTEE_RECEIVED, COMMITTEE_REVIEW), 3),
-			Arguments.of(Set.of(RECEIVED, COMMITTEE_RECEIVED, COMMITTEE_REVIEW, PLENARY_DECIDED), 4)
-		);
+			Arguments.of(Set.of(RECEIVED, COMMITTEE_RECEIVED, COMMITTEE_REVIEW, PLENARY_DECIDED), 4));
 	}
 
 	@DisplayName("발의자 tag 가 있으면 IN 절이 추가되고, tag 가 없으면 조건이 무시된다")
@@ -105,11 +98,9 @@ class BillPostSpecificationsTest extends CoreDbContextTest {
 
 	private static Stream<Arguments> provideProposerTypeTagsAndExpectSize() {
 		return Stream.of(
-			Arguments.of(Set.of(), 4),
-			Arguments.of(Set.of(ProposerType.LAWMAKER), 3),
+			Arguments.of(Set.of(), 4), Arguments.of(Set.of(ProposerType.LAWMAKER), 3),
 			Arguments.of(Set.of(ProposerType.CHAIRMAN), 1),
-			Arguments.of(Set.of(ProposerType.LAWMAKER, ProposerType.CHAIRMAN), 4)
-		);
+			Arguments.of(Set.of(ProposerType.LAWMAKER, ProposerType.CHAIRMAN), 4));
 	}
 
 	@DisplayName("당명 tag 가 있으면 IN 절이 추가되고, tag 가 없으면 조건이 무시된다")
@@ -125,12 +116,9 @@ class BillPostSpecificationsTest extends CoreDbContextTest {
 
 	private static Stream<Arguments> providePartyNameTagsAndExpectSize() {
 		return Stream.of(
-			Arguments.of(Set.of(), 4),
-			Arguments.of(Set.of(PartyName.PEOPLE_POWER), 3),
-			Arguments.of(Set.of(PartyName.MINJOO), 3),
-			Arguments.of(Set.of(PartyName.INDEPENDENT), 3),
+			Arguments.of(Set.of(), 4), Arguments.of(Set.of(PartyName.PEOPLE_POWER), 3),
+			Arguments.of(Set.of(PartyName.MINJOO), 3), Arguments.of(Set.of(PartyName.INDEPENDENT), 3),
 			Arguments.of(Set.of(PartyName.PEOPLE_POWER, PartyName.MINJOO), 3),
-			Arguments.of(Set.of(PartyName.PEOPLE_POWER, PartyName.MINJOO, PartyName.INDEPENDENT), 3)
-		);
+			Arguments.of(Set.of(PartyName.PEOPLE_POWER, PartyName.MINJOO, PartyName.INDEPENDENT), 3));
 	}
 }

@@ -6,13 +6,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AuthProviderRepository {
 
-    UserAuthProvider create(UserAuthProviderCreateCommand command);
+	UserAuthProvider create(UserAuthProviderCreateCommand command);
 
-    UserAuthProvider retrieveByUser(UserQuery userQuery);
+	UserAuthProvider retrieveByUser(UserQuery userQuery);
 
-    boolean existsByProviderAndSub(UserAuthProviderCreateCommand command);
+	boolean existsByProviderAndSub(UserAuthProviderCreateCommand command);
 
-    boolean existsByUserIdAndProvider(UserAuthProviderCreateCommand command);
+	boolean existsByUserIdAndProvider(UserAuthProviderCreateCommand command);
 
-    void deleteByUserNo(long userNo);
+	void deleteByUserNo(long userNo);
 }

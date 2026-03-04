@@ -25,8 +25,8 @@ public class CommitteeNotificationInfoReader implements NotificationInfoReader {
 		Map<NotificationTopic, List<BillInfo>> topicsWithBillInfos = notificationRequest.topicsWithBillInfos();
 		Set<NotificationTopic> topics = topicsWithBillInfos.keySet();
 		NotificationInfo notificationInfos = notificationInfoRepository.retrieveNotificationInfosByTopics(topics);
-		topicsWithBillInfos.forEach((topic, billInfos) ->
-			notificationInfos.assignBillTotalCountPerTopic(topic, billInfos.size()));
+		topicsWithBillInfos
+			.forEach((topic, billInfos) -> notificationInfos.assignBillTotalCountPerTopic(topic, billInfos.size()));
 		return notificationInfos;
 	}
 

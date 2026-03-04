@@ -25,7 +25,6 @@ class MessageTemplateFactoryTest {
 	private static Stream<Arguments> provideNotificationTypeNameAndExpectMessageTemplate() {
 		return Stream.of(
 			Arguments.of("DEFAULT", DefaultMessageTemplate.class),
-			Arguments.of("STANDING_COMMITTEE", CommitteeMessageTemplate.class)
-		);
+			Arguments.of("STANDING_COMMITTEE", CommitteeMessageTemplate.class));
 	}
 }

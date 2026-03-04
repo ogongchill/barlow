@@ -21,12 +21,9 @@ public class WebConfiguration implements WebMvcConfigurer {
 	private final TraceLoggingInterceptor traceLoggingInterceptor;
 	private final PassportUserArgumentResolver passportUserArgumentResolver;
 
-	public WebConfiguration(
-		GuestPassportAuthorizationInterceptor guestPassportAuthorizationInterceptor,
+	public WebConfiguration(GuestPassportAuthorizationInterceptor guestPassportAuthorizationInterceptor,
 		MemberPassportAuthorizationInterceptor memberPassportAuthorizationInterceptor,
-		TraceLoggingInterceptor traceLoggingInterceptor,
-		PassportUserArgumentResolver passportUserArgumentResolver
-	) {
+		TraceLoggingInterceptor traceLoggingInterceptor, PassportUserArgumentResolver passportUserArgumentResolver) {
 		this.guestPassportAuthorizationInterceptor = guestPassportAuthorizationInterceptor;
 		this.memberPassportAuthorizationInterceptor = memberPassportAuthorizationInterceptor;
 		this.traceLoggingInterceptor = traceLoggingInterceptor;
@@ -44,24 +41,14 @@ public class WebConfiguration implements WebMvcConfigurer {
 	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(guestPassportAuthorizationInterceptor)
-			.addPathPatterns("/api/v1/home/**")
-			.addPathPatterns("/api/v1/legislation-accounts/**")
-			.addPathPatterns("/api/v1/menu/**")
-			.addPathPatterns("/api/v1/recent-bill/**")
-			.excludePathPatterns("/")
-			.excludePathPatterns("/health")
-			.excludePathPatterns("/api/v1/auth/login")
-			.excludePathPatterns("/api/v1/auth/reissue");
-		registry.addInterceptor(traceLoggingInterceptor)
-			.addPathPatterns("/api/v1/home/**")
-			.addPathPatterns("/api/v1/legislation-accounts/**")
-			.addPathPatterns("/api/v1/menu/**")
-			.addPathPatterns("/api/v1/recent-bill/**")
-			.excludePathPatterns("/")
-			.excludePathPatterns("/health")
-			.excludePathPatterns("/api/v1/auth/login")
-			.excludePathPatterns("/api/v1/auth/reissue");
+		registry.addInterceptor(guestPassportAuthorizationInterceptor).addPathPatterns("/api/v1/home/**")
+			.addPathPatterns("/api/v1/legislation-accounts/**").addPathPatterns("/api/v1/menu/**")
+			.addPathPatterns("/api/v1/recent-bill/**").excludePathPatterns("/").excludePathPatterns("/health")
+			.excludePathPatterns("/api/v1/auth/login").excludePathPatterns("/api/v1/auth/reissue");
+		registry.addInterceptor(traceLoggingInterceptor).addPathPatterns("/api/v1/home/**")
+			.addPathPatterns("/api/v1/legislation-accounts/**").addPathPatterns("/api/v1/menu/**")
+			.addPathPatterns("/api/v1/recent-bill/**").excludePathPatterns("/").excludePathPatterns("/health")
+			.excludePathPatterns("/api/v1/auth/login").excludePathPatterns("/api/v1/auth/reissue");
 	}
 
 	@Override

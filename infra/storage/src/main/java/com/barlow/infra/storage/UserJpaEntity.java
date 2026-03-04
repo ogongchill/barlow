@@ -28,8 +28,7 @@ public class UserJpaEntity extends BaseTimeJpaEntity {
 	@Column(columnDefinition = "varchar(10)", name = "role", nullable = false)
 	private User.Role role;
 
-	protected UserJpaEntity() {
-	}
+	protected UserJpaEntity() {}
 
 	private UserJpaEntity(String nickname, User.Role role) {
 		this.nickname = nickname;

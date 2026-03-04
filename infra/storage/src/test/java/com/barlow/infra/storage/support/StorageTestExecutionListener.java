@@ -25,26 +25,16 @@ public class StorageTestExecutionListener extends AbstractTestExecutionListener 
 		JdbcTemplate jdbcTemplate = testContext.getApplicationContext().getBean(JdbcTemplate.class);
 
 		TestContextAnnotationUtils.getMergedRepeatableAnnotations(testContext.getTestClass(), StorageTest.class)
-			.stream()
-			.map(StorageTest::setUpScripts)
-			.forEach(files ->
-				Arrays.stream(files)
-					.forEach(file ->
-						setUpDatabase(jdbcTemplate, file)
-					)
-			);
+			.stream().map(StorageTest::setUpScripts)
+			.forEach(files -> Arrays.stream(files).forEach(file -> setUpDatabase(jdbcTemplate, file)));
 	}
 
 	private void setUpDatabase(JdbcTemplate jdbcTemplate, String filePath) {
 		Map<String, List<Map<String, Object>>> parsedJsonSql;
 		try {
 			parsedJsonSql = OBJECT_MAPPER.readValue(
-				StreamUtils.copyToString(
-					new ClassPathResource(filePath).getInputStream(),
-					Charset.defaultCharset()
-				),
-				Map.class
-			);
+				StreamUtils.copyToString(new ClassPathResource(filePath).getInputStream(), Charset.defaultCharset()),
+				Map.class);
 		} catch (IOException e) {
 			throw new IllegalStateException("Unable to load and parse the file: " + filePath, e);
 		}
@@ -54,15 +44,11 @@ public class StorageTestExecutionListener extends AbstractTestExecutionListener 
 	}
 
 	private List<String> createInsertQueries(Map<String, List<Map<String, Object>>> parsedJsonSql) {
-		return parsedJsonSql.entrySet().stream()
-			.flatMap(entry -> entry.getValue().stream().map(row -> {
-				String columns = String.join(", ", row.keySet());
-				String values = row.values().stream()
-					.map(this::formatValue)
-					.collect(Collectors.joining(", "));
-				return "INSERT INTO " + entry.getKey() + " (" + columns + ") VALUES (" + values + ");";
-			}))
-			.toList();
+		return parsedJsonSql.entrySet().stream().flatMap(entry -> entry.getValue().stream().map(row -> {
+			String columns = String.join(", ", row.keySet());
+			String values = row.values().stream().map(this::formatValue).collect(Collectors.joining(", "));
+			return "INSERT INTO " + entry.getKey() + " (" + columns + ") VALUES (" + values + ");";
+		})).toList();
 	}
 
 	private String formatValue(Object value) {
@@ -80,25 +66,21 @@ public class StorageTestExecutionListener extends AbstractTestExecutionListener 
 		JdbcTemplate jdbcTemplate = testContext.getApplicationContext().getBean(JdbcTemplate.class);
 		StorageTest.DatabaseType dbType = getDbType(testContext);
 
-		List<String> truncateQueries = jdbcTemplate.queryForList(
-			"""
-				SELECT Concat('TRUNCATE TABLE ', TABLE_NAME, ';') AS q
-				FROM INFORMATION_SCHEMA.TABLES
-				WHERE TABLE_SCHEMA = 'PUBLIC'
-				""",
-			String.class);
+		List<String> truncateQueries = jdbcTemplate.queryForList("""
+			SELECT Concat('TRUNCATE TABLE ', TABLE_NAME, ';') AS q
+			FROM INFORMATION_SCHEMA.TABLES
+			WHERE TABLE_SCHEMA = 'PUBLIC'
+			""", String.class);
 		truncateTables(jdbcTemplate, truncateQueries, dbType);
 	}
 
 	private StorageTest.DatabaseType getDbType(TestContext testContext) {
 		return TestContextAnnotationUtils.getMergedRepeatableAnnotations(testContext.getTestClass(), StorageTest.class)
-			.stream()
-			.findFirst()
-			.map(StorageTest::dbType)
-			.orElse(StorageTest.DatabaseType.MYSQL);
+			.stream().findFirst().map(StorageTest::dbType).orElse(StorageTest.DatabaseType.MYSQL);
 	}
 
-	private void truncateTables(JdbcTemplate jdbcTemplate, List<String> truncateQueries, StorageTest.DatabaseType dbType) {
+	private void truncateTables(JdbcTemplate jdbcTemplate, List<String> truncateQueries,
+		StorageTest.DatabaseType dbType) {
 		if (dbType == StorageTest.DatabaseType.H2) {
 			jdbcTemplate.execute("SET REFERENTIAL_INTEGRITY FALSE");
 			truncateQueries.forEach(jdbcTemplate::execute);

@@ -5,42 +5,13 @@ import com.barlow.core.domain.account.device.DeviceQuery;
 import com.barlow.core.domain.account.device.DeviceRegisterCommand;
 import com.barlow.core.enumerate.DeviceOs;
 
-public record UserCreateCommand(
-		DeviceOs os,
-		String deviceId,
-		String deviceToken,
-		String nickname,
-		User.Role role
-) {
-
-	public static UserCreateCommand ofGuest(
-			DeviceOs os,
-			String deviceId,
-			String deviceToken,
-			String nickname
-	) {
-		return new UserCreateCommand(
-				os,
-				deviceId,
-				deviceToken,
-				nickname,
-				User.Role.GUEST
-		);
+public record UserCreateCommand(DeviceOs os, String deviceId, String deviceToken, String nickname, User.Role role) {
+	public static UserCreateCommand ofGuest(DeviceOs os, String deviceId, String deviceToken, String nickname) {
+		return new UserCreateCommand(os, deviceId, deviceToken, nickname, User.Role.GUEST);
 	}
 
-	public static UserCreateCommand ofMember(
-			DeviceOs os,
-			String deviceId,
-			String deviceToken,
-			String nickname
-	) {
-		return new UserCreateCommand(
-				os,
-				deviceId,
-				deviceToken,
-				nickname,
-				User.Role.MEMBER
-		);
+	public static UserCreateCommand ofMember(DeviceOs os, String deviceId, String deviceToken, String nickname) {
+		return new UserCreateCommand(os, deviceId, deviceToken, nickname, User.Role.MEMBER);
 	}
 
 	public DeviceQuery toDeviceQuery() {

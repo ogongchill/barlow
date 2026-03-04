@@ -19,8 +19,7 @@ public enum ErrorCode {
 	private final String description;
 
 	public static boolean isNameContainedInValue(String xmlResponseBody) {
-		return Arrays.stream(values())
-			.anyMatch(errorCode -> xmlResponseBody.contains(errorCode.code));
+		return Arrays.stream(values()).anyMatch(errorCode -> xmlResponseBody.contains(errorCode.code));
 	}
 
 	ErrorCode(String code, String description) {

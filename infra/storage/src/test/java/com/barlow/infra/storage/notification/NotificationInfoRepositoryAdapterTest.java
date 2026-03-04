@@ -37,10 +37,7 @@ class NotificationInfoRepositoryAdapterTest extends CoreDbContextTest {
 		NotificationTopic topic = NotificationTopic.NATIONAL_POLICY;
 		NotificationInfo info = adapter.retrieveNotificationInfosByTopic(topic.getValue());
 
-		assertAll(
-			() -> assertThat(info).isNotNull(),
-			() -> assertThat(info.getInfos()).isEmpty()
-		);
+		assertAll(() -> assertThat(info).isNotNull(), () -> assertThat(info.getInfos()).isEmpty());
 	}
 
 	@DisplayName("NotificationTopic 들로 알림 정보를 조회하면 해당 토픽을 구독한 회원들의 알림설정 정보를 조회한다")
@@ -51,9 +48,6 @@ class NotificationInfoRepositoryAdapterTest extends CoreDbContextTest {
 
 		NotificationInfo info = adapter.retrieveNotificationInfosByTopics(Set.of(houseSteering, nationalPolicy));
 
-		assertAll(
-			() -> assertThat(info).isNotNull(),
-			() -> assertThat(info.getInfos()).isNotEmpty().hasSize(1)
-		);
+		assertAll(() -> assertThat(info).isNotNull(), () -> assertThat(info.getInfos()).isNotEmpty().hasSize(1));
 	}
 }

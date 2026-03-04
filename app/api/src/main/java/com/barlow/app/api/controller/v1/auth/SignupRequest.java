@@ -11,30 +11,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-public record SignupRequest(
-	String deviceOs,
-	String deviceId,
-	String deviceToken,
-	String nickname,
-	Map<Long, Boolean> termAgreements
-) implements Validatable {
+public record SignupRequest(String deviceOs, String deviceId, String deviceToken, String nickname,
+	Map<Long, Boolean> termAgreements) implements Validatable {
 
 	UserCreateCommand toGuestCommand() {
 		return new UserCreateCommand(
-			DeviceOs.valueOf(deviceOs.toUpperCase()),
-			deviceId,
-			deviceToken,
-			nickname,
-			User.Role.GUEST
-		);
+			DeviceOs.valueOf(deviceOs.toUpperCase()), deviceId, deviceToken, nickname, User.Role.GUEST);
 	}
 
 	List<TermAgreement> toTermAgreements(LocalDateTime submittedAt) {
 		return termAgreements.entrySet().stream()
-				.map(entry -> Boolean.TRUE.equals(entry.getValue())
-						? TermAgreement.agreedAt(entry.getKey(), submittedAt)
-						: TermAgreement.disagreedAt(entry.getKey(), submittedAt))
-				.toList();
+			.map(
+				entry -> Boolean.TRUE.equals(entry.getValue()) ? TermAgreement.agreedAt(entry.getKey(), submittedAt)
+					: TermAgreement.disagreedAt(entry.getKey(), submittedAt))
+			.toList();
 	}
 
 	@Override

@@ -20,8 +20,7 @@ public class BatchCoreDatasourceConfig {
 
 	@Bean("batchCoreDataSource")
 	public DataSource dataSource(
-		@Qualifier("batchCoreDataSourceProperties") DataSourceProperties dataSourceProperties
-	) {
+		@Qualifier("batchCoreDataSourceProperties") DataSourceProperties dataSourceProperties) {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(dataSourceProperties.getDriverClassName());
 		dataSource.setUrl(dataSourceProperties.getUrl());

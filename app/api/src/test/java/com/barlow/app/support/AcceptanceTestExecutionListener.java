@@ -2,7 +2,6 @@ package com.barlow.app.support;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +26,7 @@ public class AcceptanceTestExecutionListener extends AbstractTestExecutionListen
 
 	@Override
 	public void beforeTestClass(TestContext testContext) {
-		Integer serverPort = testContext.getApplicationContext()
-			.getEnvironment()
+		Integer serverPort = testContext.getApplicationContext().getEnvironment()
 			.getProperty("local.server.port", Integer.class);
 		if (serverPort == null) {
 			throw new IllegalStateException("localServerPort cannot be null");
@@ -42,26 +40,16 @@ public class AcceptanceTestExecutionListener extends AbstractTestExecutionListen
 		ObjectMapper objectMapper = testContext.getApplicationContext().getBean(ObjectMapper.class);
 
 		TestContextAnnotationUtils.getMergedRepeatableAnnotations(testContext.getTestClass(), AcceptanceTest.class)
-			.stream()
-			.map(AcceptanceTest::setUpScripts)
-			.forEach(files ->
-				Arrays.stream(files)
-					.forEach(file ->
-						setUpDatabase(jdbcTemplate, objectMapper, file)
-					)
-			);
+			.stream().map(AcceptanceTest::setUpScripts)
+			.forEach(files -> Arrays.stream(files).forEach(file -> setUpDatabase(jdbcTemplate, objectMapper, file)));
 	}
 
 	private void setUpDatabase(JdbcTemplate jdbcTemplate, ObjectMapper objectMapper, String filePath) {
 		Map<String, List<Map<String, Object>>> parsedJsonSql;
 		try {
 			parsedJsonSql = objectMapper.readValue(
-				StreamUtils.copyToString(
-					new ClassPathResource(filePath).getInputStream(),
-					Charset.defaultCharset()
-				),
-				Map.class
-			);
+				StreamUtils.copyToString(new ClassPathResource(filePath).getInputStream(), Charset.defaultCharset()),
+				Map.class);
 		} catch (IOException e) {
 			throw new IllegalStateException("Unable to load and parse the file: " + filePath, e);
 		}
@@ -71,15 +59,11 @@ public class AcceptanceTestExecutionListener extends AbstractTestExecutionListen
 	}
 
 	private List<String> createInsertQueries(Map<String, List<Map<String, Object>>> parsedJsonSql) {
-		return parsedJsonSql.entrySet().stream()
-			.flatMap(entry -> entry.getValue().stream().map(row -> {
-				String columns = String.join(", ", row.keySet());
-				String values = row.values().stream()
-					.map(this::formatValue)
-					.collect(Collectors.joining(", "));
-				return "INSERT INTO " + entry.getKey() + " (" + columns + ") VALUES (" + values + ");";
-			}))
-			.toList();
+		return parsedJsonSql.entrySet().stream().flatMap(entry -> entry.getValue().stream().map(row -> {
+			String columns = String.join(", ", row.keySet());
+			String values = row.values().stream().map(this::formatValue).collect(Collectors.joining(", "));
+			return "INSERT INTO " + entry.getKey() + " (" + columns + ") VALUES (" + values + ");";
+		})).toList();
 	}
 
 	private String formatValue(Object value) {
@@ -87,7 +71,7 @@ public class AcceptanceTestExecutionListener extends AbstractTestExecutionListen
 			return "NULL";
 		}
 		if (value instanceof Boolean) {
-			return (Boolean) value ? "TRUE" : "FALSE";
+			return (Boolean)value ? "TRUE" : "FALSE";
 		}
 		if (value instanceof String && "now()".equalsIgnoreCase((String)value)) {
 			return "now()";
@@ -102,13 +86,11 @@ public class AcceptanceTestExecutionListener extends AbstractTestExecutionListen
 	@Override
 	public void afterTestMethod(TestContext testContext) {
 		JdbcTemplate jdbcTemplate = testContext.getApplicationContext().getBean(JdbcTemplate.class);
-		List<String> truncateQueries = jdbcTemplate.queryForList(
-			"""
-				SELECT Concat('TRUNCATE TABLE ', TABLE_NAME, ';') AS q
-				FROM INFORMATION_SCHEMA.TABLES
-				WHERE TABLE_SCHEMA = 'PUBLIC'
-				""",
-			String.class);
+		List<String> truncateQueries = jdbcTemplate.queryForList("""
+			SELECT Concat('TRUNCATE TABLE ', TABLE_NAME, ';') AS q
+			FROM INFORMATION_SCHEMA.TABLES
+			WHERE TABLE_SCHEMA = 'PUBLIC'
+			""", String.class);
 		truncateTables(jdbcTemplate, truncateQueries);
 	}
 

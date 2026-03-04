@@ -16,9 +16,8 @@ public class LegislationAccountBatchRepositoryAdapter implements LegislationAcco
 
 	@Override
 	public void updateAccountBillCount(UpdatedBills committeeReceivedBills) {
-		committeeReceivedBills.groupByCommittee()
-			.forEach((legislationType, billIds) ->
-				batchJpaRepository.updateAccountPostCount(billIds.size(), legislationType.getLegislationNo())
-			);
+		committeeReceivedBills.groupByCommittee().forEach(
+			(legislationType, billIds) -> batchJpaRepository
+				.updateAccountPostCount(billIds.size(), legislationType.getLegislationNo()));
 	}
 }

@@ -11,11 +11,8 @@ public class BillNotificationSendService implements NotificationSendPort {
 	private final NotificationSendWorker notificationSendWorker;
 	private final NotificationCenterRegistrar notificationCenterRegistrar;
 
-	public BillNotificationSendService(
-		NotificationInfoReaderFactory notificationInfoReaderFactory,
-		NotificationSendWorker notificationSendWorker,
-		NotificationCenterRegistrar notificationCenterRegistrar
-	) {
+	public BillNotificationSendService(NotificationInfoReaderFactory notificationInfoReaderFactory,
+		NotificationSendWorker notificationSendWorker, NotificationCenterRegistrar notificationCenterRegistrar) {
 		this.notificationInfoReaderFactory = notificationInfoReaderFactory;
 		this.notificationSendWorker = notificationSendWorker;
 		this.notificationCenterRegistrar = notificationCenterRegistrar;

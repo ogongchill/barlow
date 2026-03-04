@@ -24,8 +24,8 @@ public class OpenDataApiAdapter implements OpenDataApiPort {
 	}
 
 	@Override
-	public BillPetitionMemberListResponse getBillPetitionMemberList(BillPetitionMemberListRequest request) throws
-		OpenDataException {
+	public BillPetitionMemberListResponse getBillPetitionMemberList(BillPetitionMemberListRequest request)
+		throws OpenDataException {
 		return api.getBillPetitionMemberList(request);
 	}
 

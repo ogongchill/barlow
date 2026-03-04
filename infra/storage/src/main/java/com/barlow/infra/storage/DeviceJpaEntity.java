@@ -38,8 +38,7 @@ public class DeviceJpaEntity extends BaseTimeJpaEntity {
 	@Column(columnDefinition = "varchar(10)", name = "device_status", nullable = false)
 	private Device.Status status;
 
-	protected DeviceJpaEntity() {
-	}
+	protected DeviceJpaEntity() {}
 
 	public DeviceJpaEntity(String deviceId, DeviceOs deviceOs, String token, Long memberNo, Device.Status status) {
 		this.deviceId = deviceId;

@@ -5,14 +5,14 @@ import com.barlow.infra.auth.authentication.core.CredentialType;
 
 public class MemberNoCredential extends Credential {
 
-    private final long memberNo;
+	private final long memberNo;
 
-    protected MemberNoCredential(long memberNo) {
-        super(CredentialType.ID);
-        this.memberNo = memberNo;
-    }
+	protected MemberNoCredential(long memberNo) {
+		super(CredentialType.ID);
+		this.memberNo = memberNo;
+	}
 
-    public long getMemberNo() {
-        return memberNo;
-    }
+	public long getMemberNo() {
+		return memberNo;
+	}
 }

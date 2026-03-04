@@ -16,30 +16,23 @@ import jakarta.persistence.criteria.Subquery;
 public class BillPostSpecifications {
 
 	static Specification<BillPostJpaEntity> isPreAnnouncement(boolean isPreAnnouncementMode) {
-		return (root, criteriaQuery, criteriaBuilder)
-			-> isPreAnnouncementMode
-			? criteriaBuilder.greaterThanOrEqualTo(root.get("preAnnouncementInfo").get("deadlineDate"), LocalDate.now().atStartOfDay())
+		return (root, criteriaQuery, criteriaBuilder) -> isPreAnnouncementMode ? criteriaBuilder
+			.greaterThanOrEqualTo(root.get("preAnnouncementInfo").get("deadlineDate"), LocalDate.now().atStartOfDay())
 			: criteriaBuilder.conjunction();
 	}
 
 	static Specification<BillPostJpaEntity> hasLegislationTypeTag(Set<LegislationType> tags) {
-		return (root, query, criteriaBuilder)
-			-> tags.isEmpty()
-			? criteriaBuilder.conjunction()
+		return (root, query, criteriaBuilder) -> tags.isEmpty() ? criteriaBuilder.conjunction()
 			: root.get("legislationType").in(tags);
 	}
 
 	static Specification<BillPostJpaEntity> hasProgressStatusTag(Set<ProgressStatus> tags) {
-		return (root, query, criteriaBuilder)
-			-> tags.isEmpty()
-			? criteriaBuilder.conjunction()
+		return (root, query, criteriaBuilder) -> tags.isEmpty() ? criteriaBuilder.conjunction()
 			: root.get("progressStatus").in(tags);
 	}
 
 	static Specification<BillPostJpaEntity> hasProposerTypeTag(Set<ProposerType> tags) {
-		return (root, query, criteriaBuilder)
-			-> tags.isEmpty()
-			? criteriaBuilder.conjunction()
+		return (root, query, criteriaBuilder) -> tags.isEmpty() ? criteriaBuilder.conjunction()
 			: root.get("proposerType").in(tags);
 	}
 
@@ -50,15 +43,12 @@ public class BillPostSpecifications {
 			}
 			Subquery<String> subquery = query.subquery(String.class);
 			Root<BillProposerJpaEntity> billProposerRoot = subquery.from(BillProposerJpaEntity.class);
-			subquery.select(billProposerRoot.get("proposeBillId"))
-				.where(
-					criteriaBuilder.equal(root.get("billId"), billProposerRoot.get("proposeBillId")),
-					billProposerRoot.get("partyName").in(tags)
-				);
+			subquery.select(billProposerRoot.get("proposeBillId")).where(
+				criteriaBuilder.equal(root.get("billId"), billProposerRoot.get("proposeBillId")),
+				billProposerRoot.get("partyName").in(tags));
 			return criteriaBuilder.exists(subquery);
 		};
 	}
 
-	private BillPostSpecifications() {
-	}
+	private BillPostSpecifications() {}
 }

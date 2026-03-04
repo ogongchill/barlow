@@ -18,10 +18,8 @@ class NotificationCenterRepositoryAdapterTest extends CoreDbContextTest {
 	private final NotificationCenterRepositoryAdapter adapter;
 	private final NotificationCenterJpaRepository notificationCenterJpaRepository;
 
-	NotificationCenterRepositoryAdapterTest(
-		NotificationCenterRepositoryAdapter adapter,
-		NotificationCenterJpaRepository notificationCenterJpaRepository
-	) {
+	NotificationCenterRepositoryAdapterTest(NotificationCenterRepositoryAdapter adapter,
+		NotificationCenterJpaRepository notificationCenterJpaRepository) {
 		this.adapter = adapter;
 		this.notificationCenterJpaRepository = notificationCenterJpaRepository;
 	}
@@ -30,16 +28,12 @@ class NotificationCenterRepositoryAdapterTest extends CoreDbContextTest {
 	@Test
 	@Transactional
 	void registerAll() {
-		adapter.registerAll(List.of(
-			new NotificationCenterItemInfo(
-				1L, HOUSE_STEERING,
-				List.of(new NotificationCenterItemInfo.BillItemInfo("billId1", "billName1"))
-			),
-			new NotificationCenterItemInfo(
-				2L, HOUSE_STEERING,
-				List.of(new NotificationCenterItemInfo.BillItemInfo("billId2", "billName2"))
-			)
-		));
+		adapter.registerAll(
+			List.of(
+				new NotificationCenterItemInfo(
+					1L, HOUSE_STEERING, List.of(new NotificationCenterItemInfo.BillItemInfo("billId1", "billName1"))),
+				new NotificationCenterItemInfo(
+					2L, HOUSE_STEERING, List.of(new NotificationCenterItemInfo.BillItemInfo("billId2", "billName2")))));
 
 		assertThat(notificationCenterJpaRepository.findAll()).hasSize(2);
 	}

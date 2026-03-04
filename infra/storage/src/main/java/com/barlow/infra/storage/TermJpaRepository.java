@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TermJpaRepository extends JpaRepository<TermJpaEntity, Long> {
 
-    @Query("SELECT t FROM TermJpaEntity t WHERE t.no IN (SELECT at.termNo FROM ActiveTermJpaEntity at)")
-    List<TermJpaEntity> findAllByActiveTerms();
+	@Query("SELECT t FROM TermJpaEntity t WHERE t.no IN (SELECT at.termNo FROM ActiveTermJpaEntity at)")
+	List<TermJpaEntity> findAllByActiveTerms();
 }

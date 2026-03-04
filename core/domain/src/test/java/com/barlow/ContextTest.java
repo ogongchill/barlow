@@ -6,5 +6,4 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @Tag("context")
 @ExtendWith(MockitoExtension.class)
-public abstract class ContextTest {
-}
+public abstract class ContextTest {}

@@ -18,15 +18,11 @@ public class SubscribeDomainException extends CoreDomainException {
 
 	public static SubscribeDomainException alreadySubscribed(LegislationType legislationType) {
 		return new SubscribeDomainException(
-			CoreDomainExceptionType.CONFLICT_EXCEPTION,
-			String.format("이미 구독중인 입법계정 %s 입니다", legislationType)
-		);
+			CoreDomainExceptionType.CONFLICT_EXCEPTION, String.format("이미 구독중인 입법계정 %s 입니다", legislationType));
 	}
 
 	public static SubscribeDomainException alreadyUnSubscribed(LegislationType legislationType) {
 		return new SubscribeDomainException(
-			CoreDomainExceptionType.CONFLICT_EXCEPTION,
-			String.format("이미 구독 취소한 입법계정 %s 입니다", legislationType)
-		);
+			CoreDomainExceptionType.CONFLICT_EXCEPTION, String.format("이미 구독 취소한 입법계정 %s 입니다", legislationType));
 	}
 }

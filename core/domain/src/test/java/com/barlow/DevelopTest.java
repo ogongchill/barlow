@@ -6,5 +6,4 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @Tag("develop")
 @ExtendWith(MockitoExtension.class)
-public abstract class DevelopTest {
-}
+public abstract class DevelopTest {}

@@ -19,10 +19,8 @@ class FailureMessageRetryQueueTest {
 	void setUp() {
 		testRetryQueue = new FailureMessageRetryQueue(0, 1);
 		retryableMessages = List.of(
-			Message.builder().setToken("test").build(),
-			Message.builder().setToken("test").build(),
-			Message.builder().setToken("test").build()
-		);
+			Message.builder().setToken("test").build(), Message.builder().setToken("test").build(),
+			Message.builder().setToken("test").build());
 	}
 
 	@DisplayName("재시도 가능한 실패 메시지들을 queue 에 삽입한다")

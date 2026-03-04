@@ -16,10 +16,8 @@ public class NotificationSettingActivator {
 	private final NotificationSettingReader notificationSettingReader;
 	private final NotificationSettingRepository notificationSettingRepository;
 
-	public NotificationSettingActivator(
-		NotificationSettingReader notificationSettingReader,
-		NotificationSettingRepository notificationSettingRepository
-	) {
+	public NotificationSettingActivator(NotificationSettingReader notificationSettingReader,
+		NotificationSettingRepository notificationSettingRepository) {
 		this.notificationSettingReader = notificationSettingReader;
 		this.notificationSettingRepository = notificationSettingRepository;
 	}
@@ -42,9 +40,7 @@ public class NotificationSettingActivator {
 	}
 
 	public void activateDefault(User user) {
-		NotificationTopic.findByDefaultTopic()
-			.stream()
-			.map(topic -> new NotificationSetting(user, topic, true))
+		NotificationTopic.findByDefaultTopic().stream().map(topic -> new NotificationSetting(user, topic, true))
 			.forEach(notificationSettingRepository::saveNotificationSetting);
 	}
 }

@@ -33,10 +33,7 @@ class OpenDataResponseDecoder implements Decoder {
 			log.info(errorMessage);
 			throw new OpenDataException(errorMessage);
 		}
-		return XML_MAPPER.readValue(
-			responseBody,
-			XML_MAPPER.constructType(type)
-		);
+		return XML_MAPPER.readValue(responseBody, XML_MAPPER.constructType(type));
 	}
 
 	private String getResponseBody(Response response) throws IOException {

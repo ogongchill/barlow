@@ -33,23 +33,18 @@ public class RecentBillRetrieveController {
 	}
 
 	@GetMapping("/thumbnail")
-	public ApiResponse<RecentBillPostsResponse> retrieveRecentBill(
-		@RequestParam MultiValueMap<String, String> params
-	) {
+	public ApiResponse<RecentBillPostsResponse> retrieveRecentBill(@RequestParam MultiValueMap<String, String> params) {
 		log.info("Received retrieve recent bill thumbnail request.");
 		RecentBillPostsRequest request = RecentBillPostsRequest.sanitizeFrom(params);
 		BillPostsStatus billPostsStatus = billPostRetrieveService.readBillPosts(
-			BillPostQuery.defaultOf(request.getPage(), request.getSize(), request.getSort(), request.getFilters())
-		);
+			BillPostQuery.defaultOf(request.getPage(), request.getSize(), request.getSort(), request.getFilters()));
 		RecentBillPostsApiSpecComposer apiSpecComposer = new RecentBillPostsApiSpecComposer(billPostsStatus);
 		return ApiResponse.success(apiSpecComposer.compose(LocalDate.now()));
 	}
 
 	@GetMapping("/detail/{recentBillId}")
-	public ApiResponse<RecentBillPostDetailResponse> retrieveRecentBillDetail(
-		@PassportUser Passport passport,
-		@PathVariable("recentBillId") String recentBillId
-	) {
+	public ApiResponse<RecentBillPostDetailResponse> retrieveRecentBillDetail(@PassportUser Passport passport,
+		@PathVariable("recentBillId") String recentBillId) {
 		log.info("Received retrieve recent bill {} detail request.", recentBillId);
 		BillPost billPost = billPostRetrieveService.readBillPostDetail(passport, new BillPostDetailQuery(recentBillId));
 		RecentBillPostDetailApiSpecComposer apiSpecComposer = new RecentBillPostDetailApiSpecComposer(billPost);

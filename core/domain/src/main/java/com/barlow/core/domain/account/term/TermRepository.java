@@ -7,9 +7,9 @@ import java.util.List;
 @Repository
 public interface TermRepository {
 
-    List<Term> retrieveActiveTerms();
+	List<Term> retrieveActiveTerms();
 
-    List<TermAgreement> saveUserAgreement(UserTermAgreementCommand termAgreementCommand);
+	List<TermAgreement> saveUserAgreement(UserTermAgreementCommand termAgreementCommand);
 
-    void deleteByUserNo(long userNo);
+	void deleteByUserNo(long userNo);
 }

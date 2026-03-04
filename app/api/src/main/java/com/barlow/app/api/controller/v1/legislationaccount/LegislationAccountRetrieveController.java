@@ -24,26 +24,24 @@ public class LegislationAccountRetrieveController {
 
 	private final LegislationAccountRetrieveService legislationAccountRetrieveService;
 
-	public LegislationAccountRetrieveController(
-		LegislationAccountRetrieveService legislationAccountRetrieveService
-	) {
+	public LegislationAccountRetrieveController(LegislationAccountRetrieveService legislationAccountRetrieveService) {
 		this.legislationAccountRetrieveService = legislationAccountRetrieveService;
 	}
 
 	@GetMapping("/{legislationType}/profile")
 	public ApiResponse<LegislationAccountProfileResponse> retrieveProfile(
-		@PathVariable("legislationType") LegislationType legislationType,
-		@PassportUser Passport passport
-	) {
+		@PathVariable("legislationType") LegislationType legislationType, @PassportUser Passport passport) {
 		log.info("Received {} account profile retrieve request.", legislationType);
-		LegislationAccount legislationAccount = legislationAccountRetrieveService.retrieve(legislationType, passport.getUser());
+		LegislationAccount legislationAccount = legislationAccountRetrieveService
+			.retrieve(legislationType, passport.getUser());
 		return ApiResponse.success(LegislationAccountProfileResponse.from(legislationAccount));
 	}
 
 	@GetMapping("/committees/info")
 	public ApiResponse<CommitteeAccountResponse> retrieveCommitteeAccounts(@PassportUser Passport passport) {
 		log.info("Received user {} committee account info retrieve request.", passport.getUserNo());
-		List<LegislationAccount> legislationAccounts = legislationAccountRetrieveService.retrieveAllCommittees(passport.getUser());
+		List<LegislationAccount> legislationAccounts = legislationAccountRetrieveService
+			.retrieveAllCommittees(passport.getUser());
 		return ApiResponse.success(CommitteeAccountResponse.from(legislationAccounts));
 	}
 }

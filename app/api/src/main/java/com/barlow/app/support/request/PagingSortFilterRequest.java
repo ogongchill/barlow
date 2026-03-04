@@ -33,15 +33,12 @@ public abstract class PagingSortFilterRequest {
 
 	public MultiValueMap<String, String> getFilters() {
 		return parameters.entrySet().stream()
-			.filter(entry -> !entry.getKey().equals(PAGE_KEY)
-				&& !entry.getKey().equals(SIZE_KEY)
-				&& !entry.getKey().equals(SORT_KEY)
-			)
-			.collect(Collectors.toMap(
-				Map.Entry::getKey,
-				Map.Entry::getValue,
-				(existing, replacement) -> existing, // 중복 키가 있을 경우 기존 값 유지
-				LinkedMultiValueMap::new
-			));
+			.filter(
+				entry -> !entry.getKey().equals(PAGE_KEY) && !entry.getKey().equals(SIZE_KEY)
+					&& !entry.getKey().equals(SORT_KEY))
+			.collect(
+				Collectors.toMap(
+					Map.Entry::getKey, Map.Entry::getValue, (existing, replacement) -> existing, // 중복 키가 있을 경우 기존 값 유지
+					LinkedMultiValueMap::new));
 	}
 }

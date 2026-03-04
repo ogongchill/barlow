@@ -41,8 +41,7 @@ class LegislationAccountNotificationSettingControllerTest extends ContextTest {
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 
 		@DisplayName("사용자가 이미 활성화된 상임위원회의 알림설정을 활성화하면 예외를 발생시키고 실패한다")
@@ -53,18 +52,13 @@ class LegislationAccountNotificationSettingControllerTest extends ContextTest {
 		}
 
 		private Map<String, Object> activateNotificationSetting(LegislationType legislationType) {
-			return RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.pathParam("legislationType", legislationType)
-				.post("/api/v1/legislation-accounts/{legislationType}/notification-setting/activate")
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.headers(MANDATORY_DEVICE_HEADERS).when().pathParam("legislationType", legislationType)
+				.post("/api/v1/legislation-accounts/{legislationType}/notification-setting/activate").then().log().all()
+				.extract().jsonPath().getMap(".");
 		}
 	}
-
 
 	@DisplayName("상임위원회 별 알림설정 비활성화")
 	@Nested
@@ -77,8 +71,7 @@ class LegislationAccountNotificationSettingControllerTest extends ContextTest {
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 
 		@DisplayName("사용자가 이미 비활성화된 상임위원회의 알림설정을 비활성화하면 예외를 발생시키고 실패한다")
@@ -89,15 +82,11 @@ class LegislationAccountNotificationSettingControllerTest extends ContextTest {
 		}
 
 		private Map<String, Object> deactivateNotificationSetting(LegislationType legislationType) {
-			return RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.pathParam("legislationType", legislationType)
-				.post("/api/v1/legislation-accounts/{legislationType}/notification-setting/deactivate")
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.headers(MANDATORY_DEVICE_HEADERS).when().pathParam("legislationType", legislationType)
+				.post("/api/v1/legislation-accounts/{legislationType}/notification-setting/deactivate").then().log()
+				.all().extract().jsonPath().getMap(".");
 		}
 	}
 }

@@ -15,16 +15,11 @@ import com.barlow.BarlowCoreApiApplication;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @ActiveProfiles("test")
-@SpringBootTest(
-	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-	classes = BarlowCoreApiApplication.class,
-	properties = {"spring.profiles.active=test"}
-)
-@TestExecutionListeners(
-	value = {AcceptanceTestExecutionListener.class},
-	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS
-)
-public @interface AcceptanceTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = BarlowCoreApiApplication.class, properties = {
+	"spring.profiles.active=test"})
+@TestExecutionListeners(value = {
+	AcceptanceTestExecutionListener.class}, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
+public @interface AcceptanceTest{
 	@AliasFor("setUpScripts")
 	String[] value() default {};
 

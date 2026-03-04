@@ -40,10 +40,6 @@ public final class Passport {
 		return device.deviceId;
 	}
 
-	record Device(
-		String deviceId,
-		String osVersion,
-		DeviceOs os
-	) {
+	record Device(String deviceId, String osVersion, DeviceOs os) {
 	}
 }

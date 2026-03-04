@@ -8,8 +8,7 @@ import org.slf4j.LoggerFactory;
 public class RetryWorker {
 
 	private static final Logger log = LoggerFactory.getLogger(RetryWorker.class);
-	private static final FailureMessageRetryQueue FAILURE_MESSAGE_RETRY_QUEUE
-		= new FailureMessageRetryQueue(60_000, 1);
+	private static final FailureMessageRetryQueue FAILURE_MESSAGE_RETRY_QUEUE = new FailureMessageRetryQueue(60_000, 1);
 
 	private final Executor executor;
 	private final NotificationSender notificationSender;
@@ -49,10 +48,8 @@ public class RetryWorker {
 		});
 	}
 
-	private void handleRetryResult(
-		FailureMessageRetryQueue.RetryBatchMessages retryBatchMessages,
-		NotificationResult retryResult
-	) {
+	private void handleRetryResult(FailureMessageRetryQueue.RetryBatchMessages retryBatchMessages,
+		NotificationResult retryResult) {
 		logNonRetryableMessages(retryResult);
 		if (retryBatchMessages.getRetryCount() != 0 && retryResult.hasRetryableFailure()) {
 			FAILURE_MESSAGE_RETRY_QUEUE.pushAllRetryableMessages(retryResult.getRetryableMessages());
@@ -67,7 +64,6 @@ public class RetryWorker {
 	}
 
 	private void logNonRetryableMessages(NotificationResult result) {
-		result.getNonRetryableMessages()
-			.forEach(message -> log.info("재시도 불가능한 실패 메시지 : {}", message));
+		result.getNonRetryableMessages().forEach(message -> log.info("재시도 불가능한 실패 메시지 : {}", message));
 	}
 }

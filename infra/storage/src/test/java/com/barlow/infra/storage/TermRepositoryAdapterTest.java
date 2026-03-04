@@ -37,8 +37,7 @@ class TermRepositoryAdapterTest {
 			() -> assertThat(terms).hasSize(3),
 			() -> assertThat(terms).extracting(Term::title)
 				.containsExactlyInAnyOrder("서비스 이용약관", "개인정보 처리방침", "마케팅 정보 수신 동의"),
-			() -> assertThat(terms).filteredOn(Term::required).hasSize(2)
-		);
+			() -> assertThat(terms).filteredOn(Term::required).hasSize(2));
 	}
 
 	@DisplayName("사용자의 약관 동의 정보를 저장한다")
@@ -46,34 +45,26 @@ class TermRepositoryAdapterTest {
 	void saveUserAgreement() {
 		LocalDateTime agreedAt = LocalDateTime.of(2024, 1, 15, 10, 0, 0);
 		List<TermAgreement> agreements = List.of(
-			new TermAgreement(1L, true, agreedAt),
-			new TermAgreement(2L, true, agreedAt),
-			new TermAgreement(3L, false, agreedAt)
-		);
+			new TermAgreement(1L, true, agreedAt), new TermAgreement(2L, true, agreedAt),
+			new TermAgreement(3L, false, agreedAt));
 		UserTermAgreementCommand command = new UserTermAgreementCommand(1L, agreements);
 
 		List<TermAgreement> result = adapter.saveUserAgreement(command);
 
 		assertAll(
-			() -> assertThat(result).hasSize(3),
-			() -> assertThat(result).filteredOn(TermAgreement::agreed).hasSize(2),
-			() -> assertThat(termAgreementJpaRepository.count()).isEqualTo(3)
-		);
+			() -> assertThat(result).hasSize(3), () -> assertThat(result).filteredOn(TermAgreement::agreed).hasSize(2),
+			() -> assertThat(termAgreementJpaRepository.count()).isEqualTo(3));
 	}
 
 	@DisplayName("여러 사용자의 약관 동의 정보를 각각 저장한다")
 	@Test
 	void saveUserAgreement_multipleUsers() {
 		LocalDateTime agreedAt = LocalDateTime.now();
-		List<TermAgreement> user1Agreements = List.of(
-			new TermAgreement(1L, true, agreedAt),
-			new TermAgreement(2L, true, agreedAt)
-		);
+		List<TermAgreement> user1Agreements = List
+			.of(new TermAgreement(1L, true, agreedAt), new TermAgreement(2L, true, agreedAt));
 		List<TermAgreement> user2Agreements = List.of(
-			new TermAgreement(1L, true, agreedAt),
-			new TermAgreement(2L, true, agreedAt),
-			new TermAgreement(3L, true, agreedAt)
-		);
+			new TermAgreement(1L, true, agreedAt), new TermAgreement(2L, true, agreedAt),
+			new TermAgreement(3L, true, agreedAt));
 
 		adapter.saveUserAgreement(new UserTermAgreementCommand(1L, user1Agreements));
 		adapter.saveUserAgreement(new UserTermAgreementCommand(2L, user2Agreements));

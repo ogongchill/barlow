@@ -19,28 +19,21 @@ public interface BillPostBatchJpaRepository extends JpaRepository<BillPostJpaEnt
 		UPDATE BillPostJpaEntity bp
 		SET bp.progressStatus = 'COMMITTEE_RECEIVED', bp.legislationType = :legislationType
 		WHERE bp.billId IN :billIds""")
-	void updateLegislationTypeInBatch(
-		@Param("legislationType") LegislationType legislationType,
-		@Param("billIds") List<String> billIds
-	);
+	void updateLegislationTypeInBatch(@Param("legislationType") LegislationType legislationType,
+		@Param("billIds") List<String> billIds);
 
 	@Modifying
 	@Query("UPDATE BillPostJpaEntity bp SET bp.progressStatus = :progressStatus WHERE bp.billId IN :billIds")
-	void updateProgressStatusInBatch(
-		@Param("progressStatus") ProgressStatus progressStatus,
-		@Param("billIds") List<String> billIds
-	);
+	void updateProgressStatusInBatch(@Param("progressStatus") ProgressStatus progressStatus,
+		@Param("billIds") List<String> billIds);
 
 	@Modifying
 	@Query("""
 		UPDATE BillPostJpaEntity bp
 		SET bp.preAnnouncementInfo.deadlineDate = :deadlineDate, bp.preAnnouncementInfo.linkUrl = :linkUrl
 		WHERE bp.billId = :billId""")
-	void updatePreAnnounceInfo(
-		@Param("billId") String billId,
-		@Param("deadlineDate") LocalDateTime deadlineDate,
-		@Param("linkUrl") String linkUrl
-	);
+	void updatePreAnnounceInfo(@Param("billId") String billId, @Param("deadlineDate") LocalDateTime deadlineDate,
+		@Param("linkUrl") String linkUrl);
 
 	List<BillPostJpaEntity> findAllByPreAnnouncementInfoDeadlineDateGreaterThanEqual(LocalDateTime deadlineDate);
 
@@ -51,8 +44,6 @@ public interface BillPostBatchJpaRepository extends JpaRepository<BillPostJpaEnt
 	 */
 	@Modifying
 	@Query("UPDATE BillPostJpaEntity bp SET bp.legislationType = :legislationType WHERE bp.billId IN :billIds")
-	void updateLegislationTypeInBatchByAdmin(
-		@Param("legislationType") LegislationType legislationType,
-		@Param("billIds") List<String> billIds
-	);
+	void updateLegislationTypeInBatchByAdmin(@Param("legislationType") LegislationType legislationType,
+		@Param("billIds") List<String> billIds);
 }

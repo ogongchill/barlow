@@ -24,10 +24,8 @@ public class BillPostRepositoryAdapter implements BillPostRepository {
 	private final BillPostJpaRepository billPostJpaRepository;
 	private final BillProposerJpaRepository billProposerJpaRepository;
 
-	public BillPostRepositoryAdapter(
-		BillPostJpaRepository billPostJpaRepository,
-		BillProposerJpaRepository billProposerJpaRepository
-	) {
+	public BillPostRepositoryAdapter(BillPostJpaRepository billPostJpaRepository,
+		BillProposerJpaRepository billProposerJpaRepository) {
 		this.billPostJpaRepository = billPostJpaRepository;
 		this.billProposerJpaRepository = billProposerJpaRepository;
 	}
@@ -47,9 +45,7 @@ public class BillPostRepositoryAdapter implements BillPostRepository {
 			.and(BillPostSpecifications.hasPartyNameTag(filterTag.getPartyNameTags()));
 		Slice<BillPostJpaEntity> billPostJpaEntities = billPostJpaRepository.findAll(specification, pageable);
 
-		List<BillPost> billPosts = billPostJpaEntities.stream()
-			.map(BillPostJpaEntity::toBillPost)
-			.toList();
+		List<BillPost> billPosts = billPostJpaEntities.stream().map(BillPostJpaEntity::toBillPost).toList();
 		return new BillPostsStatus(billPosts, billPostJpaEntities.isLast());
 	}
 
@@ -60,10 +56,8 @@ public class BillPostRepositoryAdapter implements BillPostRepository {
 			return null;
 		}
 		BillPost billPost = billPostJpaEntity.toBillPost();
-		List<BillProposer> billProposers = billProposerJpaRepository.findAllByBillId(query.billId())
-			.stream()
-			.map(BillProposerJpaEntity::toBillProposer)
-			.toList();
+		List<BillProposer> billProposers = billProposerJpaRepository.findAllByBillId(query.billId()).stream()
+			.map(BillProposerJpaEntity::toBillProposer).toList();
 		billPost.setBillProposers(billProposers);
 		return billPost;
 	}

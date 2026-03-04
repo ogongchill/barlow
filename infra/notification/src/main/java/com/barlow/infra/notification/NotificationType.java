@@ -2,9 +2,7 @@ package com.barlow.infra.notification;
 
 public enum NotificationType {
 
-	DEFAULT("기본입법알림"),
-	STANDING_COMMITTEE("소관위원회알림"),
-	;
+	DEFAULT("기본입법알림"), STANDING_COMMITTEE("소관위원회알림"),;
 
 	private final String value;
 

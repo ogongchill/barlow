@@ -8,12 +8,8 @@ public class Subscribe {
 	private final User subscriber;
 	private final SubscriptionInfo info;
 
-	public Subscribe(
-		User subscriber,
-		long subscribeAccountNo,
-		LegislationType subscribeAccountType,
-		boolean isSubscribed
-	) {
+	public Subscribe(User subscriber, long subscribeAccountNo, LegislationType subscribeAccountType,
+		boolean isSubscribed) {
 		this.subscriber = subscriber;
 		this.info = new SubscriptionInfo(subscribeAccountNo, subscribeAccountType, isSubscribed);
 	}

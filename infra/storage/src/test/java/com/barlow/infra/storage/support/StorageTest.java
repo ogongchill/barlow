@@ -10,11 +10,9 @@ import org.springframework.test.context.TestExecutionListeners;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@TestExecutionListeners(
-	value = {StorageTestExecutionListener.class},
-	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS
-)
-public @interface StorageTest {
+@TestExecutionListeners(value = {
+	StorageTestExecutionListener.class}, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
+public @interface StorageTest{
 	@AliasFor("setUpScripts")
 	String[] value() default {};
 

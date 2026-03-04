@@ -7,12 +7,7 @@ public class BillProposer {
 	private final String partyName;
 	private final String profileImagePath;
 
-	public BillProposer(
-		String proposerCode,
-		String proposerName,
-		String partyName,
-		String profileImagePath
-	) {
+	public BillProposer(String proposerCode, String proposerName, String partyName, String profileImagePath) {
 		this.proposerCode = proposerCode;
 		this.proposerName = proposerName;
 		this.partyName = partyName;

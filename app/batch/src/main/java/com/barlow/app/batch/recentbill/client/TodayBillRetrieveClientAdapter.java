@@ -29,12 +29,8 @@ public class TodayBillRetrieveClientAdapter implements TodayBillRetrieveClient {
 	private final Integer endOrd;
 	private final Integer numOfRows;
 
-	public TodayBillRetrieveClientAdapter(
-		OpenDataApiPort api,
-		@Value("${start-ordinal:22}") Integer startOrd,
-		@Value("${end-ordinal:22}") Integer endOrd,
-		@Value("${num-of-rows:100}") Integer numOfRows
-	) {
+	public TodayBillRetrieveClientAdapter(OpenDataApiPort api, @Value("${start-ordinal:22}") Integer startOrd,
+		@Value("${end-ordinal:22}") Integer endOrd, @Value("${num-of-rows:100}") Integer numOfRows) {
 		this.api = api;
 		this.startOrd = startOrd;
 		this.endOrd = endOrd;
@@ -45,33 +41,22 @@ public class TodayBillRetrieveClientAdapter implements TodayBillRetrieveClient {
 	public TodayBillInfoBatchEntity getTodayBillInfo(LocalDate batchDate) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String batchDateStr = batchDate.format(formatter);
-		BillInfoListRequest request = BillInfoListRequest.builder()
-			.startProposeDate(batchDateStr)
-			.endProposeDate(batchDateStr)
-			.startOrdinal(startOrd)
-			.endOrdinal(endOrd)
-			.numOfRows(numOfRows)
-			.pageNo(1)
+		BillInfoListRequest request = BillInfoListRequest.builder().startProposeDate(batchDateStr)
+			.endProposeDate(batchDateStr).startOrdinal(startOrd).endOrdinal(endOrd).numOfRows(numOfRows).pageNo(1)
 			.build();
 		log.info("{} : 오늘 접수된 법안 호출", LocalDateTime.now());
 		BillInfoListResponse response = api.getBillInfoList(request);
 		log.info("{} : 오늘 접수된 법안 조회 완료", LocalDateTime.now());
 		return new TodayBillInfoBatchEntity(
 			response.body().totalCount(),
-			response.body().items().stream()
-				.map(TodayBillInfoBatchEntityFactory::make)
-				.filter(Objects::nonNull)
-				.toList()
-		);
+			response.body().items().stream().map(TodayBillInfoBatchEntityFactory::make).filter(Objects::nonNull)
+				.toList());
 	}
 
 	@Override
 	public BillProposerInfoBatchEntity getBillProposerInfo(String billId) {
-		BillPetitionMemberListRequest request = BillPetitionMemberListRequest.builder()
-			.billId(billId)
-			.gbn1("bill")
-			.gbn2("reception")
-			.build();
+		BillPetitionMemberListRequest request = BillPetitionMemberListRequest.builder().billId(billId).gbn1("bill")
+			.gbn2("reception").build();
 		log.info("{} 법안 발의자 조회", billId);
 		BillPetitionMemberListResponse response = api.getBillPetitionMemberList(request);
 		log.info("{} 법안 발의자 조회 완료", billId);

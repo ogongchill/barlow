@@ -23,7 +23,6 @@ class TodayBillPostRepositoryAdapterTest extends CoreDbContextTest {
 	@ParameterizedTest
 	@CsvSource(value = {"2025-01-01:3", "2025-01-02:0"}, delimiter = ':')
 	void retrieveTodayBillPostThumbnails(String date, int expected) {
-		assertThat(adapter.retrieveTodayBillPostThumbnails(LocalDate.parse(date)))
-			.hasSize(expected);
+		assertThat(adapter.retrieveTodayBillPostThumbnails(LocalDate.parse(date))).hasSize(expected);
 	}
 }

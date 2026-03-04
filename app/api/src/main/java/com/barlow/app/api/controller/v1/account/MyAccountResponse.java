@@ -7,18 +7,13 @@ import com.barlow.core.domain.account.myinfo.MyAccountInfo;
 
 import java.util.List;
 
-public record MyAccountResponse(
-	UserInfo user,
-	List<AuthProviderInfo> authProviders,
-	List<DeviceInfo> devices
-) {
+public record MyAccountResponse(UserInfo user, List<AuthProviderInfo> authProviders, List<DeviceInfo> devices) {
 
 	public static MyAccountResponse from(MyAccountInfo myAccountInfo) {
 		return new MyAccountResponse(
 			UserInfo.from(myAccountInfo.profile()),
 			myAccountInfo.authProviders().stream().map(AuthProviderInfo::from).toList(),
-			myAccountInfo.devices().stream().map(DeviceInfo::from).toList()
-		);
+			myAccountInfo.devices().stream().map(DeviceInfo::from).toList());
 	}
 
 	public record UserInfo(long userNo, String nickname, String role) {

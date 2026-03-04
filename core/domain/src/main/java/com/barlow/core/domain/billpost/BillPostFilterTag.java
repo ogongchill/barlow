@@ -25,13 +25,8 @@ public final class BillPostFilterTag {
 	private final Set<PartyName> partyNameTags;
 	private final boolean isPreAnnouncement;
 
-	private BillPostFilterTag(
-		Set<LegislationType> legislationTypeTags,
-		Set<ProgressStatus> progressStatusTags,
-		Set<ProposerType> proposerTypeTags,
-		Set<PartyName> partyNameTags,
-		boolean isPreAnnouncement
-	) {
+	private BillPostFilterTag(Set<LegislationType> legislationTypeTags, Set<ProgressStatus> progressStatusTags,
+		Set<ProposerType> proposerTypeTags, Set<PartyName> partyNameTags, boolean isPreAnnouncement) {
 		this.legislationTypeTags = legislationTypeTags;
 		this.progressStatusTags = progressStatusTags;
 		this.proposerTypeTags = proposerTypeTags;
@@ -53,29 +48,23 @@ public final class BillPostFilterTag {
 			return new BillPostFilterTag(Set.of(), Set.of(), Set.of(), Set.of(), isPreAnnouncement);
 		}
 		Map<String, Function<String, Enum<?>>> tagMappers = Map.of(
-			LEGISLATION_TYPE_TAG, s -> LegislationType.valueOf(s.toUpperCase()),
-			PROGRESS_STATUS_TAG, s -> ProgressStatus.valueOf(s.toUpperCase()),
-			PROPOSER_TYPE_TAG, s -> ProposerType.valueOf(s.toUpperCase()),
-			PARTY_NAME_TAG, s -> PartyName.valueOf(s.toUpperCase())
-		);
+			LEGISLATION_TYPE_TAG, s -> LegislationType.valueOf(s.toUpperCase()), PROGRESS_STATUS_TAG,
+			s -> ProgressStatus.valueOf(s.toUpperCase()), PROPOSER_TYPE_TAG, s -> ProposerType.valueOf(s.toUpperCase()),
+			PARTY_NAME_TAG, s -> PartyName.valueOf(s.toUpperCase()));
 
-		Map<String, Set<? extends Enum<?>>> results = tags.entrySet()
-			.stream()
+		Map<String, Set<? extends Enum<?>>> results = tags.entrySet().stream()
 			.filter(entry -> tagMappers.containsKey(entry.getKey())) // 지원되는 키만 필터링
-			.collect(Collectors.toMap(
-				Map.Entry::getKey,
-				entry -> entry.getValue().stream()
-					.map(tagMappers.get(entry.getKey()))
-					.collect(Collectors.toSet())
-			));
+			.collect(
+				Collectors.toMap(
+					Map.Entry::getKey,
+					entry -> entry.getValue().stream().map(tagMappers.get(entry.getKey()))
+						.collect(Collectors.toSet())));
 
 		return new BillPostFilterTag(
 			(Set<LegislationType>)results.getOrDefault(LEGISLATION_TYPE_TAG, Set.of()),
 			(Set<ProgressStatus>)results.getOrDefault(PROGRESS_STATUS_TAG, Set.of()),
 			(Set<ProposerType>)results.getOrDefault(PROPOSER_TYPE_TAG, Set.of()),
-			(Set<PartyName>)results.getOrDefault(PARTY_NAME_TAG, Set.of()),
-			isPreAnnouncement
-		);
+			(Set<PartyName>)results.getOrDefault(PARTY_NAME_TAG, Set.of()), isPreAnnouncement);
 	}
 
 	public boolean isPreAnnouncement() {

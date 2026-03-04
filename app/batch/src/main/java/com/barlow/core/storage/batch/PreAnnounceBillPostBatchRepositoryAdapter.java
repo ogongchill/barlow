@@ -21,23 +21,14 @@ public class PreAnnounceBillPostBatchRepositoryAdapter implements PreAnnounceBil
 	@Override
 	public PreviousPreAnnounceBillIds retrieveAllInProgress(LocalDate today) {
 		return new PreviousPreAnnounceBillIds(
-			billPostBatchJpaRepository
-				.findAllByPreAnnouncementInfoDeadlineDateGreaterThanEqual(today.atStartOfDay())
-				.stream()
-				.map(BillPostJpaEntity::getBillId)
-				.toList()
-		);
+			billPostBatchJpaRepository.findAllByPreAnnouncementInfoDeadlineDateGreaterThanEqual(today.atStartOfDay())
+				.stream().map(BillPostJpaEntity::getBillId).toList());
 	}
 
 	@Override
 	public void updateBillPostPreAnnounceInfo(NewPreAnnounceBills newPreAnnounceBills) {
-		newPreAnnounceBills.getBillIdWithPreAnnounceBill()
-			.forEach((billId, preAnnounceBill) ->
-				billPostBatchJpaRepository.updatePreAnnounceInfo(
-					billId,
-					preAnnounceBill.deadlineDate(),
-					preAnnounceBill.linkUrl()
-				)
-			);
+		newPreAnnounceBills.getBillIdWithPreAnnounceBill().forEach(
+			(billId, preAnnounceBill) -> billPostBatchJpaRepository
+				.updatePreAnnounceInfo(billId, preAnnounceBill.deadlineDate(), preAnnounceBill.linkUrl()));
 	}
 }

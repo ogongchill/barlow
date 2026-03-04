@@ -16,7 +16,7 @@ public class User {
 	}
 
 	public GuestToMemberCommand toGuestToMemberCommand() {
-		if(!role.equals(Role.GUEST)) {
+		if (!role.equals(Role.GUEST)) {
 			throw AccountDomainException.modificationException("GUEST만 MEMBER로 변경 가능합니다");
 		}
 		return new GuestToMemberCommand(userNo);

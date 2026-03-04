@@ -14,38 +14,36 @@ import jakarta.persistence.GeneratedValue;
 
 @Entity
 @Table(name = "auth_provider")
-public class AuthProviderJpaEntity extends BaseTimeJpaEntity{
+public class AuthProviderJpaEntity extends BaseTimeJpaEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auth_provider_no")
-    private Long authProviderNo;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "auth_provider_no")
+	private Long authProviderNo;
 
-    @Column(name = "member_no", nullable = false)
-    private Long memberNo;
+	@Column(name = "member_no", nullable = false)
+	private Long memberNo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "provider", nullable = false)
-    private AuthProvider provider;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "provider", nullable = false)
+	private AuthProvider provider;
 
-    @Column(name = "sub", nullable = false)
-    private String sub;
+	@Column(name = "sub", nullable = false)
+	private String sub;
 
-    public AuthProviderJpaEntity(Long memberNo, AuthProvider provider, String sub) {
-        this.memberNo = memberNo;
-        this.provider = provider;
-        this.sub = sub;
-    }
+	public AuthProviderJpaEntity(Long memberNo, AuthProvider provider, String sub) {
+		this.memberNo = memberNo;
+		this.provider = provider;
+		this.sub = sub;
+	}
 
-    public AuthProviderJpaEntity() {
+	public AuthProviderJpaEntity() {}
 
-    }
+	public static AuthProviderJpaEntity fromCommand(UserAuthProviderCreateCommand command) {
+		return new AuthProviderJpaEntity(command.userNo(), command.authProvider(), command.sub());
+	}
 
-    public static AuthProviderJpaEntity fromCommand(UserAuthProviderCreateCommand command) {
-        return new AuthProviderJpaEntity(command.userNo(), command.authProvider(), command.sub());
-    }
-
-    public ExternalPrincipal toExternalPrincipal() {
-        return new ExternalPrincipal(provider, sub);
-    }
+	public ExternalPrincipal toExternalPrincipal() {
+		return new ExternalPrincipal(provider, sub);
+	}
 }

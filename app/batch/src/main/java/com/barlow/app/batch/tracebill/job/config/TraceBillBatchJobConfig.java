@@ -32,52 +32,36 @@ public class TraceBillBatchJobConfig {
 
 	@Bean
 	public Job traceBillJob() {
-		return new JobBuilder(JOB_NAME, jobRepository)
-			.start(traceBillDirtyCheckStep(null, null, null))
-			.next(traceBillUpdateStep(null, null, null))
-			.next(traceBillNotifyStep(null, null, null))
-			.build();
+		return new JobBuilder(JOB_NAME, jobRepository).start(traceBillDirtyCheckStep(null, null, null))
+			.next(traceBillUpdateStep(null, null, null)).next(traceBillNotifyStep(null, null, null)).build();
 	}
 
 	@Bean
 	@JobScope
-	public Step traceBillDirtyCheckStep(
-		@Qualifier("traceBillDirtyCheckTasklet") Tasklet tasklet,
+	public Step traceBillDirtyCheckStep(@Qualifier("traceBillDirtyCheckTasklet") Tasklet tasklet,
 		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
-		StepLoggingListener stepLoggingListener
-	) {
-		return new StepBuilder(TRACE_BILL_DIRTY_CHECK_STEP, jobRepository)
-			.tasklet(tasklet, transactionManager)
-			.listener(stepLoggingListener)
-			.build();
+		StepLoggingListener stepLoggingListener) {
+		return new StepBuilder(TRACE_BILL_DIRTY_CHECK_STEP, jobRepository).tasklet(tasklet, transactionManager)
+			.listener(stepLoggingListener).build();
 	}
 
 	@Bean
 	@JobScope
-	public Step traceBillUpdateStep(
-		@Qualifier("traceBillUpdateTasklet") Tasklet tasklet,
+	public Step traceBillUpdateStep(@Qualifier("traceBillUpdateTasklet") Tasklet tasklet,
 		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
-		StepLoggingListener stepLoggingListener
-	) {
-		return new StepBuilder(TRACE_BILL_UPDATE_STEP, jobRepository)
-			.tasklet(tasklet, transactionManager)
-			.listener(stepLoggingListener)
-			.build();
+		StepLoggingListener stepLoggingListener) {
+		return new StepBuilder(TRACE_BILL_UPDATE_STEP, jobRepository).tasklet(tasklet, transactionManager)
+			.listener(stepLoggingListener).build();
 	}
 
 	@Bean
 	@JobScope
-	public Step traceBillNotifyStep(
-		@Qualifier("traceBillNotifyTasklet") Tasklet tasklet,
+	public Step traceBillNotifyStep(@Qualifier("traceBillNotifyTasklet") Tasklet tasklet,
 		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
-		StepLoggingListener stepLoggingListener
-	) {
+		StepLoggingListener stepLoggingListener) {
 		DefaultTransactionAttribute transactionAttribute = new DefaultTransactionAttribute();
 		transactionAttribute.setPropagationBehavior(TransactionDefinition.PROPAGATION_NEVER);
-		return new StepBuilder(TRACE_BILL_NOTIFY_STEP, jobRepository)
-			.tasklet(tasklet, transactionManager)
-			.transactionAttribute(transactionAttribute)
-			.listener(stepLoggingListener)
-			.build();
+		return new StepBuilder(TRACE_BILL_NOTIFY_STEP, jobRepository).tasklet(tasklet, transactionManager)
+			.transactionAttribute(transactionAttribute).listener(stepLoggingListener).build();
 	}
 }

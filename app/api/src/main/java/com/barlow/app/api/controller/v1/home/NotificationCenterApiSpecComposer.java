@@ -15,17 +15,10 @@ public class NotificationCenterApiSpecComposer {
 
 	NotificationCenterResponse compose(NotificationTopic filterTopic) {
 		if (filterTopic == null) {
-			return new NotificationCenterResponse(
-				items.stream()
-					.map(NotificationCenterResponse.Item::from)
-					.toList()
-			);
+			return new NotificationCenterResponse(items.stream().map(NotificationCenterResponse.Item::from).toList());
 		}
 		return new NotificationCenterResponse(
-			items.stream()
-				.filter(item -> item.notificationTopic().equals(filterTopic))
-				.map(NotificationCenterResponse.Item::from)
-				.toList()
-		);
+			items.stream().filter(item -> item.notificationTopic().equals(filterTopic))
+				.map(NotificationCenterResponse.Item::from).toList());
 	}
 }

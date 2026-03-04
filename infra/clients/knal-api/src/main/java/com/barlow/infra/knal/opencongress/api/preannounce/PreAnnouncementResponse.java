@@ -26,17 +26,11 @@ public class PreAnnouncementResponse {
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public record PreAnnouncementItem(
-		@JsonProperty("BILL_ID") String billId,
-		@JsonProperty("BILL_NO") String billNo,
-		@JsonProperty("BILL_NAME") String billName,
-		@JsonProperty("AGE") String age,
-		@JsonProperty("PROPOSER") String proposer,
-		@JsonProperty("PROPOSER_KIND_CD") String proposerKindCode,
+	public record PreAnnouncementItem(@JsonProperty("BILL_ID") String billId, @JsonProperty("BILL_NO") String billNo,
+		@JsonProperty("BILL_NAME") String billName, @JsonProperty("AGE") String age,
+		@JsonProperty("PROPOSER") String proposer, @JsonProperty("PROPOSER_KIND_CD") String proposerKindCode,
 		@JsonProperty("CURR_COMMITTEE_ID") String currentCommitteeId,
-		@JsonProperty("CURR_COMMITTEE") String currentCommittee,
-		@JsonProperty("NOTI_ED_DT") String notifyEndDate, // 게시종료일
-		@JsonProperty("LINK_URL") String linkUrl
-	) {
+		@JsonProperty("CURR_COMMITTEE") String currentCommittee, @JsonProperty("NOTI_ED_DT") String notifyEndDate, // 게시종료일
+		@JsonProperty("LINK_URL") String linkUrl) {
 	}
 }

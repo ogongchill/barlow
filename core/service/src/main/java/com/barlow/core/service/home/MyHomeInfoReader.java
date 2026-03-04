@@ -13,10 +13,8 @@ public class MyHomeInfoReader {
 	private final MyLegislationAccountRepository myLegislationAccountRepository;
 	private final MyNotificationCenterRepository myNotificationCenterRepository;
 
-	public MyHomeInfoReader(
-		MyLegislationAccountRepository myLegislationAccountRepository,
-		MyNotificationCenterRepository myNotificationCenterRepository
-	) {
+	public MyHomeInfoReader(MyLegislationAccountRepository myLegislationAccountRepository,
+		MyNotificationCenterRepository myNotificationCenterRepository) {
 		this.myLegislationAccountRepository = myLegislationAccountRepository;
 		this.myNotificationCenterRepository = myNotificationCenterRepository;
 	}
@@ -24,7 +22,6 @@ public class MyHomeInfoReader {
 	public MyHomeStatus readHome(User user) {
 		return new MyHomeStatus(
 			myLegislationAccountRepository.retrieveMyLegislationAccounts(user),
-			myNotificationCenterRepository.existsTodayNotification(user)
-		);
+			myNotificationCenterRepository.existsTodayNotification(user));
 	}
 }

@@ -24,10 +24,8 @@ class SubscribeRepositoryAdapterTest extends CoreDbContextTest {
 	private final SubscribeRepositoryAdapter adapter;
 	private final SubscribeJpaRepository subscribeJpaRepository;
 
-	public SubscribeRepositoryAdapterTest(
-		SubscribeRepositoryAdapter adapter,
-		SubscribeJpaRepository subscribeJpaRepository
-	) {
+	public SubscribeRepositoryAdapterTest(SubscribeRepositoryAdapter adapter,
+		SubscribeJpaRepository subscribeJpaRepository) {
 		this.adapter = adapter;
 		this.subscribeJpaRepository = subscribeJpaRepository;
 	}
@@ -36,22 +34,16 @@ class SubscribeRepositoryAdapterTest extends CoreDbContextTest {
 	@ParameterizedTest
 	@CsvSource(value = {"HOUSE_STEERING:true", "INTELLIGENCE:false"}, delimiter = ':')
 	void retrieve(String legislationTypeName, boolean expect) {
-		Subscribe retrieve = adapter.retrieve(
-			new SubscribeQuery(LegislationType.valueOf(legislationTypeName), GUEST_USER)
-		);
+		Subscribe retrieve = adapter
+			.retrieve(new SubscribeQuery(LegislationType.valueOf(legislationTypeName), GUEST_USER));
 
-		assertAll(
-			() -> assertThat(retrieve).isNotNull(),
-			() -> assertThat(retrieve.isActive()).isEqualTo(expect)
-		);
+		assertAll(() -> assertThat(retrieve).isNotNull(), () -> assertThat(retrieve.isActive()).isEqualTo(expect));
 	}
 
 	@DisplayName("회원이 입법계정에 대해 설정한 모든 구독 정보를 조회한다")
 	@Test
 	void retrieveAll() {
-		assertThat(adapter.retrieveAll(GUEST_USER))
-			.isNotEmpty()
-			.hasSize(18);
+		assertThat(adapter.retrieveAll(GUEST_USER)).isNotEmpty().hasSize(18);
 	}
 
 	@DisplayName("회원이 입법계정 정보를 통해 새롭게 해당 입법계정을 구독한다")
@@ -61,9 +53,7 @@ class SubscribeRepositoryAdapterTest extends CoreDbContextTest {
 		LegislationType intelligence = LegislationType.INTELLIGENCE;
 		adapter.save(new Subscribe(GUEST_USER, intelligence.getLegislationNo(), intelligence, true));
 
-		assertThat(subscribeJpaRepository.findAllByMemberNo(GUEST_USER.getUserNo()))
-			.isNotEmpty()
-			.hasSize(2);
+		assertThat(subscribeJpaRepository.findAllByMemberNo(GUEST_USER.getUserNo())).isNotEmpty().hasSize(2);
 	}
 
 	@DisplayName("회원이 입법계정 정보를 통해 새롭게 해당 입법계정을 구독을 삭제한다")
@@ -73,7 +63,6 @@ class SubscribeRepositoryAdapterTest extends CoreDbContextTest {
 		LegislationType houseSteering = LegislationType.HOUSE_STEERING;
 		adapter.delete(new Subscribe(GUEST_USER, houseSteering.getLegislationNo(), houseSteering, false));
 
-		assertThat(subscribeJpaRepository.findAllByMemberNo(GUEST_USER.getUserNo()))
-			.isEmpty();
+		assertThat(subscribeJpaRepository.findAllByMemberNo(GUEST_USER.getUserNo())).isEmpty();
 	}
 }

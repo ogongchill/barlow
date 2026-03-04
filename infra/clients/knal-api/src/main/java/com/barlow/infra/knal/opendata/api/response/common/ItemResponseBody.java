@@ -7,22 +7,22 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 public final class ItemResponseBody<T> implements Body<T> {
 
-    @JacksonXmlProperty(localName = "item")
-    @JacksonXmlElementWrapper(localName = "items")
-    private List<T> items;
+	@JacksonXmlProperty(localName = "item")
+	@JacksonXmlElementWrapper(localName = "items")
+	private List<T> items;
 
-    @JacksonXmlProperty(localName = "numOfRows")
-    private Integer numOfRows;
+	@JacksonXmlProperty(localName = "numOfRows")
+	private Integer numOfRows;
 
-    @JacksonXmlProperty(localName = "pageNo")
-    private Integer pageNo;
+	@JacksonXmlProperty(localName = "pageNo")
+	private Integer pageNo;
 
-    @JacksonXmlProperty(localName = "totalCount")
-    private Integer totalCount;
+	@JacksonXmlProperty(localName = "totalCount")
+	private Integer totalCount;
 
-    public List<T> items() {
-        return items;
-    }
+	public List<T> items() {
+		return items;
+	}
 
 	@Override
 	public T item() {
@@ -35,14 +35,14 @@ public final class ItemResponseBody<T> implements Body<T> {
 	}
 
 	public Integer numOfRows() {
-        return numOfRows;
-    }
+		return numOfRows;
+	}
 
-    public Integer pageNo() {
-        return pageNo;
-    }
+	public Integer pageNo() {
+		return pageNo;
+	}
 
-    public Integer totalCount() {
-        return totalCount;
-    }
+	public Integer totalCount() {
+		return totalCount;
+	}
 }

@@ -28,18 +28,14 @@ class BillPostRepositoryAdapterTest extends CoreDbContextTest {
 
 	private static final SortKey DEFAULT_SORT_KEY = new SortKey("createdAt#DESC");
 	private static final BillPostFilterTag NONE_FILTER = BillPostFilterTag.from(new LinkedMultiValueMap<>());
-	private static final BillPostFilterTag LEGISLATION_FILTER = BillPostFilterTag.from(
-		new LinkedMultiValueMap<>(Map.of("legislationType", List.of(LegislationType.HOUSE_STEERING.name())))
-	);
-	private static final BillPostFilterTag PROGRESS_FILTER = BillPostFilterTag.from(
-		new LinkedMultiValueMap<>(Map.of("progressStatus", List.of(ProgressStatus.PLENARY_DECIDED.name())))
-	);
-	private static final BillPostFilterTag PROPOSER_FILTER = BillPostFilterTag.from(
-		new LinkedMultiValueMap<>(Map.of("proposerType", List.of(ProposerType.LAWMAKER.name())))
-	);
-	private static final BillPostFilterTag PARTY_NAME_FILTER = BillPostFilterTag.from(
-		new LinkedMultiValueMap<>(Map.of("partyName", List.of(PartyName.PEOPLE_POWER.name())))
-	);
+	private static final BillPostFilterTag LEGISLATION_FILTER = BillPostFilterTag
+		.from(new LinkedMultiValueMap<>(Map.of("legislationType", List.of(LegislationType.HOUSE_STEERING.name()))));
+	private static final BillPostFilterTag PROGRESS_FILTER = BillPostFilterTag
+		.from(new LinkedMultiValueMap<>(Map.of("progressStatus", List.of(ProgressStatus.PLENARY_DECIDED.name()))));
+	private static final BillPostFilterTag PROPOSER_FILTER = BillPostFilterTag
+		.from(new LinkedMultiValueMap<>(Map.of("proposerType", List.of(ProposerType.LAWMAKER.name()))));
+	private static final BillPostFilterTag PARTY_NAME_FILTER = BillPostFilterTag
+		.from(new LinkedMultiValueMap<>(Map.of("partyName", List.of(PartyName.PEOPLE_POWER.name()))));
 
 	private final BillPostRepositoryAdapter adapter;
 
@@ -55,15 +51,13 @@ class BillPostRepositoryAdapterTest extends CoreDbContextTest {
 		assertAll(
 			() -> assertThat(billPostsStatus).isNotNull(),
 			() -> assertThat(billPostsStatus.isLastPage()).isEqualTo(expectIsLastPage),
-			() -> assertThat(billPostsStatus.billPosts()).hasSize(expectSize)
-		);
+			() -> assertThat(billPostsStatus.billPosts()).hasSize(expectSize));
 	}
 
 	private static Stream<Arguments> provideDiffPageAndSizeBillPostQueryWithExpect() {
 		return Stream.of(
 			Arguments.of(new BillPostQuery(0, 10, DEFAULT_SORT_KEY, NONE_FILTER), true, 4),
 			Arguments.of(new BillPostQuery(0, 1, DEFAULT_SORT_KEY, NONE_FILTER), false, 1),
-			Arguments.of(new BillPostQuery(1, 10, DEFAULT_SORT_KEY, NONE_FILTER), true, 0)
-		);
+			Arguments.of(new BillPostQuery(1, 10, DEFAULT_SORT_KEY, NONE_FILTER), true, 0));
 	}
 }

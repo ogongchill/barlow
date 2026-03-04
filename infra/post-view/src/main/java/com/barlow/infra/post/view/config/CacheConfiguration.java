@@ -13,9 +13,6 @@ public class CacheConfiguration {
 
 	@Bean
 	public Cache<String, Object> duplicateBlockCache() {
-		return Caffeine.newBuilder()
-			.expireAfterWrite(30, TimeUnit.MINUTES)
-			.maximumSize(3000)
-			.build();
+		return Caffeine.newBuilder().expireAfterWrite(30, TimeUnit.MINUTES).maximumSize(3000).build();
 	}
 }

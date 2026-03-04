@@ -26,15 +26,11 @@ class MemberUserWithdrawalProcessor implements UserWithdrawalProcessor {
 	private final SubscribeWithdrawalHandler subscribeWithdrawalHandler;
 	private final LegislationAccountWithdrawalHandler legislationAccountWithdrawalHandler;
 
-	public MemberUserWithdrawalProcessor(
-		UserRepository userRepository,
-		DeviceRepository deviceRepository,
-		AuthProviderRepository authProviderRepository,
-		TermRepository termRepository,
+	public MemberUserWithdrawalProcessor(UserRepository userRepository, DeviceRepository deviceRepository,
+		AuthProviderRepository authProviderRepository, TermRepository termRepository,
 		NotificationWithdrawalHandler notificationWithdrawalHandler,
 		SubscribeWithdrawalHandler subscribeWithdrawalHandler,
-		LegislationAccountWithdrawalHandler legislationAccountWithdrawalHandler
-	) {
+		LegislationAccountWithdrawalHandler legislationAccountWithdrawalHandler) {
 		this.userRepository = userRepository;
 		this.deviceRepository = deviceRepository;
 		this.authProviderRepository = authProviderRepository;

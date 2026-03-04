@@ -43,6 +43,5 @@ public final class Operation {
 	static final String GET_ANNUAL_REPORT_DETAIL = "getAnnualReportDetail"; // "연차보고서 세부 정보조회"
 	static final String GET_BILL_PROMULGATION_INFO = "getBillPromulgationInfo"; // "의안 공포 정보조회"
 
-	private Operation() {
-	}
+	private Operation() {}
 }

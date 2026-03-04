@@ -19,14 +19,11 @@ public class PreviousBillBatchRepositoryAdapter implements PreviousBillBatchRepo
 
 	@Override
 	public List<PreviousBillBatchEntity> findAllPreviousBetween(LocalDate start, LocalDate end) {
-		return billPostBatchJpaRepository.findAllByCreatedAtBetween(start.atStartOfDay(), end.atStartOfDay())
-			.stream()
-			.map(jpaEntity -> new PreviousBillBatchEntity(
-				jpaEntity.getBillId(),
-				jpaEntity.getBillName(),
-				jpaEntity.getProgressStatus(),
-				jpaEntity.getLegislationType()
-			))
+		return billPostBatchJpaRepository.findAllByCreatedAtBetween(start.atStartOfDay(), end.atStartOfDay()).stream()
+			.map(
+				jpaEntity -> new PreviousBillBatchEntity(
+					jpaEntity.getBillId(), jpaEntity.getBillName(), jpaEntity.getProgressStatus(),
+					jpaEntity.getLegislationType()))
 			.toList();
 	}
 }

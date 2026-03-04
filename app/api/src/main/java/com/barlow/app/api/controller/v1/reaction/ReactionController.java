@@ -33,11 +33,8 @@ public class ReactionController {
 	}
 
 	@GetMapping("/{targetId}")
-	public ApiResponse<ReactionResponse> retrieveReaction(
-		@PassportUser Passport passport,
-		@PathVariable("targetId") String targetId,
-		@PathParam("targetType") String targetType
-	) {
+	public ApiResponse<ReactionResponse> retrieveReaction(@PassportUser Passport passport,
+		@PathVariable("targetId") String targetId, @PathParam("targetType") String targetType) {
 		log.info("Retrieving reaction for targetId: {}, targetType: {}", targetId, targetType);
 		ReactionQuery reactionQuery = new ReactionQuery(targetId, ReactionTarget.valueOf(targetType));
 		ReactionStatus status = reactionService.retrieveReactions(passport.getUser(), reactionQuery);
@@ -45,27 +42,22 @@ public class ReactionController {
 	}
 
 	@PostMapping("/{targetId}")
-	public ApiResponse<Void> reaction(
-		@PassportUser Passport passport,
-		@PathVariable("targetId") String targetId,
-		@PathParam("targetType") String targetType,
-		@PathParam("reactionType") String reactionType
-	) {
+	public ApiResponse<Void> reaction(@PassportUser Passport passport, @PathVariable("targetId") String targetId,
+		@PathParam("targetType") String targetType, @PathParam("reactionType") String reactionType) {
 		log.info("Reaction for targetId: {}, targetType: {}, reaction: {}", targetId, targetType, reactionType);
-		Reaction reaction = new Reaction(targetId, ReactionTarget.valueOf(targetType), ReactionType.valueOf(reactionType));
+		Reaction reaction = new Reaction(
+			targetId, ReactionTarget.valueOf(targetType), ReactionType.valueOf(reactionType));
 		reactionService.react(passport.getUser(), reaction);
 		return ApiResponse.success();
 	}
 
 	@PostMapping("/{targetId}/remove")
-	public ApiResponse<Void> reactionRemove(
-		@PassportUser Passport passport,
-		@PathVariable("targetId") String targetId,
-		@PathParam("targetType") String targetType,
-		@PathParam("reactionType") String reactionType
-	) {
-		log.info("Removing reaction for targetId: {}, targetType: {}, reaction: {}", targetId, targetType, reactionType);
-		Reaction reaction = new Reaction(targetId, ReactionTarget.valueOf(targetType), ReactionType.valueOf(reactionType));
+	public ApiResponse<Void> reactionRemove(@PassportUser Passport passport, @PathVariable("targetId") String targetId,
+		@PathParam("targetType") String targetType, @PathParam("reactionType") String reactionType) {
+		log.info(
+			"Removing reaction for targetId: {}, targetType: {}, reaction: {}", targetId, targetType, reactionType);
+		Reaction reaction = new Reaction(
+			targetId, ReactionTarget.valueOf(targetType), ReactionType.valueOf(reactionType));
 		reactionService.removeReaction(passport.getUser(), reaction);
 		return ApiResponse.success();
 	}

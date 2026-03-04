@@ -21,11 +21,8 @@ public class MyAccountRetrieveService {
 	private final AuthProviderRepository authProviderRepository;
 	private final DeviceRepository deviceRepository;
 
-	public MyAccountRetrieveService(
-		UserRepository userRepository,
-		AuthProviderRepository authProviderRepository,
-		DeviceRepository deviceRepository
-	) {
+	public MyAccountRetrieveService(UserRepository userRepository, AuthProviderRepository authProviderRepository,
+		DeviceRepository deviceRepository) {
 		this.userRepository = userRepository;
 		this.authProviderRepository = authProviderRepository;
 		this.deviceRepository = deviceRepository;

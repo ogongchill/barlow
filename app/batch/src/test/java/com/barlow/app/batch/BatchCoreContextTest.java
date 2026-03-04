@@ -7,5 +7,4 @@ import org.springframework.test.context.TestConstructor;
 @ActiveProfiles("local")
 @Tag("context")
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-public abstract class BatchCoreContextTest {
-}
+public abstract class BatchCoreContextTest {}

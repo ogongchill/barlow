@@ -22,26 +22,21 @@ public class LegislationAccountSubscribeController {
 	private final LegislationAccountSubscribeService legislationAccountSubscribeService;
 
 	public LegislationAccountSubscribeController(
-		LegislationAccountSubscribeService legislationAccountSubscribeService
-	) {
+		LegislationAccountSubscribeService legislationAccountSubscribeService) {
 		this.legislationAccountSubscribeService = legislationAccountSubscribeService;
 	}
 
 	@PostMapping("/activate")
-	public ApiResponse<Void> subscribe(
-		@PathVariable("legislationType") LegislationType legislationType,
-		@PassportUser Passport passport
-	) {
+	public ApiResponse<Void> subscribe(@PathVariable("legislationType") LegislationType legislationType,
+		@PassportUser Passport passport) {
 		log.info("Received {} account subscribe request.", legislationType);
 		legislationAccountSubscribeService.subscribeAccount(legislationType, passport.getUser());
 		return ApiResponse.success();
 	}
 
 	@PostMapping("/deactivate")
-	public ApiResponse<Void> unsubscribe(
-		@PathVariable("legislationType") LegislationType legislationType,
-		@PassportUser Passport passport
-	) {
+	public ApiResponse<Void> unsubscribe(@PathVariable("legislationType") LegislationType legislationType,
+		@PassportUser Passport passport) {
 		log.info("Received {} account unsubscribe request.", legislationType);
 		legislationAccountSubscribeService.unsubscribeAccount(legislationType, passport.getUser());
 		return ApiResponse.success();

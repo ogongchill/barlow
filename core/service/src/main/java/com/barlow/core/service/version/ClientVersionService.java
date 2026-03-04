@@ -16,10 +16,8 @@ public class ClientVersionService {
 	private final ClientVersionRepository clientVersionRepository;
 	private final ClientVersionUpdateStrategy clientVersionUpdateStrategy;
 
-	public ClientVersionService(
-		ClientVersionRepository clientVersionRepository,
-		@Qualifier("allowUnofficialReleaseStrategy") ClientVersionUpdateStrategy clientVersionUpdateStrategy
-	) {
+	public ClientVersionService(ClientVersionRepository clientVersionRepository,
+		@Qualifier("allowUnofficialReleaseStrategy") ClientVersionUpdateStrategy clientVersionUpdateStrategy) {
 		this.clientVersionRepository = clientVersionRepository;
 		this.clientVersionUpdateStrategy = clientVersionUpdateStrategy;
 	}

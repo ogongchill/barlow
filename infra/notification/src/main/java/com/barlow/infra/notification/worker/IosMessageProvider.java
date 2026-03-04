@@ -12,18 +12,9 @@ public class IosMessageProvider implements MessageProvider {
 
 	@Override
 	public Message provide(String messageTitle, String messageBody, NotificationInfo.Subscriber subscriber) {
-		ApsAlert apsAlert = ApsAlert.builder()
-			.setTitle(messageTitle)
-			.setBody(messageBody)
-			.build();
-		Aps aps = Aps.builder()
-			.setAlert(apsAlert)
-			.setContentAvailable(true)
-			.setSound(ALERT_SOUND)
-			.build();
-		return Message.builder()
-			.setToken(subscriber.token())
-			.setApnsConfig(ApnsConfig.builder().setAps(aps).build())
+		ApsAlert apsAlert = ApsAlert.builder().setTitle(messageTitle).setBody(messageBody).build();
+		Aps aps = Aps.builder().setAlert(apsAlert).setContentAvailable(true).setSound(ALERT_SOUND).build();
+		return Message.builder().setToken(subscriber.token()).setApnsConfig(ApnsConfig.builder().setAps(aps).build())
 			.build();
 	}
 }

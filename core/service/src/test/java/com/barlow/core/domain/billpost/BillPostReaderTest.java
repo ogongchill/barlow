@@ -35,31 +35,24 @@ class BillPostReaderTest extends DevelopTest {
 	@Test
 	void readBillPosts() {
 		BillPostQuery billPostQuery = new BillPostQuery(
-			1, 100, new SortKey("createdAt#DESC"), BillPostFilterTag.from(new LinkedMultiValueMap<>()
-		));
-		when(billPostRepository.retrieveRecentBillPosts(billPostQuery))
-			.thenReturn(EMPTY_RECENT_BILL_POST_STATUS);
+			1, 100, new SortKey("createdAt#DESC"), BillPostFilterTag.from(new LinkedMultiValueMap<>()));
+		when(billPostRepository.retrieveRecentBillPosts(billPostQuery)).thenReturn(EMPTY_RECENT_BILL_POST_STATUS);
 
 		BillPostsStatus result = billPostReader.readBillPosts(billPostQuery);
 
-		assertAll(
-			() -> assertThat(result.billPosts()).isEmpty(),
-			() -> assertThat(result.isLastPage()).isTrue()
-		);
+		assertAll(() -> assertThat(result.billPosts()).isEmpty(), () -> assertThat(result.isLastPage()).isTrue());
 	}
 
 	@DisplayName("법안 ID 를 받아, 최근법안게시글 상세조회하면 최근법안게시글의 상세정보를 반환한다")
 	@Test
 	void readBillPostDetail() {
 		BillPostDetailQuery postDetailQuery = new BillPostDetailQuery(BILL_ID_1);
-		when(billPostRepository.retrieveRecentBillPost(postDetailQuery))
-			.thenReturn(RECENT_BILL_POST_1);
+		when(billPostRepository.retrieveRecentBillPost(postDetailQuery)).thenReturn(RECENT_BILL_POST_1);
 
 		BillPost result = billPostReader.readBillPostDetail(postDetailQuery, false);
 
 		assertAll(
-			() -> assertThat(result).isNotNull(),
-			() -> assertThat(result.getBillId()).isEqualTo(BILL_ID_1),
+			() -> assertThat(result).isNotNull(), () -> assertThat(result.getBillId()).isEqualTo(BILL_ID_1),
 			() -> assertThat(result.getBillName()).isEqualTo(BILL_NAME_1),
 			() -> assertThat(result.getProposerType()).isEqualTo(PROPOSER_TYPE.getValue()),
 			() -> assertThat(result.getProposers()).isEqualTo(PROPOSERS),
@@ -67,16 +60,14 @@ class BillPostReaderTest extends DevelopTest {
 			() -> assertThat(result.getLegislationProcessStatus()).isEqualTo(LEGISLATION_PROCESS_STATUS.getValue()),
 			() -> assertThat(result.getSummary()).isEqualTo(SUMMARY),
 			() -> assertThat(result.getDetail()).isEqualTo(DETAIL),
-			() -> assertThat(result.getViewCount()).isEqualTo(VIEW_COUNT)
-		);
+			() -> assertThat(result.getViewCount()).isEqualTo(VIEW_COUNT));
 	}
 
 	@DisplayName("법안 ID 를 받아, 최근법안게시글 상세조회 시 값이 없으면 예외를 발생시킨다")
 	@Test
 	void readBillPostDetailFailure() {
 		BillPostDetailQuery postDetailQuery = new BillPostDetailQuery(BILL_ID_1);
-		when(billPostRepository.retrieveRecentBillPost(postDetailQuery))
-			.thenReturn(null);
+		when(billPostRepository.retrieveRecentBillPost(postDetailQuery)).thenReturn(null);
 
 		assertThatThrownBy(() -> billPostReader.readBillPostDetail(postDetailQuery, false))
 			.isInstanceOf(BillPostDomainException.class)

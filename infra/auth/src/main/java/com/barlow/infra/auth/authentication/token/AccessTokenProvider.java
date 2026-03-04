@@ -15,31 +15,23 @@ public class AccessTokenProvider {
 	private final Algorithm privateKeyAlgorithm;
 	private final JwtConfig accessTokenConfig;
 
-	public AccessTokenProvider(
-		@Qualifier("jwtPrivateKeyAlgorithm") Algorithm privateKeyAlgorithm,
-		@Qualifier("accessTokenConfig") JwtConfig accessTokenConfig
-	) {
+	public AccessTokenProvider(@Qualifier("jwtPrivateKeyAlgorithm") Algorithm privateKeyAlgorithm,
+		@Qualifier("accessTokenConfig") JwtConfig accessTokenConfig) {
 		this.privateKeyAlgorithm = privateKeyAlgorithm;
 		this.accessTokenConfig = accessTokenConfig;
 	}
 
 	public AccessToken issue(MemberPrincipal memberInfo) {
 		return new AccessToken(
-			JWT.create()
-				.withIssuer(accessTokenConfig.getIssuer())
+			JWT.create().withIssuer(accessTokenConfig.getIssuer())
 				.withClaim(JwtConfig.Claims.MEMBER_NO.getName(), memberInfo.getMemberNo())
-				.withClaim(JwtConfig.Claims.ROLE.getName(), memberInfo.getRole())
-				.sign(privateKeyAlgorithm)
-		);
+				.withClaim(JwtConfig.Claims.ROLE.getName(), memberInfo.getRole()).sign(privateKeyAlgorithm));
 	}
 
 	public AccessToken issue(User user) {
 		return new AccessToken(
-			JWT.create()
-				.withIssuer(accessTokenConfig.getIssuer())
+			JWT.create().withIssuer(accessTokenConfig.getIssuer())
 				.withClaim(JwtConfig.Claims.MEMBER_NO.getName(), user.getUserNo())
-				.withClaim(JwtConfig.Claims.ROLE.getName(), user.getRoleName())
-				.sign(privateKeyAlgorithm)
-		);
+				.withClaim(JwtConfig.Claims.ROLE.getName(), user.getRoleName()).sign(privateKeyAlgorithm));
 	}
 }

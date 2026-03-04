@@ -33,12 +33,8 @@ public class BillTrackingClientAdapter implements BillTrackingClient {
 	private final Integer endOrd;
 	private final Integer numOfRows;
 
-	public BillTrackingClientAdapter(
-		OpenDataApiPort api,
-		@Value("${start-ordinal:22}") Integer startOrd,
-		@Value("${end-ordinal:22}") Integer endOrd,
-		@Value("${num-of-rows:11000}") Integer numOfRows
-	) {
+	public BillTrackingClientAdapter(OpenDataApiPort api, @Value("${start-ordinal:22}") Integer startOrd,
+		@Value("${end-ordinal:22}") Integer endOrd, @Value("${num-of-rows:11000}") Integer numOfRows) {
 		this.api = api;
 		this.startOrd = startOrd;
 		this.endOrd = endOrd;
@@ -50,39 +46,26 @@ public class BillTrackingClientAdapter implements BillTrackingClient {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String startProposeDateStr = startProposeDate.format(formatter);
 		String traceDateStr = yesterdayDate.format(formatter);
-		BillInfoListRequest request = BillInfoListRequest.builder()
-			.startProposeDate(startProposeDateStr)
-			.endProposeDate(traceDateStr)
-			.startOrdinal(startOrd)
-			.endOrdinal(endOrd)
-			.numOfRows(numOfRows)
-			.pageNo(1)
+		BillInfoListRequest request = BillInfoListRequest.builder().startProposeDate(startProposeDateStr)
+			.endProposeDate(traceDateStr).startOrdinal(startOrd).endOrdinal(endOrd).numOfRows(numOfRows).pageNo(1)
 			.build();
 		log.info("상태 추적을 위해 {} - {} 까지의 법안 조회 호출", startProposeDate, traceDateStr);
 		BillInfoListResponse response = api.getBillInfoList(request);
 		log.info("상태 추적을 위해 {} - {} 까지의 법안 조회 완료", startProposeDate, traceDateStr);
 		return new CurrentBillInfoResult(
-			response.body().items()
-				.stream()
-				.collect(Collectors.toMap(
-					BillInfoListItem::billId,
-					listItem -> ProgressStatus.findByValue(listItem.procStageCd())
-				))
-		);
+			response.body().items().stream().collect(
+				Collectors
+					.toMap(BillInfoListItem::billId, listItem -> ProgressStatus.findByValue(listItem.procStageCd()))));
 	}
 
 	@Override
 	public LegislationType getCommittee(String billId) {
-		BillPreliminaryExaminationInfoRequest request = BillPreliminaryExaminationInfoRequest.builder()
-			.billId(billId)
+		BillPreliminaryExaminationInfoRequest request = BillPreliminaryExaminationInfoRequest.builder().billId(billId)
 			.build();
 		log.info("{}의 소관위원회 조회 호출", billId);
 		BillPreliminaryExaminationInfoResponse response = api.getBillPreliminaryExaminationInfo(request);
 		log.info("{}의 소관위원회 조회 완료", billId);
-		Optional<BillPreliminaryExaminationInfoItem> first = response.body()
-			.items()
-			.stream()
-			.filter(Objects::nonNull)
+		Optional<BillPreliminaryExaminationInfoItem> first = response.body().items().stream().filter(Objects::nonNull)
 			.findFirst();
 		if (first.isPresent()) {
 			return LegislationType.findByValue(first.get().comitName());

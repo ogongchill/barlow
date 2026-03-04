@@ -5,8 +5,6 @@ import com.barlow.infra.knal.opendata.api.response.common.OpenDataResponse;
 import com.barlow.infra.knal.opendata.api.response.common.SuccessHeader;
 import com.barlow.infra.knal.opendata.api.response.item.MotionLawListItem;
 
-public record MotionLawListResponse(
-	SuccessHeader header,
-	ItemResponseBody<MotionLawListItem> body
-) implements OpenDataResponse<MotionLawListItem> {
+public record MotionLawListResponse(SuccessHeader header,
+	ItemResponseBody<MotionLawListItem> body) implements OpenDataResponse<MotionLawListItem> {
 }

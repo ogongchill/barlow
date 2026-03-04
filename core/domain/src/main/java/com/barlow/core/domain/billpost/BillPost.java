@@ -22,13 +22,8 @@ public class BillPost {
 	private PreAnnouncementInfo preAnnouncementInfo;
 	private List<BillProposer> billProposers;
 
-	public BillPost(
-		BillInfo billInfo,
-		ProposerInfo proposerInfo,
-		LegislationInfo legislationInfo,
-		String summary, String detail,
-		LocalDateTime createdAt, int viewCount
-	) {
+	public BillPost(BillInfo billInfo, ProposerInfo proposerInfo, LegislationInfo legislationInfo, String summary,
+		String detail, LocalDateTime createdAt, int viewCount) {
 		this.billInfo = billInfo;
 		this.proposerInfo = proposerInfo;
 		this.legislationInfo = legislationInfo;

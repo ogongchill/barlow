@@ -22,11 +22,8 @@ import com.barlow.app.support.response.ResultType;
 
 import io.restassured.RestAssured;
 
-@AcceptanceTest({
-	"acceptance/legislationAccount.json",
-	"acceptance/notificationCenter.json",
-	"acceptance/legislationAccountSubscribe.json"
-})
+@AcceptanceTest({"acceptance/legislationAccount.json", "acceptance/notificationCenter.json",
+	"acceptance/legislationAccountSubscribe.json"})
 @Import(TestTokenProvider.class)
 class HomeRetrieveControllerTest extends ContextTest {
 
@@ -40,19 +37,15 @@ class HomeRetrieveControllerTest extends ContextTest {
 		@DisplayName("사용자가 메인 홈을 조회하면 사용자가 구독한 상임위원회 정보와 오늘 도착한 알림 여부를 반환한다")
 		@Test
 		void retrieveHome() {
-			Map<String, Object> responseMap = RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.get("/api/v1/home")
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.headers(MANDATORY_DEVICE_HEADERS).when().get("/api/v1/home").then().log().all().extract().jsonPath()
+				.getMap(".");
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 	}
 
@@ -63,19 +56,15 @@ class HomeRetrieveControllerTest extends ContextTest {
 		@DisplayName("사용자가 알림센터를 조회하면 최근에 도착한 알림 정보들을 반환한다")
 		@Test
 		void retrieveNotificationCenter() {
-			Map<String, Object> responseMap = RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.get("/api/v1/home/notification-center")
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.headers(MANDATORY_DEVICE_HEADERS).when().get("/api/v1/home/notification-center").then().log().all()
+				.extract().jsonPath().getMap(".");
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 	}
 }

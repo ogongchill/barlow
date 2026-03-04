@@ -22,8 +22,6 @@ class MyNotificationCenterRepositoryAdapterTest extends CoreDbContextTest {
 	void retrieveNotificationItems() {
 		User user = User.of(1L, User.Role.GUEST);
 
-		assertThat(adapter.retrieveNotificationItems(user))
-			.isNotEmpty()
-			.hasSize(2);
+		assertThat(adapter.retrieveNotificationItems(user)).isNotEmpty().hasSize(2);
 	}
 }

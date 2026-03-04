@@ -19,9 +19,7 @@ public class MyLegislationAccountRepositoryAdapter implements MyLegislationAccou
 
 	@Override
 	public List<MyLegislationAccount> retrieveMyLegislationAccounts(User user) {
-		return legislationAccountJpaRepository.findSubscribedLegislationAccountsByMemberNo(user.getUserNo())
-			.stream()
-			.map(LegislationAccountJpaEntity::toMyLegislationAccount)
-			.toList();
+		return legislationAccountJpaRepository.findSubscribedLegislationAccountsByMemberNo(user.getUserNo()).stream()
+			.map(LegislationAccountJpaEntity::toMyLegislationAccount).toList();
 	}
 }

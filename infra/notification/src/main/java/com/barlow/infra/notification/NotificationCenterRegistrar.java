@@ -14,17 +14,12 @@ public class NotificationCenterRegistrar {
 	}
 
 	public void register(NotificationInfo notificationInfo, NotificationRequest request) {
-		List<NotificationCenterItemInfo> notificationCenterItemInfos = notificationInfo.getInfos()
-			.entrySet()
-			.stream()
-			.flatMap(entry -> entry.getValue()
-				.stream()
-				.map(subscriber -> NotificationCenterItemInfo.of(
-					subscriber.memberNo(),
-					entry.getKey().getTopic(),
-					request.billInfosByTopic(entry.getKey().getTopic())
-				))
-			)
+		List<NotificationCenterItemInfo> notificationCenterItemInfos = notificationInfo.getInfos().entrySet().stream()
+			.flatMap(
+				entry -> entry.getValue().stream().map(
+					subscriber -> NotificationCenterItemInfo.of(
+						subscriber.memberNo(), entry.getKey().getTopic(),
+						request.billInfosByTopic(entry.getKey().getTopic()))))
 			.toList();
 		notificationCenterRepository.registerAll(notificationCenterItemInfos);
 	}
