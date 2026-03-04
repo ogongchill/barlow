@@ -5,7 +5,7 @@ subprojects {
     spotless {
         java {
             // 네이버 컨벤션의 Eclipse 포매터 적용
-            eclipse('4.29').configFile(rootProject.file('convention/naver/naver-eclipse-formatter.xml'))
+            eclipse('4.29').configFile(rootProject.file('.convention/naver/naver-eclipse-formatter.xml'))
 
             removeUnusedImports() // 사용하지 않는 import 자동 제거
             trimTrailingWhitespace() // 불필요한 공백 제거
