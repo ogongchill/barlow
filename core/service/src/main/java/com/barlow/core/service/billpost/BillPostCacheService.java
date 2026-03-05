@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.billpost.BillPost;
 import com.barlow.core.domain.billpost.BillPostDetailQuery;
 import com.barlow.core.service.config.Caches;
 
-@Service
+@Component
 public class BillPostCacheService {
 
 	private final BillPostReader billPostReader;

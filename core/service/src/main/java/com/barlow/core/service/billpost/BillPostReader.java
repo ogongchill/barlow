@@ -1,7 +1,6 @@
 package com.barlow.core.service.billpost;
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.barlow.core.domain.billpost.BillPost;
 import com.barlow.core.domain.billpost.BillPostDetailQuery;
@@ -23,7 +22,6 @@ public class BillPostReader {
 		return billPostRepository.retrieveRecentBillPosts(query);
 	}
 
-	@Transactional(readOnly = true)
 	public BillPost readBillPost(BillPostDetailQuery query) {
 		BillPost billPost = billPostRepository.retrieveRecentBillPost(query);
 		if (billPost == null) {
@@ -32,8 +30,4 @@ public class BillPostReader {
 		return billPost;
 	}
 
-	@Transactional
-	public void updateViewCount(String billId) {
-		billPostRepository.updateViewCount(billId);
-	}
 }
