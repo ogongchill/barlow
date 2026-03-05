@@ -6,18 +6,17 @@ import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.billpost.BillPost;
 import com.barlow.core.domain.billpost.BillPostDetailQuery;
 import com.barlow.core.domain.billpost.BillPostQuery;
-import com.barlow.core.domain.billpost.BillPostViewCountCache;
 import com.barlow.core.domain.billpost.BillPostsStatus;
 
 @Service
 public class BillPostRetrieveService {
 
 	private final BillPostReader billPostReader;
-	private final BillPostViewCountCache billPostViewCountCache;
+	private final BillPostCacheService billPostCacheService;
 
-	public BillPostRetrieveService(BillPostReader billPostReader, BillPostViewCountCache billPostViewCountCache) {
+	public BillPostRetrieveService(BillPostReader billPostReader, BillPostCacheService billPostCacheService) {
 		this.billPostReader = billPostReader;
-		this.billPostViewCountCache = billPostViewCountCache;
+		this.billPostCacheService = billPostCacheService;
 	}
 
 	public BillPostsStatus readBillPosts(BillPostQuery query) {
@@ -25,7 +24,11 @@ public class BillPostRetrieveService {
 	}
 
 	public BillPost readBillPostDetail(Passport passport, BillPostDetailQuery query) {
-		boolean shouldCountView = billPostViewCountCache.shouldCountView(passport, query.billId());
-		return billPostReader.readBillPostDetail(query, shouldCountView);
+		boolean shouldCountView = billPostCacheService.shouldCountView(passport.getUserNo(), query.billId());
+		BillPost billPost = billPostCacheService.readBillPost(query);
+		if (shouldCountView) {
+			billPostReader.updateViewCount(query.billId());
+		}
+		return billPost;
 	}
 }

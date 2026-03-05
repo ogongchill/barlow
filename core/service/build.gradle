@@ -1,6 +1,8 @@
 dependencies {
     implementation project(":core:domain")
+    implementation 'com.github.ben-manes.caffeine:caffeine'
 
     compileOnly("org.springframework:spring-context")
+    compileOnly("org.springframework:spring-context-support")
     compileOnly("org.springframework:spring-tx")
 }

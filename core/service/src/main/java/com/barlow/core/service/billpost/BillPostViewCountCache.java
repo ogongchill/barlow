@@ -1,4 +1,4 @@
-package com.barlow.core.domain.billpost;
+package com.barlow.core.service.billpost;
 
 import com.barlow.core.domain.Passport;
 
