@@ -2,7 +2,7 @@ package com.barlow.app.api.controller.v1.home;
 
 import java.util.List;
 
-import com.barlow.core.domain.home.notificationcenter.NotificationCenterItem;
+import com.barlow.core.domain.notificationcenter.NotificationCenterItem;
 import com.barlow.core.enumerate.NotificationTopic;
 
 public class NotificationCenterApiSpecComposer {

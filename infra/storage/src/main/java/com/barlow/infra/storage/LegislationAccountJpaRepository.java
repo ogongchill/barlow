@@ -11,7 +11,7 @@ public interface LegislationAccountJpaRepository extends JpaRepository<Legislati
 
 	@Query("""
 		SELECT la FROM LegislationAccountJpaEntity la
-		INNER JOIN SubscribeJpaEntity s ON la.no = s.subscribeLegislationAccountNo
+		INNER JOIN SubscriptionJpaEntity s ON la.no = s.subscribeLegislationAccountNo
 		WHERE s.memberNo = :memberNo""")
 	List<LegislationAccountJpaEntity> findSubscribedLegislationAccountsByMemberNo(@Param("memberNo") Long memberNo);
 

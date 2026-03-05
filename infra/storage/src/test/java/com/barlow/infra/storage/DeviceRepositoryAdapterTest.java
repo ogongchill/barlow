@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.barlow.core.domain.account.device.Device;
-import com.barlow.core.domain.account.device.DeviceQuery;
-import com.barlow.core.domain.account.device.DeviceRegisterCommand;
+import com.barlow.core.domain.device.Device;
+import com.barlow.core.domain.device.DeviceQuery;
+import com.barlow.core.domain.device.DeviceRegisterCommand;
 import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.infra.storage.support.StorageTest;
 

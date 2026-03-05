@@ -23,15 +23,17 @@ public class BillPostReader {
 		return billPostRepository.retrieveRecentBillPosts(query);
 	}
 
-	@Transactional
-	public BillPost readBillPostDetail(BillPostDetailQuery query, boolean shouldCountView) {
+	@Transactional(readOnly = true)
+	public BillPost readBillPost(BillPostDetailQuery query) {
 		BillPost billPost = billPostRepository.retrieveRecentBillPost(query);
 		if (billPost == null) {
 			throw BillPostDomainException.notFound(query.billId());
 		}
-		if (shouldCountView) {
-			billPostRepository.updateViewCount(billPost.getBillId());
-		}
 		return billPost;
+	}
+
+	@Transactional
+	public void updateViewCount(String billId) {
+		billPostRepository.updateViewCount(billId);
 	}
 }

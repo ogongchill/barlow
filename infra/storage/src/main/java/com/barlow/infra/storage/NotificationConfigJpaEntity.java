@@ -1,6 +1,5 @@
 package com.barlow.infra.storage;
 
-import com.barlow.core.domain.User;
 import com.barlow.core.domain.notificationsetting.NotificationSetting;
 import com.barlow.core.enumerate.NotificationTopic;
 
@@ -48,7 +47,7 @@ public class NotificationConfigJpaEntity extends BaseTimeJpaEntity {
 		return memberNo;
 	}
 
-	NotificationSetting toNotificationSetting(User user) {
-		return new NotificationSetting(user, topic, enable);
+	NotificationSetting toNotificationSetting() {
+		return new NotificationSetting(memberNo, topic, enable);
 	}
 }

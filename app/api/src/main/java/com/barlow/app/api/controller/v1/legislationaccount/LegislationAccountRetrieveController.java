@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.legislationaccount.LegislationAccount;
-import com.barlow.core.service.legislationaccount.LegislationAccountRetrieveService;
+import com.barlow.core.service.legislationaccount.business.LegislationAccountRetrieveService;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.app.support.response.ApiResponse;
 import com.barlow.infra.auth.support.annotation.PassportUser;

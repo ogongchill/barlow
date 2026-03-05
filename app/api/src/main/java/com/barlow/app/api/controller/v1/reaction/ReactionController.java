@@ -46,7 +46,7 @@ public class ReactionController {
 		@PathParam("targetType") String targetType, @PathParam("reactionType") String reactionType) {
 		log.info("Reaction for targetId: {}, targetType: {}, reaction: {}", targetId, targetType, reactionType);
 		Reaction reaction = new Reaction(
-			targetId, ReactionTarget.valueOf(targetType), ReactionType.valueOf(reactionType));
+			passport.getUserNo(), targetId, ReactionTarget.valueOf(targetType), ReactionType.valueOf(reactionType));
 		reactionService.react(passport.getUser(), reaction);
 		return ApiResponse.success();
 	}
@@ -57,7 +57,7 @@ public class ReactionController {
 		log.info(
 			"Removing reaction for targetId: {}, targetType: {}, reaction: {}", targetId, targetType, reactionType);
 		Reaction reaction = new Reaction(
-			targetId, ReactionTarget.valueOf(targetType), ReactionType.valueOf(reactionType));
+			passport.getUserNo(), targetId, ReactionTarget.valueOf(targetType), ReactionType.valueOf(reactionType));
 		reactionService.removeReaction(passport.getUser(), reaction);
 		return ApiResponse.success();
 	}

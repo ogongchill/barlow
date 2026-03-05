@@ -21,7 +21,7 @@ public interface UserRepositoryJpaRepository extends JpaRepository<UserJpaEntity
 
 	@Query("""
 		    SELECT u
-		    FROM AuthProviderJpaEntity ap
+		    FROM ExternalAuthJpaEntity ap
 		    JOIN UserJpaEntity u ON u.no = ap.memberNo
 		    WHERE ap.provider = :authProvider AND ap.sub = :sub
 		""")

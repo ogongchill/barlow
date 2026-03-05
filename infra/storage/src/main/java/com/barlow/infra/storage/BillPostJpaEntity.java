@@ -1,9 +1,11 @@
 package com.barlow.infra.storage;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.barlow.core.domain.billpost.BillPost;
-import com.barlow.core.domain.home.todaybill.TodayBillPostThumbnail;
+import com.barlow.core.domain.billpost.BillProposer;
+import com.barlow.core.domain.billpost.TodayBillPostThumbnail;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.enumerate.ProgressStatus;
 import com.barlow.core.enumerate.ProposerType;
@@ -58,13 +60,17 @@ public class BillPostJpaEntity extends BaseTimeJpaEntity {
 	protected BillPostJpaEntity() {}
 
 	BillPost toBillPost() {
-		BillPost billPost = new BillPost(
+		return new BillPost(
 			new BillPost.BillInfo(billId, billName), new BillPost.ProposerInfo(proposerType, proposers),
-			new BillPost.LegislationInfo(legislationType, progressStatus), summary, detail, getCreatedAt(), viewCount);
-		if (hasPreAnnouncementInfo()) {
-			billPost.assignPreAnnouncementInfo(getPreAnnouncementInfo());
-		}
-		return billPost;
+			new BillPost.LegislationInfo(legislationType, progressStatus), summary, detail, getCreatedAt(), viewCount,
+			List.of(), hasPreAnnouncementInfo() ? getPreAnnouncementInfo() : null);
+	}
+
+	BillPost toBillPostWithProposers(List<BillProposer> billProposers) {
+		return new BillPost(
+			new BillPost.BillInfo(billId, billName), new BillPost.ProposerInfo(proposerType, proposers),
+			new BillPost.LegislationInfo(legislationType, progressStatus), summary, detail, getCreatedAt(), viewCount,
+			billProposers, hasPreAnnouncementInfo() ? getPreAnnouncementInfo() : null);
 	}
 
 	private boolean hasPreAnnouncementInfo() {

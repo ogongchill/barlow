@@ -1,6 +1,6 @@
 package com.barlow.infra.storage;
 
-import com.barlow.core.domain.home.notificationcenter.NotificationCenterItem;
+import com.barlow.core.domain.notificationcenter.NotificationCenterItem;
 import com.barlow.core.enumerate.NotificationTopic;
 
 import jakarta.persistence.Column;

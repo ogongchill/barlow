@@ -1,7 +1,7 @@
 package com.barlow.core.domain;
 
 import com.barlow.core.domain.account.AccountDomainException;
-import com.barlow.core.domain.account.create.GuestToMemberCommand;
+import com.barlow.core.domain.account.GuestToMemberCommand;
 
 import java.util.Objects;
 

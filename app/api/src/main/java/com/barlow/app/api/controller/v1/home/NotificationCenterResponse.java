@@ -3,7 +3,7 @@ package com.barlow.app.api.controller.v1.home;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.barlow.core.domain.home.notificationcenter.NotificationCenterItem;
+import com.barlow.core.domain.notificationcenter.NotificationCenterItem;
 import com.barlow.app.support.response.Constant;
 
 public record NotificationCenterResponse(List<Item> items) {

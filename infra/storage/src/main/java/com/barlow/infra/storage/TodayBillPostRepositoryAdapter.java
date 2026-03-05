@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.barlow.core.domain.home.todaybill.TodayBillPostRepository;
-import com.barlow.core.domain.home.todaybill.TodayBillPostThumbnail;
+import com.barlow.core.domain.billpost.TodayBillPostRepository;
+import com.barlow.core.domain.billpost.TodayBillPostThumbnail;
 
 @Component
 public class TodayBillPostRepositoryAdapter implements TodayBillPostRepository {

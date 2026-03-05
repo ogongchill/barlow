@@ -45,7 +45,7 @@ public class ReactionJpaEntity extends BaseTimeJpaEntity {
 	}
 
 	Reaction toReaction() {
-		return new Reaction(targetId, targetType, type);
+		return new Reaction(memberNo, targetId, targetType, type);
 	}
 
 	Long getNo() {

@@ -55,11 +55,9 @@ public class BillPostRepositoryAdapter implements BillPostRepository {
 		if (billPostJpaEntity == null) {
 			return null;
 		}
-		BillPost billPost = billPostJpaEntity.toBillPost();
 		List<BillProposer> billProposers = billProposerJpaRepository.findAllByBillId(query.billId()).stream()
 			.map(BillProposerJpaEntity::toBillProposer).toList();
-		billPost.setBillProposers(billProposers);
-		return billPost;
+		return billPostJpaEntity.toBillPostWithProposers(billProposers);
 	}
 
 	@Override

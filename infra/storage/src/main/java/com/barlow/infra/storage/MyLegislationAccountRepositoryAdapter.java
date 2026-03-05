@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
-import com.barlow.core.domain.home.MyLegislationAccount;
-import com.barlow.core.domain.home.MyLegislationAccountRepository;
+import com.barlow.core.domain.legislationaccount.MyLegislationAccount;
+import com.barlow.core.domain.legislationaccount.MyLegislationAccountRepository;
 
 @Component
 public class MyLegislationAccountRepositoryAdapter implements MyLegislationAccountRepository {

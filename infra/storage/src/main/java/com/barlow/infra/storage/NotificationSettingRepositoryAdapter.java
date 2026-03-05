@@ -29,9 +29,9 @@ public class NotificationSettingRepositoryAdapter implements NotificationSetting
 		NotificationConfigJpaEntity notificationConfigJpaEntity = notificationConfigJpaRepository
 			.findByTopicAndMemberNo(topic, user.getUserNo());
 		if (notificationConfigJpaEntity == null) {
-			return new NotificationSetting(user, topic, false);
+			return new NotificationSetting(user.getUserNo(), topic, false);
 		}
-		return notificationConfigJpaEntity.toNotificationSetting(user);
+		return notificationConfigJpaEntity.toNotificationSetting();
 	}
 
 	@Override
@@ -41,8 +41,9 @@ public class NotificationSettingRepositoryAdapter implements NotificationSetting
 		List<NotificationTopic> enableTopics = jpaEntities.stream().map(NotificationConfigJpaEntity::getTopic).toList();
 		List<NotificationTopic> disableTopics = NotificationTopic.findDisableLegislationTopics(enableTopics);
 		return Stream.concat(
-			jpaEntities.stream().map(jpaEntity -> jpaEntity.toNotificationSetting(user)),
-			disableTopics.stream().map(disableTopic -> new NotificationSetting(user, disableTopic, false))).toList();
+			jpaEntities.stream().map(NotificationConfigJpaEntity::toNotificationSetting),
+			disableTopics.stream().map(disableTopic -> new NotificationSetting(user.getUserNo(), disableTopic, false)))
+			.toList();
 	}
 
 	@Override
@@ -50,12 +51,12 @@ public class NotificationSettingRepositoryAdapter implements NotificationSetting
 		notificationConfigJpaRepository.save(
 			new NotificationConfigJpaEntity(
 				notificationSetting.getNotificationTopic(), notificationSetting.isNotifiable(),
-				notificationSetting.getUser().getUserNo()));
+				notificationSetting.getUserNo()));
 	}
 
 	@Override
 	public void deleteNotificationSetting(NotificationSetting notificationSetting) {
 		notificationConfigJpaRepository.deleteByTopicAndMemberNo(
-			notificationSetting.getNotificationTopic(), notificationSetting.getUser().getUserNo());
+			notificationSetting.getNotificationTopic(), notificationSetting.getUserNo());
 	}
 }

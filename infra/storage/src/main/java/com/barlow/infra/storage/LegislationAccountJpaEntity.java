@@ -1,7 +1,7 @@
 package com.barlow.infra.storage;
 
 import com.barlow.core.domain.legislationaccount.LegislationAccount;
-import com.barlow.core.domain.home.MyLegislationAccount;
+import com.barlow.core.domain.legislationaccount.MyLegislationAccount;
 import com.barlow.core.enumerate.LegislationType;
 
 import jakarta.persistence.Column;

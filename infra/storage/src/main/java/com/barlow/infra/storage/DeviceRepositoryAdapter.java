@@ -2,10 +2,10 @@ package com.barlow.infra.storage;
 
 import org.springframework.stereotype.Component;
 
-import com.barlow.core.domain.account.device.Device;
-import com.barlow.core.domain.account.device.DeviceQuery;
-import com.barlow.core.domain.account.device.DeviceRegisterCommand;
-import com.barlow.core.domain.account.device.DeviceRepository;
+import com.barlow.core.domain.device.Device;
+import com.barlow.core.domain.device.DeviceQuery;
+import com.barlow.core.domain.device.DeviceRegisterCommand;
+import com.barlow.core.domain.device.DeviceRepository;
 
 import java.util.List;
 

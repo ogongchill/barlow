@@ -2,7 +2,7 @@ package com.barlow.app.api.controller.v1.term;
 
 import com.barlow.app.support.response.ApiResponse;
 import com.barlow.core.domain.account.term.Term;
-import com.barlow.core.service.account.TermManager;
+import com.barlow.core.service.account.impl.TermManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;

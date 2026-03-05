@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
-import com.barlow.core.domain.home.notificationcenter.MyNotificationCenterRepository;
-import com.barlow.core.domain.home.notificationcenter.NotificationCenterItem;
+import com.barlow.core.domain.notificationcenter.MyNotificationCenterRepository;
+import com.barlow.core.domain.notificationcenter.NotificationCenterItem;
 
 @Component
 public class MyNotificationCenterRepositoryAdapter implements MyNotificationCenterRepository {

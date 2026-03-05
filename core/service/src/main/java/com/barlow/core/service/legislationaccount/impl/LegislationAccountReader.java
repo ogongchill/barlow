@@ -10,9 +10,9 @@ import com.barlow.core.domain.User;
 import com.barlow.core.domain.legislationaccount.LegislationAccount;
 import com.barlow.core.domain.legislationaccount.LegislationAccountRepository;
 import com.barlow.core.domain.notificationsetting.NotificationSetting;
-import com.barlow.core.domain.subscribe.Subscribe;
+import com.barlow.core.domain.subscribe.Subscription;
 import com.barlow.core.service.notificationsetting.impl.NotificationSettingReader;
-import com.barlow.core.service.subscribe.SubscribeReader;
+import com.barlow.core.service.subscribe.SubscriptionReader;
 import com.barlow.core.enumerate.LegislationType;
 
 @Component
@@ -20,10 +20,10 @@ public class LegislationAccountReader {
 
 	private final LegislationAccountRepository legislationAccountRepository;
 	private final NotificationSettingReader notificationSettingReader;
-	private final SubscribeReader subscribeReader;
+	private final SubscriptionReader subscribeReader;
 
 	public LegislationAccountReader(LegislationAccountRepository legislationAccountRepository,
-		NotificationSettingReader notificationSettingReader, SubscribeReader subscribeReader) {
+		NotificationSettingReader notificationSettingReader, SubscriptionReader subscribeReader) {
 		this.legislationAccountRepository = legislationAccountRepository;
 		this.notificationSettingReader = notificationSettingReader;
 		this.subscribeReader = subscribeReader;
@@ -34,7 +34,7 @@ public class LegislationAccountReader {
 		legislationAccount = legislationAccount.withNotifiable(
 			notificationSettingReader.readNotificationSetting(legislationAccount.getType(), user).isNotifiable());
 		legislationAccount = legislationAccount
-			.withSubscribed(subscribeReader.readSubscribe(legislationType, user).isActive());
+			.withSubscribed(subscribeReader.readSubscription(legislationType, user).isActive());
 		return legislationAccount;
 	}
 
@@ -43,8 +43,8 @@ public class LegislationAccountReader {
 
 		Map<String, Boolean> memberNotificationSetting = notificationSettingReader.readNotificationSettings(user)
 			.stream().collect(Collectors.toMap(NotificationSetting::getTopicName, NotificationSetting::isNotifiable));
-		Map<String, Boolean> memberSubscription = subscribeReader.readSubscribes(user).stream()
-			.collect(Collectors.toMap(Subscribe::getLegislationAccountType, Subscribe::isActive));
+		Map<String, Boolean> memberSubscription = subscribeReader.readSubscriptions(user).stream()
+			.collect(Collectors.toMap(Subscription::getLegislationAccountType, Subscription::isActive));
 
 		return legislationAccounts.stream()
 			.map(account -> account.withNotifiable(memberNotificationSetting.get(account.getLegislationType())))

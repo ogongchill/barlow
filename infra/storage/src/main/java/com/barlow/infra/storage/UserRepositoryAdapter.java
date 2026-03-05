@@ -1,14 +1,14 @@
 package com.barlow.infra.storage;
 
 import com.barlow.core.domain.account.AccountDomainException;
-import com.barlow.core.domain.account.create.GuestToMemberCommand;
-import com.barlow.core.domain.account.authprovider.ProviderAndSubQuery;
-import com.barlow.core.domain.account.myinfo.AccountProfile;
+import com.barlow.core.domain.account.GuestToMemberCommand;
+import com.barlow.core.domain.externalauth.ExternalSubQuery;
+import com.barlow.core.domain.account.AccountProfile;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.account.UserQuery;
-import com.barlow.core.domain.account.create.UserRegisterCommand;
+import com.barlow.core.domain.account.UserRegisterCommand;
 import com.barlow.core.domain.account.UserRepository;
 
 @Component
@@ -45,7 +45,7 @@ public class UserRepositoryAdapter implements UserRepository {
 	}
 
 	@Override
-	public User findByProviderAndSub(ProviderAndSubQuery query) {
+	public User findByProviderAndSub(ExternalSubQuery query) {
 		UserJpaEntity userJpaEntity = userRepositoryJpaRepository
 			.findByProviderAndSub(query.authProvider(), query.sub());
 		if (userJpaEntity == null) {

@@ -2,8 +2,8 @@ package com.barlow.infra.storage;
 
 import com.barlow.core.domain.User;
 
-import com.barlow.core.domain.account.create.UserRegisterCommand;
-import com.barlow.core.domain.account.myinfo.AccountProfile;
+import com.barlow.core.domain.account.UserRegisterCommand;
+import com.barlow.core.domain.account.AccountProfile;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

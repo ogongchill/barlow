@@ -3,7 +3,7 @@ package com.barlow.infra.storage;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
-import com.barlow.core.domain.notificationsetting.NotificationCenterItemRepository;
+import com.barlow.core.domain.notificationcenter.NotificationCenterItemRepository;
 
 @Component
 public class NotificationCenterItemRepositoryAdapter implements NotificationCenterItemRepository {
