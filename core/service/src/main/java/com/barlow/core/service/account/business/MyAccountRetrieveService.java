@@ -1,14 +1,14 @@
-package com.barlow.core.service.account;
+package com.barlow.core.service.account.business;
 
 import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.account.UserQuery;
 import com.barlow.core.domain.account.UserRepository;
-import com.barlow.core.domain.account.authprovider.AuthProviderRepository;
-import com.barlow.core.domain.account.authprovider.UserAuthProvider;
-import com.barlow.core.domain.account.device.Device;
-import com.barlow.core.domain.account.device.DeviceRepository;
-import com.barlow.core.domain.account.myinfo.AccountProfile;
-import com.barlow.core.domain.account.myinfo.MyAccountInfo;
+import com.barlow.core.domain.externalauth.ExternalAuthRepository;
+import com.barlow.core.domain.externalauth.UserExternalAuth;
+import com.barlow.core.domain.device.Device;
+import com.barlow.core.domain.device.DeviceRepository;
+import com.barlow.core.domain.account.AccountProfile;
+import com.barlow.core.domain.account.MyAccountInfo;
 
 import org.springframework.stereotype.Service;
 
@@ -18,10 +18,10 @@ import java.util.List;
 public class MyAccountRetrieveService {
 
 	private final UserRepository userRepository;
-	private final AuthProviderRepository authProviderRepository;
+	private final ExternalAuthRepository authProviderRepository;
 	private final DeviceRepository deviceRepository;
 
-	public MyAccountRetrieveService(UserRepository userRepository, AuthProviderRepository authProviderRepository,
+	public MyAccountRetrieveService(UserRepository userRepository, ExternalAuthRepository authProviderRepository,
 		DeviceRepository deviceRepository) {
 		this.userRepository = userRepository;
 		this.authProviderRepository = authProviderRepository;
@@ -33,9 +33,9 @@ public class MyAccountRetrieveService {
 		UserQuery userQuery = new UserQuery(userNo);
 
 		AccountProfile profile = userRepository.retrieveProfile(userQuery);
-		UserAuthProvider userAuthProvider = authProviderRepository.retrieveByUser(userQuery);
+		UserExternalAuth userAuthProvider = authProviderRepository.retrieveByUser(userQuery);
 		List<Device> devices = deviceRepository.findAllByUserNo(userNo);
 
-		return new MyAccountInfo(profile, userAuthProvider.externalPrincipals(), devices);
+		return new MyAccountInfo(profile, userAuthProvider.getExternalPrincipals(), devices);
 	}
 }

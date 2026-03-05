@@ -1,7 +1,7 @@
 package com.barlow.app.api.controller.v1.auth;
 
-import com.barlow.core.domain.account.authprovider.ExternalPrincipal;
-import com.barlow.core.domain.account.create.MemberCreateCommand;
+import com.barlow.core.domain.externalauth.ExternalPrincipal;
+import com.barlow.core.domain.account.MemberCreateCommand;
 import com.barlow.core.domain.account.term.TermAgreement;
 import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.infra.auth.authentication.oauth.OidcAuthenticationRequest;

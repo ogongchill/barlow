@@ -1,4 +1,4 @@
-package com.barlow.core.domain.account.authprovider;
+package com.barlow.core.domain.externalauth;
 
 import com.barlow.core.enumerate.AuthProvider;
 

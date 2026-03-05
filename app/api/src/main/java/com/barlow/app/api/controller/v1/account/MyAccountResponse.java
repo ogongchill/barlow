@@ -1,9 +1,9 @@
 package com.barlow.app.api.controller.v1.account;
 
-import com.barlow.core.domain.account.authprovider.ExternalPrincipal;
-import com.barlow.core.domain.account.device.Device;
-import com.barlow.core.domain.account.myinfo.AccountProfile;
-import com.barlow.core.domain.account.myinfo.MyAccountInfo;
+import com.barlow.core.domain.externalauth.ExternalPrincipal;
+import com.barlow.core.domain.device.Device;
+import com.barlow.core.domain.account.AccountProfile;
+import com.barlow.core.domain.account.MyAccountInfo;
 
 import java.util.List;
 

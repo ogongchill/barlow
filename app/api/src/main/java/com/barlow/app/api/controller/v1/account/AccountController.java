@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.app.support.response.ApiResponse;
 import com.barlow.core.domain.Passport;
-import com.barlow.core.domain.account.myinfo.MyAccountInfo;
-import com.barlow.core.service.account.MyAccountRetrieveService;
-import com.barlow.core.service.account.AccountWithdrawalService;
+import com.barlow.core.domain.account.MyAccountInfo;
+import com.barlow.core.service.account.business.MyAccountRetrieveService;
+import com.barlow.core.service.account.business.AccountWithdrawalService;
 import com.barlow.infra.auth.support.annotation.PassportUser;
 
 @RestController

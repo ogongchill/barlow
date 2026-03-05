@@ -1,14 +1,10 @@
 package com.barlow.core.domain.account;
 
-import com.barlow.core.domain.account.create.GuestToMemberCommand;
-import com.barlow.core.domain.account.authprovider.ProviderAndSubQuery;
-import com.barlow.core.domain.account.create.UserRegisterCommand;
-import com.barlow.core.domain.account.myinfo.AccountProfile;
-import org.springframework.stereotype.Repository;
+import com.barlow.core.domain.externalauth.ExternalSubQuery;
+
 
 import com.barlow.core.domain.User;
 
-@Repository
 public interface UserRepository {
 
 	User retrieve(UserQuery query);
@@ -19,7 +15,7 @@ public interface UserRepository {
 
 	User promoteToMember(GuestToMemberCommand command);
 
-	User findByProviderAndSub(ProviderAndSubQuery query);
+	User findByProviderAndSub(ExternalSubQuery query);
 
 	void delete(User user);
 }

@@ -5,13 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface AuthProviderJpaRepository extends JpaRepository<AuthProviderJpaEntity, Long> {
+public interface ExternalAuthJpaRepository extends JpaRepository<ExternalAuthJpaEntity, Long> {
 
 	boolean existsByProviderAndSub(AuthProvider authProvider, String sub);
 
-	boolean existsByMemberNoAndProvider(Long memberNo, AuthProvider provider);
-
-	List<AuthProviderJpaEntity> findAllByMemberNo(Long memberNo);
+	List<ExternalAuthJpaEntity> findAllByMemberNo(Long memberNo);
 
 	void deleteAllByMemberNo(Long memberNo);
 }

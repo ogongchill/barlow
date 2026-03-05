@@ -1,7 +1,7 @@
 package com.barlow.app.api.controller.v1.auth;
 
 import com.barlow.app.support.error.CoreApiException;
-import com.barlow.core.domain.account.login.LoginCommand;
+import com.barlow.core.domain.account.LoginCommand;
 import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.app.support.validate.Validatable;
 
