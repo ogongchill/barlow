@@ -3,8 +3,8 @@ package com.barlow.app.api.controller.v1.home;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.barlow.core.domain.home.MyHomeStatus;
-import com.barlow.core.domain.home.todaybill.TodayBillPostThumbnail;
+import com.barlow.core.service.home.MyHomeStatus;
+import com.barlow.core.domain.billpost.TodayBillPostThumbnail;
 
 public class HomeResponseApiSpecComposer {
 
@@ -21,7 +21,7 @@ public class HomeResponseApiSpecComposer {
 			.stream()
 			.map(
 				status -> new HomeResponse.SubscribeLegislationBody(
-					status.getNo(), status.getBodyType(), status.getIconImagePath()))
+					status.no(), status.bodyType(), status.iconImagePath()))
 			.toList();
 		List<HomeResponse.BillPostThumbnail> billPostThumbnails = postThumbnails.stream()
 			.map(

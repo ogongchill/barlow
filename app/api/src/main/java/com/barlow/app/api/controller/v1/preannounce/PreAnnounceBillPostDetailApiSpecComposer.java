@@ -44,15 +44,15 @@ public class PreAnnounceBillPostDetailApiSpecComposer {
 
 		Map<String, Integer> getProposerPartyRate() {
 			return values.stream()
-				.collect(Collectors.groupingBy(BillProposer::getPartyName, Collectors.summingInt(value -> COUNT_UNIT)));
+				.collect(Collectors.groupingBy(BillProposer::partyName, Collectors.summingInt(value -> COUNT_UNIT)));
 		}
 
 		List<ProposerResponse> mapToProposerResponse() {
 			return values.stream()
 				.map(
 					billProposer -> new ProposerResponse(
-						billProposer.getProposerCode(), billProposer.getProposerName(),
-						billProposer.getProfileImagePath(), billProposer.getPartyName()))
+						billProposer.proposerCode(), billProposer.proposerName(),
+						billProposer.profileImagePath(), billProposer.partyName()))
 				.toList();
 		}
 	}

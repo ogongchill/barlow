@@ -37,15 +37,15 @@ public class RecentBillPostDetailApiSpecComposer {
 
 		Map<String, Integer> getProposerPartyRate() {
 			return values.stream()
-				.collect(Collectors.groupingBy(BillProposer::getPartyName, Collectors.summingInt(value -> COUNT_UNIT)));
+				.collect(Collectors.groupingBy(BillProposer::partyName, Collectors.summingInt(value -> COUNT_UNIT)));
 		}
 
 		List<RecentBillPostDetailResponse.ProposerResponse> mapToProposerResponse() {
 			return values.stream()
 				.map(
 					billProposer -> new RecentBillPostDetailResponse.ProposerResponse(
-						billProposer.getProposerName(), billProposer.getProfileImagePath(),
-						billProposer.getPartyName()))
+						billProposer.proposerName(), billProposer.profileImagePath(),
+						billProposer.partyName()))
 				.toList();
 		}
 	}
