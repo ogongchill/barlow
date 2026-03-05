@@ -18,8 +18,7 @@ public record BillPostQuery(
 	Integer page,
 	Integer size,
 	SortKey sortKey,
-	BillPostFilterTag tags
-) {
+	BillPostFilterTag tags) {
 	public static BillPostQuery defaultOf(Integer page, Integer size, String sortKey,
 		Map<String, List<String>> tags) {
 		return new BillPostQuery(page, size, new SortKey(sortKey), BillPostFilterTag.from(tags));

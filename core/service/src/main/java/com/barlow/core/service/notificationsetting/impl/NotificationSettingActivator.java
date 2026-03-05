@@ -40,7 +40,8 @@ public class NotificationSettingActivator {
 	}
 
 	public void activateDefault(User user) {
-		NotificationTopic.findByDefaultTopic().stream().map(topic -> new NotificationSetting(user.getUserNo(), topic, true))
+		NotificationTopic.findByDefaultTopic().stream()
+			.map(topic -> new NotificationSetting(user.getUserNo(), topic, true))
 			.forEach(notificationSettingRepository::saveNotificationSetting);
 	}
 }

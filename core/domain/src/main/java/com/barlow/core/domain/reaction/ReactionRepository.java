@@ -2,7 +2,6 @@ package com.barlow.core.domain.reaction;
 
 import java.util.List;
 
-
 import com.barlow.core.domain.User;
 
 public interface ReactionRepository {

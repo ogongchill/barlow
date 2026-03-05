@@ -22,11 +22,7 @@ public class BillPostCacheService {
 		this.cacheManager = cacheManager;
 	}
 
-	@Cacheable(
-		cacheNames = Caches.Name.BILL_POST,
-		cacheManager = Caches.Manager.CAFFEINE,
-		key = "#query.billId()"
-	)
+	@Cacheable(cacheNames = Caches.Name.BILL_POST, cacheManager = Caches.Manager.CAFFEINE, key = "#query.billId()")
 	public BillPost readBillPost(BillPostDetailQuery query) {
 		return billPostReader.readBillPost(query);
 	}

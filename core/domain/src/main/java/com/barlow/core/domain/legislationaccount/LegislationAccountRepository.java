@@ -1,6 +1,5 @@
 package com.barlow.core.domain.legislationaccount;
 
-
 import java.util.List;
 
 import com.barlow.core.enumerate.LegislationType;

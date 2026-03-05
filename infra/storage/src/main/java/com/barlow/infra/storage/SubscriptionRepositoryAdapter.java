@@ -40,7 +40,8 @@ public class SubscriptionRepositoryAdapter implements SubscriptionRepository {
 		return Stream.concat(
 			jpaEntities.stream().map(SubscriptionJpaEntity::toSubscription),
 			disableLegislationBodies.stream()
-				.map(disableBody -> new Subscription(user.getUserNo(), disableBody.getLegislationNo(), disableBody, false)))
+				.map(disableBody -> new Subscription(user.getUserNo(), disableBody.getLegislationNo(), disableBody,
+					false)))
 			.toList();
 	}
 

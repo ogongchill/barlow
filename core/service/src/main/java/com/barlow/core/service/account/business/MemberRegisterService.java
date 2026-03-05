@@ -23,8 +23,7 @@ public class MemberRegisterService {
 	private final UserRepository userRepository;
 
 	public MemberRegisterService(UserCreator userCreator, TermManager termManager,
-		ExternalAuthService authProviderService, UserRepository userRepository
-	) {
+		ExternalAuthService authProviderService, UserRepository userRepository) {
 		this.userCreator = userCreator;
 		this.termManager = termManager;
 		this.authProviderService = authProviderService;
@@ -46,7 +45,8 @@ public class MemberRegisterService {
 	public User promoteToMember(MemberPromoteCommand command) {
 		User existingUser = userRepository.retrieve(new UserQuery(command.user().getUserNo()));
 		GuestToMemberCommand promoteCommand = existingUser.toGuestToMemberCommand();
-		UserExternalAuth existingAuthProvider = authProviderService.retrieveAll(new UserQuery(existingUser.getUserNo()));
+		UserExternalAuth existingAuthProvider = authProviderService
+			.retrieveAll(new UserQuery(existingUser.getUserNo()));
 		authProviderService.create(existingAuthProvider.toCommand(command.principal()));
 		return userRepository.promoteToMember(promoteCommand);
 	}

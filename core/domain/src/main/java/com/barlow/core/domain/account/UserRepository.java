@@ -2,7 +2,6 @@ package com.barlow.core.domain.account;
 
 import com.barlow.core.domain.externalauth.ExternalSubQuery;
 
-
 import com.barlow.core.domain.User;
 
 public interface UserRepository {

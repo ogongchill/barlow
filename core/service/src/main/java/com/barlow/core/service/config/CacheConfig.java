@@ -22,15 +22,13 @@ public class CacheConfig {
 				.maximumSize(500)
 				.expireAfterWrite(30, TimeUnit.MINUTES)
 				.recordStats()
-				.build()
-		);
+				.build());
 		cacheManager.registerCustomCache(Caches.Name.BILL_POST_VIEW,
 			Caffeine.newBuilder()
 				.maximumSize(10_000)
 				.expireAfterWrite(1, TimeUnit.HOURS)
 				.recordStats()
-				.build()
-		);
+				.build());
 		return cacheManager;
 	}
 }
