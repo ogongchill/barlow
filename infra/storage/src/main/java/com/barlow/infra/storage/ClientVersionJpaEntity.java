@@ -1,6 +1,6 @@
 package com.barlow.infra.storage;
 
-import com.barlow.core.domain.version.AvailableClientVersion;
+import com.barlow.core.domain.version.ClientVersionPolicy;
 import com.barlow.core.domain.version.SemanticVersion;
 import com.barlow.core.enumerate.DeviceOs;
 
@@ -32,7 +32,7 @@ public class ClientVersionJpaEntity {
 	@Column(name = "latest", nullable = false, length = 50)
 	private String latest;
 
-	AvailableClientVersion toAvailableClientVersion() {
-		return new AvailableClientVersion(SemanticVersion.of(minimumSupported), SemanticVersion.of(latest));
+	ClientVersionPolicy toClientVersionPolicy() {
+		return ClientVersionPolicy.of(deviceOs, SemanticVersion.of(minimumSupported), SemanticVersion.of(latest));
 	}
 }
