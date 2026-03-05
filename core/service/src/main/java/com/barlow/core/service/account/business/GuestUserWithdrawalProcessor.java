@@ -3,7 +3,6 @@ package com.barlow.core.service.account.business;
 import com.barlow.core.domain.account.UserRepository;
 import com.barlow.core.domain.device.DeviceRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.User;
@@ -34,7 +33,6 @@ class GuestUserWithdrawalProcessor implements UserWithdrawalProcessor {
 	}
 
 	@Override
-	@Transactional
 	public void process(Passport passport) {
 		User user = passport.getUser();
 		// 주요 관심사

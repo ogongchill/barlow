@@ -1,7 +1,6 @@
 package com.barlow.core.service.legislationaccount.impl;
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.legislationaccount.LegislationAccountRepository;
@@ -20,13 +19,11 @@ public class LegislationAccountSubscriptionManager {
 		this.subscribeActivator = subscribeActivator;
 	}
 
-	@Transactional
 	public void subscribe(LegislationType legislationType, User user) {
 		subscribeActivator.activate(legislationType, user);
 		legislationAccountRepository.incrementSubscriber(legislationType);
 	}
 
-	@Transactional
 	public void unsubscribe(LegislationType legislationType, User user) {
 		subscribeActivator.deactivate(legislationType, user);
 		legislationAccountRepository.decrementSubscriber(legislationType);

@@ -1,7 +1,6 @@
 package com.barlow.core.service.notificationsetting.impl;
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.notificationsetting.NotificationSetting;
@@ -30,7 +29,6 @@ public class NotificationSettingActivator {
 		notificationSettingRepository.saveNotificationSetting(notificationSetting.activate());
 	}
 
-	@Transactional
 	public void deactivate(LegislationType type, User user) {
 		NotificationSetting notificationSetting = notificationSettingReader.readNotificationSetting(type, user);
 		if (!notificationSetting.isNotifiable()) {

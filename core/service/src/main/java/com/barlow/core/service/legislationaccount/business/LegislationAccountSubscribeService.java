@@ -1,6 +1,7 @@
 package com.barlow.core.service.legislationaccount.business;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.enumerate.LegislationType;
@@ -15,10 +16,12 @@ public class LegislationAccountSubscribeService {
 		this.subscriptionManager = subscriptionManager;
 	}
 
+	@Transactional
 	public void subscribeAccount(LegislationType legislationType, User user) {
 		subscriptionManager.subscribe(legislationType, user);
 	}
 
+	@Transactional
 	public void unsubscribeAccount(LegislationType legislationType, User user) {
 		subscriptionManager.unsubscribe(legislationType, user);
 	}

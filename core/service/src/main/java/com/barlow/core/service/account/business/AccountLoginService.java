@@ -8,6 +8,7 @@ import com.barlow.core.service.account.impl.DeviceRefresher;
 import com.barlow.core.service.account.impl.UserReader;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AccountLoginService {
@@ -20,11 +21,13 @@ public class AccountLoginService {
 		this.userReader = userReader;
 	}
 
+	@Transactional
 	public User guestLogin(LoginCommand command) {
 		Device device = deviceRefresher.refresh(command.toDeviceQuery(), command.deviceToken());
 		return userReader.read(device.getUserNo());
 	}
 
+	@Transactional
 	public User memberLogin(MemberLoginCommand command) {
 		User user = userReader.read(command.externalPrincipal());
 		deviceRefresher.refresh(command.toDeviceQuery(), command.deviceToken());

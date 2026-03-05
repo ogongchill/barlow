@@ -3,6 +3,7 @@ package com.barlow.core.service.reaction;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.reaction.Reaction;
@@ -28,10 +29,12 @@ public class ReactionService {
 		return new ReactionStatus(reactions, userReaction);
 	}
 
+	@Transactional
 	public void react(User user, Reaction reaction) {
 		reactionProcessor.react(user, reaction);
 	}
 
+	@Transactional
 	public void removeReaction(User user, Reaction reaction) {
 		reactionProcessor.removeReaction(user, reaction);
 	}
