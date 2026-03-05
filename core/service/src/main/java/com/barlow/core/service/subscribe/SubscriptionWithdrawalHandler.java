@@ -3,14 +3,14 @@ package com.barlow.core.service.subscribe;
 import org.springframework.stereotype.Component;
 
 import com.barlow.core.domain.User;
-import com.barlow.core.domain.subscribe.SubscribeRepository;
+import com.barlow.core.domain.subscribe.SubscriptionRepository;
 
 @Component
-public class SubscribeWithdrawalHandler {
+public class SubscriptionWithdrawalHandler {
 
-	private final SubscribeRepository subscribeRepository;
+	private final SubscriptionRepository subscribeRepository;
 
-	public SubscribeWithdrawalHandler(SubscribeRepository subscribeRepository) {
+	public SubscriptionWithdrawalHandler(SubscriptionRepository subscribeRepository) {
 		this.subscribeRepository = subscribeRepository;
 	}
 

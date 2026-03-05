@@ -7,22 +7,22 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface SubscribeJpaRepository extends JpaRepository<SubscribeJpaEntity, Long> {
+public interface SubscriptionJpaRepository extends JpaRepository<SubscriptionJpaEntity, Long> {
 
-	List<SubscribeJpaEntity> findAllByMemberNo(Long memberNo);
+	List<SubscriptionJpaEntity> findAllByMemberNo(Long memberNo);
 
-	SubscribeJpaEntity findBySubscribeLegislationAccountNoAndMemberNo(Long subscribeLegislationAccountNo,
+	SubscriptionJpaEntity findBySubscribeLegislationAccountNoAndMemberNo(Long subscribeLegislationAccountNo,
 		Long memberNo);
 
 	@Modifying
 	@Query("""
-		DELETE FROM SubscribeJpaEntity s
+		DELETE FROM SubscriptionJpaEntity s
 		WHERE s.subscribeLegislationAccountNo = :accountNo
 		AND s.memberNo = :memberNo""")
 	void deleteBySubscribeLegislationAccountNoAndMemberNo(@Param("accountNo") Long subscribeLegislationAccountNo,
 		@Param("memberNo") Long memberNo);
 
 	@Modifying
-	@Query("DELETE FROM SubscribeJpaEntity s WHERE s.memberNo = :memberNo")
+	@Query("DELETE FROM SubscriptionJpaEntity s WHERE s.memberNo = :memberNo")
 	void deleteAllByMemberNo(@Param("memberNo") Long memberNo);
 }

@@ -9,8 +9,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import com.barlow.core.domain.User;
-import com.barlow.core.domain.subscribe.Subscribe;
-import com.barlow.core.domain.subscribe.SubscribeQuery;
+import com.barlow.core.domain.subscribe.Subscription;
+import com.barlow.core.domain.subscribe.SubscriptionQuery;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.infra.storage.support.StorageTest;
 
@@ -21,11 +21,11 @@ class SubscribeRepositoryAdapterTest extends CoreDbContextTest {
 
 	private static final User GUEST_USER = User.of(1L, User.Role.GUEST);
 
-	private final SubscribeRepositoryAdapter adapter;
-	private final SubscribeJpaRepository subscribeJpaRepository;
+	private final SubscriptionRepositoryAdapter adapter;
+	private final SubscriptionJpaRepository subscribeJpaRepository;
 
-	public SubscribeRepositoryAdapterTest(SubscribeRepositoryAdapter adapter,
-		SubscribeJpaRepository subscribeJpaRepository) {
+	public SubscribeRepositoryAdapterTest(SubscriptionRepositoryAdapter adapter,
+		SubscriptionJpaRepository subscribeJpaRepository) {
 		this.adapter = adapter;
 		this.subscribeJpaRepository = subscribeJpaRepository;
 	}
@@ -34,8 +34,8 @@ class SubscribeRepositoryAdapterTest extends CoreDbContextTest {
 	@ParameterizedTest
 	@CsvSource(value = {"HOUSE_STEERING:true", "INTELLIGENCE:false"}, delimiter = ':')
 	void retrieve(String legislationTypeName, boolean expect) {
-		Subscribe retrieve = adapter
-			.retrieve(new SubscribeQuery(LegislationType.valueOf(legislationTypeName), GUEST_USER));
+		Subscription retrieve = adapter
+			.retrieve(new SubscriptionQuery(LegislationType.valueOf(legislationTypeName), GUEST_USER));
 
 		assertAll(() -> assertThat(retrieve).isNotNull(), () -> assertThat(retrieve.isActive()).isEqualTo(expect));
 	}
@@ -51,7 +51,7 @@ class SubscribeRepositoryAdapterTest extends CoreDbContextTest {
 	@Transactional
 	void save() {
 		LegislationType intelligence = LegislationType.INTELLIGENCE;
-		adapter.save(new Subscribe(GUEST_USER, intelligence.getLegislationNo(), intelligence, true));
+		adapter.save(new Subscription(GUEST_USER, intelligence.getLegislationNo(), intelligence, true));
 
 		assertThat(subscribeJpaRepository.findAllByMemberNo(GUEST_USER.getUserNo())).isNotEmpty().hasSize(2);
 	}
@@ -61,7 +61,7 @@ class SubscribeRepositoryAdapterTest extends CoreDbContextTest {
 	@Transactional
 	void delete() {
 		LegislationType houseSteering = LegislationType.HOUSE_STEERING;
-		adapter.delete(new Subscribe(GUEST_USER, houseSteering.getLegislationNo(), houseSteering, false));
+		adapter.delete(new Subscription(GUEST_USER, houseSteering.getLegislationNo(), houseSteering, false));
 
 		assertThat(subscribeJpaRepository.findAllByMemberNo(GUEST_USER.getUserNo())).isEmpty();
 	}

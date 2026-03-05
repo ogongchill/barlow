@@ -6,16 +6,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.legislationaccount.LegislationAccountRepository;
 import com.barlow.core.enumerate.LegislationType;
-import com.barlow.core.service.subscribe.SubscribeActivator;
+import com.barlow.core.service.subscribe.SubscriptionActivator;
 
 @Component
 public class LegislationAccountSubscriptionManager {
 
 	private final LegislationAccountRepository legislationAccountRepository;
-	private final SubscribeActivator subscribeActivator;
+	private final SubscriptionActivator subscribeActivator;
 
 	public LegislationAccountSubscriptionManager(LegislationAccountRepository legislationAccountRepository,
-		SubscribeActivator subscribeActivator) {
+		SubscriptionActivator subscribeActivator) {
 		this.legislationAccountRepository = legislationAccountRepository;
 		this.subscribeActivator = subscribeActivator;
 	}

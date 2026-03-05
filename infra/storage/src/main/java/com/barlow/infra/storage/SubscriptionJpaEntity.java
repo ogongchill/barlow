@@ -1,7 +1,6 @@
 package com.barlow.infra.storage;
 
-import com.barlow.core.domain.User;
-import com.barlow.core.domain.subscribe.Subscribe;
+import com.barlow.core.domain.subscribe.Subscription;
 import com.barlow.core.enumerate.LegislationType;
 
 import jakarta.persistence.Column;
@@ -15,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "subscribe")
-public class SubscribeJpaEntity extends BaseTimeJpaEntity {
+public class SubscriptionJpaEntity extends BaseTimeJpaEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,16 +31,16 @@ public class SubscribeJpaEntity extends BaseTimeJpaEntity {
 	@Column(name = "subscriber_no", nullable = false)
 	private Long memberNo;
 
-	protected SubscribeJpaEntity() {}
+	protected SubscriptionJpaEntity() {}
 
-	SubscribeJpaEntity(Long subscribeLegislationAccountNo, LegislationType legislationType, Long memberNo) {
+	SubscriptionJpaEntity(Long subscribeLegislationAccountNo, LegislationType legislationType, Long memberNo) {
 		this.subscribeLegislationAccountNo = subscribeLegislationAccountNo;
 		this.legislationType = legislationType;
 		this.memberNo = memberNo;
 	}
 
-	Subscribe toSubscribe(User user) {
-		return new Subscribe(user, subscribeLegislationAccountNo, legislationType, true);
+	Subscription toSubscription() {
+		return new Subscription(memberNo, subscribeLegislationAccountNo, legislationType, true);
 	}
 
 	LegislationType getLegislationType() {
