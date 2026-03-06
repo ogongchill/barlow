@@ -7,7 +7,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.relaxedResponseFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
-import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import java.util.Map;
 
@@ -26,7 +25,6 @@ import com.barlow.core.domain.User;
 import com.barlow.core.domain.externalauth.ExternalPrincipal;
 import com.barlow.core.enumerate.AuthProvider;
 import com.barlow.infra.auth.authentication.token.AccessTokenProvider;
-import com.barlow.test.api.RestDocUtils;
 
 import io.restassured.RestAssured;
 
@@ -57,8 +55,6 @@ class AuthControllerDocsTest extends RestDocsContextTest {
 	void guestSignup() {
 		RestAssured.given(spec)
 			.filter(document("auth/guest-signup",
-				RestDocUtils.requestPreprocessor(),
-				RestDocUtils.responsePreprocessor(),
 				requestFields(
 					fieldWithPath("deviceOs").description("디바이스 OS (ios / android)"),
 					fieldWithPath("deviceId").description("디바이스 고유 ID"),
@@ -86,8 +82,6 @@ class AuthControllerDocsTest extends RestDocsContextTest {
 	void guestLogin() {
 		RestAssured.given(spec)
 			.filter(document("auth/guest-login",
-				RestDocUtils.requestPreprocessor(),
-				RestDocUtils.responsePreprocessor(),
 				requestFields(
 					fieldWithPath("deviceOs").description("디바이스 OS (ios / android)"),
 					fieldWithPath("deviceId").description("디바이스 고유 ID"),
@@ -108,8 +102,6 @@ class AuthControllerDocsTest extends RestDocsContextTest {
 	void oidcSignup() {
 		RestAssured.given(spec)
 			.filter(document("auth/oidc-signup",
-				RestDocUtils.requestPreprocessor(),
-				RestDocUtils.responsePreprocessor(),
 				requestFields(
 					subsectionWithPath("oidcPayload").description("OIDC 인증 정보 (authProvider, idToken)"),
 					subsectionWithPath("termAgreements").description("약관 동의 목록 (약관 ID → 동의 여부)"),
@@ -140,8 +132,6 @@ class AuthControllerDocsTest extends RestDocsContextTest {
 
 		RestAssured.given(spec)
 			.filter(document("auth/oidc-promote",
-				RestDocUtils.requestPreprocessor(),
-				RestDocUtils.responsePreprocessor(),
 				requestHeaders(
 					headerWithName("Authorization").description("Bearer 액세스 토큰 (GUEST 역할)")),
 				requestFields(
@@ -166,8 +156,6 @@ class AuthControllerDocsTest extends RestDocsContextTest {
 
 		RestAssured.given(spec)
 			.filter(document("auth/oidc-login",
-				RestDocUtils.requestPreprocessor(),
-				RestDocUtils.responsePreprocessor(),
 				requestFields(
 					fieldWithPath("deviceOs").description("디바이스 OS (ios / android)"),
 					fieldWithPath("deviceId").description("디바이스 고유 ID"),

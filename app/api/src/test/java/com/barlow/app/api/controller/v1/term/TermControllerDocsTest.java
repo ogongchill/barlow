@@ -3,14 +3,12 @@ package com.barlow.app.api.controller.v1.term;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.relaxedResponseFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
-import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.barlow.app.support.AcceptanceTest;
 import com.barlow.app.support.RestDocsContextTest;
-import com.barlow.test.api.RestDocUtils;
 
 import io.restassured.RestAssured;
 
@@ -22,8 +20,6 @@ class TermControllerDocsTest extends RestDocsContextTest {
 	void getActiveTerms() {
 		RestAssured.given(spec)
 			.filter(document("term/active",
-				RestDocUtils.requestPreprocessor(),
-				RestDocUtils.responsePreprocessor(),
 				relaxedResponseFields(
 					fieldWithPath("result").description("결과 상태 (SUCCESS)"),
 					subsectionWithPath("data.activeTerms").description("활성화된 약관 목록"),
