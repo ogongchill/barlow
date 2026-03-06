@@ -49,7 +49,6 @@ class BillPostDetailApiSpecComposerTest {
 	@DisplayName("최근법안게시글의 상세 내용을 받아 api 스펙에 맞게 구성한다")
 	@Test
 	void compose() {
-		RECENT_BILL_POST.setBillProposers(List.of(PROPOSER));
 		RecentBillPostDetailApiSpecComposer apiSpecComposer = new RecentBillPostDetailApiSpecComposer(RECENT_BILL_POST);
 
 		RecentBillPostDetailResponse result = apiSpecComposer.compose();

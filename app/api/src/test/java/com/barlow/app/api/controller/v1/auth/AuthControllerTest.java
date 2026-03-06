@@ -3,35 +3,34 @@ package com.barlow.app.api.controller.v1.auth;
 import static com.barlow.app.support.TestHttpUtils.MANDATORY_DEVICE_HEADERS;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 
 import java.util.Map;
 import java.util.UUID;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 
 import com.barlow.ContextTest;
 import com.barlow.app.support.AcceptanceTest;
+import com.barlow.app.support.FakeOidcAuthenticationService;
 import com.barlow.app.support.response.ResultType;
 import com.barlow.core.domain.User;
 import com.barlow.core.domain.externalauth.ExternalPrincipal;
 import com.barlow.core.enumerate.AuthProvider;
 import com.barlow.infra.auth.authentication.core.AuthenticationException;
 import com.barlow.infra.auth.authentication.core.AuthenticationExceptionType;
-import com.barlow.infra.auth.authentication.oauth.OidcAuthenticationRequest;
-import com.barlow.infra.auth.authentication.oauth.OidcAuthenticationService;
 import com.barlow.infra.auth.authentication.token.AccessTokenProvider;
 
 import io.restassured.RestAssured;
 
 @AcceptanceTest({"acceptance/user.json", "acceptance/device.json", "acceptance/term.json"})
+@Import(FakeOidcAuthenticationService.class)
 class AuthControllerTest extends ContextTest {
 
 	private static final String TEST_SUB = "test_subject_123";
@@ -39,13 +38,17 @@ class AuthControllerTest extends ContextTest {
 	@Autowired
 	private AccessTokenProvider accessTokenProvider;
 
-	@MockBean
-	private OidcAuthenticationService mockOidcService;
+	@Autowired
+	private FakeOidcAuthenticationService fakeOidcService;
 
 	@BeforeEach
-	void setUpMock() {
-		given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
-			.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, TEST_SUB));
+	void setUpFake() {
+		fakeOidcService.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, TEST_SUB));
+	}
+
+	@AfterEach
+	void resetFake() {
+		fakeOidcService.reset();
 	}
 
 	@DisplayName("사용자가 게스트 회원가입을 하면 회원가입 절차를 진행하고 access token 을 반환한다")
@@ -161,8 +164,7 @@ class AuthControllerTest extends ContextTest {
 			String existingSub = "existing_sub_123";
 			String targetNickname = UUID.randomUUID().toString();
 
-			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
-				.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, existingSub));
+			fakeOidcService.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, existingSub));
 
 			// when
 			Map<String, Object> responseMap = RestAssured.given().log().all()
@@ -208,8 +210,8 @@ class AuthControllerTest extends ContextTest {
 			// given
 			String targetNickname = UUID.randomUUID().toString();
 
-			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
-				.willThrow(new AuthenticationException("토큰 검증 실패", AuthenticationExceptionType.INVALID_CREDENTIAL));
+			fakeOidcService.willThrow(
+				new AuthenticationException("토큰 검증 실패", AuthenticationExceptionType.INVALID_CREDENTIAL));
 
 			// when
 			Map<String, Object> responseMap = RestAssured.given().log().all()
@@ -259,8 +261,7 @@ class AuthControllerTest extends ContextTest {
 			String anotherSub = "another_sub";
 			Long targetMemberNo = 2L;
 			String accessToken = getAccessTokenForUser(targetMemberNo, User.Role.MEMBER);
-			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
-				.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, anotherSub));
+			fakeOidcService.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, anotherSub));
 
 			// when
 			Map<String, Object> responseMap = RestAssured.given().log().all()
@@ -298,8 +299,8 @@ class AuthControllerTest extends ContextTest {
 			Long targetMemberNo = 1L;
 			String accessToken = getAccessTokenForUser(targetMemberNo, User.Role.GUEST);
 
-			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
-				.willThrow(new AuthenticationException("토큰 검증 실패", AuthenticationExceptionType.INVALID_CREDENTIAL));
+			fakeOidcService.willThrow(
+				new AuthenticationException("토큰 검증 실패", AuthenticationExceptionType.INVALID_CREDENTIAL));
 
 			// when
 			Map<String, Object> responseMap = RestAssured.given().log().all()
@@ -322,8 +323,7 @@ class AuthControllerTest extends ContextTest {
 		void oidcLogin_success() {
 			// given - member_no=2는 이미 KAKAO provider로 등록됨 (existing_sub_123)
 			String existingSub = "existing_sub_123";
-			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
-				.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, existingSub));
+			fakeOidcService.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, existingSub));
 
 			// when
 			Map<String, Object> responseMap = RestAssured.given().log().all()
@@ -346,8 +346,7 @@ class AuthControllerTest extends ContextTest {
 		void oidcLogin_failWhenNotRegistered() {
 			// given - 등록되지 않은 sub
 			String unregisteredSub = "unregistered_sub";
-			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
-				.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, unregisteredSub));
+			fakeOidcService.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, unregisteredSub));
 
 			// when
 			Map<String, Object> responseMap = RestAssured.given().log().all()
@@ -366,8 +365,8 @@ class AuthControllerTest extends ContextTest {
 		@Test
 		void oidcLogin_failWhenTokenVerificationFails() {
 			// given
-			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
-				.willThrow(new AuthenticationException("토큰 검증 실패", AuthenticationExceptionType.INVALID_CREDENTIAL));
+			fakeOidcService.willThrow(
+				new AuthenticationException("토큰 검증 실패", AuthenticationExceptionType.INVALID_CREDENTIAL));
 
 			// when
 			Map<String, Object> responseMap = RestAssured.given().log().all()
@@ -404,8 +403,7 @@ class AuthControllerTest extends ContextTest {
 			// given - member_no=2는 이미 KAKAO provider로 등록됨 (existing_sub_123)
 			String existingSub = "existing_sub_123";
 			String changedToken = "changed_device_token_for_member";
-			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
-				.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, existingSub));
+			fakeOidcService.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, existingSub));
 
 			// when
 			Map<String, Object> responseMap = RestAssured.given().log().all()
@@ -429,8 +427,7 @@ class AuthControllerTest extends ContextTest {
 			// given - member_no=2는 이미 KAKAO provider로 등록됨 (existing_sub_123)
 			// device_id_5는 member_no=2의 INACTIVE 디바이스
 			String existingSub = "existing_sub_123";
-			given(mockOidcService.authenticate(any(OidcAuthenticationRequest.class)))
-				.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, existingSub));
+			fakeOidcService.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, existingSub));
 
 			// when
 			Map<String, Object> responseMap = RestAssured.given().log().all()

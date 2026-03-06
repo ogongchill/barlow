@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 
+import com.barlow.ContextTest;
 import com.barlow.app.support.AcceptanceTest;
 import com.barlow.app.support.TestTokenProvider;
 import com.barlow.app.support.response.ResultType;
@@ -25,7 +26,7 @@ import io.restassured.RestAssured;
 
 @AcceptanceTest({"acceptance/billPost.json", "acceptance/reaction.json"})
 @Import(TestTokenProvider.class)
-class ReactionControllerTest {
+class ReactionControllerTest extends ContextTest {
 
 	@Autowired
 	private TestTokenProvider testTokenProvider;
