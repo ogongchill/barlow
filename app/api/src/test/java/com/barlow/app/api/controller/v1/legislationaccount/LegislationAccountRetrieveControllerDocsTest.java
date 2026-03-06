@@ -83,7 +83,7 @@ class LegislationAccountRetrieveControllerDocsTest extends RestDocsContextTest {
 					fieldWithPath("data.title").description("페이지 제목"),
 					fieldWithPath("data.subtitle").description("페이지 부제목"),
 					fieldWithPath("data.description").description("페이지 설명"),
-					subsectionWithPath("data.committeeAccounts")
+					subsectionWithPath("data.accounts")
 						.description("상임위원회 목록 (accountNo, accountName, iconUrl, isSubscribed, isNotifiable)"))))
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.header(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())

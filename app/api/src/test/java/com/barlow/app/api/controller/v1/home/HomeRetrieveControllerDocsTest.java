@@ -45,8 +45,9 @@ class HomeRetrieveControllerDocsTest extends RestDocsContextTest {
 					headerWithName("X-Device-ID").description("디바이스 ID")),
 				relaxedResponseFields(
 					fieldWithPath("result").description("결과 상태 (SUCCESS)"),
-					subsectionWithPath("data.subscribedCommittees").description("구독한 상임위원회 목록"),
-					fieldWithPath("data.hasNewNotification").description("오늘 수신된 알림 존재 여부"))))
+					subsectionWithPath("data.subscribeSection").description("구독한 상임위원회 섹션"),
+					fieldWithPath("data.isNotificationArrived").description("오늘 수신된 알림 존재 여부"),
+					subsectionWithPath("data.todayBillPostSection").description("오늘의 법안 섹션"))))
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.header(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
 			.headers(MANDATORY_DEVICE_HEADERS)
@@ -70,7 +71,7 @@ class HomeRetrieveControllerDocsTest extends RestDocsContextTest {
 					headerWithName("X-Device-ID").description("디바이스 ID")),
 				relaxedResponseFields(
 					fieldWithPath("result").description("결과 상태 (SUCCESS)"),
-					subsectionWithPath("data.notifications").description("최근 알림 목록"))))
+					subsectionWithPath("data.items").description("최근 알림 목록"))))
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.header(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
 			.headers(MANDATORY_DEVICE_HEADERS)

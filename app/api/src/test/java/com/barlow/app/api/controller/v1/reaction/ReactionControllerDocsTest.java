@@ -54,7 +54,7 @@ class ReactionControllerDocsTest extends RestDocsContextTest {
 				relaxedResponseFields(
 					fieldWithPath("result").description("결과 상태 (SUCCESS)"),
 					subsectionWithPath("data.reactions").description("리액션 종류별 개수 (LIKE, DISLIKE 등)"),
-					subsectionWithPath("data.userReactionStatus").description("현재 사용자의 리액션 상태"))))
+					subsectionWithPath("data.status").description("현재 사용자의 리액션 상태 (reactionType, hasReacted)"))))
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.header(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
 			.headers(MANDATORY_DEVICE_HEADERS)
