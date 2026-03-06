@@ -2,10 +2,13 @@ package com.barlow.app.api.controller.v1.reaction;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.relaxedResponseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+
+import java.util.Map;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,19 +52,20 @@ class ReactionControllerDocsTest extends RestDocsContextTest {
 				authRequestHeaders(),
 				pathParameters(
 					parameterWithName("targetId").description("리액션 대상 ID")),
-				queryParameters(
-					parameterWithName("targetType").description("리액션 대상 유형 (예: BILL_POST)"),
-					parameterWithName("reactionType").description("리액션 종류 (LIKE / DISLIKE)")),
+				requestFields(
+					fieldWithPath("targetType").description("리액션 대상 유형 (예: BILL_POST)"),
+					fieldWithPath("reactionType").description("리액션 종류 (LIKE / DISLIKE / HMM)")),
 				relaxedResponseFields(
 					fieldWithPath("result").description("결과 상태 (SUCCESS)"),
 					fieldWithPath("data").description("응답 데이터 (null)"))))
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.queryParam("targetType", ReactionTarget.BILL_POST.name())
-			.queryParam("reactionType", ReactionType.DISLIKE.name())
+			.body(Map.of(
+				"targetType", ReactionTarget.BILL_POST.name(),
+				"reactionType", ReactionType.DISLIKE.name()))
 			.when()
 			.post("/api/v1/reactions/{targetId}", "PRC_4")
 			.then()
-			.statusCode(200);
+			.statusCode(201);
 	}
 
 	@DisplayName("리액션 해제 API 문서화")
@@ -74,7 +78,7 @@ class ReactionControllerDocsTest extends RestDocsContextTest {
 					parameterWithName("targetId").description("리액션 해제 대상 ID")),
 				queryParameters(
 					parameterWithName("targetType").description("리액션 대상 유형 (예: BILL_POST)"),
-					parameterWithName("reactionType").description("해제할 리액션 종류 (LIKE / DISLIKE)")),
+					parameterWithName("reactionType").description("해제할 리액션 종류 (LIKE / DISLIKE / HMM)")),
 				relaxedResponseFields(
 					fieldWithPath("result").description("결과 상태 (SUCCESS)"),
 					fieldWithPath("data").description("응답 데이터 (null)"))))
@@ -82,7 +86,7 @@ class ReactionControllerDocsTest extends RestDocsContextTest {
 			.queryParam("targetType", ReactionTarget.BILL_POST.name())
 			.queryParam("reactionType", ReactionType.LIKE.name())
 			.when()
-			.post("/api/v1/reactions/{targetId}/remove", "PRC_1")
+			.delete("/api/v1/reactions/{targetId}", "PRC_1")
 			.then()
 			.statusCode(200);
 	}

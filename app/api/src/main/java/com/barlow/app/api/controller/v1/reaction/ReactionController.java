@@ -2,11 +2,15 @@ package com.barlow.app.api.controller.v1.reaction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.app.support.response.ApiResponse;
@@ -43,19 +47,20 @@ public class ReactionController {
 	}
 
 	@PostMapping("/{targetId}")
+	@ResponseStatus(HttpStatus.CREATED)
 	public ApiResponse<Void> reaction(
 		@PassportUser Passport passport,
 		@PathVariable("targetId") String targetId,
-		@RequestParam("targetType") String targetType,
-		@RequestParam("reactionType") String reactionType) {
-		log.info("Reaction for targetId: {}, targetType: {}, reaction: {}", targetId, targetType, reactionType);
+		@RequestBody ReactionRequest request) {
+		log.info("Reaction for targetId: {}, targetType: {}, reaction: {}", targetId, request.targetType(),
+			request.reactionType());
 		Reaction reaction = new Reaction(
-			passport.getUserNo(), targetId, ReactionTarget.valueOf(targetType), ReactionType.valueOf(reactionType));
+			passport.getUserNo(), targetId, request.targetType(), request.reactionType());
 		reactionService.react(passport.getUser(), reaction);
 		return ApiResponse.success();
 	}
 
-	@PostMapping("/{targetId}/remove")
+	@DeleteMapping("/{targetId}")
 	public ApiResponse<Void> reactionRemove(
 		@PassportUser Passport passport,
 		@PathVariable("targetId") String targetId,
