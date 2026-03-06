@@ -1,0 +1,583 @@
+= Barlow API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:sectanchors:
+:docinfo: shared
+
+== 공통 응답 구조
+
+모든 API는 아래 구조로 응답한다.
+
+[source,json]
+----
+{
+  "result": "SUCCESS | ERROR",
+  "data": { ... },
+  "error": null | { "code": "...", "message": "..." }
+}
+----
+
+== 공통 요청 헤더 (인증 필요 엔드포인트)
+
+|===
+| 헤더 | 설명
+
+| `Authorization`
+| Bearer {accessToken}
+
+| `X-Client-OS`
+| 클라이언트 OS (ios / android)
+
+| `X-Client-OS-Version`
+| 클라이언트 OS 버전
+
+| `X-Device-ID`
+| 디바이스 고유 ID
+|===
+
+---
+
+== 인증 (Auth)
+
+=== 게스트 회원가입
+
+`POST /api/v1/auth/guest/signup`
+
+.요청 헤더
+include::{snippets}/auth/guest-signup/request-headers.adoc[]
+
+.요청 바디
+include::{snippets}/auth/guest-signup/request-fields.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/auth/guest-signup/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/auth/guest-signup/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/auth/guest-signup/response-fields.adoc[]
+
+'''
+
+=== 게스트 로그인
+
+`POST /api/v1/auth/guest/login`
+
+.요청 바디
+include::{snippets}/auth/guest-login/request-fields.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/auth/guest-login/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/auth/guest-login/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/auth/guest-login/response-fields.adoc[]
+
+'''
+
+=== OIDC 회원가입
+
+`POST /api/v1/auth/oidc/signup`
+
+.요청 바디
+include::{snippets}/auth/oidc-signup/request-fields.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/auth/oidc-signup/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/auth/oidc-signup/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/auth/oidc-signup/response-fields.adoc[]
+
+'''
+
+=== OIDC 역할 전환 (게스트 → 멤버)
+
+`POST /api/v1/auth/oidc/promote`
+
+.요청 헤더
+include::{snippets}/auth/oidc-promote/request-headers.adoc[]
+
+.요청 바디
+include::{snippets}/auth/oidc-promote/request-fields.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/auth/oidc-promote/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/auth/oidc-promote/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/auth/oidc-promote/response-fields.adoc[]
+
+'''
+
+=== OIDC 로그인
+
+`POST /api/v1/auth/oidc/login`
+
+.요청 바디
+include::{snippets}/auth/oidc-login/request-fields.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/auth/oidc-login/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/auth/oidc-login/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/auth/oidc-login/response-fields.adoc[]
+
+---
+
+== 계정 (Account)
+
+=== 내 계정 조회
+
+`GET /api/v1/account/my`
+
+.요청 헤더
+include::{snippets}/account/get-my/request-headers.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/account/get-my/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/account/get-my/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/account/get-my/response-fields.adoc[]
+
+'''
+
+=== 회원 탈퇴
+
+`POST /api/v1/account/withdraw`
+
+.요청 헤더
+include::{snippets}/account/withdraw/request-headers.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/account/withdraw/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/account/withdraw/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/account/withdraw/response-fields.adoc[]
+
+---
+
+== 약관 (Term)
+
+=== 활성화된 약관 목록 조회
+
+`GET /api/v1/term/active`
+
+.HTTP 요청 예시
+include::{snippets}/term/active/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/term/active/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/term/active/response-fields.adoc[]
+
+---
+
+== 클라이언트 버전 (Client Version)
+
+=== 버전 확인
+
+`GET /api/v1/client-version/check`
+
+.요청 헤더
+include::{snippets}/client-version/check/request-headers.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/client-version/check/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/client-version/check/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/client-version/check/response-fields.adoc[]
+
+---
+
+== 메인 홈 (Home)
+
+=== 홈 조회
+
+`GET /api/v1/home`
+
+.요청 헤더
+include::{snippets}/home/retrieve/request-headers.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/home/retrieve/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/home/retrieve/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/home/retrieve/response-fields.adoc[]
+
+'''
+
+=== 알림센터 조회
+
+`GET /api/v1/home/notification-center`
+
+.요청 헤더
+include::{snippets}/home/notification-center/request-headers.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/home/notification-center/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/home/notification-center/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/home/notification-center/response-fields.adoc[]
+
+---
+
+== 최근 법안 (Recent Bill)
+
+=== 최근법안 목록 조회
+
+`GET /api/v1/recent-bill/thumbnail`
+
+.요청 헤더
+include::{snippets}/recent-bill/thumbnail/request-headers.adoc[]
+
+.쿼리 파라미터
+include::{snippets}/recent-bill/thumbnail/query-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/recent-bill/thumbnail/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/recent-bill/thumbnail/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/recent-bill/thumbnail/response-fields.adoc[]
+
+'''
+
+=== 최근법안 상세 조회
+
+`GET /api/v1/recent-bill/detail/{recentBillId}`
+
+.요청 헤더
+include::{snippets}/recent-bill/detail/request-headers.adoc[]
+
+.경로 파라미터
+include::{snippets}/recent-bill/detail/path-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/recent-bill/detail/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/recent-bill/detail/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/recent-bill/detail/response-fields.adoc[]
+
+---
+
+== 입법예고 (Pre-Announcement Bill)
+
+=== 입법예고 목록 조회
+
+`GET /api/v1/pre-announcement-bills`
+
+.요청 헤더
+include::{snippets}/pre-announcement-bills/list/request-headers.adoc[]
+
+.쿼리 파라미터
+include::{snippets}/pre-announcement-bills/list/query-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/pre-announcement-bills/list/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/pre-announcement-bills/list/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/pre-announcement-bills/list/response-fields.adoc[]
+
+'''
+
+=== 입법예고 상세 조회
+
+`GET /api/v1/pre-announcement-bills/{billId}`
+
+.요청 헤더
+include::{snippets}/pre-announcement-bills/detail/request-headers.adoc[]
+
+.경로 파라미터
+include::{snippets}/pre-announcement-bills/detail/path-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/pre-announcement-bills/detail/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/pre-announcement-bills/detail/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/pre-announcement-bills/detail/response-fields.adoc[]
+
+---
+
+== 상임위원회 (Legislation Account)
+
+=== 상임위원회 프로필 조회
+
+`GET /api/v1/legislation-accounts/{legislationType}/profile`
+
+.요청 헤더
+include::{snippets}/legislation-accounts/profile/request-headers.adoc[]
+
+.경로 파라미터
+include::{snippets}/legislation-accounts/profile/path-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/legislation-accounts/profile/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/legislation-accounts/profile/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/legislation-accounts/profile/response-fields.adoc[]
+
+'''
+
+=== 전체 상임위원회 목록 조회
+
+`GET /api/v1/legislation-accounts/committees/info`
+
+.요청 헤더
+include::{snippets}/legislation-accounts/committees/request-headers.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/legislation-accounts/committees/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/legislation-accounts/committees/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/legislation-accounts/committees/response-fields.adoc[]
+
+'''
+
+=== 상임위원회 게시글 목록 조회
+
+`GET /api/v1/legislation-accounts/{legislationType}/bill-posts`
+
+.요청 헤더
+include::{snippets}/legislation-accounts/bill-posts/list/request-headers.adoc[]
+
+.경로 파라미터
+include::{snippets}/legislation-accounts/bill-posts/list/path-parameters.adoc[]
+
+.쿼리 파라미터
+include::{snippets}/legislation-accounts/bill-posts/list/query-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/legislation-accounts/bill-posts/list/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/legislation-accounts/bill-posts/list/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/legislation-accounts/bill-posts/list/response-fields.adoc[]
+
+'''
+
+=== 상임위원회 게시글 상세 조회
+
+`GET /api/v1/legislation-accounts/bill-posts/{billId}`
+
+.요청 헤더
+include::{snippets}/legislation-accounts/bill-posts/detail/request-headers.adoc[]
+
+.경로 파라미터
+include::{snippets}/legislation-accounts/bill-posts/detail/path-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/legislation-accounts/bill-posts/detail/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/legislation-accounts/bill-posts/detail/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/legislation-accounts/bill-posts/detail/response-fields.adoc[]
+
+'''
+
+=== 상임위원회 구독 활성화
+
+`POST /api/v1/legislation-accounts/{legislationType}/subscribe/activate`
+
+.요청 헤더
+include::{snippets}/legislation-accounts/subscribe/activate/request-headers.adoc[]
+
+.경로 파라미터
+include::{snippets}/legislation-accounts/subscribe/activate/path-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/legislation-accounts/subscribe/activate/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/legislation-accounts/subscribe/activate/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/legislation-accounts/subscribe/activate/response-fields.adoc[]
+
+'''
+
+=== 상임위원회 구독 비활성화
+
+`POST /api/v1/legislation-accounts/{legislationType}/subscribe/deactivate`
+
+.요청 헤더
+include::{snippets}/legislation-accounts/subscribe/deactivate/request-headers.adoc[]
+
+.경로 파라미터
+include::{snippets}/legislation-accounts/subscribe/deactivate/path-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/legislation-accounts/subscribe/deactivate/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/legislation-accounts/subscribe/deactivate/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/legislation-accounts/subscribe/deactivate/response-fields.adoc[]
+
+'''
+
+=== 상임위원회 알림설정 활성화
+
+`POST /api/v1/legislation-accounts/{legislationType}/notification-setting/activate`
+
+.요청 헤더
+include::{snippets}/legislation-accounts/notification-setting/activate/request-headers.adoc[]
+
+.경로 파라미터
+include::{snippets}/legislation-accounts/notification-setting/activate/path-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/legislation-accounts/notification-setting/activate/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/legislation-accounts/notification-setting/activate/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/legislation-accounts/notification-setting/activate/response-fields.adoc[]
+
+'''
+
+=== 상임위원회 알림설정 비활성화
+
+`POST /api/v1/legislation-accounts/{legislationType}/notification-setting/deactivate`
+
+.요청 헤더
+include::{snippets}/legislation-accounts/notification-setting/deactivate/request-headers.adoc[]
+
+.경로 파라미터
+include::{snippets}/legislation-accounts/notification-setting/deactivate/path-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/legislation-accounts/notification-setting/deactivate/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/legislation-accounts/notification-setting/deactivate/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/legislation-accounts/notification-setting/deactivate/response-fields.adoc[]
+
+---
+
+== 리액션 (Reaction)
+
+=== 리액션 조회
+
+`GET /api/v1/reactions/{targetId}?targetType=BILL_POST`
+
+.요청 헤더
+include::{snippets}/reactions/retrieve/request-headers.adoc[]
+
+.경로 파라미터
+include::{snippets}/reactions/retrieve/path-parameters.adoc[]
+
+.쿼리 파라미터
+include::{snippets}/reactions/retrieve/query-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/reactions/retrieve/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/reactions/retrieve/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/reactions/retrieve/response-fields.adoc[]
+
+'''
+
+=== 리액션 등록
+
+`POST /api/v1/reactions/{targetId}?targetType=BILL_POST&reactionType=LIKE`
+
+.요청 헤더
+include::{snippets}/reactions/react/request-headers.adoc[]
+
+.경로 파라미터
+include::{snippets}/reactions/react/path-parameters.adoc[]
+
+.쿼리 파라미터
+include::{snippets}/reactions/react/query-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/reactions/react/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/reactions/react/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/reactions/react/response-fields.adoc[]
+
+'''
+
+=== 리액션 해제
+
+`POST /api/v1/reactions/{targetId}/remove?targetType=BILL_POST&reactionType=LIKE`
+
+.요청 헤더
+include::{snippets}/reactions/remove/request-headers.adoc[]
+
+.경로 파라미터
+include::{snippets}/reactions/remove/path-parameters.adoc[]
+
+.쿼리 파라미터
+include::{snippets}/reactions/remove/query-parameters.adoc[]
+
+.HTTP 요청 예시
+include::{snippets}/reactions/remove/http-request.adoc[]
+
+.HTTP 응답 예시
+include::{snippets}/reactions/remove/http-response.adoc[]
+
+.응답 필드
+include::{snippets}/reactions/remove/response-fields.adoc[]

@@ -1,5 +1,24 @@
+plugins {
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+}
+
 bootJar.enabled = true
 jar.enabled = false
+
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+restDocsTest {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    dependsOn restDocsTest
+    inputs.dir snippetsDir
+    attributes 'snippets': snippetsDir
+    outputDir file('build/docs/asciidoc')
+}
 
 dependencies {
     runtimeOnly project(":infra:storage")
