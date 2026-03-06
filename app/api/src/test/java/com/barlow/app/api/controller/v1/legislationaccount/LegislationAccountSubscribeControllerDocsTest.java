@@ -16,11 +16,11 @@ import com.barlow.core.enumerate.LegislationType;
 @AcceptanceTest({"acceptance/legislationAccount.json", "acceptance/legislationAccountSubscribe.json"})
 class LegislationAccountSubscribeControllerDocsTest extends RestDocsContextTest {
 
-	@DisplayName("상임위원회 구독 활성화 API 문서화")
+	@DisplayName("상임위원회 구독 API 문서화")
 	@Test
-	void activateSubscription() {
+	void subscribe() {
 		givenWithAuth()
-			.filter(document("legislation-accounts/subscribe/activate",
+			.filter(document("legislation-accounts/subscriptions/subscribe",
 				authRequestHeaders(),
 				pathParameters(
 					parameterWithName("legislationType").description("구독할 상임위원회 유형")),
@@ -29,26 +29,26 @@ class LegislationAccountSubscribeControllerDocsTest extends RestDocsContextTest 
 					fieldWithPath("data").description("응답 데이터 (null)"))))
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.when()
-			.post("/api/v1/legislation-accounts/{legislationType}/subscribe/activate",
+			.post("/api/v1/legislation-accounts/{legislationType}/subscriptions",
 				LegislationType.LEGISLATION_AND_JUDICIARY)
 			.then()
-			.statusCode(200);
+			.statusCode(201);
 	}
 
-	@DisplayName("상임위원회 구독 비활성화 API 문서화")
+	@DisplayName("상임위원회 구독 취소 API 문서화")
 	@Test
-	void deactivateSubscription() {
+	void unsubscribe() {
 		givenWithAuth()
-			.filter(document("legislation-accounts/subscribe/deactivate",
+			.filter(document("legislation-accounts/subscriptions/unsubscribe",
 				authRequestHeaders(),
 				pathParameters(
-					parameterWithName("legislationType").description("구독 해제할 상임위원회 유형")),
+					parameterWithName("legislationType").description("구독 취소할 상임위원회 유형")),
 				relaxedResponseFields(
 					fieldWithPath("result").description("결과 상태 (SUCCESS)"),
 					fieldWithPath("data").description("응답 데이터 (null)"))))
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.when()
-			.post("/api/v1/legislation-accounts/{legislationType}/subscribe/deactivate",
+			.delete("/api/v1/legislation-accounts/{legislationType}/subscriptions",
 				LegislationType.HOUSE_STEERING)
 			.then()
 			.statusCode(200);
