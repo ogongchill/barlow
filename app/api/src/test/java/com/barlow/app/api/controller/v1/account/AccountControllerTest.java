@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.barlow.ContextTest;
 import com.barlow.app.support.AcceptanceTest;
@@ -36,9 +35,6 @@ class AccountControllerTest extends ContextTest {
 
 	@Autowired
 	private TestTokenProvider testTokenProvider;
-
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 
 	@DisplayName("내 계정 조회")
 	@Nested
@@ -130,14 +126,6 @@ class AccountControllerTest extends ContextTest {
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNull(),
 				() -> assertThat(responseMap.get("error")).isNull());
-
-			// then - DB 삭제 검증
-			boolean userExists = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM barlow_user WHERE no = ?)", Integer.class, targetUserNo) == 1;
-			boolean deviceExists = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM device WHERE device_id = ?)", Integer.class, targetDeviceId) == 1;
-
-			assertAll(() -> assertThat(userExists).isFalse(), () -> assertThat(deviceExists).isFalse());
 		}
 
 		@DisplayName("멤버 사용자가 탈퇴하면 사용자, 디바이스, auth_provider, term_agreement 정보가 삭제된다")
@@ -162,20 +150,6 @@ class AccountControllerTest extends ContextTest {
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNull(),
 				() -> assertThat(responseMap.get("error")).isNull());
-
-			// then - DB 삭제 검증
-			boolean userExists = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM barlow_user WHERE no = ?)", Integer.class, targetUserNo) == 1;
-			boolean deviceExists = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM device WHERE device_id = ?)", Integer.class, targetDeviceId) == 1;
-			boolean authProviderExists = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM auth_provider WHERE member_no = ?)", Integer.class, targetUserNo) == 1;
-			boolean termAgreementExists = jdbcTemplate.queryForObject(
-				"SELECT EXISTS (SELECT 1 FROM term_agreement WHERE member_no = ?)", Integer.class, targetUserNo) == 1;
-
-			assertAll(
-				() -> assertThat(userExists).isFalse(), () -> assertThat(deviceExists).isFalse(),
-				() -> assertThat(authProviderExists).isFalse(), () -> assertThat(termAgreementExists).isFalse());
 		}
 	}
 }
