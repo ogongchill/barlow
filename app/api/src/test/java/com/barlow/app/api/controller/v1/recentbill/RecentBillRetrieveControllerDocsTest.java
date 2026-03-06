@@ -19,9 +19,9 @@ class RecentBillRetrieveControllerDocsTest extends RestDocsContextTest {
 
 	@DisplayName("최근법안 게시글 목록 조회 API 문서화")
 	@Test
-	void retrieveRecentBillThumbnail() {
+	void retrieveRecentBills() {
 		givenWithAuth()
-			.filter(document("recent-bill/thumbnail",
+			.filter(document("recent-bill/list",
 				authRequestHeaders(),
 				queryParameters(
 					parameterWithName("page").description("페이지 번호 (0부터 시작)").optional(),
@@ -33,7 +33,7 @@ class RecentBillRetrieveControllerDocsTest extends RestDocsContextTest {
 			.queryParam("page", 0)
 			.queryParam("size", 10)
 			.when()
-			.get("/api/v1/recent-bill/thumbnail")
+			.get("/api/v1/recent-bills")
 			.then()
 			.statusCode(200);
 	}
@@ -56,7 +56,7 @@ class RecentBillRetrieveControllerDocsTest extends RestDocsContextTest {
 					subsectionWithPath("data.proposerSection").description("발의자 상세 정보"))))
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.when()
-			.get("/api/v1/recent-bill/detail/{recentBillId}", "PRC_1")
+			.get("/api/v1/recent-bills/{recentBillId}", "PRC_1")
 			.then()
 			.statusCode(200);
 	}

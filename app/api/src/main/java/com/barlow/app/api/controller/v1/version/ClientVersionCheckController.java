@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/client-version")
+@RequestMapping("/api/v1/client-versions")
 public class ClientVersionCheckController {
 
 	private final ClientVersionService clientVersionService;
@@ -21,7 +21,7 @@ public class ClientVersionCheckController {
 		this.clientVersionService = clientVersionService;
 	}
 
-	@GetMapping("/check")
+	@GetMapping
 	public ApiResponse<ClientVersionCheckResponse> retrieveVersionCheckResponse(
 		@RequestHeader("X-App-Version") String appVersion, @RequestHeader("X-Device-Os") String deviceOs) {
 		ClientVersionStatus status = clientVersionService

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/term")
+@RequestMapping("/api/v1/terms")
 public class TermController {
 
 	private static final Logger log = LoggerFactory.getLogger(TermController.class);
@@ -23,7 +23,7 @@ public class TermController {
 		this.termManager = termManager;
 	}
 
-	@GetMapping("/active")
+	@GetMapping
 	public ApiResponse<ActiveTermResponse> getActiveTerms() {
 		log.info("Received active term request.");
 		List<Term> activeTerms = termManager.retrieveActiveTerms();

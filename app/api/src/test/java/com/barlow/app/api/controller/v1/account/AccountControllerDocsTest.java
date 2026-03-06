@@ -44,7 +44,7 @@ class AccountControllerDocsTest extends RestDocsContextTest {
 			.header(X_CLIENT_OS_VERSION, "device_os_version")
 			.header(X_DEVICE_ID, "device_id_3")
 			.when()
-			.get("/api/v1/account/my")
+			.get("/api/v1/accounts/me")
 			.then()
 			.statusCode(200);
 	}
@@ -64,7 +64,7 @@ class AccountControllerDocsTest extends RestDocsContextTest {
 			.header(X_CLIENT_OS_VERSION, "device_os_version")
 			.header(X_DEVICE_ID, "device_id_1")
 			.when()
-			.post("/api/v1/account/withdraw")
+			.delete("/api/v1/accounts/me")
 			.then()
 			.statusCode(200);
 	}

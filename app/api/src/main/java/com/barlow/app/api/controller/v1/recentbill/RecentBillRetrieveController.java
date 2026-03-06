@@ -21,7 +21,7 @@ import com.barlow.app.support.response.ApiResponse;
 import com.barlow.infra.auth.support.annotation.PassportUser;
 
 @RestController
-@RequestMapping("/api/v1/recent-bill")
+@RequestMapping("/api/v1/recent-bills")
 public class RecentBillRetrieveController {
 
 	private static final Logger log = LoggerFactory.getLogger(RecentBillRetrieveController.class);
@@ -32,9 +32,10 @@ public class RecentBillRetrieveController {
 		this.billPostRetrieveService = billPostRetrieveService;
 	}
 
-	@GetMapping("/thumbnail")
-	public ApiResponse<RecentBillPostsResponse> retrieveRecentBill(@RequestParam MultiValueMap<String, String> params) {
-		log.info("Received retrieve recent bill thumbnail request.");
+	@GetMapping
+	public ApiResponse<RecentBillPostsResponse> retrieveRecentBills(
+		@RequestParam MultiValueMap<String, String> params) {
+		log.info("Received retrieve recent bills request.");
 		RecentBillPostsRequest request = RecentBillPostsRequest.sanitizeFrom(params);
 		BillPostsStatus billPostsStatus = billPostRetrieveService.readBillPosts(
 			BillPostQuery.defaultOf(request.getPage(), request.getSize(), request.getSort(), request.getFilters()));
@@ -42,7 +43,7 @@ public class RecentBillRetrieveController {
 		return ApiResponse.success(apiSpecComposer.compose(LocalDate.now()));
 	}
 
-	@GetMapping("/detail/{recentBillId}")
+	@GetMapping("/{recentBillId}")
 	public ApiResponse<RecentBillPostDetailResponse> retrieveRecentBillDetail(@PassportUser Passport passport,
 		@PathVariable("recentBillId") String recentBillId) {
 		log.info("Received retrieve recent bill {} detail request.", recentBillId);

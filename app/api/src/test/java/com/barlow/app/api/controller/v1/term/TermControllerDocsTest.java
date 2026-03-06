@@ -31,7 +31,7 @@ class TermControllerDocsTest extends RestDocsContextTest {
 					fieldWithPath("data.activeTerms[].required").description("필수 동의 여부"),
 					fieldWithPath("data.activeTerms[].effectiveAt").description("약관 발효일시"))))
 			.when()
-			.get("/api/v1/term/active")
+			.get("/api/v1/terms")
 			.then()
 			.statusCode(200);
 	}

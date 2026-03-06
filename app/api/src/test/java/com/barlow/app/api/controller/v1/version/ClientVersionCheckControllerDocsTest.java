@@ -37,7 +37,7 @@ class ClientVersionCheckControllerDocsTest extends RestDocsContextTest {
 			.header("X-App-Version", "1.5.0")
 			.header("X-Device-Os", "ANDROID")
 			.when()
-			.get("/api/v1/client-version/check")
+			.get("/api/v1/client-versions")
 			.then()
 			.statusCode(200);
 	}
