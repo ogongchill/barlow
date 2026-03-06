@@ -61,8 +61,8 @@ public class ReactionController {
 		@PathVariable("targetId") String targetId,
 		@RequestParam("targetType") String targetType,
 		@RequestParam("reactionType") String reactionType) {
-		log.info(
-			"Removing reaction for targetId: {}, targetType: {}, reaction: {}", targetId, targetType, reactionType);
+		log.info("Removing reaction for targetId: {}, targetType: {}, reaction: {}", targetId, targetType,
+			reactionType);
 		Reaction reaction = new Reaction(
 			passport.getUserNo(), targetId, ReactionTarget.valueOf(targetType), ReactionType.valueOf(reactionType));
 		reactionService.removeReaction(passport.getUser(), reaction);
