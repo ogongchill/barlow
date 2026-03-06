@@ -70,9 +70,9 @@ public class InboundJwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) {
-		return match("/api/v1/auth/guest/signup", request) || match("/api/v1/auth/guest/login", request)
-			|| match("/api/v1/auth/oidc/signup", request) || match("/api/v1/auth/oidc/login", request)
-			|| match("/api/v1/term/**", request) || match("/health", request) || match("/h2-console", request)
+		return match("/api/v1/auth/guests", request) || match("/api/v1/auth/guest/sessions", request)
+			|| match("/api/v1/auth/oidc/accounts", request) || match("/api/v1/auth/oidc/sessions", request)
+			|| match("/api/v1/terms/**", request) || match("/health", request) || match("/h2-console", request)
 			|| match("/actuator/**", request) || match("/error", request);
 	}
 

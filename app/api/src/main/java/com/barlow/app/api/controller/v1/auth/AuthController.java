@@ -9,9 +9,12 @@ import com.barlow.infra.auth.authentication.oauth.OidcAuthenticationService;
 import com.barlow.infra.auth.support.annotation.PassportUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.infra.auth.authentication.token.AccessToken;
@@ -46,10 +49,10 @@ public class AuthController {
 	}
 
 	/**
-	 * 사용자 편의를 위해 회원가입 시 access token 바로 발급.
-	 * 추가적인 로그인 없도록 함
+	 * 게스트 계정 생성 (회원가입). 생성 직후 access token 즉시 발급.
 	 */
-	@PostMapping("/guest/signup")
+	@PostMapping("/guests")
+	@ResponseStatus(HttpStatus.CREATED)
 	public ApiResponse<LoginResponse> guestSignup(@RequestBody SignupRequest request) {
 		log.info("Received guest signup request.");
 		request.validate();
@@ -60,9 +63,9 @@ public class AuthController {
 	}
 
 	/**
-	 * access token 만료 시 재 로그인
+	 * 게스트 세션 생성 (로그인). access token 만료 시 재발급.
 	 */
-	@PostMapping("/guest/login")
+	@PostMapping("/guest/sessions")
 	public ApiResponse<LoginResponse> guestLogin(@RequestBody LoginRequest request) {
 		log.info("Received guest login request.");
 		request.validate();
@@ -71,7 +74,11 @@ public class AuthController {
 		return ApiResponse.success(new LoginResponse(accessToken.getValue()));
 	}
 
-	@PostMapping("/oidc/signup")
+	/**
+	 * OIDC 멤버 계정 생성 (회원가입). 생성 직후 access token 즉시 발급.
+	 */
+	@PostMapping("/oidc/accounts")
+	@ResponseStatus(HttpStatus.CREATED)
 	public ApiResponse<LoginResponse> oidcSignup(@RequestBody OidcSignupRequest request) {
 		log.info("Received oidc signup request.");
 		request.signupPayload().validate();
@@ -81,7 +88,10 @@ public class AuthController {
 		return ApiResponse.success(new LoginResponse(accessToken.getValue()));
 	}
 
-	@PostMapping("/oidc/promote")
+	/**
+	 * OIDC 인증으로 게스트 → 멤버 역할 전환.
+	 */
+	@PatchMapping("/oidc/role")
 	public ApiResponse<LoginResponse> oidcPromote(@PassportUser Passport passport,
 		@RequestBody OidcRolePromoteRequest request) {
 		log.info("Received oidc promote request.");
@@ -91,7 +101,10 @@ public class AuthController {
 		return ApiResponse.success(new LoginResponse(accessToken.getValue()));
 	}
 
-	@PostMapping("/oidc/login")
+	/**
+	 * OIDC 세션 생성 (로그인).
+	 */
+	@PostMapping("/oidc/sessions")
 	public ApiResponse<LoginResponse> oidcLogin(@RequestBody OidcLoginRequest request) {
 		log.info("Received oidc login request.");
 		MemberLoginCommand command = request.toCommand(oidcAuthenticationService::authenticate);

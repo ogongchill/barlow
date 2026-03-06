@@ -50,7 +50,7 @@ class AuthControllerDocsTest extends RestDocsContextTest {
 		fakeOidcService.reset();
 	}
 
-	@DisplayName("게스트 회원가입 API 문서화")
+	@DisplayName("게스트 계정 생성 API 문서화")
 	@Test
 	void guestSignup() {
 		RestAssured.given(spec)
@@ -72,12 +72,12 @@ class AuthControllerDocsTest extends RestDocsContextTest {
 				"nickname", "nniicckknnaammee",
 				"termAgreements", Map.of("1", true, "2", true, "3", false)))
 			.when()
-			.post("/api/v1/auth/guest/signup")
+			.post("/api/v1/auth/guests")
 			.then()
-			.statusCode(200);
+			.statusCode(201);
 	}
 
-	@DisplayName("게스트 로그인 API 문서화")
+	@DisplayName("게스트 세션 생성 (로그인) API 문서화")
 	@Test
 	void guestLogin() {
 		RestAssured.given(spec)
@@ -92,12 +92,12 @@ class AuthControllerDocsTest extends RestDocsContextTest {
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.body(Map.of("deviceOs", "ios", "deviceId", "device_id_1", "deviceToken", "device_token_1"))
 			.when()
-			.post("/api/v1/auth/guest/login")
+			.post("/api/v1/auth/guest/sessions")
 			.then()
 			.statusCode(200);
 	}
 
-	@DisplayName("OIDC 회원가입 API 문서화")
+	@DisplayName("OIDC 멤버 계정 생성 API 문서화")
 	@Test
 	void oidcSignup() {
 		RestAssured.given(spec)
@@ -120,9 +120,9 @@ class AuthControllerDocsTest extends RestDocsContextTest {
 					"deviceToken", "oidc_device_token",
 					"nickname", "oidc_user")))
 			.when()
-			.post("/api/v1/auth/oidc/signup")
+			.post("/api/v1/auth/oidc/accounts")
 			.then()
-			.statusCode(200);
+			.statusCode(201);
 	}
 
 	@DisplayName("OIDC 역할 전환 (게스트 → 멤버) API 문서화")
@@ -144,12 +144,12 @@ class AuthControllerDocsTest extends RestDocsContextTest {
 			.headers(MANDATORY_DEVICE_HEADERS)
 			.body(Map.of("oidcPayload", Map.of("authProvider", "KAKAO", "idToken", "mock_id_token")))
 			.when()
-			.post("/api/v1/auth/oidc/promote")
+			.patch("/api/v1/auth/oidc/role")
 			.then()
 			.statusCode(200);
 	}
 
-	@DisplayName("OIDC 로그인 API 문서화")
+	@DisplayName("OIDC 세션 생성 (로그인) API 문서화")
 	@Test
 	void oidcLogin() {
 		fakeOidcService.willReturn(new ExternalPrincipal(AuthProvider.KAKAO, "existing_sub_123"));
@@ -171,7 +171,7 @@ class AuthControllerDocsTest extends RestDocsContextTest {
 				"deviceToken", "device_token_3",
 				"oidcPayload", Map.of("authProvider", "KAKAO", "idToken", "mock_id_token")))
 			.when()
-			.post("/api/v1/auth/oidc/login")
+			.post("/api/v1/auth/oidc/sessions")
 			.then()
 			.statusCode(200);
 	}
