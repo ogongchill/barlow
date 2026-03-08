@@ -16,12 +16,9 @@
 
 ## 실행 순서
 
-1. `.claude/skills/coding-rules/ARCHITECTURE.md` 읽기
-2. `.claude/skills/coding-rules/DOMAIN_RULES.md` 읽기
-3. `.claude/skills/coding-rules/SERVICE_RULES.md` 읽기
-4. `.claude/skills/coding-rules/ERROR_HANDLING.md` 읽기
-5. `.claude/skills/coding-rules/TESTING.md` 읽기
-6. 위 범위 기준으로 대상 파일을 확정하고 아래 체크리스트 실행
+1. 위 범위 기준으로 대상 파일을 확정하고 아래 체크리스트 실행
+   - 특정 항목의 판단 기준이 불명확하면 해당 규칙 파일만 선택적으로 읽는다:
+     `ARCHITECTURE.md` / `DOMAIN_RULES.md` / `SERVICE_RULES.md` / `ERROR_HANDLING.md` / `TESTING.md`
 
 ---
 

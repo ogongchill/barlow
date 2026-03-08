@@ -1,5 +1,3 @@
-
-
 # coding-rules
 
 ## 트리거
@@ -27,7 +25,9 @@
 | API 엔드포인트(Controller, Request, Response) 작성 | `SERVICE_RULES.md` |
 | 예외 추가·수정 | `ERROR_HANDLING.md` |
 | 테스트 작성 | `TESTING.md` |
-| 전체 기능 구현 (도메인 → 서비스 → API) | `ARCHITECTURE.md` → `DOMAIN_RULES.md` → `SERVICE_RULES.md` → `ERROR_HANDLING.md` → `TESTING.md` |
+| 전체 기능 구현 (도메인 → 서비스 → API) | `ARCHITECTURE.md` → `DOMAIN_RULES.md` → `SERVICE_RULES.md` → `ERROR_HANDLING.md` |
+
+> **TESTING.md 로드 시점**: "테스트 작성" 단독 작업이 아닌 경우, TESTING.md는 Phase 5(테스트 작성) 진입 직전에 로드한다. Phase 0에서 선취하지 않는다.
 
 ---
 
