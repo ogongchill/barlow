@@ -222,6 +222,18 @@ A → B 형태로 전체 열거 (import, 주입, 호출 포함)
    구현 완료 후 /harness-check 로 검증합니다.
 ```
 
+> **Task 구현 진입 시 규칙 로드 (필수)**: "Task N 구현" 트리거를 받으면 코드 작성 전에
+> 반드시 아래 파일을 읽는다. 새 세션이거나 컨텍스트 압축 후 재진입하는 경우를 포함한다.
+>
+> ```
+> 1. docs/DOMAIN_ENCYCLOPEDIA.md          — 도메인 용어 확인
+> 2. .claude/skills/coding-rules/ARCHITECTURE.md
+> 3. .claude/skills/coding-rules/DOMAIN_RULES.md   (도메인 변경 포함 시)
+> 4. .claude/skills/coding-rules/SERVICE_RULES.md  (서비스 변경 포함 시)
+> 5. .claude/skills/coding-rules/ERROR_HANDLING.md (예외 추가 포함 시)
+> ```
+> Task 상세의 "하네스 체크포인트"를 확인해 해당 항목에 맞는 파일만 선택적으로 로드한다.
+
 ---
 
 ## 사용 예시

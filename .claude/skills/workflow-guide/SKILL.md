@@ -31,6 +31,5 @@
 - **Phase 7~8**: 커밋 → 브랜치 & PR 생성
 
 **세션 격리 권장 지점:**
-- Phase 3 완료 & 승인 후 → `/clear` → "Phase 4 진행해"
-- Phase 6 완료 후 → `/clear` → "Phase 7 진행해"
-- Phase 8 완료 후 → `/clear` → 다음 이슈 시작
+- Phase 3 완료 & 승인 후 → `/clear` → "Phase 4 진행해" (복잡 작업만)
+- Phase 6 완료 후 (테스트 전체 PASS + Harness PASS) → `/clear` → "Phase 7 진행해"
