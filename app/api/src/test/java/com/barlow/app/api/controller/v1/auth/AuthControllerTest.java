@@ -60,7 +60,7 @@ class AuthControllerTest extends ContextTest {
 				Map.of(
 					"deviceOs", "ios", "deviceId", "device_id_new", "deviceToken", "device_token_new", "nickname",
 					"nniicckknnaammee", "termAgreements", Map.of("1", true, "2", true, "3", false)))
-			.post("/api/v1/auth/guest/signup").then().log().all().extract().jsonPath().getMap(".");
+			.post("/api/v1/auth/guests").then().log().all().extract().jsonPath().getMap(".");
 
 		// then - API 응답 검증
 		assertAll(
@@ -78,7 +78,7 @@ class AuthControllerTest extends ContextTest {
 			Map<String, Object> responseMap = RestAssured.given().log().all()
 				.contentType(MediaType.APPLICATION_JSON_VALUE).when()
 				.body(Map.of("deviceOs", "ios", "deviceId", "device_id_1", "deviceToken", "device_token_1"))
-				.post("/api/v1/auth/guest/login").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/guest/sessions").then().log().all().extract().jsonPath().getMap(".");
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
@@ -91,7 +91,7 @@ class AuthControllerTest extends ContextTest {
 			Map<String, Object> responseMap = RestAssured.given().log().all()
 				.contentType(MediaType.APPLICATION_JSON_VALUE).when()
 				.body(Map.of("deviceOs", "ios", "deviceId", "device_id_1", "deviceToken", "changed_device_token"))
-				.post("/api/v1/auth/guest/login").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/guest/sessions").then().log().all().extract().jsonPath().getMap(".");
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
@@ -104,7 +104,7 @@ class AuthControllerTest extends ContextTest {
 			Map<String, Object> responseMap = RestAssured.given().log().all()
 				.contentType(MediaType.APPLICATION_JSON_VALUE).when()
 				.body(Map.of("deviceOs", "ANDROID", "deviceId", "device_id_2", "deviceToken", "device_token_2"))
-				.post("/api/v1/auth/guest/login").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/guest/sessions").then().log().all().extract().jsonPath().getMap(".");
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
 		}
 	}
@@ -126,7 +126,7 @@ class AuthControllerTest extends ContextTest {
 						Map.of(
 							"deviceOs", "ios", "deviceId", "oidc_device_id", "deviceToken", "oidc_device_token",
 							"nickname", "oidc_user")))
-				.post("/api/v1/auth/oidc/signup").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/oidc/accounts").then().log().all().extract().jsonPath().getMap(".");
 
 			// then - API 응답 검증
 			assertAll(
@@ -151,7 +151,7 @@ class AuthControllerTest extends ContextTest {
 						Map.of(
 							"deviceOs", "ios", "deviceId", "oidc_device_id_2", "deviceToken", "oidc_device_token_2",
 							"nickname", targetNickname)))
-				.post("/api/v1/auth/oidc/signup").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/oidc/accounts").then().log().all().extract().jsonPath().getMap(".");
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
@@ -176,7 +176,7 @@ class AuthControllerTest extends ContextTest {
 						Map.of(
 							"deviceOs", "ios", "deviceId", "duplicate_device_id", "deviceToken",
 							"duplicate_device_token", "nickname", targetNickname)))
-				.post("/api/v1/auth/oidc/signup").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/oidc/accounts").then().log().all().extract().jsonPath().getMap(".");
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
@@ -198,7 +198,7 @@ class AuthControllerTest extends ContextTest {
 						Map.of(
 							"deviceOs", "ios", "deviceId", "unsupported_device_id", "deviceToken",
 							"unsupported_device_token", "nickname", targetNickname)))
-				.post("/api/v1/auth/oidc/signup").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/oidc/accounts").then().log().all().extract().jsonPath().getMap(".");
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
@@ -223,7 +223,7 @@ class AuthControllerTest extends ContextTest {
 						Map.of(
 							"deviceOs", "ios", "deviceId", "invalid_token_device_id", "deviceToken",
 							"invalid_token_device_token", "nickname", targetNickname)))
-				.post("/api/v1/auth/oidc/signup").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/oidc/accounts").then().log().all().extract().jsonPath().getMap(".");
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
@@ -245,7 +245,7 @@ class AuthControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE).headers("Authorization", "Bearer " + accessToken)
 				.headers(MANDATORY_DEVICE_HEADERS).when()
 				.body(Map.of("oidcPayload", Map.of("authProvider", "KAKAO", "idToken", "mock_id_token")))
-				.post("/api/v1/auth/oidc/promote").then().log().all().extract().jsonPath().getMap(".");
+				.patch("/api/v1/auth/oidc/role").then().log().all().extract().jsonPath().getMap(".");
 
 			// then - API 응답 검증
 			assertAll(
@@ -268,7 +268,7 @@ class AuthControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE).headers("Authorization", "Bearer " + accessToken)
 				.headers(MANDATORY_DEVICE_HEADERS).when()
 				.body(Map.of("oidcPayload", Map.of("authProvider", "KAKAO", "idToken", "mock_id_token")))
-				.post("/api/v1/auth/oidc/promote").then().log().all().extract().jsonPath().getMap(".");
+				.patch("/api/v1/auth/oidc/role").then().log().all().extract().jsonPath().getMap(".");
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
@@ -286,7 +286,7 @@ class AuthControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE).headers("Authorization", "Bearer " + accessToken)
 				.headers(MANDATORY_DEVICE_HEADERS).when()
 				.body(Map.of("oidcPayload", Map.of("authProvider", "GOOGLE", "idToken", "mock_id_token")))
-				.post("/api/v1/auth/oidc/promote").then().log().all().extract().jsonPath().getMap(".");
+				.patch("/api/v1/auth/oidc/role").then().log().all().extract().jsonPath().getMap(".");
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
@@ -307,7 +307,7 @@ class AuthControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE).headers("Authorization", "Bearer " + accessToken)
 				.headers(MANDATORY_DEVICE_HEADERS).when()
 				.body(Map.of("oidcPayload", Map.of("authProvider", "KAKAO", "idToken", "invalid_token")))
-				.post("/api/v1/auth/oidc/promote").then().log().all().extract().jsonPath().getMap(".");
+				.patch("/api/v1/auth/oidc/role").then().log().all().extract().jsonPath().getMap(".");
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
@@ -332,7 +332,7 @@ class AuthControllerTest extends ContextTest {
 					Map.of(
 						"deviceOs", "android", "deviceId", "device_id_3", "deviceToken", "device_token_3",
 						"oidcPayload", Map.of("authProvider", "KAKAO", "idToken", "mock_id_token")))
-				.post("/api/v1/auth/oidc/login").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/oidc/sessions").then().log().all().extract().jsonPath().getMap(".");
 
 			// then
 			assertAll(
@@ -355,7 +355,7 @@ class AuthControllerTest extends ContextTest {
 					Map.of(
 						"deviceOs", "ios", "deviceId", "new_device_id", "deviceToken", "new_device_token",
 						"oidcPayload", Map.of("authProvider", "KAKAO", "idToken", "mock_id_token")))
-				.post("/api/v1/auth/oidc/login").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/oidc/sessions").then().log().all().extract().jsonPath().getMap(".");
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
@@ -375,7 +375,7 @@ class AuthControllerTest extends ContextTest {
 					Map.of(
 						"deviceOs", "ios", "deviceId", "device_id", "deviceToken", "device_token", "oidcPayload",
 						Map.of("authProvider", "KAKAO", "idToken", "invalid_token")))
-				.post("/api/v1/auth/oidc/login").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/oidc/sessions").then().log().all().extract().jsonPath().getMap(".");
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
@@ -391,7 +391,7 @@ class AuthControllerTest extends ContextTest {
 					Map.of(
 						"deviceOs", "ios", "deviceId", "device_id", "deviceToken", "device_token", "oidcPayload",
 						Map.of("authProvider", "GOOGLE", "idToken", "mock_id_token")))
-				.post("/api/v1/auth/oidc/login").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/oidc/sessions").then().log().all().extract().jsonPath().getMap(".");
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
@@ -412,7 +412,7 @@ class AuthControllerTest extends ContextTest {
 					Map.of(
 						"deviceOs", "android", "deviceId", "device_id_3", "deviceToken", changedToken, "oidcPayload",
 						Map.of("authProvider", "KAKAO", "idToken", "mock_id_token")))
-				.post("/api/v1/auth/oidc/login").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/oidc/sessions").then().log().all().extract().jsonPath().getMap(".");
 
 			// then - API 응답 검증
 			assertAll(
@@ -436,7 +436,7 @@ class AuthControllerTest extends ContextTest {
 					Map.of(
 						"deviceOs", "ios", "deviceId", "device_id_5", "deviceToken", "device_token_5", "oidcPayload",
 						Map.of("authProvider", "KAKAO", "idToken", "mock_id_token")))
-				.post("/api/v1/auth/oidc/login").then().log().all().extract().jsonPath().getMap(".");
+				.post("/api/v1/auth/oidc/sessions").then().log().all().extract().jsonPath().getMap(".");
 
 			// then
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());

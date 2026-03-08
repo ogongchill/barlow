@@ -52,7 +52,7 @@ class AccountControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
 				.headers(X_CLIENT_OS, "ios").headers(X_CLIENT_OS_VERSION, "device_os_version")
-				.headers(X_DEVICE_ID, targetDeviceId).when().get("/api/v1/account/my").then().log().all().extract()
+				.headers(X_DEVICE_ID, targetDeviceId).when().get("/api/v1/accounts/me").then().log().all().extract()
 				.jsonPath().getMap(".");
 
 			// then
@@ -83,7 +83,7 @@ class AccountControllerTest extends ContextTest {
 					AUTHORIZATION,
 					AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue(targetUserNo, User.Role.MEMBER))
 				.headers(X_CLIENT_OS, "android").headers(X_CLIENT_OS_VERSION, "device_os_version")
-				.headers(X_DEVICE_ID, targetDeviceId).when().get("/api/v1/account/my").then().log().all().extract()
+				.headers(X_DEVICE_ID, targetDeviceId).when().get("/api/v1/accounts/me").then().log().all().extract()
 				.jsonPath().getMap(".");
 
 			// then
@@ -118,7 +118,7 @@ class AccountControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
 				.headers(X_CLIENT_OS, "ios").headers(X_CLIENT_OS_VERSION, "device_os_version")
-				.headers(X_DEVICE_ID, targetDeviceId).when().post("/api/v1/account/withdraw").then().log().all()
+				.headers(X_DEVICE_ID, targetDeviceId).when().delete("/api/v1/accounts/me").then().log().all()
 				.extract().jsonPath().getMap(".");
 
 			// then - API 응답 검증
@@ -142,7 +142,7 @@ class AccountControllerTest extends ContextTest {
 					AUTHORIZATION,
 					AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue(targetUserNo, User.Role.MEMBER))
 				.headers(X_CLIENT_OS, "android").headers(X_CLIENT_OS_VERSION, "device_os_version")
-				.headers(X_DEVICE_ID, targetDeviceId).when().post("/api/v1/account/withdraw").then().log().all()
+				.headers(X_DEVICE_ID, targetDeviceId).when().delete("/api/v1/accounts/me").then().log().all()
 				.extract().jsonPath().getMap(".");
 
 			// then - API 응답 검증

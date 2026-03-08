@@ -54,8 +54,9 @@ class LegislationAccountNotificationSettingControllerTest extends ContextTest {
 		private Map<String, Object> activateNotificationSetting(LegislationType legislationType) {
 			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS).when().pathParam("legislationType", legislationType)
-				.post("/api/v1/legislation-accounts/{legislationType}/notification-setting/activate").then().log().all()
+				.headers(MANDATORY_DEVICE_HEADERS).body(Map.of("active", true)).when()
+				.pathParam("legislationType", legislationType)
+				.patch("/api/v1/legislation-accounts/{legislationType}/notification-settings").then().log().all()
 				.extract().jsonPath().getMap(".");
 		}
 	}
@@ -84,8 +85,9 @@ class LegislationAccountNotificationSettingControllerTest extends ContextTest {
 		private Map<String, Object> deactivateNotificationSetting(LegislationType legislationType) {
 			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS).when().pathParam("legislationType", legislationType)
-				.post("/api/v1/legislation-accounts/{legislationType}/notification-setting/deactivate").then().log()
+				.headers(MANDATORY_DEVICE_HEADERS).body(Map.of("active", false)).when()
+				.pathParam("legislationType", legislationType)
+				.patch("/api/v1/legislation-accounts/{legislationType}/notification-settings").then().log()
 				.all().extract().jsonPath().getMap(".");
 		}
 	}

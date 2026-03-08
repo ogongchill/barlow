@@ -22,7 +22,7 @@ class TermControllerTest extends ContextTest {
 	@Test
 	void getActiveTerms_success() {
 		// when
-		Map<String, Object> responseMap = RestAssured.given().log().all().when().get("/api/v1/term/active").then().log()
+		Map<String, Object> responseMap = RestAssured.given().log().all().when().get("/api/v1/terms").then().log()
 			.all().extract().jsonPath().getMap(".");
 
 		// then

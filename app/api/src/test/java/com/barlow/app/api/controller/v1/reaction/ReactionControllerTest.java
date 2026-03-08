@@ -67,8 +67,9 @@ class ReactionControllerTest extends ContextTest {
 		private Map<String, Object> react(String targetId, ReactionType reactionType) {
 			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS).when()
-				.queryParams(Map.of("targetType", ReactionTarget.BILL_POST.name(), "reactionType", reactionType))
+				.headers(MANDATORY_DEVICE_HEADERS)
+				.body(Map.of("targetType", ReactionTarget.BILL_POST.name(), "reactionType", reactionType.name()))
+				.when()
 				.post("/api/v1/reactions/{targetId}", targetId).then().log().all().extract().jsonPath().getMap(".");
 		}
 	}
@@ -84,8 +85,11 @@ class ReactionControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
 				.headers(MANDATORY_DEVICE_HEADERS).when()
-				.queryParams(Map.of("targetType", ReactionTarget.BILL_POST.name(), "reactionType", ReactionType.LIKE))
-				.post("/api/v1/reactions/{targetId}/remove", "PRC_1").then().log().all().extract().jsonPath()
+				.queryParams(
+					Map.of(
+						"targetType", ReactionTarget.BILL_POST.name(),
+						"reactionType", ReactionType.LIKE.name()))
+				.delete("/api/v1/reactions/{targetId}", "PRC_1").then().log().all().extract().jsonPath()
 				.getMap(".");
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),

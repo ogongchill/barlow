@@ -55,7 +55,7 @@ class LegislationAccountSubscribeControllerTest extends ContextTest {
 			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
 				.headers(MANDATORY_DEVICE_HEADERS).when()
-				.post("/api/v1/legislation-accounts/{legislationType}/subscribe/activate", legislationType).then().log()
+				.post("/api/v1/legislation-accounts/{legislationType}/subscriptions", legislationType).then().log()
 				.all().extract().jsonPath().getMap(".");
 		}
 	}
@@ -85,7 +85,7 @@ class LegislationAccountSubscribeControllerTest extends ContextTest {
 			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
 				.headers(MANDATORY_DEVICE_HEADERS).when()
-				.post("/api/v1/legislation-accounts/{legislationType}/subscribe/deactivate", legislationType).then()
+				.delete("/api/v1/legislation-accounts/{legislationType}/subscriptions", legislationType).then()
 				.log().all().extract().jsonPath().getMap(".");
 		}
 	}

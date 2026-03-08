@@ -40,7 +40,7 @@ class RecentBillRetrieveControllerTest extends ContextTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
 				.headers(MANDATORY_DEVICE_HEADERS).when().queryParams(Map.of("page", 0, "size", 10))
-				.get("/api/v1/recent-bill/thumbnail").then().log().all().extract().jsonPath().getMap(".");
+				.get("/api/v1/recent-bills").then().log().all().extract().jsonPath().getMap(".");
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
@@ -65,15 +65,15 @@ class RecentBillRetrieveControllerTest extends ContextTest {
 		@DisplayName("사용자가 존재하지 않는 법안 id 로 최근법안 게시글을 상세 조회하면 예외를 발생시킨다")
 		@Test
 		void retrieveRecentBillDetail_fail() {
-			Map<String, Object> responseMap = retrievePostDetail("NONE");
+			Map<String, Object> responseMap = retrievePostDetail("NONE_ID");
 			assertThat(responseMap).containsEntry("result", ResultType.ERROR.name());
 		}
 
-		private Map<String, Object> retrievePostDetail(String billId) {
+		private Map<String, Object> retrievePostDetail(String recentBillId) {
 			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
 				.headers(MANDATORY_DEVICE_HEADERS).when()
-				.get("/api/v1/legislation-accounts/bill-posts/{billId}", billId).then().log().all().extract().jsonPath()
+				.get("/api/v1/recent-bills/{recentBillId}", recentBillId).then().log().all().extract().jsonPath()
 				.getMap(".");
 		}
 	}
