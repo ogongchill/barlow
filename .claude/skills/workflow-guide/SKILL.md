@@ -6,26 +6,31 @@
 
 ---
 
-## 제공 파일
+## 제공 파일 — Phase별 지연 로드
 
-```
-WORKFLOW.md  — 요구사항 접수 → PR 생성까지의 자율형 개발 파이프라인 (Phase -1~8)
-```
+**컨텍스트 효율을 위해 현재 수행 중인 Phase에 해당하는 파일만 로드한다.**
+
+| 로드 시점 | 파일 | 내용 |
+|---|---|---|
+| 이슈 접수 시 | `WORKFLOW-TRIAGE.md` | Tier 판정 기준 |
+| Tier 판정 후 (계획 단계) | `WORKFLOW-PLAN.md` | Phase 0~3: 분석 & 계획 |
+| 구현 시작 시 | `WORKFLOW-IMPL.md` | Phase 4: 코드 구현 체크리스트 |
+| 테스트 시작 시 | `WORKFLOW-VERIFY.md` | Phase 5~6: 테스트 & 검증 |
+| 커밋/PR 시 | `WORKFLOW-SHIP.md` | Phase 7~8: 커밋 & PR |
+| 전체 구조 파악 필요 시 | `WORKFLOW.md` | 인덱스 (Phase 파일 맵) |
 
 ---
 
 ## 핵심 내용 요약
 
 - **Phase -1**: Tier 판정 (Tier 1 자율 / Tier 2 계획 후 승인 / Tier 3 분석만)
-- **Phase 0**: 스킬 & 규칙 로드 (`coding-rules` 스킬 추가 로드)
-- **Phase 1~3**: 요구사항 분석 → 코드베이스 탐색 → 구현 계획
-- **Phase 4~6**: 코드 구현 → 테스트 → 린트 & `/project:harness-check` 검증
-- **Phase 7~8**: 커밋 → 브랜치 & PR
+- **Phase 0**: 스킬 & 규칙 로드 / DOMAIN_ENCYCLOPEDIA — 해당 BC 섹션만 지연 로드
+- **Phase 1~3**: 요구사항 분석 → 코드베이스 탐색 → 구현 계획 (승인 대기)
+- **Phase 4**: 코드 구현 (domain → service → infra → api 순서)
+- **Phase 5~6**: 테스트 Agent 병렬 실행 → 린트 → Harness 검증
+- **Phase 7~8**: 커밋 → 브랜치 & PR 생성
 
-**Tier별 진입 커맨드:**
-
-| 커맨드 | 동작 |
-|---|---|
-| `/project:tier:dev-auto` | Tier 1 강제 자율 진행 |
-| `/project:tier:dev-plan` | Tier 2 계획 후 승인 강제 |
-| `/project:tier:dev-analyze` | Tier 3 사전 스크리닝 |
+**세션 격리 권장 지점:**
+- Phase 3 완료 & 승인 후 → `/clear` → "Phase 4 진행해"
+- Phase 6 완료 후 → `/clear` → "Phase 7 진행해"
+- Phase 8 완료 후 → `/clear` → 다음 이슈 시작
