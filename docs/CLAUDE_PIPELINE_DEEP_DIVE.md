@@ -8,94 +8,259 @@
 ## 목차
 
 1. [전체 흐름 조감도](#1-전체-흐름-조감도)
-2. [컨텍스트 최적화 전략](#2-컨텍스트-최적화-전략)
-3. [Phase별 동작 상세](#3-phase별-동작-상세)
-4. [참조 문서 로드 전략](#4-참조-문서-로드-전략)
-5. [효율성 분석](#5-효율성-분석)
-6. [설계 트레이드오프](#6-설계-트레이드오프)
+2. [.claude 파일 활성화 메커니즘](#2-claude-파일-활성화-메커니즘)
+3. [컨텍스트 최적화 전략](#3-컨텍스트-최적화-전략)
+4. [Phase별 동작 상세](#4-phase별-동작-상세)
+5. [참조 문서 로드 전략](#5-참조-문서-로드-전략)
+6. [효율성 분석](#6-효율성-분석)
+7. [설계 트레이드오프](#7-설계-트레이드오프)
 
 ---
 
 ## 1. 전체 흐름 조감도
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│  Claude 세션 시작                                                 │
-│  ├── system-reminder: CLAUDE.md (프로젝트 지침) 자동 주입            │
-│  ├── memory: MEMORY.md (이전 세션 컨텍스트) 자동 주입                 │
-│  └── git status: 현재 브랜치 & 최근 커밋 자동 주입                     │
-└────────────────────────┬────────────────────────────────────────┘
-                         │
-                    이슈/요구사항 접수
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  스킬 로드 (지연 로드)                                               │
-│  1. workflow-guide  →  SKILL.md (요약 + Phase 파일 맵)              │
-│                        이슈 접수 시 → WORKFLOW-TRIAGE.md 추가 로드   │
-│  2. coding-rules    →  SKILL.md (복잡도 판단 + 작업 유형별 파일 맵)   │
-│                        Phase 0 작업 유형 확정 후 → 해당 규칙 파일 추가 │
-└────────────────────────┬────────────────────────────────────────┘
-                         │
-                         ▼
-         ┌───────────────────────────────┐
-         │   Phase -1: Tier 판정          │
-         │   WORKFLOW-TRIAGE.md 참조      │
-         └───────────┬───────────────────┘
-          ┌──────────┼──────────┐
-          ▼          ▼          ▼
-       Tier 1      Tier 2     Tier 3
-      자율 진행  계획 후 승인  분석만
-          │          │          │
-          │          │          └── ADR 작성 후 종료
-          │          │
-          └──────────┤
-                     ▼
-         ┌───────────────────────────────┐
-         │   Phase 0~3: 분석 & 계획        │
-         │   WORKFLOW-PLAN.md 참조        │
-         │                               │
-         │   0. 스킬 & 규칙 파일 로드        │
-         │   1. 요구사항 분석               │
-         │   2. 코드베이스 탐색             │
-         │   3. 구현 계획 작성              │
-         └───────────┬───────────────────┘
-                     │ [복잡 작업: /clear → 세션 격리 체크포인트 A]
-                     │ [단순 작업: 연속 진행]
-                     ▼
-         ┌───────────────────────────────┐
-         │   Phase 4: 코드 구현            │
-         │   WORKFLOW-IMPL.md 참조        │
-         │                               │
-         │   domain → service            │
-         │   → infra:storage → app:api   │
-         └───────────┬───────────────────┘
-                     │
-                     ▼
-         ┌───────────────────────────────┐
-         │   Phase 5~6: 테스트 & 검증       │
-         │   WORKFLOW-VERIFY.md 참조      │
-         │                               │
-         │   5. Agent 병렬 테스트 작성       │
-         │   6. 린트 → CI 테스트            │
-         │      → Harness 검증 (/harness) │
-         └───────────┬───────────────────┘
-                     │ [세션 격리 권장: Harness PASS 후 /clear → 체크포인트 B]
-                     ▼
-         ┌───────────────────────────────┐
-         │   Phase 7~8: 커밋 & PR         │
-         │   WORKFLOW-SHIP.md 참조        │
-         │                               │
-         │   7. 레이어별 커밋 분리            │
-         │   8. 브랜치 생성 & PR 오픈        │
-         └───────────┬───────────────────┘
-                     ▼
-               다음 이슈 시작
+╔═════════════════════════════════════════════════════════════════════╗
+║  Claude 세션 시작 — 자동 주입 (파일 로드 없이 컨텍스트에 삽입)                  ║
+║  ├── [CLAUDE.md]          프로젝트 지침 (system-reminder)              ║
+║  ├── [memory/MEMORY.md]   이전 세션 축적 상태                           ║
+║  └── git status           현재 브랜치 & 최근 커밋                        ║
+╚══════════════════════════════╤══════════════════════════════════════╝
+                               │
+                   이슈/요구사항 접수 또는 커맨드 실행
+                               │
+          ┌────────────────────┼──────────────────────────┐
+          │ 커맨드 진입          │ 일반 이슈 진입               │ pipeline 커맨드 진입
+          ▼                   ▼                           ▼
+  ┌───────────────┐   ┌───────────────┐        ┌──────────────────────┐
+  │ tier/ 커맨드   │   │ 스킬 로드        │        │ pipeline/ 커맨드       │
+  │               │   │ (지연 로드)     │        │                      │
+  │ [dev-auto.md] │   │               │        │ [arch-plan.md]       │
+  │ [dev-plan.md] │   │ [workflow-     │        │ [arch-redesign.md]   │
+  │ [dev-analyze  │   │  guide/       │        │ [arch-design.md]     │
+  │  .md]         │   │  SKILL.md]    │        │                      │
+  │               │   │ [coding-      │        │ → docs/plans/ 산출물  │
+  │ Tier 강제 지정  │   │  rules/       │        │ → docs/adr/ 산출물    │
+  └───────┬───────┘   │  SKILL.md]    │        │   ([templates/      │
+          │           └───────┬───────┘        │    adr.md] 참조)     │
+          │                   │                └──────────────────────┘
+          └───────────────────┤
+                              ▼
+              ┌───────────────────────────────────┐
+              │   Phase -1: Tier 판정               │
+              │   [WORKFLOW-TRIAGE.md] 명시적 읽기   │
+              └────────────┬──────────────────────┘
+               ┌───────────┼───────────┐
+               ▼           ▼           ▼
+            Tier 1       Tier 2      Tier 3
+           자율 진행    계획 후 승인   분석만
+               │           │           │
+               │           │           └─ [arch-redesign-report.md]
+               │           │              템플릿 참조 → ADR 작성 후 종료
+               └───────────┤
+                           ▼
+              ┌───────────────────────────────────┐
+              │   Phase 0~3: 분석 & 계획            │
+              │   [WORKFLOW-PLAN.md] 명시적 읽기     │
+              │                                   │
+              │   0. coding-rules 스킬 로드 완료      │
+              │      → [ARCHITECTURE.md]           │
+              │      → [DOMAIN_RULES.md]     (작업  │
+              │      → [SERVICE_RULES.md]    유형별 │
+              │      → [ERROR_HANDLING.md]   선택)  │
+              │   1. 요구사항 분석                    │
+              │      → [DOMAIN_ENCYCLOPEDIA.md]    │
+              │         BC 섹션 단위 로드             │
+              │   2. 코드베이스 탐색                   │
+              │      → [.claude/workspace/         │
+              │          탐색결과.md] 작성 (복잡)       │
+              │   3. 구현 계획 작성 & 승인 대기          │
+              │      → [.claude/workspace/         │
+              │          구현계획.md] 작성 (복잡)       │
+              └────────────┬───────────────────────┘
+                           │
+              [복잡 작업] /clear → 체크포인트 A
+              [단순 작업] 연속 진행
+                           ▼
+              ┌───────────────────────────────────┐
+              │   Phase 4: 코드 구현                │
+              │   [WORKFLOW-IMPL.md] 세션 격리 후    │
+              │                     재진입 시 읽기   │
+              │   (세션 격리 후: 구현계획.md +         │
+              │    탐색결과.md 재로드 → 컨텍스트 복원)   │
+              │                                   │
+              │   domain → service                │
+              │   → infra:storage → app:api       │
+              └────────────┬──────────────────────┘
+                           │
+                           ▼
+              ┌────────────────────────────────────┐
+              │   Phase 5: 테스트 작성                │
+              │   [WORKFLOW-VERIFY.md] 명시적 읽기    │
+              │   [TESTING.md] Phase 5 진입 직전 로드  │
+              │                                     │
+              │   Agent 병렬 실행:                    │
+              │   [agents/test-core-domain.md]  ─┐  │
+              │   [agents/test-app-api.md]       ├─ │
+              │   [agents/test-core-service.md] ─┘  │
+              │   [agents/test-infra-auth.md]   선택 │
+              │   [agents/test-infra-notification    │
+              │    .md]                        선택  │
+              │   [agents/test-app-api-docs.md] 선택 │
+              └────────────┬────────────────────────┘
+                           │
+                           ▼
+              ┌───────────────────────────────────┐
+              │   Phase 6: 검증                    │
+              │   [harness-check.md] 명시적 읽기     │
+              │   (커밋 전 최종 관문)                 │
+              │                                   │
+              │   spotlessApply → unitTest        │
+              │   → contextTest → /harness-check  │
+              └────────────┬──────────────────────┘
+                           │
+              [권장] /clear → 체크포인트 B (Harness PASS 후)
+                           ▼
+              ┌────────────────────────────────────┐
+              │   Phase 7~8: 커밋 & PR              │
+              │   [WORKFLOW-SHIP.md] 세션 격리 후     │
+              │                     재진입 시 읽기    │
+              │                                    │
+              │   7. 레이어별 커밋 분리                 │
+              │   8. 브랜치 생성 & PR 오픈             │
+              └────────────┬───────────────────────┘
+                           ▼
+                     다음 이슈 시작
 ```
 
 ---
 
-## 2. 컨텍스트 최적화 전략
+## 2. .claude 파일 활성화 메커니즘
+
+`.claude/` 하위의 모든 `.md` 파일은 세 가지 방식 중 하나로 활성화된다.
+
+### 2-1. 자동 주입 (Auto-Inject)
+
+Claude 세션 시작 시 시스템이 자동으로 컨텍스트에 삽입. 명시적인 읽기 요청 불필요.
+
+```
+CLAUDE.md          ← system-reminder로 항상 주입
+memory/MEMORY.md   ← user-memory로 항상 주입 (200줄 상한)
+```
+
+**특징**: 파일을 "읽는" 것이 아니라 컨텍스트에 직접 삽입됨. 컨텍스트 슬롯을 항상 점유.
+
+---
+
+### 2-2. 스킬 로드 → SKILL.md 자동 읽기
+
+`workflow-guide` 또는 `coding-rules` 스킬이 Skill 툴로 실행되면 해당 `SKILL.md`가 로드된다.
+
+```
+Skill("workflow-guide") 실행
+  → skills/workflow-guide/SKILL.md 자동 읽기
+  → 이후 어떤 WORKFLOW-*.md를 읽어야 할지는 SKILL.md가 지시
+
+Skill("coding-rules") 실행
+  → skills/coding-rules/SKILL.md 자동 읽기
+  → 작업 유형 판단 → 해당 규칙 파일 선택적 추가 읽기
+```
+
+**SKILL.md의 역할**: 전체 규칙의 압축 요약 + "지금 어떤 파일을 더 읽어야 하는가"를 결정하는 진입점.
+
+---
+
+### 2-3. 명시적 읽기 (Explicit Read)
+
+Claude가 특정 Phase에 진입하거나 조건이 충족될 때 Read 툴로 직접 읽는다.
+
+```
+Phase 진입 트리거:
+  Phase -1 진입  → WORKFLOW-TRIAGE.md 읽기
+  Phase 0~3 진입 → WORKFLOW-PLAN.md 읽기
+  Phase 4 진입   → WORKFLOW-IMPL.md 읽기 (세션 격리 후 재진입 시)
+  Phase 5 진입   → WORKFLOW-VERIFY.md + TESTING.md 읽기
+  Phase 6 진입   → harness-check.md 읽기
+  Phase 7~8 진입 → WORKFLOW-SHIP.md 읽기 (세션 격리 후 재진입 시)
+
+조건 트리거:
+  도메인 클래스 작성    → ARCHITECTURE.md + DOMAIN_RULES.md 읽기
+  서비스/API 작성      → SERVICE_RULES.md 읽기
+  예외 추가/수정       → ERROR_HANDLING.md 읽기
+  BC 식별됨            → DOMAIN_ENCYCLOPEDIA.md 해당 BC 섹션 읽기
+  Tier 3 ADR 작성      → templates/adr.md 읽기
+  arch-redesign 보고서 → templates/arch-redesign-report.md 읽기
+  arch-design 보고서   → templates/arch-design-report.md 읽기
+```
+
+---
+
+### 2-4. 커맨드 실행 → commands/*.md 자동 로드
+
+`/project:` 접두사를 가진 슬래시 커맨드가 실행되면 해당 `.md` 파일이 Skill 툴을 통해 로드된다.
+
+```
+/tier:dev-auto     → commands/tier/dev-auto.md
+/tier:dev-plan     → commands/tier/dev-plan.md
+/tier:dev-analyze  → commands/tier/dev-analyze.md
+
+/harness-check     → commands/harness-check.md
+
+/pipeline:arch-plan      → commands/pipeline/arch-plan.md
+/pipeline:arch-redesign  → commands/pipeline/arch-redesign.md
+/pipeline:arch-design    → commands/pipeline/arch-design.md
+```
+
+**tier/ 커맨드**: Tier를 강제 지정. `dev-auto`는 Tier 1 자율 진행, `dev-plan`은 Tier 2 계획 모드, `dev-analyze`는 Tier 3 분석 전용으로 고정.
+
+**pipeline/ 커맨드**: 파이프라인 전체를 대체하는 대형 커맨드. `arch-plan`은 탐색→계획→구현계획.md까지를 한 번에 처리. ADR/보고서 출력 시 `templates/` 파일을 참조.
+
+---
+
+### 2-5. Agent 스폰 → agents/*.md 프롬프트 로드
+
+Phase 5에서 Agent 툴로 테스트 에이전트를 생성하면 해당 `agents/*.md`가 에이전트 시스템 프롬프트로 사용된다. 메인 Claude 컨텍스트는 소비하지 않는다.
+
+```
+Agent("test-core-domain")  → agents/test-core-domain.md
+Agent("test-app-api")      → agents/test-app-api.md
+Agent("test-core-service")  → agents/test-core-service.md
+Agent("test-infra-auth")    → agents/test-infra-auth.md
+Agent("test-infra-notification") → agents/test-infra-notification.md
+Agent("test-app-api-docs")  → agents/test-app-api-docs.md
+```
+
+**핵심**: 에이전트는 독립 프로세스. 메인 세션 컨텍스트를 오염시키지 않고 병렬로 테스트 코드를 작성한다.
+
+---
+
+### 2-6. 파일 유형별 활성화 방식 요약
+
+```
+파일                              활성화 방식
+────────────────────────────────────────────────────────────────
+CLAUDE.md                         자동 주입 (항상)
+memory/MEMORY.md                  자동 주입 (항상)
+skills/*/SKILL.md                 스킬 로드 시 자동
+skills/workflow-guide/WORKFLOW-*  명시적 읽기 (Phase 진입)
+skills/coding-rules/ARCHITECTURE  명시적 읽기 (작업 유형)
+skills/coding-rules/DOMAIN_RULES  명시적 읽기 (작업 유형)
+skills/coding-rules/SERVICE_RULES 명시적 읽기 (작업 유형)
+skills/coding-rules/ERROR_HANDLING 명시적 읽기 (작업 유형)
+skills/coding-rules/TESTING       명시적 읽기 (Phase 5 직전)
+commands/harness-check.md         커맨드 실행 + 명시적 읽기
+commands/tier/*.md                커맨드 실행 시 자동
+commands/pipeline/*.md            커맨드 실행 시 자동
+agents/*.md                       Agent 스폰 시 (에이전트 프롬프트)
+templates/*.md                    명시적 읽기 (보고서/ADR 작성 시)
+docs/DOMAIN_ENCYCLOPEDIA.md       명시적 읽기 (BC 섹션 단위)
+.claude/workspace/*.md            명시적 읽기 (세션 격리 후 복원)
+────────────────────────────────────────────────────────────────
+```
+
+---
+
+## 3. 컨텍스트 최적화 전략
 
 Claude의 컨텍스트 창은 유한하다. 모든 규칙 파일을 세션 시작에 한번에 로드하면 실제 구현에 쓸 공간이 줄어든다. 이 파이프라인은 **네 가지 메커니즘**으로 컨텍스트를 최적화한다.
 
@@ -168,7 +333,7 @@ MEMORY.md 역할:
 
 ---
 
-## 3. Phase별 동작 상세
+## 4. Phase별 동작 상세
 
 ### Phase -1: Tier 판정
 
@@ -338,7 +503,7 @@ develop
 
 ---
 
-## 4. 참조 문서 로드 전략
+## 5. 참조 문서 로드 전략
 
 총 12개의 참조 문서가 존재하지만, 한 Phase에서 동시에 로드되는 문서는 최대 3~4개.
 
@@ -350,31 +515,46 @@ develop
     workflow-guide/
       SKILL.md            ← 스킬 로드 시 자동 (요약)
       WORKFLOW.md         ← 전체 구조 파악 필요 시만
-      WORKFLOW-TRIAGE.md  ← Phase -1에서만
-      WORKFLOW-PLAN.md    ← Phase 0~3에서만
+      WORKFLOW-TRIAGE.md  ← Phase -1에서만 (명시적 읽기)
+      WORKFLOW-PLAN.md    ← Phase 0~3에서만 (명시적 읽기)
       WORKFLOW-IMPL.md    ← Phase 4에서만 (세션 격리 후 재로드)
-      WORKFLOW-VERIFY.md  ← Phase 5~6에서만
+      WORKFLOW-VERIFY.md  ← Phase 5~6에서만 (명시적 읽기)
       WORKFLOW-SHIP.md    ← Phase 7~8에서만 (세션 격리 후 재로드)
     coding-rules/
       SKILL.md            ← 스킬 로드 시 자동 (요약 + 파일 맵)
-      ARCHITECTURE.md     ← 도메인/서비스 코드 작성 시
-      DOMAIN_RULES.md     ← 도메인 클래스 작성 시
-      SERVICE_RULES.md    ← 서비스/API 작성 시
-      ERROR_HANDLING.md   ← 예외 추가/수정 시
-      TESTING.md          ← Phase 5 진입 직전
+      ARCHITECTURE.md     ← 도메인/서비스 코드 작성 시 (명시적 읽기)
+      DOMAIN_RULES.md     ← 도메인 클래스 작성 시 (명시적 읽기)
+      SERVICE_RULES.md    ← 서비스/API 작성 시 (명시적 읽기)
+      ERROR_HANDLING.md   ← 예외 추가/수정 시 (명시적 읽기)
+      TESTING.md          ← Phase 5 진입 직전 (명시적 읽기)
   commands/
-    harness-check.md      ← Phase 6 최종 관문 시
+    harness-check.md      ← Phase 6 최종 관문 / /harness-check 커맨드
     tier/
-      dev-auto.md         ← /tier:dev-auto 커맨드 실행 시
-      dev-plan.md         ← /tier:dev-plan 커맨드 실행 시
-      dev-analyze.md      ← /tier:dev-analyze 커맨드 실행 시
+      dev-auto.md         ← /tier:dev-auto 커맨드 실행 시 자동
+      dev-plan.md         ← /tier:dev-plan 커맨드 실행 시 자동
+      dev-analyze.md      ← /tier:dev-analyze 커맨드 실행 시 자동
     pipeline/
-      arch-plan.md        ← /pipeline:arch-plan 커맨드 실행 시
-      arch-redesign.md    ← /pipeline:arch-redesign 커맨드 실행 시
-      arch-design.md      ← /pipeline:arch-design 커맨드 실행 시
+      arch-plan.md        ← /pipeline:arch-plan 커맨드 실행 시 자동
+      arch-redesign.md    ← /pipeline:arch-redesign 커맨드 실행 시 자동
+      arch-design.md      ← /pipeline:arch-design 커맨드 실행 시 자동
+  agents/
+    test-core-domain.md       ← Phase 5: Agent 스폰 시 (에이전트 프롬프트)
+    test-app-api.md            ← Phase 5: Agent 스폰 시
+    test-core-service.md       ← Phase 5: Agent 스폰 시 (해당 시)
+    test-infra-auth.md         ← Phase 5: Agent 스폰 시 (infra:auth 변경 시)
+    test-infra-notification.md ← Phase 5: Agent 스폰 시 (infra:notification 변경 시)
+    test-app-api-docs.md       ← Phase 5: Agent 스폰 시 (API 엔드포인트 변경 시)
+  templates/
+    adr.md                ← Tier 3 ADR 작성 시 (명시적 읽기)
+    arch-redesign-report.md ← /arch-redesign 보고서 생성 시 (명시적 읽기)
+    arch-design-report.md   ← /arch-design 보고서 생성 시 (명시적 읽기)
 
 docs/
-  DOMAIN_ENCYCLOPEDIA.md  ← Phase 0에서 BC 섹션 단위 지연 로드
+  DOMAIN_ENCYCLOPEDIA.md  ← Phase 0에서 BC 섹션 단위 지연 로드 (명시적 읽기)
+
+.claude/workspace/          ← 세션 간 상태 전달용 임시 파일 (Claude가 직접 작성)
+  탐색결과.md               ← Phase 2 완료 후 작성 → Phase 4 재진입 시 읽기
+  구현계획.md               ← Phase 3 완료 후 작성 → Phase 4 재진입 시 읽기
 ```
 
 ### Phase별 실제 로드 패턴
@@ -409,7 +589,7 @@ coding-rules/SKILL.md (약 65줄):
 
 ---
 
-## 5. 효율성 분석
+## 6. 효율성 분석
 
 ### 5-1. Tier 판정이 가져오는 효율
 
@@ -484,7 +664,7 @@ Harness가 FAIL을 잡아내는 범주:
 
 ---
 
-## 6. 설계 트레이드오프
+## 7. 설계 트레이드오프
 
 ### 6-1. 파일 분산 vs 단일 파일
 
