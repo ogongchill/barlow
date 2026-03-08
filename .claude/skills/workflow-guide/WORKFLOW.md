@@ -26,12 +26,17 @@
 이슈 접수
   → Phase -1 : Tier 판정          (WORKFLOW-TRIAGE.md)
   → Phase 0~3: 분석 & 계획        (WORKFLOW-PLAN.md)
-  ↓ [세션 격리 권장: /clear 후 구현 진행]
+  ↓ [세션 격리 — 복잡 작업만: 구현계획.md 작성 완료 후 /clear]
   → Phase 4  : 코드 구현          (WORKFLOW-IMPL.md)
   → Phase 5~6: 테스트 & 검증      (WORKFLOW-VERIFY.md)
-  ↓ [세션 격리 권장: /clear 후 커밋 진행]
+  ↓ [세션 격리 권장: Harness PASS 후 /clear]
   → Phase 7~8: 커밋 & PR          (WORKFLOW-SHIP.md)
 ```
+
+> **세션 격리 조건**
+> - Phase 3→4 사이: 구현계획.md + 탐색결과.md가 작성된 **복잡 작업**에만 적용
+>   단순 작업(변경 파일 < 5개)은 /clear 없이 연속 진행
+> - Phase 6→7 사이: 테스트 전체 PASS + Harness PASS 확인 후 적용
 
 ---
 
