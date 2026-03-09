@@ -10,7 +10,7 @@ import com.barlow.core.exception.CoreDomainException;
 import com.barlow.app.support.error.CoreApiException;
 import com.barlow.app.support.error.CoreApiErrorType;
 import com.barlow.app.support.response.ApiResponse;
-import com.barlow.services.auth.support.error.CoreAuthException;
+import com.barlow.infra.auth.support.error.CoreAuthException;
 import com.barlow.support.alert.Alerter;
 
 @RestControllerAdvice
@@ -50,31 +50,28 @@ public class CoreApiControllerAdvice {
 			default -> log.info(CORE_AUTH_EXCEPTION_MESSAGE_TEMPLATE, e.getMessage(), e);
 		}
 		return new ResponseEntity<>(
-			ApiResponse.error(e.getErrorCode(), e.getErrorMessage(), e.getData()),
-			e.getErrorStatus()
-		);
+			ApiResponse.error(e.getErrorCode(), e.getErrorType().getMessage(), e.getData()), e.getErrorStatus());
 	}
 
 	@ExceptionHandler(CoreDomainException.class)
 	public ResponseEntity<ApiResponse<Void>> handleCoreException(CoreDomainException e) {
+		CoreApiErrorType errorType = CoreApiErrorType.findByErrorCode(e.getCode());
 		switch (e.getLevel()) {
 			case BUSINESS -> log.warn("Business exception : {}", e.getMessage(), e);
-			case IMPLEMENTATION -> log.warn("Implementation exception : {}", e.getMessage(), e);
+			case IMPLEMENTATION -> {
+				log.error("Implementation exception : {}", e.getMessage(), e);
+				alerter.alert(String.format("CoreDomainException(IMPLEMENTATION) : %s", e.getMessage()));
+			}
 			default -> log.warn("Unknown exception : {}", e.getMessage(), e);
 		}
-		return new ResponseEntity<>(
-			ApiResponse.error(e.getCode().name(), e.getMessage()),
-			CoreApiErrorType.findByErrorCode(e.getCode()).getStatus()
-		);
+		return new ResponseEntity<>(ApiResponse.error(errorType), errorType.getStatus());
 	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
 		log.error("Exception : {}", e.getMessage(), e);
 		alerter.alert(String.format("Unexpected Exception : %s", e.getMessage()));
-		return new ResponseEntity<>(ApiResponse.error(
-			CoreApiErrorType.DEFAULT_ERROR),
-			CoreApiErrorType.DEFAULT_ERROR.getStatus()
-		);
+		return new ResponseEntity<>(
+			ApiResponse.error(CoreApiErrorType.DEFAULT_ERROR), CoreApiErrorType.DEFAULT_ERROR.getStatus());
 	}
 }

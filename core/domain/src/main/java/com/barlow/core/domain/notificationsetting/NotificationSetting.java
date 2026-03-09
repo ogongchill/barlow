@@ -1,34 +1,33 @@
 package com.barlow.core.domain.notificationsetting;
 
-import com.barlow.core.domain.User;
 import com.barlow.core.enumerate.NotificationTopic;
 
 public class NotificationSetting {
 
-	private final User user;
+	private final long userNo;
 	private final NotificationTopic notificationTopic;
 	private final boolean isNotifiable;
 
-	public NotificationSetting(User user, NotificationTopic notificationTopic, boolean isNotifiable) {
-		this.user = user;
+	public NotificationSetting(long userNo, NotificationTopic notificationTopic, boolean isNotifiable) {
+		this.userNo = userNo;
 		this.notificationTopic = notificationTopic;
 		this.isNotifiable = isNotifiable;
 	}
 
-	NotificationSetting activate() {
-		return new NotificationSetting(user, notificationTopic, true);
+	public NotificationSetting activate() {
+		return new NotificationSetting(userNo, notificationTopic, true);
 	}
 
-	NotificationSetting deactivate() {
-		return new NotificationSetting(user, notificationTopic, false);
+	public NotificationSetting deactivate() {
+		return new NotificationSetting(userNo, notificationTopic, false);
 	}
 
 	public boolean isNotifiable() {
 		return isNotifiable;
 	}
 
-	public User getUser() {
-		return user;
+	public long getUserNo() {
+		return userNo;
 	}
 
 	public NotificationTopic getNotificationTopic() {

@@ -22,9 +22,7 @@ import com.barlow.core.enumerate.LegislationType;
 
 import io.restassured.RestAssured;
 
-@AcceptanceTest({
-	"acceptance/legislationAccount.json",
-	"acceptance/legislationAccountNotificationSetting.json",
+@AcceptanceTest({"acceptance/legislationAccount.json", "acceptance/legislationAccountNotificationSetting.json",
 	"acceptance/legislationAccountSubscribe.json"})
 @Import(TestTokenProvider.class)
 class LegislationAccountRetrieveControllerTest extends ContextTest {
@@ -35,36 +33,25 @@ class LegislationAccountRetrieveControllerTest extends ContextTest {
 	@DisplayName("사용자가 상임위원회 전체 페이지를 조회하면 상임위원회 별 사용자의 구독 정보 및 알림정보를 반환한다")
 	@Test
 	void retrieveCommitteeAccounts() {
-		Map<String, Object> responseMap = RestAssured
-			.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+		Map<String, Object> responseMap = RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 			.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-			.headers(MANDATORY_DEVICE_HEADERS)
-			.when()
-			.get("/api/v1/legislation-accounts/committees/info")
-			.then().log().all().extract()
-			.jsonPath().getMap(".");
+			.headers(MANDATORY_DEVICE_HEADERS).when().get("/api/v1/legislation-accounts/committees/info").then().log()
+			.all().extract().jsonPath().getMap(".");
 		assertAll(
 			() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
-			() -> assertThat(responseMap.get("data")).isNotNull(),
-			() -> assertThat(responseMap.get("error")).isNull()
-		);
+			() -> assertThat(responseMap.get("data")).isNotNull(), () -> assertThat(responseMap.get("error")).isNull());
 	}
 
 	@DisplayName("사용자가 accountNo 를 통해 특정 상임위원회 페이지를 조회하면 해당 상임위원회에 대한 상세 정보 및 구독,알림설정 정보를 반환한다")
 	@Test
 	void retrieveProfile() {
-		Map<String, Object> responseMap = RestAssured
-			.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+		Map<String, Object> responseMap = RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 			.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-			.headers(MANDATORY_DEVICE_HEADERS)
-			.when()
-			.get("/api/v1/legislation-accounts/{legislationType}/profile", LegislationType.HOUSE_STEERING)
-			.then().log().all().extract()
-			.jsonPath().getMap(".");
+			.headers(MANDATORY_DEVICE_HEADERS).when()
+			.get("/api/v1/legislation-accounts/{legislationType}/profile", LegislationType.HOUSE_STEERING).then().log()
+			.all().extract().jsonPath().getMap(".");
 		assertAll(
 			() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
-			() -> assertThat(responseMap.get("data")).isNotNull(),
-			() -> assertThat(responseMap.get("error")).isNull()
-		);
+			() -> assertThat(responseMap.get("data")).isNotNull(), () -> assertThat(responseMap.get("error")).isNull());
 	}
 }

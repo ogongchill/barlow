@@ -12,23 +12,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@ComponentScan(basePackages = {
-	"com.barlow.core.enumerate",
-	"com.barlow.client.knal",
-	"com.barlow.core.storage.batch",
-	"com.barlow.core.storage.notification",
-	"com.barlow.services.notification",
-	"com.barlow.support.alert"})
-@EnableBatchProcessing(
-	dataSourceRef = "batchCoreDataSource",
-	transactionManagerRef = "batchCoreTransactionManager")
+@ComponentScan(basePackages = {"com.barlow.core.enumerate", "com.barlow.infra.knal", "com.barlow.infra.storage.batch",
+	"com.barlow.infra.storage.notification", "com.barlow.infra.notification", "com.barlow.support.alert"})
+@EnableBatchProcessing(dataSourceRef = "batchCoreDataSource", transactionManagerRef = "batchCoreTransactionManager")
 public class BatchCoreConfig {
 
 	@Bean("batchCoreJobRepository")
-	public JobRepository jobRepository(
-		@Qualifier("batchCoreDataSource") DataSource dataSource,
-		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager
-	) throws Exception {
+	public JobRepository jobRepository(@Qualifier("batchCoreDataSource") DataSource dataSource,
+		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager) throws Exception {
 		JobRepositoryFactoryBean factoryBean = new JobRepositoryFactoryBean();
 		factoryBean.setDataSource(dataSource);
 		factoryBean.setTransactionManager(transactionManager);

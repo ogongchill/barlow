@@ -34,10 +34,8 @@ public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingMa
 	private final SimpleJdbcInsert simpleJdbcInsert;
 	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
 
-	public TodayBillInfoWriteTasklet(
-		@Qualifier("batchCoreDataSource") DataSource dataSource,
-		RecentBillJobScopeShareRepository jobScopeShareRepository
-	) {
+	public TodayBillInfoWriteTasklet(@Qualifier("batchCoreDataSource") DataSource dataSource,
+		RecentBillJobScopeShareRepository jobScopeShareRepository) {
 		super();
 		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(BILL_POST_TABLE_NAME);
 		this.jobScopeShareRepository = jobScopeShareRepository;
@@ -56,48 +54,32 @@ public class TodayBillInfoWriteTasklet extends AbstractExecutionContextSharingMa
 	}
 
 	private void saveReceivedAllInBatch(TodayBillInfoBatchEntity result) {
-		SqlParameterSource[] sqlParameterSources = result.items()
-			.stream()
-			.map(this::createReceiveSqlParameterSource)
+		SqlParameterSource[] sqlParameterSources = result.items().stream().map(this::createReceiveSqlParameterSource)
 			.toArray(SqlParameterSource[]::new);
 		simpleJdbcInsert.executeBatch(sqlParameterSources);
 	}
 
 	private MapSqlParameterSource createReceiveSqlParameterSource(TodayBillInfoBatchEntity.BillInfoItem item) {
-		return new MapSqlParameterSource()
-			.addValue("bill_id", item.billId())
-			.addValue("bill_name", item.billName())
-			.addValue("proposers", item.proposers())
-			.addValue("proposer_type", item.proposerType())
-			.addValue("legislation_type", LegislationType.EMPTY)
-			.addValue("progress_status", ProgressStatus.RECEIVED)
-			.addValue("summary", null)
-			.addValue("detail", item.summary())
-			.addValue("view_count", 0)
+		return new MapSqlParameterSource().addValue("bill_id", item.billId()).addValue("bill_name", item.billName())
+			.addValue("proposers", item.proposers()).addValue("proposer_type", item.proposerType())
+			.addValue("legislation_type", LegislationType.EMPTY).addValue("progress_status", ProgressStatus.RECEIVED)
+			.addValue("summary", null).addValue("detail", item.summary()).addValue("view_count", 0)
 			.addValue("created_at", LocalDate.parse(item.proposeDateStr()), Types.TIMESTAMP)
 			.addValue("updated_at", LocalDateTime.now(), Types.TIMESTAMP);
 	}
 
 	private void saveChairmanAllInBatch(TodayBillInfoBatchEntity result) {
-		SqlParameterSource[] sqlParameterSources = result.items()
-			.stream()
-			.map(this::createChairmanSqlParameterSource)
+		SqlParameterSource[] sqlParameterSources = result.items().stream().map(this::createChairmanSqlParameterSource)
 			.toArray(SqlParameterSource[]::new);
 		simpleJdbcInsert.executeBatch(sqlParameterSources);
 	}
 
 	private MapSqlParameterSource createChairmanSqlParameterSource(TodayBillInfoBatchEntity.BillInfoItem item) {
-		return new MapSqlParameterSource()
-			.addValue("bill_id", item.billId())
-			.addValue("bill_name", item.billName())
-			.addValue("proposers", item.proposers())
-			.addValue("proposer_type", item.proposerType())
+		return new MapSqlParameterSource().addValue("bill_id", item.billId()).addValue("bill_name", item.billName())
+			.addValue("proposers", item.proposers()).addValue("proposer_type", item.proposerType())
 			.addValue("legislation_type", LegislationType.findByChairman(item.proposers()))
-			.addValue("progress_status", item.progressStatus())
-			.addValue("summary", null)
-			.addValue("detail", null)
-			.addValue("view_count", 0)
-			.addValue("created_at", LocalDate.parse(item.proposeDateStr()), Types.TIMESTAMP)
+			.addValue("progress_status", item.progressStatus()).addValue("summary", null).addValue("detail", null)
+			.addValue("view_count", 0).addValue("created_at", LocalDate.parse(item.proposeDateStr()), Types.TIMESTAMP)
 			.addValue("updated_at", LocalDateTime.now(), Types.TIMESTAMP);
 	}
 }

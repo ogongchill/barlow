@@ -42,13 +42,11 @@ public abstract class RestDocsTest {
 
 		return MockMvcBuilders.standaloneSetup(controller)
 			.apply(MockMvcRestDocumentation.documentationConfiguration(restDocumentation))
-			.setMessageConverters(converter)
-			.build();
+			.setMessageConverters(converter).build();
 	}
 
 	private ObjectMapper objectMapper() {
-		return new ObjectMapper().findAndRegisterModules()
-			.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+		return new ObjectMapper().findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 			.disable(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS);
 	}
 }

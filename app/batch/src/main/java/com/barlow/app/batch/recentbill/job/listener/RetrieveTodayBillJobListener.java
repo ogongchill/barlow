@@ -15,20 +15,17 @@ import com.barlow.app.batch.recentbill.job.TodayBillInfoBatchEntity;
 import com.barlow.app.batch.recentbill.job.RecentBillJobScopeShareRepository;
 import com.barlow.app.batch.common.AbstractExecutionContextSharingManager;
 import com.barlow.app.batch.utils.HashUtil;
-import com.barlow.client.knal.opendata.api.OpenDataException;
+import com.barlow.infra.knal.opendata.api.OpenDataException;
 
 @Component
-public class RetrieveTodayBillJobListener
-	extends AbstractExecutionContextSharingManager
+public class RetrieveTodayBillJobListener extends AbstractExecutionContextSharingManager
 	implements JobExecutionListener {
 
 	private final TodayBillRetrieveClient client;
 	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
 
-	public RetrieveTodayBillJobListener(
-		TodayBillRetrieveClient client,
-		RecentBillJobScopeShareRepository jobScopeShareRepository
-	) {
+	public RetrieveTodayBillJobListener(TodayBillRetrieveClient client,
+		RecentBillJobScopeShareRepository jobScopeShareRepository) {
 		super();
 		this.client = client;
 		this.jobScopeShareRepository = jobScopeShareRepository;

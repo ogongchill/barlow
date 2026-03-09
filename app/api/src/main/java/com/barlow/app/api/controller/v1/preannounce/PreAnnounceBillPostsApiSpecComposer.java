@@ -16,15 +16,10 @@ public class PreAnnounceBillPostsApiSpecComposer {
 	}
 
 	PreAnnounceBillPostsResponse compose(LocalDate now) {
-		List<PreAnnounceBillThumbnail> thumbnails = billPostsStatus.billPosts()
-			.stream()
-			.map(preAnnounceBillPost -> new PreAnnounceBillThumbnail(
-				preAnnounceBillPost.getBillId(),
-				preAnnounceBillPost.getBillName(),
-				preAnnounceBillPost.getProposers(),
-				preAnnounceBillPost.getLegislativeBody(),
-				preAnnounceBillPost.calculateDeadlineDay(now)
-			))
+		List<PreAnnounceBillThumbnail> thumbnails = billPostsStatus.billPosts().stream().map(
+			preAnnounceBillPost -> new PreAnnounceBillThumbnail(
+				preAnnounceBillPost.getBillId(), preAnnounceBillPost.getBillName(), preAnnounceBillPost.getProposers(),
+				preAnnounceBillPost.getLegislativeBody(), preAnnounceBillPost.calculateDeadlineDay(now)))
 			.toList();
 		return PreAnnounceBillPostsResponse.of(thumbnails, billPostsStatus.isLastPage());
 	}

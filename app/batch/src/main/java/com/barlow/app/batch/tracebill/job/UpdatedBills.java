@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import com.barlow.core.enumerate.LegislationType;
 import com.barlow.core.enumerate.NotificationTopic;
 import com.barlow.core.enumerate.ProgressStatus;
-import com.barlow.services.notification.NotificationRequest;
+import com.barlow.infra.notification.NotificationRequest;
 
 public class UpdatedBills {
 
@@ -41,72 +41,53 @@ public class UpdatedBills {
 		values.computeIfPresent(
 			ProgressStatus.COMMITTEE_RECEIVED,
 			(status, billInfos) -> billInfos.stream()
-				.map(billInfo -> billInfo.isCommitteeAssignedYet(billId)
-					? new BillInfo(billInfo.billId, billInfo.billName, committee)
-					: billInfo
-				)
-				.toList()
-		);
+				.map(
+					billInfo -> billInfo.isCommitteeAssignedYet(billId)
+						? new BillInfo(billInfo.billId, billInfo.billName, committee) : billInfo)
+				.toList());
 	}
 
 	public Map<LegislationType, List<String>> groupByCommittee() {
-		return values.get(ProgressStatus.COMMITTEE_RECEIVED)
-			.stream()
-			.collect(Collectors.groupingBy(
-				BillInfo::committee,
-				Collectors.mapping(BillInfo::billId, Collectors.toList())
-			));
+		return values.get(ProgressStatus.COMMITTEE_RECEIVED).stream().collect(
+			Collectors.groupingBy(BillInfo::committee, Collectors.mapping(BillInfo::billId, Collectors.toList())));
 	}
 
 	public Map<NotificationTopic, List<NotificationRequest.BillInfo>> groupByCommitteeNotificationTopic() {
-		return values.get(ProgressStatus.COMMITTEE_RECEIVED)
-			.stream()
-			.collect(Collectors.groupingBy(
+		return values.get(ProgressStatus.COMMITTEE_RECEIVED).stream().collect(
+			Collectors.groupingBy(
 				billInfo -> NotificationTopic.findByLegislationType(billInfo.committee),
-				Collectors.mapping(billInfo -> new NotificationRequest.BillInfo(
-					billInfo.billId, billInfo.billName
-				), Collectors.toList())
-			));
+				Collectors.mapping(
+					billInfo -> new NotificationRequest.BillInfo(billInfo.billId, billInfo.billName),
+					Collectors.toList())));
 	}
 
 	public UpdatedBills filterNonCommitteeReceived() {
 		return new UpdatedBills(
-			values.entrySet()
-				.stream()
-				.filter(entry -> !entry.getKey().isCommitteeReceived())
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
-		);
+			values.entrySet().stream().filter(entry -> !entry.getKey().isCommitteeReceived())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 	}
 
 	public Map<ProgressStatus, List<String>> groupByProgressStatus() {
 		Map<ProgressStatus, List<String>> map = new EnumMap<>(ProgressStatus.class);
 		for (Map.Entry<ProgressStatus, List<BillInfo>> entry : values.entrySet()) {
-			List<String> billIds = entry.getValue().stream()
-				.map(billInfo -> billInfo.billId)
-				.toList();
-			map.computeIfAbsent(entry.getKey(), status -> new ArrayList<>())
-				.addAll(billIds);
+			List<String> billIds = entry.getValue().stream().map(billInfo -> billInfo.billId).toList();
+			map.computeIfAbsent(entry.getKey(), status -> new ArrayList<>()).addAll(billIds);
 		}
 		return map;
 	}
 
 	public Map<NotificationTopic, List<NotificationRequest.BillInfo>> groupByNonCommitteeNotificationTopic() {
-		return values.entrySet()
-			.stream()
-			.filter(entry -> NotificationTopic.isNotifiableProgressStatus(entry.getKey()))
-			.collect(Collectors.groupingBy(
-				entry -> NotificationTopic.findByProgressStatus(entry.getKey()),
-				Collectors.flatMapping(entry -> entry.getValue().stream()
-						.map(billInfo -> new NotificationRequest.BillInfo(billInfo.billId, billInfo.billName)),
-					Collectors.toList())
-			));
+		return values.entrySet().stream().filter(entry -> NotificationTopic.isNotifiableProgressStatus(entry.getKey()))
+			.collect(
+				Collectors.groupingBy(
+					entry -> NotificationTopic.findByProgressStatus(entry.getKey()),
+					Collectors.flatMapping(
+						entry -> entry.getValue().stream()
+							.map(billInfo -> new NotificationRequest.BillInfo(billInfo.billId, billInfo.billName)),
+						Collectors.toList())));
 	}
 
-	public record BillInfo(
-		String billId,
-		String billName,
-		LegislationType committee
-	) {
+	public record BillInfo(String billId, String billName, LegislationType committee) {
 		boolean isCommitteeAssignedYet(String billId) {
 			return this.billId.equals(billId) && this.committee.isEmpty();
 		}

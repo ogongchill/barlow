@@ -9,8 +9,7 @@ public enum CoreDomainExceptionType {
 
 	FORBIDDEN_EXCEPTION(E403, IMPLEMENTATION),
 	NOT_FOUND_EXCEPTION(E404, IMPLEMENTATION),
-	CONFLICT_EXCEPTION(E409, IMPLEMENTATION),
-	;
+	CONFLICT_EXCEPTION(E409, IMPLEMENTATION),;
 
 	private final CoreDomainExceptionCode code;
 	private final CoreDomainExceptionLevel level;

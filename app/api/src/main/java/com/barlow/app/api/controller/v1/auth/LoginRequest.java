@@ -1,22 +1,14 @@
 package com.barlow.app.api.controller.v1.auth;
 
 import com.barlow.app.support.error.CoreApiException;
-import com.barlow.core.domain.account.login.LoginCommand;
+import com.barlow.core.domain.account.LoginCommand;
 import com.barlow.core.enumerate.DeviceOs;
 import com.barlow.app.support.validate.Validatable;
 
-public record LoginRequest(
-	String deviceOs,
-	String deviceId,
-	String deviceToken
-) implements Validatable {
+public record LoginRequest(String deviceOs, String deviceId, String deviceToken) implements Validatable {
 
 	LoginCommand toCommand() {
-		return new LoginCommand(
-			deviceId,
-			DeviceOs.valueOf(deviceOs.toUpperCase()),
-			deviceToken
-		);
+		return new LoginCommand(deviceId, DeviceOs.valueOf(deviceOs.toUpperCase()), deviceToken);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.barlow.core.storage.batch.config;
+package com.barlow.infra.storage.batch.config;
 
 import javax.sql.DataSource;
 
@@ -20,8 +20,7 @@ public class BatchCoreDatasourceConfig {
 
 	@Bean("batchCoreDataSource")
 	public DataSource dataSource(
-		@Qualifier("batchCoreDataSourceProperties") DataSourceProperties dataSourceProperties
-	) {
+		@Qualifier("batchCoreDataSourceProperties") DataSourceProperties dataSourceProperties) {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(dataSourceProperties.getDriverClassName());
 		dataSource.setUrl(dataSourceProperties.getUrl());

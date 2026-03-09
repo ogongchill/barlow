@@ -15,10 +15,8 @@ public final class BillPostDomainException extends CoreDomainException {
 		super(exceptionType, message);
 	}
 
-	static BillPostDomainException notFound(String billId) {
+	public static BillPostDomainException notFound(String billId) {
 		return new BillPostDomainException(
-			CoreDomainExceptionType.NOT_FOUND_EXCEPTION,
-			String.format("법안 %s 에 대한 게시글이 존재하지 않습니다", billId)
-		);
+			CoreDomainExceptionType.NOT_FOUND_EXCEPTION, String.format("법안 %s 에 대한 게시글이 존재하지 않습니다", billId));
 	}
 }

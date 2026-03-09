@@ -15,13 +15,13 @@ import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.billpost.BillPostDetailQuery;
 import com.barlow.core.domain.billpost.BillPostQuery;
 import com.barlow.core.domain.billpost.BillPost;
-import com.barlow.core.domain.billpost.BillPostRetrieveService;
+import com.barlow.core.service.billpost.BillPostRetrieveService;
 import com.barlow.core.domain.billpost.BillPostsStatus;
 import com.barlow.app.support.response.ApiResponse;
-import com.barlow.services.auth.support.annotation.PassportUser;
+import com.barlow.infra.auth.support.annotation.PassportUser;
 
 @RestController
-@RequestMapping("/api/v1/recent-bill")
+@RequestMapping("/api/v1/recent-bills")
 public class RecentBillRetrieveController {
 
 	private static final Logger log = LoggerFactory.getLogger(RecentBillRetrieveController.class);
@@ -32,24 +32,20 @@ public class RecentBillRetrieveController {
 		this.billPostRetrieveService = billPostRetrieveService;
 	}
 
-	@GetMapping("/thumbnail")
-	public ApiResponse<RecentBillPostsResponse> retrieveRecentBill(
-		@RequestParam MultiValueMap<String, String> params
-	) {
-		log.info("Received retrieve recent bill thumbnail request.");
+	@GetMapping
+	public ApiResponse<RecentBillPostsResponse> retrieveRecentBills(
+		@RequestParam MultiValueMap<String, String> params) {
+		log.info("Received retrieve recent bills request.");
 		RecentBillPostsRequest request = RecentBillPostsRequest.sanitizeFrom(params);
 		BillPostsStatus billPostsStatus = billPostRetrieveService.readBillPosts(
-			BillPostQuery.defaultOf(request.getPage(), request.getSize(), request.getSort(), request.getFilters())
-		);
+			BillPostQuery.defaultOf(request.getPage(), request.getSize(), request.getSort(), request.getFilters()));
 		RecentBillPostsApiSpecComposer apiSpecComposer = new RecentBillPostsApiSpecComposer(billPostsStatus);
 		return ApiResponse.success(apiSpecComposer.compose(LocalDate.now()));
 	}
 
-	@GetMapping("/detail/{recentBillId}")
-	public ApiResponse<RecentBillPostDetailResponse> retrieveRecentBillDetail(
-		@PassportUser Passport passport,
-		@PathVariable("recentBillId") String recentBillId
-	) {
+	@GetMapping("/{recentBillId}")
+	public ApiResponse<RecentBillPostDetailResponse> retrieveRecentBillDetail(@PassportUser Passport passport,
+		@PathVariable("recentBillId") String recentBillId) {
 		log.info("Received retrieve recent bill {} detail request.", recentBillId);
 		BillPost billPost = billPostRetrieveService.readBillPostDetail(passport, new BillPostDetailQuery(recentBillId));
 		RecentBillPostDetailApiSpecComposer apiSpecComposer = new RecentBillPostDetailApiSpecComposer(billPost);

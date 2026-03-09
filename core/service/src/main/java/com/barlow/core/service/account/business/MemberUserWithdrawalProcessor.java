@@ -1,0 +1,65 @@
+package com.barlow.core.service.account.business;
+
+import com.barlow.core.domain.account.UserRepository;
+import com.barlow.core.domain.device.DeviceRepository;
+import org.springframework.stereotype.Component;
+
+import com.barlow.core.domain.Passport;
+import com.barlow.core.domain.User;
+import com.barlow.core.domain.account.UserWithdrawalProcessor;
+import com.barlow.core.service.legislationaccount.impl.LegislationAccountWithdrawalHandler;
+import com.barlow.core.service.notificationsetting.impl.NotificationWithdrawalHandler;
+import com.barlow.core.domain.externalauth.ExternalAuthRepository;
+import com.barlow.core.domain.account.term.TermRepository;
+import com.barlow.core.service.subscribe.SubscriptionWithdrawalHandler;
+
+@Component
+class MemberUserWithdrawalProcessor implements UserWithdrawalProcessor {
+
+	private final UserRepository userRepository;
+	private final DeviceRepository deviceRepository;
+	private final ExternalAuthRepository authProviderRepository;
+	private final TermRepository termRepository;
+
+	private final NotificationWithdrawalHandler notificationWithdrawalHandler;
+	private final SubscriptionWithdrawalHandler subscribeWithdrawalHandler;
+	private final LegislationAccountWithdrawalHandler legislationAccountWithdrawalHandler;
+
+	public MemberUserWithdrawalProcessor(UserRepository userRepository, DeviceRepository deviceRepository,
+		ExternalAuthRepository authProviderRepository, TermRepository termRepository,
+		NotificationWithdrawalHandler notificationWithdrawalHandler,
+		SubscriptionWithdrawalHandler subscribeWithdrawalHandler,
+		LegislationAccountWithdrawalHandler legislationAccountWithdrawalHandler) {
+		this.userRepository = userRepository;
+		this.deviceRepository = deviceRepository;
+		this.authProviderRepository = authProviderRepository;
+		this.termRepository = termRepository;
+		this.notificationWithdrawalHandler = notificationWithdrawalHandler;
+		this.subscribeWithdrawalHandler = subscribeWithdrawalHandler;
+		this.legislationAccountWithdrawalHandler = legislationAccountWithdrawalHandler;
+	}
+
+	@Override
+	public void process(Passport passport) {
+		User user = passport.getUser();
+		long userNo = user.getUserNo();
+
+		// Member 전용 데이터 삭제
+		authProviderRepository.deleteByUserNo(userNo);
+		termRepository.deleteByUserNo(userNo);
+
+		// 공통 데이터 삭제
+		userRepository.delete(user);
+		deviceRepository.deleteById(passport.getDeviceId());
+
+		// 비관심사
+		notificationWithdrawalHandler.handle(user);
+		subscribeWithdrawalHandler.handle(user);
+		legislationAccountWithdrawalHandler.handle(user);
+	}
+
+	@Override
+	public User.Role supportedRole() {
+		return User.Role.MEMBER;
+	}
+}

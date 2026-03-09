@@ -1,12 +1,32 @@
+plugins {
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+}
+
 bootJar.enabled = true
 jar.enabled = false
 
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+restDocsTest {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    dependsOn restDocsTest
+    inputs.dir snippetsDir
+    attributes 'snippets': snippetsDir
+    outputDir file('build/docs/asciidoc')
+}
+
 dependencies {
-    runtimeOnly project(":core:storage")
+    runtimeOnly project(":infra:storage")
 
     implementation project(":core:domain")
-    implementation project(":services:auth")
-    implementation project(":services:post-view")
+    implementation project(":core:service")
+    implementation project(":infra:auth")
+    implementation project(":infra:post-view")
     implementation project(":support:logging")
     implementation project(":support:monitoring")
     implementation project(":support:alert")
@@ -18,8 +38,8 @@ dependencies {
 }
 
 tasks.register('copyResourcesConfig', Copy) {
-    from project(':services:auth').file('src/main/resources')
-    from project(':core:storage').file('src/main/resources')
+    from project(':infra:auth').file('src/main/resources')
+    from project(':infra:storage').file('src/main/resources')
     from project(':support:alert').file('src/main/resources')
     from project(':support:monitoring').file('src/main/resources')
     from project(':support:logging').file('src/main/resources')

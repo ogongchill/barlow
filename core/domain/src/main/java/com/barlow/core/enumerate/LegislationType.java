@@ -28,8 +28,7 @@ public enum LegislationType {
 	SPEAKER("국회의장", null, "default/icon-image-url"),
 
 	EMPTY("소관위미접수상태", null, "default/icon-image-url"),
-	SPECIAL_COMMITTEE("특별위원회", "특별위원장", "default/icon-image-url"),
-	;
+	SPECIAL_COMMITTEE("특별위원회", "특별위원장", "default/icon-image-url"),;
 
 	private static final int MAX_LEGISLATION_BODY_ORD = 17;
 
@@ -38,16 +37,13 @@ public enum LegislationType {
 	private final String iconPath;
 
 	public static LegislationType findByValue(String value) {
-		return Arrays.stream(LegislationType.values())
-			.filter(body -> body.value.equals(value))
-			.findFirst()
+		return Arrays.stream(LegislationType.values()).filter(body -> body.value.equals(value)).findFirst()
 			.orElse(EMPTY);
 	}
 
 	public static LegislationType findByChairman(String chairman) {
 		return Arrays.stream(LegislationType.values())
-			.filter(body -> body.ordinal() <= MAX_LEGISLATION_BODY_ORD && body.chairman.equals(chairman))
-			.findFirst()
+			.filter(body -> body.ordinal() <= MAX_LEGISLATION_BODY_ORD && body.chairman.equals(chairman)).findFirst()
 			.orElse(SPECIAL_COMMITTEE);
 	}
 

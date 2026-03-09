@@ -8,8 +8,7 @@ public class RestDocUtils {
 
 	public static OperationRequestPreprocessor requestPreprocessor() {
 		return Preprocessors.preprocessRequest(
-			Preprocessors.modifyUris().scheme("http").host("barlow.com").removePort(),
-			Preprocessors.prettyPrint());
+			Preprocessors.modifyUris().scheme("http").host("barlow.com").removePort(), Preprocessors.prettyPrint());
 	}
 
 	public static OperationResponsePreprocessor responsePreprocessor() {

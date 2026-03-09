@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.barlow.core.domain.Passport;
-import com.barlow.core.domain.home.HomeRetrieveFacade;
+import com.barlow.core.service.home.business.HomeRetrieveFacade;
 import com.barlow.core.enumerate.NotificationTopic;
 import com.barlow.app.support.response.ApiResponse;
-import com.barlow.services.auth.support.annotation.PassportUser;
+import com.barlow.infra.auth.support.annotation.PassportUser;
 
 @RestController
 @RequestMapping("/api/v1/home")
@@ -33,20 +33,16 @@ public class HomeRetrieveController {
 		LocalDate today = LocalDate.now();
 		HomeResponseApiSpecComposer apiSpecComposer = new HomeResponseApiSpecComposer(
 			homeRetrieveFacade.retrieveHome(passport.getUser()),
-			homeRetrieveFacade.retrieveTodayBillPostThumbnail(today)
-		);
+			homeRetrieveFacade.retrieveTodayBillPostThumbnail(today));
 		return ApiResponse.success(apiSpecComposer.compose(today));
 	}
 
 	@GetMapping("/notification-center")
-	public ApiResponse<NotificationCenterResponse> retrieveNotificationCenter(
-		@PassportUser Passport passport,
-		@RequestParam(name = "filterTopic", required = false) NotificationTopic filterTopic
-	) {
+	public ApiResponse<NotificationCenterResponse> retrieveNotificationCenter(@PassportUser Passport passport,
+		@RequestParam(name = "filterTopic", required = false) NotificationTopic filterTopic) {
 		log.info("Received retrieving notification center request.");
 		NotificationCenterApiSpecComposer notificationCenterApiSpecComposer = new NotificationCenterApiSpecComposer(
-			homeRetrieveFacade.retrieveNotificationCenter(passport.getUser())
-		);
+			homeRetrieveFacade.retrieveNotificationCenter(passport.getUser()));
 		return ApiResponse.success(notificationCenterApiSpecComposer.compose(filterTopic));
 	}
 }

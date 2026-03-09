@@ -20,11 +20,9 @@ public class CoreBatchController {
 	private final PreAnnounceBatchJobExecutor preAnnounceBatchJobExecutor;
 	private final TrackingBillBatchJobExecutor trackingBillBatchJobExecutor;
 
-	public CoreBatchController(
-		RecentBillBatchJobExecutor recentBillBatchJobExecutor,
+	public CoreBatchController(RecentBillBatchJobExecutor recentBillBatchJobExecutor,
 		PreAnnounceBatchJobExecutor preAnnounceBatchJobExecutor,
-		TrackingBillBatchJobExecutor trackingBillBatchJobExecutor
-	) {
+		TrackingBillBatchJobExecutor trackingBillBatchJobExecutor) {
 		this.recentBillBatchJobExecutor = recentBillBatchJobExecutor;
 		this.preAnnounceBatchJobExecutor = preAnnounceBatchJobExecutor;
 		this.trackingBillBatchJobExecutor = trackingBillBatchJobExecutor;
@@ -38,10 +36,7 @@ public class CoreBatchController {
 
 	@PostMapping("/tracking-bill-job")
 	public ResponseEntity<Void> executeTrackingBillBatchJob(@RequestBody TrackingStartDateRequest request) {
-		trackingBillBatchJobExecutor.execute(
-			LocalDate.now().minusDays(1),
-			LocalDate.parse(request.startDate())
-		);
+		trackingBillBatchJobExecutor.execute(LocalDate.now().minusDays(1), LocalDate.parse(request.startDate()));
 		return ResponseEntity.noContent().build();
 	}
 

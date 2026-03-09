@@ -23,8 +23,6 @@ public class RecentBillBatchConfig {
 	@Bean
 	public LawmakerProvider lawmakerProvider() throws IOException {
 		return OBJECT_MAPPER.readValue(
-			lawmakerJson.getInputStream(),
-			OBJECT_MAPPER.getTypeFactory().constructType(LawmakerProvider.class)
-		);
+			lawmakerJson.getInputStream(), OBJECT_MAPPER.getTypeFactory().constructType(LawmakerProvider.class));
 	}
 }

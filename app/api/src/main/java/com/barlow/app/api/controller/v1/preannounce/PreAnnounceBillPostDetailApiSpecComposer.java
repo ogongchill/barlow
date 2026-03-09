@@ -24,21 +24,12 @@ public class PreAnnounceBillPostDetailApiSpecComposer {
 	PreAnnounceBillPostDetailResponse compose(LocalDate now) {
 		BillProposers billProposers = new BillProposers(billPost.getBillProposers());
 		return new PreAnnounceBillPostDetailResponse(
-			billPost.getBillName(),
-			billPost.getProposers(),
-			billPost.getLegislativeBody(),
-			billPost.getDetail(),
+			billPost.getBillName(), billPost.getProposers(), billPost.getLegislativeBody(), billPost.getDetail(),
 			new PreAnnouncementSection(
-				billPost.getPreAnnounceDeadline(),
-				billPost.getPreAnnouncementUrl(),
-				billPost.calculateDeadlineDay(now)
-			),
+				billPost.getPreAnnounceDeadline(), billPost.getPreAnnouncementUrl(),
+				billPost.calculateDeadlineDay(now)),
 			new SummarySection(billPost.getSummary()),
-			new ProposerSection(
-				billProposers.getProposerPartyRate(),
-				billProposers.mapToProposerResponse()
-			)
-		);
+			new ProposerSection(billProposers.getProposerPartyRate(), billProposers.mapToProposerResponse()));
 	}
 
 	static class BillProposers {
@@ -53,20 +44,15 @@ public class PreAnnounceBillPostDetailApiSpecComposer {
 
 		Map<String, Integer> getProposerPartyRate() {
 			return values.stream()
-				.collect(Collectors.groupingBy(
-					BillProposer::getPartyName,
-					Collectors.summingInt(value -> COUNT_UNIT)
-				));
+				.collect(Collectors.groupingBy(BillProposer::partyName, Collectors.summingInt(value -> COUNT_UNIT)));
 		}
 
 		List<ProposerResponse> mapToProposerResponse() {
 			return values.stream()
-				.map(billProposer -> new ProposerResponse(
-					billProposer.getProposerCode(),
-					billProposer.getProposerName(),
-					billProposer.getProfileImagePath(),
-					billProposer.getPartyName()
-				))
+				.map(
+					billProposer -> new ProposerResponse(
+						billProposer.proposerCode(), billProposer.proposerName(),
+						billProposer.profileImagePath(), billProposer.partyName()))
 				.toList();
 		}
 	}

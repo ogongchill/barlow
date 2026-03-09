@@ -12,17 +12,11 @@ public class BillNameParser {
 	public static Optional<ParsedBillName> parse(String billName) {
 		Matcher matcher = pattern.matcher(billName);
 		if (matcher.find()) {
-			return Optional.of(new ParsedBillName(
-				matcher.group(0),
-				matcher.group(1),
-				matcher.group(2),
-				matcher.group(3)
-			));
+			return Optional
+				.of(new ParsedBillName(matcher.group(0), matcher.group(1), matcher.group(2), matcher.group(3)));
 		}
 		return Optional.empty();
 	}
 
-	private BillNameParser() {
-	}
+	private BillNameParser() {}
 }
-

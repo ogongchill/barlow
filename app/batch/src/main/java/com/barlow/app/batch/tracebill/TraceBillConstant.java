@@ -2,8 +2,7 @@ package com.barlow.app.batch.tracebill;
 
 public final class TraceBillConstant {
 
-	private TraceBillConstant() {
-	}
+	private TraceBillConstant() {}
 
 	public static final String JOB_NAME = "traceBillJob";
 	public static final String TRACE_BILL_DIRTY_CHECK_STEP = "traceBillDirtyCheckStep";

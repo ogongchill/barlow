@@ -1,4 +1,4 @@
-package com.barlow.core.storage.batch;
+package com.barlow.infra.storage.batch;
 
 import org.springframework.stereotype.Component;
 
@@ -18,8 +18,7 @@ public class BillPostBatchRepositoryAdapter implements BillPostBatchRepository {
 	public void updateAllInBatch(UpdatedBills updatedBills) {
 		UpdatedBills committeeReceived = updatedBills.filterCommitteeReceived();
 		if (!committeeReceived.isEmpty()) {
-			committeeReceived.groupByCommittee()
-				.forEach(billPostBatchJpaRepository::updateLegislationTypeInBatch);
+			committeeReceived.groupByCommittee().forEach(billPostBatchJpaRepository::updateLegislationTypeInBatch);
 		}
 
 		UpdatedBills nonCommitteeReceived = updatedBills.filterNonCommitteeReceived();

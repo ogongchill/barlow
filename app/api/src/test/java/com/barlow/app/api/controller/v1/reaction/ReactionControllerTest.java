@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 
+import com.barlow.ContextTest;
 import com.barlow.app.support.AcceptanceTest;
 import com.barlow.app.support.TestTokenProvider;
 import com.barlow.app.support.response.ResultType;
@@ -23,11 +24,9 @@ import com.barlow.core.enumerate.ReactionType;
 
 import io.restassured.RestAssured;
 
-@AcceptanceTest({
-	"acceptance/billPost.json",
-	"acceptance/reaction.json"})
+@AcceptanceTest({"acceptance/billPost.json", "acceptance/reaction.json"})
 @Import(TestTokenProvider.class)
-class ReactionControllerTest {
+class ReactionControllerTest extends ContextTest {
 
 	@Autowired
 	private TestTokenProvider testTokenProvider;
@@ -35,20 +34,13 @@ class ReactionControllerTest {
 	@DisplayName("법안 게시글의 리액션 종류와 개수 및 사용자의 리액션 여부를 조회한다")
 	@Test
 	void retrieveReaction() {
-		Map<String, Object> responseMap = RestAssured
-			.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+		Map<String, Object> responseMap = RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 			.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-			.headers(MANDATORY_DEVICE_HEADERS)
-			.when()
-			.queryParams("targetType", ReactionTarget.BILL_POST.name())
-			.get("/api/v1/reactions/{targetId}", "PRC_1")
-			.then().log().all().extract()
-			.jsonPath().getMap(".");
+			.headers(MANDATORY_DEVICE_HEADERS).when().queryParams("targetType", ReactionTarget.BILL_POST.name())
+			.get("/api/v1/reactions/{targetId}", "PRC_1").then().log().all().extract().jsonPath().getMap(".");
 		assertAll(
 			() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
-			() -> assertThat(responseMap.get("data")).isNotNull(),
-			() -> assertThat(responseMap.get("error")).isNull()
-		);
+			() -> assertThat(responseMap.get("data")).isNotNull(), () -> assertThat(responseMap.get("error")).isNull());
 	}
 
 	@DisplayName("리액션을 등록한다")
@@ -62,8 +54,7 @@ class ReactionControllerTest {
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 
 		@DisplayName("사용자가 이미 리액션한 법안 게시글에 대해 새로운 리액션을 하면 예외를 발생시키고 실패한다")
@@ -74,18 +65,12 @@ class ReactionControllerTest {
 		}
 
 		private Map<String, Object> react(String targetId, ReactionType reactionType) {
-			return RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
 				.headers(MANDATORY_DEVICE_HEADERS)
+				.body(Map.of("targetType", ReactionTarget.BILL_POST.name(), "reactionType", reactionType.name()))
 				.when()
-				.queryParams(Map.of(
-					"targetType", ReactionTarget.BILL_POST.name(),
-					"reactionType", reactionType
-				))
-				.post("/api/v1/reactions/{targetId}", targetId)
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.post("/api/v1/reactions/{targetId}", targetId).then().log().all().extract().jsonPath().getMap(".");
 		}
 	}
 
@@ -96,23 +81,20 @@ class ReactionControllerTest {
 		@DisplayName("사용자가 법안 게시글에 대해 동일한 리액션을 하면 리액션이 해제된다")
 		@Test
 		void reactionRemove() {
-			Map<String, Object> responseMap = RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.queryParams(Map.of(
-					"targetType", ReactionTarget.BILL_POST.name(),
-					"reactionType", ReactionType.LIKE
-				))
-				.post("/api/v1/reactions/{targetId}/remove", "PRC_1")
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.headers(MANDATORY_DEVICE_HEADERS).when()
+				.queryParams(
+					Map.of(
+						"targetType", ReactionTarget.BILL_POST.name(),
+						"reactionType", ReactionType.LIKE.name()))
+				.delete("/api/v1/reactions/{targetId}", "PRC_1").then().log().all().extract().jsonPath()
+				.getMap(".");
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 	}
 }

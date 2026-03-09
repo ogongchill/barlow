@@ -29,11 +29,8 @@ public class TraceBillDirtyCheckTasklet extends AbstractExecutionContextSharingM
 	private final PreviousBillBatchRepository previousBillBatchRepository;
 	private final UpdatedBillShareRepository billShareRepository;
 
-	public TraceBillDirtyCheckTasklet(
-		BillTrackingClient client,
-		PreviousBillBatchRepository previousBillBatchRepository,
-		UpdatedBillShareRepository billShareRepository
-	) {
+	public TraceBillDirtyCheckTasklet(BillTrackingClient client,
+		PreviousBillBatchRepository previousBillBatchRepository, UpdatedBillShareRepository billShareRepository) {
 		this.client = client;
 		this.previousBillBatchRepository = previousBillBatchRepository;
 		this.billShareRepository = billShareRepository;
@@ -48,8 +45,7 @@ public class TraceBillDirtyCheckTasklet extends AbstractExecutionContextSharingM
 
 		CurrentBillInfoResult currentBillInfo = client.getTraceBillInfo(startDate, endDate);
 		PreviousBills previousBills = new PreviousBills(
-			previousBillBatchRepository.findAllPreviousBetween(startDate, endDate)
-		);
+			previousBillBatchRepository.findAllPreviousBetween(startDate, endDate));
 		UpdatedBills updatedBills = previousBills.dirtyCheck(currentBillInfo);
 
 		String hashKey = HashUtil.generate(updatedBills);

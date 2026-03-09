@@ -7,5 +7,4 @@ import org.springframework.test.context.TestConstructor;
 @Tag("context")
 @SpringBootTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-public abstract class ContextTest {
-}
+public abstract class ContextTest {}

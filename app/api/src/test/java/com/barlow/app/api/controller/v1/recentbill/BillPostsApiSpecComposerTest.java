@@ -24,14 +24,10 @@ class BillPostsApiSpecComposerTest {
 
 		assertAll(
 			() -> assertThat(result.today()).hasSize(todayExpectSize),
-			() -> assertThat(result.recent()).hasSize(recentExpectSize)
-		);
+			() -> assertThat(result.recent()).hasSize(recentExpectSize));
 	}
 
 	private static Stream<Arguments> provideTodayDateAndExpectSize() {
-		return Stream.of(
-			Arguments.of(LocalDate.of(2024, 12, 31), 1 ,0),
-			Arguments.of(LocalDate.of(2025, 1, 1), 0, 1)
-		);
+		return Stream.of(Arguments.of(LocalDate.of(2024, 12, 31), 1, 0), Arguments.of(LocalDate.of(2025, 1, 1), 0, 1));
 	}
 }

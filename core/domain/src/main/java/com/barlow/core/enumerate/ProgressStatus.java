@@ -18,29 +18,22 @@ public enum ProgressStatus {
 	REJECTED("재의(부결)"),
 	PROMULGATED("공포"),
 
-	ABROGATE("폐기"),
-	;
+	ABROGATE("폐기"),;
 
 	private final String value;
 
 	public static ProgressStatus findByValue(String value) {
-		return Arrays.stream(ProgressStatus.values())
-			.filter(progress -> progress.value.equals(value))
-			.findFirst()
+		return Arrays.stream(ProgressStatus.values()).filter(progress -> progress.value.equals(value)).findFirst()
 			.orElse(ABROGATE);
 	}
 
 	public static List<String> findDefaultTagNames() {
-		return Arrays.stream(ProgressStatus.values())
-			.filter(ProgressStatus::isNotReceived)
-			.map(Enum::name)
-			.toList();
+		return Arrays.stream(ProgressStatus.values()).filter(ProgressStatus::isNotReceived).map(Enum::name).toList();
 	}
 
 	public boolean isReceived() {
 		return this.equals(RECEIVED);
 	}
-
 
 	public boolean isNotReceived() {
 		return !this.equals(RECEIVED);

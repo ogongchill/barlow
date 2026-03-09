@@ -1,0 +1,47 @@
+name: Barlow API Docs Deploy
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: Barlow CI
+
+    steps:
+      - name: Check Out
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run REST Docs Test & Build API Docs HTML
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: :app:api:asciidoctor
+        env:
+          SPRING_PROFILES_ACTIVE: test
+
+      - name: Deploy to ogongchill.github.io
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.DOCS_DEPLOY_TOKEN }}
+          external_repository: ogongchill/ogongchill.github.io
+          publish_branch: main
+          publish_dir: app/api/build/docs/asciidoc
+          destination_dir: barlow/api
+          commit_message: "docs: Barlow API 문서 업데이트 (${{ github.sha }})"
+          keep_files: true

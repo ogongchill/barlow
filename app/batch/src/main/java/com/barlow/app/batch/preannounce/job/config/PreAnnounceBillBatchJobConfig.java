@@ -29,24 +29,17 @@ public class PreAnnounceBillBatchJobConfig {
 
 	@Bean
 	public Job preAnnounceBillBatchJob(
-		@Qualifier("preAnnounceBillDirtyCheckJobListener") JobExecutionListener jobExecutionListener
-	) {
-		return new JobBuilder(JOB_NAME, jobRepository)
-			.listener(jobExecutionListener)
-			.start(billPostPreAnnounceInfoUpdateStep(null, null, null))
-			.build();
+		@Qualifier("preAnnounceBillDirtyCheckJobListener") JobExecutionListener jobExecutionListener) {
+		return new JobBuilder(JOB_NAME, jobRepository).listener(jobExecutionListener)
+			.start(billPostPreAnnounceInfoUpdateStep(null, null, null)).build();
 	}
 
 	@Bean
 	@JobScope
-	public Step billPostPreAnnounceInfoUpdateStep(
-		@Qualifier("billPostPreAnnounceInfoUpdateTasklet") Tasklet tasklet,
+	public Step billPostPreAnnounceInfoUpdateStep(@Qualifier("billPostPreAnnounceInfoUpdateTasklet") Tasklet tasklet,
 		@Qualifier("batchCoreTransactionManager") PlatformTransactionManager transactionManager,
-		StepLoggingListener stepLoggingListener
-	) {
-		return new StepBuilder(UPDATE_STEP, jobRepository)
-			.tasklet(tasklet, transactionManager)
-			.listener(stepLoggingListener)
-			.build();
+		StepLoggingListener stepLoggingListener) {
+		return new StepBuilder(UPDATE_STEP, jobRepository).tasklet(tasklet, transactionManager)
+			.listener(stepLoggingListener).build();
 	}
 }

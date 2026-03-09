@@ -38,19 +38,15 @@ class PreAnnounceBillRetrieveControllerTest extends ContextTest {
 		@DisplayName("사용자가 진행중인 입법예고 법안 게시글 전체를 tag 없이 기본 조회한다")
 		@Test
 		void retrievePreAnnouncementBills_withoutTags() {
-			Map<String, Object> responseMap = RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.get("/api/v1/pre-announcement-bills")
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.headers(MANDATORY_DEVICE_HEADERS).when().get("/api/v1/pre-announcement-bills").then().log().all()
+				.extract().jsonPath().getMap(".");
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 
 		@DisplayName("사용자가 진행중인 입법예고 법안 게시글 전체를 tag 와 함께 조회한다")
@@ -59,20 +55,15 @@ class PreAnnounceBillRetrieveControllerTest extends ContextTest {
 			MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
 			queryParams.set("legislationType", "HOUSE_STEERING");
 			queryParams.set("partyName", "PEOPLE_POWER");
-			Map<String, Object> responseMap = RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			Map<String, Object> responseMap = RestAssured.given().log().all()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.queryParams(queryParams)
-				.get("/api/v1/pre-announcement-bills")
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.headers(MANDATORY_DEVICE_HEADERS).when().queryParams(queryParams).get("/api/v1/pre-announcement-bills")
+				.then().log().all().extract().jsonPath().getMap(".");
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 	}
 
@@ -88,8 +79,7 @@ class PreAnnounceBillRetrieveControllerTest extends ContextTest {
 			assertAll(
 				() -> assertThat(responseMap).containsEntry("result", ResultType.SUCCESS.name()),
 				() -> assertThat(responseMap.get("data")).isNotNull(),
-				() -> assertThat(responseMap.get("error")).isNull()
-			);
+				() -> assertThat(responseMap.get("error")).isNull());
 		}
 
 		@DisplayName("사용자가 존재하지 않는 법안 id 로 진행중인 입법예고 게시글을 상세 조회하면 예외를 발생시킨다")
@@ -100,14 +90,10 @@ class PreAnnounceBillRetrieveControllerTest extends ContextTest {
 		}
 
 		private Map<String, Object> retrievePreAnnounceBillPostDetail(String billId) {
-			return RestAssured
-				.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
+			return RestAssured.given().log().all().contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(AUTHORIZATION, AUTHENTICATION_TYPE + testTokenProvider.getAccessTokenValue())
-				.headers(MANDATORY_DEVICE_HEADERS)
-				.when()
-				.get("/api/v1/pre-announcement-bills/{billId}", billId)
-				.then().log().all().extract()
-				.jsonPath().getMap(".");
+				.headers(MANDATORY_DEVICE_HEADERS).when().get("/api/v1/pre-announcement-bills/{billId}", billId).then()
+				.log().all().extract().jsonPath().getMap(".");
 		}
 	}
 }

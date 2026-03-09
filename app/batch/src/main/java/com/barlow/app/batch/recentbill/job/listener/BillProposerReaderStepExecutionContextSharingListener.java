@@ -15,15 +15,13 @@ import com.barlow.app.batch.utils.HashUtil;
 
 @Component
 @StepScope
-public class BillProposerReaderStepExecutionContextSharingListener
-	extends AbstractExecutionContextSharingManager
+public class BillProposerReaderStepExecutionContextSharingListener extends AbstractExecutionContextSharingManager
 	implements StepExecutionListener {
 
 	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
 
 	public BillProposerReaderStepExecutionContextSharingListener(
-		RecentBillJobScopeShareRepository jobScopeShareRepository
-	) {
+		RecentBillJobScopeShareRepository jobScopeShareRepository) {
 		super();
 		this.jobScopeShareRepository = jobScopeShareRepository;
 	}

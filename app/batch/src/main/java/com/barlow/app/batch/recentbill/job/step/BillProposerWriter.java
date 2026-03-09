@@ -28,8 +28,7 @@ public class BillProposerWriter implements ItemWriter<BillProposer> {
 	private final SimpleJdbcInsert simpleJdbcInsert;
 
 	public BillProposerWriter(@Qualifier("batchCoreDataSource") DataSource dataSource) {
-		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-			.withTableName(BILL_PROPOSER_TABLE_NAME)
+		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(BILL_PROPOSER_TABLE_NAME)
 			.usingGeneratedKeyColumns(BILL_PROPOSER_PK);
 	}
 
@@ -39,18 +38,15 @@ public class BillProposerWriter implements ItemWriter<BillProposer> {
 	}
 
 	private void saveAllInBatch(BillProposer billProposer) {
-		SqlParameterSource[] sqlParameterSources = billProposer.lawmakers()
-			.stream()
+		SqlParameterSource[] sqlParameterSources = billProposer.lawmakers().stream()
 			.map(lawmaker -> createMapSqlParameterSource(billProposer.billId(), lawmaker))
 			.toArray(SqlParameterSource[]::new);
 		simpleJdbcInsert.executeBatch(sqlParameterSources);
 	}
 
 	private MapSqlParameterSource createMapSqlParameterSource(String billId, Lawmaker lawmaker) {
-		return new MapSqlParameterSource()
-			.addValue("propose_bill_id", billId)
-			.addValue("proposer_code", lawmaker.code())
-			.addValue("proposer_name", lawmaker.name())
+		return new MapSqlParameterSource().addValue("propose_bill_id", billId)
+			.addValue("proposer_code", lawmaker.code()).addValue("proposer_name", lawmaker.name())
 			.addValue("proposer_profile_image_path", lawmaker.profileImagePath())
 			.addValue("party_name", PartyName.findByValue(lawmaker.partyName()))
 			.addValue("created_at", LocalDateTime.now(), Types.TIMESTAMP)

@@ -16,9 +16,9 @@ import com.barlow.app.batch.recentbill.job.TodayBillInfoBatchEntity;
 import com.barlow.app.batch.recentbill.job.RecentBillJobScopeShareRepository;
 import com.barlow.app.batch.common.AbstractExecutionContextSharingManager;
 import com.barlow.core.enumerate.NotificationTopic;
-import com.barlow.services.notification.DefaultBillNotificationRequest;
-import com.barlow.services.notification.NotificationRequest;
-import com.barlow.services.notification.NotificationSendPort;
+import com.barlow.infra.notification.DefaultBillNotificationRequest;
+import com.barlow.infra.notification.NotificationRequest;
+import com.barlow.infra.notification.NotificationSendPort;
 
 @Component
 @StepScope
@@ -27,10 +27,8 @@ public class TodayBillNotifyTasklet extends AbstractExecutionContextSharingManag
 	private final NotificationSendPort notificationSendPort;
 	private final RecentBillJobScopeShareRepository jobScopeShareRepository;
 
-	public TodayBillNotifyTasklet(
-		NotificationSendPort notificationSendPort,
-		RecentBillJobScopeShareRepository jobScopeShareRepository
-	) {
+	public TodayBillNotifyTasklet(NotificationSendPort notificationSendPort,
+		RecentBillJobScopeShareRepository jobScopeShareRepository) {
 		super();
 		this.notificationSendPort = notificationSendPort;
 		this.jobScopeShareRepository = jobScopeShareRepository;
@@ -43,16 +41,14 @@ public class TodayBillNotifyTasklet extends AbstractExecutionContextSharingManag
 		TodayBillInfoBatchEntity todayBillInfo = jobScopeShareRepository.findByKey(hashKey);
 
 		DefaultBillNotificationRequest notificationRequest = DefaultBillNotificationRequest.from(
-			todayBillInfo.items().stream()
-				.map(item -> Map.entry(item.progressStatus(), item))
-				.filter(entry -> NotificationTopic.isNotifiableProgressStatus(entry.getKey()))
-				.collect(Collectors.groupingBy(
-					entry -> NotificationTopic.findByProgressStatus(entry.getKey()),
-					Collectors.mapping(entry -> new NotificationRequest.BillInfo(
-						entry.getValue().billId(), entry.getValue().billName()
-					), Collectors.toList())
-				))
-		);
+			todayBillInfo.items().stream().map(item -> Map.entry(item.progressStatus(), item))
+				.filter(entry -> NotificationTopic.isNotifiableProgressStatus(entry.getKey())).collect(
+					Collectors.groupingBy(
+						entry -> NotificationTopic.findByProgressStatus(entry.getKey()),
+						Collectors.mapping(
+							entry -> new NotificationRequest.BillInfo(
+								entry.getValue().billId(), entry.getValue().billName()),
+							Collectors.toList()))));
 		notificationSendPort.sendCall(notificationRequest);
 		return RepeatStatus.FINISHED;
 	}

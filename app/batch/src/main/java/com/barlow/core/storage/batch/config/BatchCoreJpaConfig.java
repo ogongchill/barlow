@@ -1,4 +1,4 @@
-package com.barlow.core.storage.batch.config;
+package com.barlow.infra.storage.batch.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,43 +18,34 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.barlow.core.storage.BillPostJpaEntity;
-import com.barlow.core.storage.LegislationAccountJpaEntity;
-import com.barlow.core.storage.NotificationConfigJpaEntity;
+import com.barlow.infra.storage.BillPostJpaEntity;
+import com.barlow.infra.storage.LegislationAccountJpaEntity;
+import com.barlow.infra.storage.NotificationConfigJpaEntity;
 
 import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
 @EnableTransactionManagement
-@EntityScan(basePackageClasses = {
-	BillPostJpaEntity.class,
-	LegislationAccountJpaEntity.class,
+@EntityScan(basePackageClasses = {BillPostJpaEntity.class, LegislationAccountJpaEntity.class,
 	NotificationConfigJpaEntity.class})
-@EnableJpaRepositories(
-	basePackages = {"com.barlow.core.storage.batch", "com.barlow.core.storage.notification"},
-	entityManagerFactoryRef = "batchCoreEntityManagerFactory",
-	transactionManagerRef = "batchCoreTransactionManager")
+@EnableJpaRepositories(basePackages = {"com.barlow.infra.storage.batch",
+	"com.barlow.infra.storage.notification"}, entityManagerFactoryRef = "batchCoreEntityManagerFactory", transactionManagerRef = "batchCoreTransactionManager")
 public class BatchCoreJpaConfig {
 
 	@Bean("batchCoreTransactionManager")
 	public PlatformTransactionManager platformTransactionManager(
-		@Qualifier("batchCoreEntityManagerFactory") EntityManagerFactory emf
-	) {
+		@Qualifier("batchCoreEntityManagerFactory") EntityManagerFactory emf) {
 		return new JpaTransactionManager(emf);
 	}
 
 	@Bean("batchCoreEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-		@Qualifier("batchCoreDataSource") DataSource dataSource,
-		BatchCoreJpaProperties jpaProperties,
-		EntityManagerFactoryBuilder builder
-	) {
+		@Qualifier("batchCoreDataSource") DataSource dataSource, BatchCoreJpaProperties jpaProperties,
+		EntityManagerFactoryBuilder builder) {
 		return builder.dataSource(dataSource)
-			.packages("com.barlow.core.storage.batch", "com.barlow.core.storage.notification")
+			.packages("com.barlow.infra.storage.batch", "com.barlow.infra.storage.notification")
 			.packages(BillPostJpaEntity.class, LegislationAccountJpaEntity.class, NotificationConfigJpaEntity.class)
-			.persistenceUnit("batch-core")
-			.properties(jpaProperties.properties)
-			.build();
+			.persistenceUnit("batch-core").properties(jpaProperties.properties).build();
 	}
 
 	@Component

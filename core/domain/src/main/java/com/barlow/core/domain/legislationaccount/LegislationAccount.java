@@ -9,29 +9,30 @@ public class LegislationAccount {
 	private final String description;
 	private final int postCount;
 	private final int subscriberCount;
-	private boolean isSubscribed;
-	private boolean isNotifiable;
+	private final boolean isSubscribed;
+	private final boolean isNotifiable;
 
-	public LegislationAccount(
-		long no,
-		LegislationType type,
-		String description,
-		int postCount,
-		int subscriberCount
-	) {
+	public LegislationAccount(long no, LegislationType type, String description, int postCount, int subscriberCount) {
+		this(no, type, description, postCount, subscriberCount, false, false);
+	}
+
+	private LegislationAccount(long no, LegislationType type, String description, int postCount, int subscriberCount,
+		boolean isSubscribed, boolean isNotifiable) {
 		this.no = no;
 		this.type = type;
 		this.description = description;
 		this.postCount = postCount;
 		this.subscriberCount = subscriberCount;
+		this.isSubscribed = isSubscribed;
+		this.isNotifiable = isNotifiable;
 	}
 
-	void setSubscribed(boolean subscribed) {
-		isSubscribed = subscribed;
+	public LegislationAccount withSubscribed(boolean subscribed) {
+		return new LegislationAccount(no, type, description, postCount, subscriberCount, subscribed, isNotifiable);
 	}
 
-	void setNotifiable(boolean notifiable) {
-		isNotifiable = notifiable;
+	public LegislationAccount withNotifiable(boolean notifiable) {
+		return new LegislationAccount(no, type, description, postCount, subscriberCount, isSubscribed, notifiable);
 	}
 
 	public long getNo() {

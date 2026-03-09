@@ -2,8 +2,7 @@ package com.barlow.app.batch.recentbill;
 
 public final class RecentBillConstant {
 
-	private RecentBillConstant() {
-	}
+	private RecentBillConstant() {}
 
 	public static final String JOB_NAME = "todayBillCreateBatchJob";
 	public static final String WRITE_TODAY_BILL_INFO_STEP = "writeTodayBillInfoStep";

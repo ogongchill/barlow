@@ -18,17 +18,12 @@ public class BillPost {
 	private final String detail;
 	private final LocalDateTime createdAt;
 	private final int viewCount;
+	private final PreAnnouncementInfo preAnnouncementInfo;
+	private final List<BillProposer> billProposers;
 
-	private PreAnnouncementInfo preAnnouncementInfo;
-	private List<BillProposer> billProposers;
-
-	public BillPost(
-		BillInfo billInfo,
-		ProposerInfo proposerInfo,
-		LegislationInfo legislationInfo,
-		String summary, String detail,
-		LocalDateTime createdAt, int viewCount
-	) {
+	public BillPost(BillInfo billInfo, ProposerInfo proposerInfo, LegislationInfo legislationInfo, String summary,
+		String detail, LocalDateTime createdAt, int viewCount, List<BillProposer> billProposers,
+		PreAnnouncementInfo preAnnouncementInfo) {
 		this.billInfo = billInfo;
 		this.proposerInfo = proposerInfo;
 		this.legislationInfo = legislationInfo;
@@ -36,38 +31,32 @@ public class BillPost {
 		this.detail = detail;
 		this.createdAt = createdAt;
 		this.viewCount = viewCount;
-	}
-
-	public void setBillProposers(List<BillProposer> billProposers) {
-		this.billProposers = billProposers;
-	}
-
-	public void assignPreAnnouncementInfo(PreAnnouncementInfo preAnnouncementInfo) {
+		this.billProposers = billProposers != null ? List.copyOf(billProposers) : List.of();
 		this.preAnnouncementInfo = preAnnouncementInfo;
 	}
 
 	public String getBillId() {
-		return billInfo.billId;
+		return billInfo.billId();
 	}
 
 	public String getBillName() {
-		return billInfo.billName;
+		return billInfo.billName();
 	}
 
 	public String getProposerType() {
-		return proposerInfo.type.getValue();
+		return proposerInfo.type().getValue();
 	}
 
 	public String getProposers() {
-		return proposerInfo.proposers;
+		return proposerInfo.proposers();
 	}
 
 	public String getLegislativeBody() {
-		return legislationInfo.legislativeBody.getValue();
+		return legislationInfo.legislativeBody().getValue();
 	}
 
 	public String getLegislationProcessStatus() {
-		return legislationInfo.legislationProcessStatus.getValue();
+		return legislationInfo.legislationProcessStatus().getValue();
 	}
 
 	public String getSummary() {
@@ -87,58 +76,30 @@ public class BillPost {
 	}
 
 	public int calculateDeadlineDay(LocalDate now) {
-		return (int)ChronoUnit.DAYS.between(now, preAnnouncementInfo.deadline);
+		return (int)ChronoUnit.DAYS.between(now, preAnnouncementInfo.deadline());
 	}
 
 	public String getPreAnnouncementUrl() {
-		return preAnnouncementInfo.linkUrl;
+		return preAnnouncementInfo.linkUrl();
 	}
 
 	public LocalDate getPreAnnounceDeadline() {
-		return preAnnouncementInfo.deadline;
+		return preAnnouncementInfo.deadline();
 	}
 
 	public List<BillProposer> getBillProposers() {
 		return billProposers;
 	}
 
-	public static class BillInfo {
-		private final String billId;
-		private final String billName;
-
-		public BillInfo(String billId, String billName) {
-			this.billId = billId;
-			this.billName = billName;
-		}
+	public record BillInfo(String billId, String billName) {
 	}
 
-	public static class ProposerInfo {
-		private final ProposerType type;
-		private final String proposers;
-
-		public ProposerInfo(ProposerType type, String proposers) {
-			this.type = type;
-			this.proposers = proposers;
-		}
+	public record ProposerInfo(ProposerType type, String proposers) {
 	}
 
-	public static class LegislationInfo {
-		private final LegislationType legislativeBody;
-		private final ProgressStatus legislationProcessStatus;
-
-		public LegislationInfo(LegislationType legislationType, ProgressStatus legislationProcessStatus) {
-			this.legislativeBody = legislationType;
-			this.legislationProcessStatus = legislationProcessStatus;
-		}
+	public record LegislationInfo(LegislationType legislativeBody, ProgressStatus legislationProcessStatus) {
 	}
 
-	public static class PreAnnouncementInfo {
-		private final String linkUrl;
-		private final LocalDate deadline;
-
-		public PreAnnouncementInfo(String linkUrl, LocalDate deadline) {
-			this.linkUrl = linkUrl;
-			this.deadline = deadline;
-		}
+	public record PreAnnouncementInfo(String linkUrl, LocalDate deadline) {
 	}
 }

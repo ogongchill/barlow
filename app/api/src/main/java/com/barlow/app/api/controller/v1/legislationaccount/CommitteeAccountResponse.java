@@ -5,12 +5,9 @@ import java.util.List;
 import com.barlow.core.domain.legislationaccount.LegislationAccount;
 import com.barlow.app.support.response.Constant;
 
-public record CommitteeAccountResponse(
-	String title,
-	String subtitle,
-	String description,
-	List<CommitteeAccount> accounts
-) {
+public record CommitteeAccountResponse(String title, String subtitle, String description,
+	List<CommitteeAccount> accounts) {
+
 	private static final String _TITLE = "소관위원회 더 알아보기";
 	private static final String _SUBTITLE = "소관위원회란?";
 	private static final String _DESCRIPTION = """
@@ -20,30 +17,16 @@ public record CommitteeAccountResponse(
 
 	static CommitteeAccountResponse from(List<LegislationAccount> legislationAccounts) {
 		return new CommitteeAccountResponse(
-			_TITLE,
-			_SUBTITLE,
-			_DESCRIPTION,
-			legislationAccounts.stream()
-				.map(CommitteeAccount::from)
-				.toList()
-		);
+			_TITLE, _SUBTITLE, _DESCRIPTION, legislationAccounts.stream().map(CommitteeAccount::from).toList());
 	}
 
-	record CommitteeAccount(
-		long accountNo,
-		String accountName,
-		String iconUrl,
-		boolean isSubscribed,
-		boolean isNotifiable
-	) {
+	record CommitteeAccount(long accountNo, String accountName, String iconUrl, boolean isSubscribed,
+		boolean isNotifiable) {
 		static CommitteeAccount from(LegislationAccount legislationAccount) {
 			return new CommitteeAccount(
-				legislationAccount.getNo(),
-				legislationAccount.getLegislationType(),
-				Constant.IMAGE_ACCESS_URL + legislationAccount.getIconPath(),
-				legislationAccount.isSubscribed(),
-				legislationAccount.isNotifiable()
-			);
+				legislationAccount.getNo(), legislationAccount.getLegislationType(),
+				Constant.IMAGE_ACCESS_URL + legislationAccount.getIconPath(), legislationAccount.isSubscribed(),
+				legislationAccount.isNotifiable());
 		}
 	}
 }

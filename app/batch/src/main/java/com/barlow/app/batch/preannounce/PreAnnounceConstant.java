@@ -2,8 +2,7 @@ package com.barlow.app.batch.preannounce;
 
 public final class PreAnnounceConstant {
 
-	private PreAnnounceConstant() {
-	}
+	private PreAnnounceConstant() {}
 
 	public static final String BATCH_DATE_JOB_PARAMETER = "batchDate";
 

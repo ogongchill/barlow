@@ -27,21 +27,17 @@ public class TrackingBillBatchJobExecutor {
 	private final Job job;
 	private final Alerter alerter;
 
-	public TrackingBillBatchJobExecutor(
-		JobLauncher jobLauncher,
-		@Qualifier(JOB_NAME) Job job,
-		Alerter alerter
-	) {
+	public TrackingBillBatchJobExecutor(JobLauncher jobLauncher, @Qualifier(JOB_NAME) Job job, Alerter alerter) {
 		this.jobLauncher = jobLauncher;
 		this.job = job;
 		this.alerter = alerter;
 	}
 
 	public void execute(LocalDate yesterday, LocalDate startDate) {
-		JobParameters jobParameters = new JobParameters(Map.of(
-			TRACKING_END_DATE_JOB_PARAMETER, new JobParameter<>(yesterday, LocalDate.class),
-			TRACKING_START_DATE_JOB_PARAMETER, new JobParameter<>(startDate, LocalDate.class)
-		));
+		JobParameters jobParameters = new JobParameters(
+			Map.of(
+				TRACKING_END_DATE_JOB_PARAMETER, new JobParameter<>(yesterday, LocalDate.class),
+				TRACKING_START_DATE_JOB_PARAMETER, new JobParameter<>(startDate, LocalDate.class)));
 		try {
 			alerter.alert(String.format("[%s - %s] 법안 상태 추적 Batch 시작", startDate, yesterday));
 			log.info("{} : 법안 상태 추적 Batch 시작 [{} - {}]", LocalDateTime.now(), startDate, yesterday);

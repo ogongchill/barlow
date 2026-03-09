@@ -7,8 +7,7 @@ import com.barlow.core.exception.CoreDomainExceptionType;
 
 public class AccountDomainException extends CoreDomainException {
 
-	protected AccountDomainException(CoreDomainExceptionCode code,
-		CoreDomainExceptionLevel level, String message) {
+	protected AccountDomainException(CoreDomainExceptionCode code, CoreDomainExceptionLevel level, String message) {
 		super(code, level, message);
 	}
 

@@ -18,18 +18,11 @@ public class RecentBillPostDetailApiSpecComposer {
 	RecentBillPostDetailResponse compose() {
 		BillProposers billProposers = new BillProposers(billPost.getBillProposers());
 		return new RecentBillPostDetailResponse(
-			billPost.getBillName(),
-			billPost.getProposers(),
-			billPost.getProposerType(),
-			billPost.getLegislativeBody(),
-			billPost.getCreatedAt().toLocalDate(),
-			billPost.getDetail(),
+			billPost.getBillName(), billPost.getProposers(), billPost.getProposerType(), billPost.getLegislativeBody(),
+			billPost.getCreatedAt().toLocalDate(), billPost.getDetail(),
 			new RecentBillPostDetailResponse.SummarySection(billPost.getSummary()),
 			new RecentBillPostDetailResponse.ProposerSection(
-				billProposers.getProposerPartyRate(),
-				billProposers.mapToProposerResponse()
-			)
-		);
+				billProposers.getProposerPartyRate(), billProposers.mapToProposerResponse()));
 	}
 
 	static class BillProposers {
@@ -44,19 +37,15 @@ public class RecentBillPostDetailApiSpecComposer {
 
 		Map<String, Integer> getProposerPartyRate() {
 			return values.stream()
-				.collect(Collectors.groupingBy(
-					BillProposer::getPartyName,
-					Collectors.summingInt(value -> COUNT_UNIT)
-				));
+				.collect(Collectors.groupingBy(BillProposer::partyName, Collectors.summingInt(value -> COUNT_UNIT)));
 		}
 
 		List<RecentBillPostDetailResponse.ProposerResponse> mapToProposerResponse() {
 			return values.stream()
-				.map(billProposer -> new RecentBillPostDetailResponse.ProposerResponse(
-					billProposer.getProposerName(),
-					billProposer.getProfileImagePath(),
-					billProposer.getPartyName()
-				))
+				.map(
+					billProposer -> new RecentBillPostDetailResponse.ProposerResponse(
+						billProposer.proposerName(), billProposer.profileImagePath(),
+						billProposer.partyName()))
 				.toList();
 		}
 	}

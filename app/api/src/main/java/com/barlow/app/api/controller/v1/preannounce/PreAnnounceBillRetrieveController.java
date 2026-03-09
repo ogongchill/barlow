@@ -15,10 +15,10 @@ import com.barlow.core.domain.Passport;
 import com.barlow.core.domain.billpost.BillPost;
 import com.barlow.core.domain.billpost.BillPostDetailQuery;
 import com.barlow.core.domain.billpost.BillPostQuery;
-import com.barlow.core.domain.billpost.BillPostRetrieveService;
+import com.barlow.core.service.billpost.BillPostRetrieveService;
 import com.barlow.core.domain.billpost.BillPostsStatus;
 import com.barlow.app.support.response.ApiResponse;
-import com.barlow.services.auth.support.annotation.PassportUser;
+import com.barlow.infra.auth.support.annotation.PassportUser;
 
 @RestController
 @RequestMapping("/api/v1/pre-announcement-bills")
@@ -34,22 +34,18 @@ public class PreAnnounceBillRetrieveController {
 
 	@GetMapping
 	public ApiResponse<PreAnnounceBillPostsResponse> retrievePreAnnouncementBills(
-		@RequestParam MultiValueMap<String, String> params
-	) {
+		@RequestParam MultiValueMap<String, String> params) {
 		log.info("Received retrieve pre-announcement bill post thumbnail request.");
 		PreAnnounceBillPostsRequest request = PreAnnounceBillPostsRequest.sanitizeFrom(params);
 		BillPostsStatus billPostsStatus = billPostRetrieveService.readBillPosts(
-			BillPostQuery.preAnnounceOf(request.getPage(), request.getSize(), request.getSort(), request.getFilters())
-		);
+			BillPostQuery.preAnnounceOf(request.getPage(), request.getSize(), request.getSort(), request.getFilters()));
 		PreAnnounceBillPostsApiSpecComposer specComposer = new PreAnnounceBillPostsApiSpecComposer(billPostsStatus);
 		return ApiResponse.success(specComposer.compose(LocalDate.now()));
 	}
 
 	@GetMapping("/{billId}")
 	public ApiResponse<PreAnnounceBillPostDetailResponse> retrieveBillPostWithPreAnnouncementBill(
-		@PassportUser Passport passport,
-		@PathVariable("billId") String billId
-	) {
+		@PassportUser Passport passport, @PathVariable("billId") String billId) {
 		log.info("Received retrieve pre-announcement bill {} post detail request.", billId);
 		BillPost billPost = billPostRetrieveService.readBillPostDetail(passport, new BillPostDetailQuery(billId));
 		PreAnnounceBillPostDetailApiSpecComposer specComposer = new PreAnnounceBillPostDetailApiSpecComposer(billPost);

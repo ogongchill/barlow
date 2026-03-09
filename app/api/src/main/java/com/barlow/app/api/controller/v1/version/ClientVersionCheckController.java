@@ -2,7 +2,7 @@ package com.barlow.app.api.controller.v1.version;
 
 import com.barlow.app.support.response.ApiResponse;
 import com.barlow.core.domain.version.ClientVersionQuery;
-import com.barlow.core.domain.version.ClientVersionService;
+import com.barlow.core.service.version.ClientVersionService;
 import com.barlow.core.enumerate.ClientVersionStatus;
 import com.barlow.core.enumerate.DeviceOs;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/client-version")
+@RequestMapping("/api/v1/client-versions")
 public class ClientVersionCheckController {
 
 	private final ClientVersionService clientVersionService;
@@ -21,14 +21,11 @@ public class ClientVersionCheckController {
 		this.clientVersionService = clientVersionService;
 	}
 
-	@GetMapping("/check")
+	@GetMapping
 	public ApiResponse<ClientVersionCheckResponse> retrieveVersionCheckResponse(
-		@RequestHeader("X-App-Version") String appVersion,
-		@RequestHeader("X-Device-Os") String deviceOs
-	) {
-		ClientVersionStatus status = clientVersionService.checkClientVersion(
-			new ClientVersionQuery(DeviceOs.valueOf(deviceOs), appVersion)
-		);
+		@RequestHeader("X-App-Version") String appVersion, @RequestHeader("X-Device-Os") String deviceOs) {
+		ClientVersionStatus status = clientVersionService
+			.checkClientVersion(new ClientVersionQuery(DeviceOs.valueOf(deviceOs), appVersion));
 		ClientVersionCheckApiSpecComposer composer = new ClientVersionCheckApiSpecComposer(status);
 		return ApiResponse.success(composer.compose());
 	}

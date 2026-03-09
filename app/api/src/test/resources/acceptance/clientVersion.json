@@ -1,0 +1,14 @@
+{
+  "client_version": [
+    {
+      "device_os": "ANDROID",
+      "minimum_supported": "1.0.0",
+      "latest": "2.0.0"
+    },
+    {
+      "device_os": "IOS",
+      "minimum_supported": "1.0.0",
+      "latest": "2.0.0"
+    }
+  ]
+}

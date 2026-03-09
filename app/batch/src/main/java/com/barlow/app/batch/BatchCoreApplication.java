@@ -18,8 +18,6 @@ public class BatchCoreApplication {
 
 	public static void main(String[] args) {
 		setTimeZone();
-		new SpringApplicationBuilder(BatchCoreApplication.class)
-			.web(WebApplicationType.NONE)
-			.run(args);
+		new SpringApplicationBuilder(BatchCoreApplication.class).web(WebApplicationType.NONE).run(args);
 	}
 }

@@ -6,49 +6,36 @@ import java.util.List;
 import com.barlow.core.enumerate.ProgressStatus;
 import com.barlow.core.enumerate.ProposerType;
 
-public record TodayBillInfoBatchEntity(
-	int totalCount,
-	List<BillInfoItem> items
-) implements Serializable {
+public record TodayBillInfoBatchEntity(int totalCount, List<BillInfoItem> items) implements Serializable {
 
 	public int itemSize() {
 		return items.size();
 	}
 
 	public TodayBillInfoBatchEntity filterReceivedBills() {
-		List<BillInfoItem> receivedBills = items.stream()
-			.filter(BillInfoItem::isReceipt)
-			.toList();
+		List<BillInfoItem> receivedBills = items.stream().filter(BillInfoItem::isReceipt).toList();
 		return new TodayBillInfoBatchEntity(receivedBills.size(), receivedBills);
 	}
 
 	public TodayBillInfoBatchEntity filterChairmanBills() {
-		List<BillInfoItem> chairmanBills = items.stream()
-			.filter(BillInfoItem::isChairman)
-			.toList();
+		List<BillInfoItem> chairmanBills = items.stream().filter(BillInfoItem::isChairman).toList();
 		return new TodayBillInfoBatchEntity(chairmanBills.size(), chairmanBills);
 	}
 
 	public TodayBillInfoBatchEntity filteredBillsWithFewProposers() {
 		List<BillInfoItem> billsWithFewProposers = items.stream()
-			.filter(BillInfoItem::isProposerLessThanTwentyOrChairman)
-			.toList();
+			.filter(BillInfoItem::isProposerLessThanTwentyOrChairman).toList();
 		return new TodayBillInfoBatchEntity(billsWithFewProposers.size(), billsWithFewProposers);
 	}
 
-	public record BillInfoItem(
-		String billId,
-		String billNo,
-		String billName,
-		String generalResult, // 처리 결과: 폐기,원안가결,수정가결 등등
+	public record BillInfoItem(String billId, String billNo, String billName, String generalResult, // 처리 결과: 폐기,원안가결,수정가결 등등
 		String processingType, // 처리구분: 계류의안,처리의안 등
 		ProposerType proposerType, // 제안자구분: 의원,위원장,정부,의장 등
 		String proposers, // ~ 등 N명
-		String proposeDateStr,
-		String decisionDateStr,
-		ProgressStatus progressStatus, // 심사진행상태: 접수,소관위접수 등
+		String proposeDateStr, String decisionDateStr, ProgressStatus progressStatus, // 심사진행상태: 접수,소관위접수 등
 		String summary // 주요내용
 	) implements Serializable {
+
 		private static final String NON_DIGIT_REGEX = "\\D";
 
 		boolean isReceipt() {
@@ -153,11 +140,8 @@ public record TodayBillInfoBatchEntity(
 
 			public BillInfoItem build() {
 				return new BillInfoItem(
-					billId, billNo, billName,
-					generalResult, processingType,
-					proposerType, proposers, proposeDateStr,
-					decisionDateStr, progressStatus, summary
-				);
+					billId, billNo, billName, generalResult, processingType, proposerType, proposers, proposeDateStr,
+					decisionDateStr, progressStatus, summary);
 			}
 		}
 	}
