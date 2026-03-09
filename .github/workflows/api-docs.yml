@@ -38,7 +38,7 @@ jobs:
       - name: Deploy to ogongchill.github.io
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.DOCS_DEPLOY_TOKEN }}
+          personal_token: ${{ secrets.BARLOW_API_DOCS_DEPLOY_TOKEN }}
           external_repository: ogongchill/ogongchill.github.io
           publish_branch: main
           publish_dir: app/api/build/docs/asciidoc
