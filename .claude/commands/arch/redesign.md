@@ -3,9 +3,9 @@ description: 범용 아키텍처 비판 및 재설계 커맨드. Core Logic을 �
 model: opus
 ---
 
-# /arch-redesign
+# /arch:redesign
 
-> **단계 명칭**: 이 커맨드의 분석 단계는 **Stage N**으로 지칭한다. WORKFLOW.md의 Phase N, /arch-plan의 Step N과 구별된다.
+> **단계 명칭**: 이 커맨드의 분석 단계는 **Stage N**으로 지칭한다. /arch:plan의 Step N과 구별된다.
 
 ## Role & Persona
 
@@ -261,7 +261,7 @@ ADR에 포함될 설계 요소를 **Stage 1의 스키마 스냅샷**과 대조�
 ADR이 생성되었습니다: docs/adr/ARCH-{NNN}-{YYYY-MM-DD}-{topic}.md
 
 내용을 검토하고 승인하시면 구현 계획 수립을 시작합니다.
-→ 승인 후: /project:arch-plan {topic} adr=docs/adr/ARCH-{NNN}-{YYYY-MM-DD}-{topic}.md
+→ 승인 후: /arch:plan {topic} adr=docs/adr/ARCH-{NNN}-{YYYY-MM-DD}-{topic}.md
 ```
 
 > ⚠️ ADR 승인 전까지 코드 작성을 시작하지 않는다.

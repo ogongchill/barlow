@@ -3,12 +3,12 @@ description: 코드베이스를 최대한 깊이 분해·이해·어떻게 동�
 model: opus
 ---
 
-# /arch-plan
+# /arch:plan
 
 코드베이스를 최대한 깊이 분해·이해·어떻게 동작하는지 분석한 뒤, 사용자와 대화를 통해 구현 계획을 점진적으로 확정하는 커맨드.
 **단일 요구사항 개발**과 **대규모 재설계 후 개발** 모두에 사용한다.
 
-> **단계 명칭**: 이 커맨드의 계획 수립 단계는 **Step N**으로 지칭한다. WORKFLOW.md의 Phase N, /arch-redesign의 Stage N과 구별된다.
+> **단계 명칭**: 이 커맨드의 계획 수립 단계는 **Step N**으로 지칭한다. /arch:redesign의 Stage N과 구별된다.
 > 계획 결과물(docs/plans/)의 실행 항목은 **Task N**으로 표기한다.
 
 ## 실행 모드
@@ -16,13 +16,13 @@ model: opus
 이 커맨드는 두 가지 모드로 동작한다. `[ADR]` 파라미터 유무로 자동 판별한다.
 
 ### 모드 A — 독립 계획 수립 (ADR 없음)
-**진입 경로**: WORKFLOW.md Tier 2 복잡 케이스, 또는 개발자 직접 호출
+**진입 경로**: 개발자 직접 호출
 - Step 1에서 설계 결정을 포함한 깊은 분석 수행
 - Step 2 첫 번째 피드백 루프에서 FROZEN_ZONE을 사용자와 확인
 - 탐색적 성격: 여러 구현 방향을 검토하고 확정
 
 ### 모드 B — ADR 기반 구현 계획 (ADR 있음)
-**진입 경로**: WORKFLOW.md Tier 3 → /arch-redesign 완료 후
+**진입 경로**: /arch-redesign 완료 후
 - Step 0에서 ADR의 FROZEN_ZONE·채택 패러다임·영향 파일 추출
 - Step 1 분석은 ADR 제약 확인 중심 (설계 결정은 ADR에서 이미 완료)
 - 실행 지향적: ADR 방향에서 벗어나는 Task 제안 금지
@@ -218,7 +218,6 @@ A → B 형태로 전체 열거 (import, 주입, 호출 포함)
 
 다음 단계:
 → Task 1 구현을 시작하려면 "Task 1 구현" 이라고 말씀해 주세요.
-   구현은 WORKFLOW.md Phase 4 (코드 구현) 절차를 따릅니다.
    구현 완료 후 /harness-check 로 검증합니다.
 ```
 
