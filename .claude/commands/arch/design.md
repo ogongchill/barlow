@@ -3,13 +3,13 @@ description: 신규 대형 시스템 초기 설계 커맨드. 백지 상태에�
 model: opus
 ---
 
-# /arch-design
+# /arch:design
 
-> **단계 명칭**: 이 커맨드의 분석 단계는 **Stage N**으로 지칭한다. WORKFLOW.md의 Phase N, /arch-plan의 Step N과 구별된다.
+> **단계 명칭**: 이 커맨드의 분석 단계는 **Stage N**으로 지칭한다. /arch:plan의 Step N과 구별된다.
 >
 > **대상**: 분석할 AS-IS 코드가 없거나 빈약한 Greenfield 프로젝트, 또는 완전히 새로운 대규모 하위 시스템 구축.
 >
-> **`/arch-redesign`과의 차이**: AS-IS 비판(7-Lens) 없음. 도메인 경계 확정 → 패러다임 선택 → 데이터 모델링이 핵심이다.
+> **`/arch:redesign`과의 차이**: AS-IS 비판(7-Lens) 없음. 도메인 경계 확정 → 패러다임 선택 → 데이터 모델링이 핵심이다.
 
 ---
 
@@ -274,7 +274,7 @@ POST /v1/payments/{paymentKey}/cancel  — 결제 취소 (200 OK)
 ADR이 생성되었습니다: docs/adr/ARCH-{NNN}-{YYYY-MM-DD}-{topic}.md
 
 내용을 검토하고 승인하시면 구현 계획 수립을 시작합니다.
-→ 승인 후: /project:arch-plan {topic} adr=docs/adr/ARCH-{NNN}-{YYYY-MM-DD}-{topic}.md
+→ 승인 후: /arch:plan {topic} adr=docs/adr/ARCH-{NNN}-{YYYY-MM-DD}-{topic}.md
 ```
 
 > ⚠️ ADR 승인 전까지 코드 작성을 시작하지 않는다.

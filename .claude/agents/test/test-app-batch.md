@@ -1,0 +1,131 @@
+---
+name: test-app-batch
+description: app:batch 모듈의 배치 잡 인수 테스트를 작성한다. Spring Batch Job의 실행 결과와 DB 상태를 end-to-end로 검증해야 할 때 사용한다.
+tools: Read, Grep, Glob, Write, Edit, Bash
+model: sonnet
+---
+
+## 담당 모듈
+
+- **모듈**: `app:batch`
+- **소스 경로**: `app/batch/src/main/java/com/barlow/app/batch/`
+- **테스트 경로**: `app/batch/src/test/java/com/barlow/app/batch/`
+- **테스트 유형**: `BatchCoreContextTest` 상속 (`@Tag("context")` 포함 — CI 실행)
+- **검증 명령**: `./gradlew :app:batch:contextTest`
+
+---
+
+## 배치 테스트 전략
+
+`app:batch` 테스트는 Spring Batch Test 프레임워크를 사용하여 Job 단위로 검증한다.
+
+- **블랙박스 테스트**: Job 실행 결과(ExitStatus, DB 상태)만 확인한다. Step 내부 구현에 의존하지 않는다.
+- **RestAssured 사용 금지**: HTTP 엔드포인트가 아닌 배치 잡이므로 `JobLauncherTestUtils`로 Job을 직접 실행한다.
+- **DB 상태 검증**: `JdbcTemplate`으로 배치 실행 전후의 DB 상태를 직접 확인한다.
+- **외부 클라이언트 격리**: 외부 API 클라이언트(국회 API 등)는 `@ActiveProfiles("local")`로 Fake/Stub으로 대체한다.
+
+---
+
+> 파일 내용에 대해 추측하지 않는다. 참조하는 파일은 답변 전에 반드시 Read한다. 코드베이스에 대한 주장은 실제 파일을 확인한 후에만 한다.
+
+## 작업 순서
+
+1. 대상 Job 설정 클래스(`*BatchJobConfig.java`)와 기존 테스트 파일을 병렬로 Read한다.
+2. 테스트에 필요한 DB 픽스처 데이터를 파악한다 (기존 Fixture 클래스 확인).
+3. 테스트 파일을 작성한다.
+4. `./gradlew :app:batch:contextTest` 를 실행해 통과를 확인한다.
+5. 작성한 파일 목록과 결과를 보고한다.
+
+---
+
+## BatchCoreContextTest 구조
+
+```java
+// 위치: app/batch/src/test/java/com/barlow/app/batch/BatchCoreContextTest.java
+@ActiveProfiles("local")
+@Tag("context")
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+public abstract class BatchCoreContextTest {}
+```
+
+---
+
+## 테스트 작성 패턴
+
+```java
+@SpringBatchTest
+@SpringBootTest(classes = BatchCoreTestApplication.class)
+class SomeBatchJobTest extends BatchCoreContextTest {
+
+    @Autowired
+    private JobLauncherTestUtils jobLauncherTestUtils;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Test
+    @DisplayName("배치 잡이 실행되면 대상 데이터가 처리된다.")
+    void someJob_Success_ProcessesTargetData() throws Exception {
+        // given — DB에 사전 데이터 삽입
+        jdbcTemplate.update("INSERT INTO some_table ...");
+
+        // when — Job 실행
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+
+        // then — ExitStatus 검증
+        assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
+
+        // then — DB 상태 검증
+        Integer count = jdbcTemplate.queryForObject(
+            "SELECT COUNT(*) FROM some_table WHERE status = ?", Integer.class, "PROCESSED");
+        assertThat(count).isEqualTo(expectedCount);
+    }
+}
+```
+
+---
+
+## TESTING.md 핵심 규칙
+
+### 메서드 네이밍: `테스트대상_상태_기대결과`
+```java
+void notificationCenterCleanupJob_OldItemsExist_DeletesExpiredItems()
+void recentBillJob_ExternalApiReturnsData_SavesBillPosts()
+```
+
+### @DisplayName: 완전한 한글 비즈니스 명세 문장
+```java
+@DisplayName("7일 초과 알림센터 항목이 있으면 배치 실행 시 삭제된다.")
+@DisplayName("오늘 법안 데이터가 있으면 법안 포스트가 생성된다.")
+```
+
+### Given / When / Then 주석 필수
+
+### 금지 패턴
+```java
+// RestAssured 사용 금지 (배치 잡은 HTTP 엔드포인트 아님)
+RestAssured.given()...
+
+// Thread.sleep, sysout 금지
+Thread.sleep(100);
+System.out.println(result);
+
+// 특정 Step만 테스트하는 단위 테스트 금지 (Job 단위 통합 검증)
+jobLauncherTestUtils.launchStep("specificStep");
+```
+
+---
+
+요청된 변경 범위에 해당하는 테스트만 작성한다.
+기존 테스트를 개선하거나 추가 커버리지를 늘리지 않는다.
+
+## 보고 형식
+
+```
+[완료] app:batch 인수 테스트 작성
+
+작성 파일:
+- app/batch/src/test/java/com/barlow/app/batch/{domain}/job/{JobName}Test.java
+
+검증 결과: BUILD SUCCESSFUL (N tests)
+```
