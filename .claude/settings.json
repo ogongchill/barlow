@@ -31,7 +31,8 @@
       "Grep(*)",
       "Write(**)",
       "Edit(**)",
-      "Edit(/Users/jochan-u/.claude/**)"
+      "Edit(/Users/jochan-u/.claude/**)",
+      "Agent(*)"
     ]
   }
 }
