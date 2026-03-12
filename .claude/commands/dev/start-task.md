@@ -101,10 +101,15 @@ MEMORY.md `# currentWork` 섹션을 작성한다.
 
 ### 7. 종료 신호 출력
 
-plan.md 작성이 완료되면 마지막 줄에 아래를 출력하고 종료한다:
+plan.md 작성이 완료되면 아래를 출력하고 종료한다:
 
 ```
 PLAN_READY: {type}/issue/[ISSUE_NUMBER]
 ```
 
 Worker가 이 신호를 감지하여 Slack 전송 및 승인 대기로 전환한다.
+
+Worker 없이 터미널에서 직접 진행하려면:
+```
+→ /dev:review-plan
+```
