@@ -80,7 +80,7 @@ LAYERS: {예상 영향 레이어}
 
 ### 6. plan.md 작성
 
-code-analyzer 분석 결과를 바탕으로 `.claude/workspace/plan.md`를 작성한다.
+code-analyzer 분석 결과를 바탕으로 `.workspace/plan.md`를 작성한다.
 
 **템플릿:**
 

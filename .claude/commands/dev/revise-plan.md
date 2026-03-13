@@ -20,7 +20,7 @@ description: Slack 피드백을 plan.md에 반영하고 답변을 출력한다. 
 
 ### 1. 현재 plan.md 로드
 
-`.claude/workspace/plan.md`를 읽는다.
+`.workspace/plan.md`를 읽는다.
 
 파일이 없으면 즉시 중단한다:
 ```

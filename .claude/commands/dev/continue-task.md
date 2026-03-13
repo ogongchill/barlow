@@ -20,7 +20,7 @@ description: plan.md 승인 후 코드 구현부터 PR 생성까지 진행한다
 
 ### 1. 사전 확인
 
-`.claude/workspace/plan.md`를 읽는다.
+`.workspace/plan.md`를 읽는다.
 
 파일이 없으면 즉시 중단한다:
 ```

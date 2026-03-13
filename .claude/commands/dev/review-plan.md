@@ -13,7 +13,7 @@ plan.md를 읽고 사용자 질문에 답변하거나 수정한 뒤, "확정" �
 
 ### 1. 현재 plan.md 로드
 
-`.claude/workspace/plan.md`를 읽는다.
+`.workspace/plan.md`를 읽는다.
 
 파일이 없으면 즉시 중단한다:
 ```
