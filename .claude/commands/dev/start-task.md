@@ -107,10 +107,9 @@ code-analyzer 분석 결과를 바탕으로 `.claude/workspace/plan.md`를 작�
 ### core:domain
 
 **{ClassName}.{method}()**
-```
 if {위반 조건} → throw {ExceptionClass}.{staticFactory}()
 return new {ClassName}(..., {변경 필드}={값})
-```
+
 → {힌트: 불필요하면 줄 삭제}
 
 ### core:service
