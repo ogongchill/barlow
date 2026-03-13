@@ -43,7 +43,7 @@ services/notification/src/main/resources/firebase/*.json
 http/http-client.private.env.json
 
 # batch admin
-batch
+/batch
 
 # firebse adminsdk
 infra/notification/src/main/resources/firebase
