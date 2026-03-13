@@ -13,6 +13,7 @@
 | `SERVICE_RULES.md` | `core:service` 구현 시작 직전 |
 | `ERROR_HANDLING.md` | 예외 클래스 신규 추가 시 |
 | `TESTING.md` | `/dev:continue-task` Step 3 진입 시 / 테스트 에이전트 내부 |
+| `REST_API_RULES.md` | `app:api` Controller / Request / Response 구현 시작 직전 |
 
 ---
 

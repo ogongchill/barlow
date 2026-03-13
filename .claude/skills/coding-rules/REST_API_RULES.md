@@ -169,14 +169,7 @@ public ApiResponse<Void> unsubscribe(...) { return ApiResponse.success(); }
 
 ### 오류 응답 (CoreApiErrorType)
 
-| HTTP 코드 | 에러 코드 | 사용 시점 |
-|---|---|---|
-| `400 Bad Request` | `E400` | 요청 파라미터·바디 형식 오류, 비즈니스 규칙 위반 |
-| `401 Unauthorized` | `E401` | 인증 토큰 없음·만료·유효하지 않음 |
-| `403 Forbidden` | `E403` | 인증은 됐으나 권한 없음 |
-| `404 Not Found` | `E404` | 리소스 존재하지 않음 |
-| `409 Conflict` | `E409` | 중복 생성·상태 충돌 |
-| `500 Internal Server Error` | `E500` | 예상치 못한 서버 오류 |
+`ERROR_HANDLING.md` 참조
 
 ---
 
@@ -184,33 +177,7 @@ public ApiResponse<Void> unsubscribe(...) { return ApiResponse.success(); }
 
 ### 4-1. 응답 봉투 (ApiResponse)
 
-모든 API 응답은 `ApiResponse<T>` 봉투를 사용한다.
-
-```json
-// 성공
-{
-  "result": "SUCCESS",
-  "data": { ... }
-}
-
-// 실패
-{
-  "result": "ERROR",
-  "error": {
-    "code": "E400",
-    "message": "요청 파라미터가 올바르지 않습니다.",
-    "data": null
-  }
-}
-```
-
-```java
-// 데이터 있는 성공
-return ApiResponse.success(responseDto);
-
-// 데이터 없는 성공 (Void)
-return ApiResponse.success();
-```
+`ERROR_HANDLING.md` 참조
 
 ### 4-2. 요청 DTO — record 사용
 
@@ -341,151 +308,11 @@ log.info("Received {} account subscribe request.", legislationType);
 
 ## 7. REST Docs 테스트 작성 규칙
 
-### 7-1. 테스트 클래스 구조
-
-```java
-@AcceptanceTest({"acceptance/user.json", "acceptance/device.json"})
-class MyControllerDocsTest extends RestDocsContextTest {
-
-    @DisplayName("리소스 생성 API 문서화")
-    @Test
-    void create() {
-        givenWithAuth()                          // 인증 필요 엔드포인트
-            .filter(document("resource/create",
-                requestHeaders(...),
-                requestFields(...),
-                relaxedResponseFields(...)))
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(Map.of("field", "value"))
-            .when()
-            .post("/api/v1/resources")
-            .then()
-            .statusCode(201);
-    }
-}
-```
-
-### 7-2. POST/PATCH — requestFields 필수
-
-요청 바디가 있는 경우 `requestFields()`로 문서화한다.
-
-```java
-// POST with body ✅
-.filter(document("reactions/create",
-    requestFields(
-        fieldWithPath("targetType").description("반응 대상 타입"),
-        fieldWithPath("reactionType").description("반응 유형"))))
-.body(Map.of("targetType", "BILL_POST", "reactionType", "LIKE"))
-.when()
-.post("/api/v1/reactions/{targetId}", targetId)
-```
-
-### 7-3. DELETE — queryParameters
-
-DELETE의 필터 조건은 쿼리 파라미터로 전달하며 `queryParameters()`로 문서화한다.
-
-```java
-// DELETE with query params ✅
-.filter(document("reactions/delete",
-    queryParameters(
-        parameterWithName("targetType").description("반응 대상 타입"),
-        parameterWithName("reactionType").description("반응 유형"))))
-.when()
-.delete("/api/v1/reactions/{targetId}?targetType=BILL_POST&reactionType=LIKE", targetId)
-```
-
-### 7-4. 공개 엔드포인트 — RestAssured.given(spec)
-
-인증이 필요 없는 엔드포인트는 `givenWithAuth()` 대신 `RestAssured.given(spec)`을 사용한다.
-
-```java
-RestAssured.given(spec)           // 인증 헤더 없음
-    .filter(document("auth/guest-signup", ...))
-    .body(Map.of(...))
-    .when()
-    .post("/api/v1/auth/guests")
-    .then()
-    .statusCode(201);
-```
+`TESTING.md §5` 참조.
 
 ---
 
-## 8. 위반 사례 모음 (Before / After)
-
-이번 리팩토링(`refactor/#118`)에서 수정된 실제 사례다.
-
-### URL에 행위 포함
-
-```
-# Before ❌
-POST /api/v1/legislation-accounts/{type}/subscriptions/activate
-POST /api/v1/legislation-accounts/{type}/subscriptions/deactivate
-
-# After ✅
-POST   /api/v1/legislation-accounts/{type}/subscriptions   → 201
-DELETE /api/v1/legislation-accounts/{type}/subscriptions   → 200
-```
-
-### URL에 복수형 미적용
-
-```
-# Before ❌
-GET /api/v1/term/active
-GET /api/v1/recent-bill/thumbnail
-GET /api/v1/recent-bill/detail/{id}
-GET /api/v1/client-version/check
-GET /api/v1/account/my
-
-# After ✅
-GET /api/v1/terms
-GET /api/v1/recent-bills
-GET /api/v1/recent-bills/{id}
-GET /api/v1/client-versions
-GET /api/v1/accounts/me
-```
-
-### POST 메서드로 삭제 처리
-
-```
-# Before ❌
-POST /api/v1/accounts/withdraw
-
-# After ✅
-DELETE /api/v1/accounts/me
-```
-
-### POST 중복으로 Toggle 표현
-
-```
-# Before ❌
-POST /api/v1/legislation-accounts/{type}/notification-setting/on
-POST /api/v1/legislation-accounts/{type}/notification-setting/off
-
-# After ✅
-PATCH /api/v1/legislation-accounts/{type}/notification-settings
-Body: { "active": true | false }
-```
-
-### RequestBody 미사용으로 POST 요청 처리
-
-```java
-// Before ❌ — POST에 RequestParam 사용
-@PostMapping("/{targetId}")
-public ApiResponse<Void> reaction(
-    @RequestParam("targetType") String targetType,
-    @RequestParam("reactionType") String reactionType) { ... }
-
-// After ✅
-@PostMapping("/{targetId}")
-@ResponseStatus(HttpStatus.CREATED)
-public ApiResponse<Void> reaction(
-    @PathVariable String targetId,
-    @RequestBody ReactionRequest request) { ... }
-```
-
----
-
-## 9. 체크리스트
+## 8. 체크리스트
 
 새 API 엔드포인트를 추가하거나 수정할 때 아래 항목을 확인한다.
 
