@@ -39,11 +39,8 @@ git branch --show-current
 
 구현 순서:
 ```
-1. core:domain
-2. core:service (Implement Layer)
-3. core:service (Business Layer)
-4. infra:storage
-5. app:api
+plan.md 구현 스펙의 섹션 순서대로 구현한다.
+단, core:service는 Implement Layer(impl.*) → Business Layer(business.*) 순서로 구현한다.
 ```
 
 각 레이어 완료 시 WORKFLOW-IMPL.md 체크리스트를 실행한다.

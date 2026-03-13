@@ -47,7 +47,7 @@ gh issue view [ISSUE_NUMBER] --json title,body,labels,assignees
 - 요구사항 핵심 요약 (3줄 이내)
 - 영향 BC — `docs/DOMAIN_ENCYCLOPEDIA.md` 해당 섹션 참조
 - 작업 유형: `feat` / `fix` / `refactor` / `batch`
-- 예상 영향 레이어: `domain` / `service` / `infra` / `api` 중 해당
+- 예상 영향 모듈: 변경이 예상되는 실제 Gradle 모듈명 나열 (예: core:domain, core:service, app:batch, infra:storage 등)
 
 ### 4. 브랜치 생성
 
@@ -65,7 +65,7 @@ git checkout -b {type}/issue/[ISSUE_NUMBER]
 Agent("code-analyzer", prompt="""
 BC: {영향 BC명 목록}
 SCOPE: {이슈 요구사항 한 줄 요약}
-LAYERS: {예상 영향 레이어}
+LAYERS: {예상 영향 모듈}
 """)
 ```
 
@@ -90,7 +90,7 @@ code-analyzer 분석 결과를 바탕으로 `.workspace/plan.md`를 작성한다
 ## 이슈 요약
 {요구사항 핵심 1~2줄. 구현 중 엣지케이스 판단 기준으로 사용.}
 - 영향 BC: {BC명}
-- 변경 레이어: {domain / service / infra / api 중 해당만 나열}
+- 변경 레이어: {변경이 발생하는 모듈명 나열}
 
 ---
 
@@ -102,9 +102,11 @@ code-analyzer 분석 결과를 바탕으로 `.workspace/plan.md`를 작성한다
 ---
 
 ## 구현 스펙
-{해당 레이어만 포함. 없는 레이어 섹션은 생략.}
+{변경이 발생하는 모듈만 섹션으로 포함한다. 섹션명은 실제 Gradle 모듈명을 사용한다.}
+{아키텍처 의존성 방향 순서로 작성: core:domain → core:service → 인프라·스토리지 → 진입점}
 
 ### core:domain
+{도메인 변경이 없으면 섹션 삭제.}
 
 **{ClassName}.{method}()**
 if {위반 조건} → throw {ExceptionClass}.{staticFactory}()
@@ -113,17 +115,15 @@ return new {ClassName}(..., {변경 필드}={값})
 → {힌트: 불필요하면 줄 삭제}
 
 ### core:service
+{서비스 변경이 없으면 섹션 삭제.}
 
 **{ServiceClassName}.{method}({params}): {반환타입}**
 - `@Transactional`
 - {위임 흐름 1줄: e.g. reader.find() → domain.method() → manager.save()}
 → {힌트: 불필요하면 줄 삭제}
 
-### infra:storage
-
-- `{파일경로}`: {한 줄 설명}
-
-### app:api
+### {그 외 모듈명}
+{infra:storage / app:batch / app:api / infra:notification 등 실제 Gradle 모듈명으로 교체. 해당 없으면 섹션 삭제.}
 
 - `{파일경로}`: {한 줄 설명}
 
@@ -148,10 +148,10 @@ return new {ClassName}(..., {변경 필드}={값})
 
 **작성 규칙:**
 
-- **구현 스펙 상세도는 레이어별로 다르게 적용한다:**
+- **구현 스펙 상세도는 레이어 성격에 따라 다르게 적용한다:**
   - `core:domain` → pseudo-code: 비즈니스 규칙, 예외 조건, 반환값을 명시
   - `core:service` → 시그니처 + `@Transactional` 여부 + 위임 흐름 1줄
-  - `infra:storage`, `app:api` → 파일경로 + 한 줄 설명
+  - 그 외 모듈 (인프라, 스토리지, 진입점 등) → 파일경로 + 한 줄 설명
 
 - **힌트(`→`)는 아래 경우에만 작성한다:**
   - 메서드 네이밍이 여러 선택지일 때
