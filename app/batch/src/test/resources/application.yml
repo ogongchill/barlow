@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: batch-core-test
+  profiles:
+    active: local-dev
+  config:
+    import:
+      - notification.yml
+      - client-knal-api.yml
+      - monitoring.yml
+      - alert.yml
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+  main:
+    banner-mode: off
+
+storage:
+  datasource:
+    batch-core:
+      driver-class-name: org.h2.Driver
+      url: jdbc:h2:mem:core;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+
+spring.jpa:
+  open-in-view: false
+  properties:
+    hibernate:
+      format_sql: false
+      show_sql: false
+      hbm2ddl.auto: create
+
+file:
+  lawmaker-json: lawmaker/lawmaker-22.json
+
+knal:
+  open-data:
+    api:
+      service-key: test-dummy-key
+  open-congress:
+    api:
+      service-key: test-dummy-key
+
+alert:
+  slack:
+    webhook-url: https://hooks.slack.com/services/mock-test-url
