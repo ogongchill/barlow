@@ -1,19 +1,29 @@
 # coding-rules
 
-각 파일은 해당 레이어 구현 진입 시점에 로드한다.
+각 파일은 **start-task Pipeline Step 3** 진입 시 레이어 기반 매트릭스에 따라 선택적으로 로드한다.
+`continue-task`는 이 파일들을 직접 로드하지 않는다 — plan.md에 이미 적용 결과가 반영되어 있다.
 
 ---
 
-## 로드 조건
+## 로드 조건 (start-task Pipeline Step 3 기준)
 
-| 파일 | 로드 시점 |
+| 파일 | 로드 조건 |
 |---|---|
-| `ARCHITECTURE.md` | start-task 설계·계획 단계 — 즉시 로드 |
-| `DOMAIN_RULES.md` | `core:domain` 구현 시작 직전 |
-| `SERVICE_RULES.md` | `core:service` 구현 시작 직전 |
-| `ERROR_HANDLING.md` | 예외 클래스 신규 추가 시 |
-| `TESTING.md` | `/dev:continue-task` Step 3 진입 시 / 테스트 에이전트 내부 |
-| `REST_API_RULES.md` | `app:api` Controller / Request / Response 구현 시작 직전 |
+| `ARCHITECTURE.md` | 어떤 유형이든 — **항상** 로드 (Step 1에서도 로드) |
+| `DOMAIN_RULES.md` | scope.md 타겟 파일에 `core:domain` 레이어 포함 시 |
+| `SERVICE_RULES.md` | scope.md 타겟 파일에 `core:service` 또는 `app:api` 레이어 포함 시 |
+| `REST_API_RULES.md` | scope.md 타겟 파일에 `app:api` 레이어 포함 시 |
+| `ERROR_HANDLING.md` | scope.md 타겟 파일에 신규 예외 클래스 추가가 포함 시 |
+| `TESTING.md` | 테스트 에이전트 내부 — `test-app-batch`, `test-app-api` 등이 참조 |
+
+**레이어 기반 매트릭스 예시:**
+
+| 이슈 유형 | 로드 파일 |
+|---|---|
+| BATCH (app:batch + infra:storage/batch만 변경) | `ARCHITECTURE.md` |
+| API (core:domain + core:service + infra + app:api) | `ARCHITECTURE.md` + `DOMAIN_RULES.md` + `SERVICE_RULES.md` + `REST_API_RULES.md` |
+| API + 신규 예외 | 위 + `ERROR_HANDLING.md` |
+| DOMAIN만 | `ARCHITECTURE.md` + `DOMAIN_RULES.md` |
 
 ---
 

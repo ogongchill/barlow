@@ -18,9 +18,9 @@ description: Slack 피드백을 plan.md에 반영하고 답변을 출력한다. 
 
 ## 실행 순서
 
-### 1. 현재 plan.md 로드
+### 1. 현재 plan.md 및 routing.md 로드
 
-`.workspace/plan.md`를 읽는다.
+`.workspace/plan.md`와 `.workspace/routing.md`를 읽는다.
 
 파일이 없으면 즉시 중단한다:
 ```
@@ -40,11 +40,20 @@ description: Slack 피드백을 plan.md에 반영하고 답변을 출력한다. 
   ```
 
 **수정 요청** ("~을 바꿔줘", "~를 빼줘", "~를 추가해줘" 등):
-- plan.md를 수정한다
+- plan.md를 수정하고 저장한다 (`.workspace/plan.md` 덮어쓰기)
 - 출력 형식:
   ```
   ANSWER: {변경 내용 요약}
   PLAN_UPDATED
+  ```
+
+**수정 요청 + 확정 동시** ("~바꿔주세요. 그리고 OK" 등):
+- plan.md를 수정하고 저장한다 (`.workspace/plan.md` 덮어쓰기)
+- 출력 형식:
+  ```
+  ANSWER: {변경 내용 요약}
+  PLAN_UPDATED
+  PLAN_CONFIRMED: {routing.md의 BRANCH 값}
   ```
 
 ### 3. 종료

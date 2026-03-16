@@ -1,11 +1,18 @@
 ---
-description: GitHub 이슈를 분석하고 작업 브랜치를 생성한 뒤 plan.md를 작성한다
+description: GitHub 이슈를 분석하고 작업 브랜치를 생성한 뒤 plan.md를 작성한다.
+model: sonnet
 ---
 
 # /dev:start-task
 
-## 입력
+<templates_registry>
+plan_template : `.claude/templates/plan_template.md` — `plan.md` 최종 구조
+</templates_registry>
 
+---
+
+<execution_rules>
+## 입력
 `[ISSUE_NUMBER]`: GitHub Issue 번호 (필수)
 
 입력이 없으면 즉시 중단한다:
@@ -18,166 +25,84 @@ description: GitHub 이슈를 분석하고 작업 브랜치를 생성한 뒤 pla
 
 ## 실행 순서
 
-### 1. 사전 확인
+### 0. 사전 확인 및 작업 공간 초기화
 
-```bash
-git status
-```
+1. `git status` 실행. uncommitted changes가 있으면 즉시 중단할 것:
+   ```
+   [start-task] 중단: uncommitted changes가 있습니다.
+   커밋 또는 stash 후 다시 실행하세요.
+   ```
+2. `mkdir -p .workspace` 명령어를 실행하여 서브에이전트들의 작업 디렉토리를 보장할 것.
 
-uncommitted changes가 있으면 즉시 중단한다:
-```
-[start-task] 중단: uncommitted changes가 있습니다.
-커밋 또는 stash 후 다시 실행하세요.
-```
-
-### 2. develop 최신화
-
-```bash
-git checkout develop
-git pull origin develop
-```
-
-### 3. GitHub Issue 분석
-
-```bash
-gh issue view [ISSUE_NUMBER] --json title,body,labels,assignees
-```
-
-아래 항목을 추출한다:
-- 요구사항 핵심 요약 (3줄 이내)
-- 영향 BC — `docs/DOMAIN_ENCYCLOPEDIA.md` 해당 섹션 참조
-- 작업 유형: `feat` / `fix` / `refactor` / `batch`
-- 예상 영향 모듈: 변경이 예상되는 실제 Gradle 모듈명 나열 (예: core:domain, core:service, app:batch, infra:storage 등)
-
-### 4. 브랜치 생성
-
-```bash
-git checkout -b {type}/issue/[ISSUE_NUMBER]
-```
-
-`{type}`은 Step 3에서 추출한 작업 유형(`feat` / `fix` / `refactor` 등)을 사용한다.
-
-### 5. code-analyzer 서브에이전트 스폰
-
-위 이슈 분석 결과를 바탕으로 `code-analyzer` 에이전트를 실행한다:
-
-```
-Agent("code-analyzer", prompt="""
-BC: {영향 BC명 목록}
-SCOPE: {이슈 요구사항 한 줄 요약}
-LAYERS: {예상 영향 모듈}
-""")
-```
-
-에이전트가 반환하는 4개 섹션 중 아래와 같이 활용한다:
-
-| 섹션 | 활용 |
-|---|---|
-| 1. Target Scope & Entry Point | → 변경 범위 파일 목록 |
-| 2. Core Structure Snippets | → 구현 스펙 힌트 (패턴이 불명확한 경우에만) |
-| 3. Execution Flow & State | → 사용하지 않음 |
-| 4. Constraints & Risks | → 리스크 & 제약 섹션 |
-
-### 6. plan.md 작성
-
-code-analyzer 분석 결과를 바탕으로 `.workspace/plan.md`를 작성한다.
-
-**템플릿:**
-
-```markdown
-# 구현 계획 — #{번호} {제목}
-
-## 이슈 요약
-{요구사항 핵심 1~2줄. 구현 중 엣지케이스 판단 기준으로 사용.}
-- 영향 BC: {BC명}
-- 변경 레이어: {변경이 발생하는 모듈명 나열}
+*(주의: 절대 여기서 `git checkout`이나 `git pull`을 실행하지 마십시오. 브랜치 제어는 router가 담당합니다.)*
 
 ---
 
-## 변경 범위
-{code-analyzer Target Scope 기반. 실제 손댈 파일만 나열.}
+### Step 1 — 라우팅 (Agent: router)
 
-- `{파일경로}` (신규/수정): {한 줄}
-
----
-
-## 구현 스펙
-{변경이 발생하는 모듈만 섹션으로 포함한다. 섹션명은 실제 Gradle 모듈명을 사용한다.}
-{아키텍처 의존성 방향 순서로 작성: core:domain → core:service → 인프라·스토리지 → 진입점}
-
-### core:domain
-{도메인 변경이 없으면 섹션 삭제.}
-
-**{ClassName}.{method}()**
-if {위반 조건} → throw {ExceptionClass}.{staticFactory}()
-return new {ClassName}(..., {변경 필드}={값})
-
-→ {힌트: 불필요하면 줄 삭제}
-
-### core:service
-{서비스 변경이 없으면 섹션 삭제.}
-
-**{ServiceClassName}.{method}({params}): {반환타입}**
-- `@Transactional`
-- {위임 흐름 1줄: e.g. reader.find() → domain.method() → manager.save()}
-→ {힌트: 불필요하면 줄 삭제}
-
-### {그 외 모듈명}
-{infra:storage / app:batch / app:api / infra:notification 등 실제 Gradle 모듈명으로 교체. 해당 없으면 섹션 삭제.}
-
-- `{파일경로}`: {한 줄 설명}
+- [체크포인트] `ls .workspace/`를 실행하여 `routing.md` 파일이 존재하는지 확인한다.
+- **이미 존재한다면:** `router` 에이전트 스폰을 Skip한다.
+- **존재하지 않는다면:** 아래 명령어로 `router` 에이전트를 스폰한다.
+   ```
+   Agent("router", prompt="ISSUE_NUMBER: [ISSUE_NUMBER]")
+   ```
+- **[중요 — 브랜치 이동]** (스폰 여부와 무관하게 무조건 실행) `cat .workspace/routing.md`를 실행하여 `BRANCH:` 값을 읽은 뒤, `git checkout {BRANCH 값}`을 실행하여 작업 브랜치로 안전하게 진입한다.
 
 ---
 
-## 리스크 & 제약
-{code-analyzer Constraints & Risks 기반. 해당 없는 항목은 줄 삭제.}
+### Step 2 — 코드 분석 (Agent: code-analyzer)
 
-- **트랜잭션**: {경계 및 주의사항}
-- **외부 인프라**: {Redis / FCM / 외부 API 연동 여부 및 주의사항}
-- **BC 경계**: {다른 BC와의 연관 관계 및 주의사항}
-- **기존 패턴 충돌**: {deprecated 메서드, 변경 시 영향받는 다른 BC}
-- **기타**: {락, 비동기, 캐시 등}
+- [체크포인트] `ls .workspace/`를 실행하여 `scope.md` 파일이 존재하는지 확인한다.
+- 이미 존재한다면 이 단계를 Skip하고 Step 3으로 즉시 넘어간다.
+- 존재하지 않는다면 아래 명령어로 `code-analyzer` 에이전트를 스폰한다.
+
+```
+Agent("code-analyzer", prompt="ROUTING_MD: .workspace/routing.md")
+```
 
 ---
 
-## 구현 범위 외
-{해당 없으면 섹션 전체 삭제.}
+### Step 3 — 규칙 적용 (Agent: rule-translator)
 
-- `{파일/메서드/BC}`: {이유}
-```
-
-**작성 규칙:**
-
-- **구현 스펙 상세도는 레이어 성격에 따라 다르게 적용한다:**
-  - `core:domain` → pseudo-code: 비즈니스 규칙, 예외 조건, 반환값을 명시
-  - `core:service` → 시그니처 + `@Transactional` 여부 + 위임 흐름 1줄
-  - 그 외 모듈 (인프라, 스토리지, 진입점 등) → 파일경로 + 한 줄 설명
-
-- **힌트(`→`)는 아래 경우에만 작성한다:**
-  - 메서드 네이밍이 여러 선택지일 때
-  - code-analyzer 스니펫 scope 밖의 더 나은 참고 패턴이 있을 때
-  - 기존 유사 사례가 없는 새 구조일 때
-  - 그 외에는 줄 자체를 삭제한다
-
-- **리스크 & 제약:** code-analyzer Constraints & Risks를 그대로 옮기되 구현과 무관한 항목은 삭제한다
-
-- **구현 범위 외:** code-analyzer가 인접하다고 식별한 코드 중 이번 scope 밖인 것, BC 경계, API 계약 변경 금지 사항만 작성한다. 해당 없으면 섹션 전체를 작성하지 않는다
-
-- **커밋 계획은 작성하지 않는다** — WORKFLOW-SHIP.md가 담당한다
-
-MEMORY.md `# currentWork` 섹션을 작성한다.
-
-### 7. 종료 신호 출력
-
-plan.md 작성이 완료되면 아래를 출력하고 종료한다:
+- [체크포인트] `ls .workspace/`를 실행하여 `rules-applied.md` 파일이 존재하는지 확인한다.
+- 이미 존재한다면 이 단계를 Skip하고 Step 4로 즉시 넘어간다.
+- 존재하지 않는다면 아래 명령어로 `rule-translator` 에이전트를 스폰한다.
 
 ```
-PLAN_READY: {type}/issue/[ISSUE_NUMBER]
+Agent("rule-translator", prompt="ROUTING_MD: .workspace/routing.md\nSCOPE_MD: .workspace/scope.md")
 ```
 
-Worker가 이 신호를 감지하여 Slack 전송 및 승인 대기로 전환한다.
+---
+
+### Step 4 — plan.md 컴파일 (Main Process)
+
+- 이 단계에서는 새로운 코드를 탐색하거나 판단하지 않는다. 순수 템플릿 매핑만 수행한다.
+
+1. `read_file .claude/templates/plan_template.md`를 실행하여 템플릿 뼈대를 확인하라.
+2. `.workspace/`에 있는 `routing.md`, `scope.md`, `rules-applied.md` 3개의 파일을 읽어라.
+3. `plan_template.md` 내부의 `{ }` 기호로 묶인 플레이스홀더(Placeholder) 영역을 찾고, 앞서 읽은 3개 파일의 실제 데이터로 **정확히 매핑하여 치환(Replace)하라.**
+4. **절대 파일들을 단순히 이어붙이지(Concatenate) 마라.** 반드시 템플릿의 목차와 형식을 유지한 상태로 빈칸만 채워야 한다.
+5. 완성된 결과를 `.workspace/plan.md`에 덮어쓰기로 저장하라.
+
+---
+
+### 5. 종료
+
+1. MEMORY.md `# currentWork` 섹션을 작성한다:
+   - `routing.md`의 `BRANCH` 값과 `ISSUE_SUMMARY` 값을 그대로 가져와 아래 포맷으로 작성.
+    ```
+    - 브랜치: `{BRANCH 값}`
+    - 이슈: `#{ISSUE_NUMBER} {ISSUE_SUMMARY 값}`
+    - 상태: plan.md 작성 완료, 승인 대기
+    ```
+2. 완료 신호를 출력하고 종료한다:
+    ```
+    PLAN_READY: {routing.md의 BRANCH 값}
+    ```
+    Worker가 이 신호를 감지하여 Slack 전송 및 승인 대기로 전환한다.
 
 Worker 없이 터미널에서 직접 진행하려면:
 ```
-→ /dev:review-plan
+/dev:review-plan
 ```
+</execution_rules>

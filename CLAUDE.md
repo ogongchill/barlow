@@ -6,9 +6,8 @@
 
 **모든 개발 작업 전에 아래 순서대로 실행한다.**
 
-1. `workflow-guide` 스킬 로드
-2. `coding-rules` 스킬 로드 — 코드 작업 시
-3. `docs/DOMAIN_ENCYCLOPEDIA.md` 해당 BC 섹션 읽기
+1. `coding-rules` 스킬 로드 — 코드 작업 시
+2. `docs/DOMAIN_ENCYCLOPEDIA.md` 해당 BC 섹션 읽기
 
 ---
 
@@ -61,6 +60,6 @@
 | 문서 | 위치 |
 |---|---|
 | 도메인 백과사전 | `docs/DOMAIN_ENCYCLOPEDIA.md` |
-| 워크플로우 | `.claude/skills/workflow-guide/` |
+| 워크플로우 | `.claude/commands/dev/` |
 | 아키텍처 & 코딩 규칙 | `.claude/skills/coding-rules/` |
 | ADR | `docs/adr/` |
