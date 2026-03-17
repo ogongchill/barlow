@@ -24,6 +24,7 @@ scheduler:
       pre-announce: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/pre-announcement-bill-job
       tracking-bill: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/tracking-bill-job
       today-bill: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/today-bill-job
+      notification-center-cleanup: ${DEV_BATCH_LAMBDA_FUNC_URL}/api/v1/notification-center/cleanup
 
 ---
 spring.config.activate.on-profile: local
@@ -63,6 +64,7 @@ scheduler:
       pre-announce: IGNORED
       tracking-bill: IGNORED
       today-bill: IGNORED
+      notification-center-cleanup: IGNORED
 
 
 ---

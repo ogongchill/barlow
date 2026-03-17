@@ -15,3 +15,4 @@ scheduler:
       pre-announce: /test-url/pre-announcement-bill-job
       tracking-bill: /test-url/tracking-bill-job
       today-bill: /test-url/today-bill-job
+      notification-center-cleanup: /test-url/notification-center-cleanup

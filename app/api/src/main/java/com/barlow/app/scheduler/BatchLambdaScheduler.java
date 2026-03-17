@@ -22,13 +22,17 @@ public class BatchLambdaScheduler {
 	private final String preAnnounceBatchFuncUrl;
 	private final String trackingBillBatchFuncUrl;
 	private final String updateBillBatchFuncUrl;
+	private final String notificationCenterCleanupBatchFuncUrl;
 
 	public BatchLambdaScheduler(@Value("${scheduler.batch-lambda.url.pre-announce}") String preAnnounceBatchFuncUrl,
 		@Value("${scheduler.batch-lambda.url.tracking-bill}") String trackingBillBatchFuncUrl,
-		@Value("${scheduler.batch-lambda.url.today-bill}") String updateBillBatchFuncUrl, RestTemplate restTemplate) {
+		@Value("${scheduler.batch-lambda.url.today-bill}") String updateBillBatchFuncUrl,
+		@Value("${scheduler.batch-lambda.url.notification-center-cleanup}") String notificationCenterCleanupBatchFuncUrl,
+		RestTemplate restTemplate) {
 		this.preAnnounceBatchFuncUrl = preAnnounceBatchFuncUrl;
 		this.trackingBillBatchFuncUrl = trackingBillBatchFuncUrl;
 		this.updateBillBatchFuncUrl = updateBillBatchFuncUrl;
+		this.notificationCenterCleanupBatchFuncUrl = notificationCenterCleanupBatchFuncUrl;
 		this.restTemplate = restTemplate;
 	}
 
@@ -53,5 +57,13 @@ public class BatchLambdaScheduler {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 		restTemplate.exchange(updateBillBatchFuncUrl, HttpMethod.POST, new HttpEntity<>(headers), Void.class);
+	}
+
+	@Scheduled(cron = "0 0 3 * * *")
+	public void scheduledNotificationCenterCleanupBatch() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+		restTemplate.exchange(notificationCenterCleanupBatchFuncUrl, HttpMethod.POST, new HttpEntity<>(headers),
+			Void.class);
 	}
 }
