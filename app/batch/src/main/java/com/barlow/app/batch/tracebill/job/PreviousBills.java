@@ -17,12 +17,14 @@ public class PreviousBills {
 
 	public UpdatedBills dirtyCheck(CurrentBillInfoResult current) {
 		Map<ProgressStatus, List<UpdatedBills.BillInfo>> map = new EnumMap<>(ProgressStatus.class);
-		values.stream().filter(previous -> !current.getStatusByBillId(previous.billId()).equals(previous.status()))
-			.forEach(
-				previous -> map
-					.computeIfAbsent(current.getStatusByBillId(previous.billId()), status -> new ArrayList<>())
-					.add(
-						new UpdatedBills.BillInfo(previous.billId(), previous.billName(), previous.legislationType())));
+		values.forEach(previous -> {
+			ProgressStatus currentStatus = current.getStatusByBillId(previous.billId());
+			if (currentStatus == null || currentStatus.equals(previous.status())) {
+				return;
+			}
+			map.computeIfAbsent(currentStatus, status -> new ArrayList<>())
+				.add(new UpdatedBills.BillInfo(previous.billId(), previous.billName(), previous.legislationType()));
+		});
 		return new UpdatedBills(map);
 	}
 }
