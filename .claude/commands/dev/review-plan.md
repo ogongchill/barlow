@@ -1,5 +1,6 @@
 ---
 description: 터미널에서 plan.md를 검토하고 Claude와 직접 Q&A 후 확정한다
+model: opus
 ---
 
 # /dev:review-plan

@@ -1,5 +1,6 @@
 ---
 description: Slack 피드백을 plan.md에 반영하고 답변을 출력한다. Worker가 호출한다.
+model: sonnet
 ---
 
 # /dev:revise-plan
