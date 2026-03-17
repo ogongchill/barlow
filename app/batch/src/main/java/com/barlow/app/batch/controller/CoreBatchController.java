@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.barlow.app.batch.notificationcenter.job.NotificationCenterCleanupBatchJobExecutor;
 import com.barlow.app.batch.preannounce.job.PreAnnounceBatchJobExecutor;
 import com.barlow.app.batch.recentbill.job.RecentBillBatchJobExecutor;
 import com.barlow.app.batch.tracebill.job.TrackingBillBatchJobExecutor;
@@ -19,13 +20,16 @@ public class CoreBatchController {
 	private final RecentBillBatchJobExecutor recentBillBatchJobExecutor;
 	private final PreAnnounceBatchJobExecutor preAnnounceBatchJobExecutor;
 	private final TrackingBillBatchJobExecutor trackingBillBatchJobExecutor;
+	private final NotificationCenterCleanupBatchJobExecutor notificationCenterCleanupBatchJobExecutor;
 
 	public CoreBatchController(RecentBillBatchJobExecutor recentBillBatchJobExecutor,
 		PreAnnounceBatchJobExecutor preAnnounceBatchJobExecutor,
-		TrackingBillBatchJobExecutor trackingBillBatchJobExecutor) {
+		TrackingBillBatchJobExecutor trackingBillBatchJobExecutor,
+		NotificationCenterCleanupBatchJobExecutor notificationCenterCleanupBatchJobExecutor) {
 		this.recentBillBatchJobExecutor = recentBillBatchJobExecutor;
 		this.preAnnounceBatchJobExecutor = preAnnounceBatchJobExecutor;
 		this.trackingBillBatchJobExecutor = trackingBillBatchJobExecutor;
+		this.notificationCenterCleanupBatchJobExecutor = notificationCenterCleanupBatchJobExecutor;
 	}
 
 	@PostMapping("/pre-announcement-bill-job")
@@ -44,5 +48,11 @@ public class CoreBatchController {
 	public ResponseEntity<Void> executeTodayBatchJob() {
 		recentBillBatchJobExecutor.execute(LocalDate.now());
 		return ResponseEntity.noContent().build();
+	}
+
+	@PostMapping("/notification-center/cleanup")
+	public ResponseEntity<Void> runNotificationCenterCleanup() {
+		notificationCenterCleanupBatchJobExecutor.execute();
+		return ResponseEntity.ok().build();
 	}
 }
