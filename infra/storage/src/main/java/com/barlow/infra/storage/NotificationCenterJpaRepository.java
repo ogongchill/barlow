@@ -17,8 +17,4 @@ public interface NotificationCenterJpaRepository extends JpaRepository<Notificat
 	@Modifying
 	@Query("DELETE FROM NotificationCenterItemJpaEntity nci WHERE nci.memberNo = :memberNo")
 	void deleteAllByMemberNo(@Param("memberNo") Long memberNo);
-
-	@Modifying(clearAutomatically = true)
-	@Query("DELETE FROM NotificationCenterItemJpaEntity nci WHERE nci.createdAt < :threshold")
-	int deleteByCreatedAtBefore(@Param("threshold") LocalDateTime threshold);
 }
