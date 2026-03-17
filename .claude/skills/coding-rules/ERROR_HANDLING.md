@@ -40,16 +40,6 @@ public class SubscriptionDomainException extends CoreDomainException {
     }
 }
 
-// GOOD — 도메인 객체 내부에서 throw
-public class Subscription {
-    public Subscription deactivate() {
-        if (!this.isActive()) {
-            throw SubscriptionDomainException.alreadyUnSubscribed(getLegislationType());
-        }
-        return new Subscription(subscriberNo, info.subscribeAccountNo(), info.subscribeAccountType(), false);
-    }
-}
-
 // GOOD — 프로그래밍 계약 위반(precondition check): Java 표준 예외 허용
 public SemanticVersion(int major, int minor, int patch, VersionSuffix suffix) {
     if (major < 0) {
@@ -63,18 +53,6 @@ throw new IllegalStateException("이미 구독 취소 상태");
 // BAD — API 레이어 예외를 도메인에서 사용
 throw new CoreApiException(CoreApiErrorType.CONFLICT, "...");
 ```
-
-#### BC별 도메인 예외 목록
-
-| 예외 클래스 | BC |
-|---|---|
-| `AccountDomainException` | account |
-| `RegistrationException` | account (회원가입/외부인증) |
-| `BillPostDomainException` | billpost |
-| `ReactionDomainException` | reaction |
-| `NotificationSettingDomainException` | notificationsetting |
-| `SubscriptionDomainException` | subscribe |
-| `ClientVersionException` | version |
 
 ---
 
@@ -215,29 +193,9 @@ Exception (catch-all) → ERROR 로그 + Alert + 500 반환
 
 ### Case A: 도메인 계층 — 새 BC 예외 추가
 
-```java
-// 1단계 — 해당 도메인 패키지에 CoreDomainException 상속 클래스 생성
-package com.barlow.core.domain.{bc};
-
-public class {BC명}DomainException extends CoreDomainException {
-
-    private {BC명}DomainException(CoreDomainExceptionType type, String message) {
-        super(type, message);
-    }
-
-    private {BC명}DomainException(CoreDomainExceptionCode code, CoreDomainExceptionLevel level, String message) {
-        super(code, level, message);
-    }
-
-    public static {BC명}DomainException notFound(String id) {
-        return new {BC명}DomainException(CoreDomainExceptionType.NOT_FOUND_EXCEPTION,
-            "{대상}을 찾을 수 없습니다: id=" + id);
-    }
-}
-
-// 2단계 — 도메인 객체 내부에서 throw
-// 3단계 — ControllerAdvice 변경 불필요. CoreDomainException 핸들러가 자동 처리.
-```
+1. 해당 도메인 패키지에 `CoreDomainException` 상속 클래스 생성. static factory 패턴 적용. (§1 예시 참조)
+2. 도메인 객체 내부에서 throw.
+3. ControllerAdvice 변경 불필요 — `CoreDomainException` 핸들러가 자동 처리.
 
 ### Case B: API 레이어 — 새 에러 타입 추가
 
@@ -255,9 +213,6 @@ UNPROCESSABLE(HttpStatus.UNPROCESSABLE_ENTITY, E422, "Request could not be proce
 
 | 위반 패턴 | 올바른 방향 |
 |---|---|
-| 비즈니스 규칙 위반에 `IllegalStateException` 사용 | `CoreDomainException` 하위 + static factory |
-| 도메인에서 `CoreApiException` throw | `CoreDomainException` 사용. 도메인은 HTTP를 몰라야 함 |
-| `CoreApiException.data`에 내부 ID, 쿼리 등 구현 상세 포함 | `data`는 클라이언트용 맥락만 |
 | `IMPLEMENTATION` 레벨인데 WARN 로그 | ERROR 로그 + Alert 필수 |
 | `Exception` 직접 throw | `CoreApiException` 또는 `CoreDomainException` 하위로 감싸서 throw |
 | 새 예외 클래스가 `Exception` / `RuntimeException` 직접 상속 | 반드시 `CoreDomainException` 또는 `CoreApiException` 상속 |

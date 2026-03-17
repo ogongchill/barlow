@@ -111,11 +111,6 @@ public class LegislationAccountReader {
     private final NotificationSettingReader notificationSettingReader;
 }
 
-// BAD — Business 간 직접 참조 금지
-@Service
-public class AccountCreateService {
-    private final MemberRegisterService memberRegisterService; // 금지
-}
 ```
 
 ---
@@ -143,16 +138,3 @@ dependencies {
     api project(":infra:storage")
 }
 ```
-
----
-
-## 6. 위반 사례 (레이어 규칙)
-
-| 위반 패턴 | 올바른 방향 |
-|---|---|
-| Business Layer에서 JPA Repository 직접 주입 | Implement Layer(Reader/Manager) 경유 |
-| Business Layer에서 `infra:*` 클래스 직접 import | Port Interface(`core:domain`)만 알아야 함 |
-| `app:api` Controller에서 `infra:*` 클래스 직접 import | runtimeOnly — 컴파일 타임 접근 불가 |
-| 동일 레이어 Business Service 간 직접 주입 | Facade로 상위에서 조합 |
-| 새 기술 기능을 기존 infra 모듈에 추가 | 개념 단위 새 infra 모듈 추가 |
-| 모듈 의존성을 `api` 키워드로 선언 | `implementation`으로 기술 캡슐화 |
