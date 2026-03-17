@@ -16,8 +16,7 @@ Claude Code 설정 파일. 커맨드·에이전트·스킬·템플릿으로 구�
 │   ├── code-analyzer.md — 코드 분석 (dev 파이프라인 start-task에서 스폰)
 │   └── test/            — 테스트 작성 (dev 파이프라인 continue-task에서 스폰)
 ├── skills/
-│   ├── coding-rules/    — 레이어별 코딩 규칙
-│   └── workflow-guide/  — 워크플로우 3단계 가이드
+│   └── coding-rules/    — 레이어별 코딩 규칙
 ├── templates/           — ADR·보고서 작성용 템플릿
 └── workspace/           — 작업 중 임시 파일 (plan.md 등, gitignore)
 ```
@@ -55,7 +54,7 @@ Claude Code 설정 파일. 커맨드·에이전트·스킬·템플릿으로 구�
 
 | 에이전트 | 스폰 시점 | 역할 |
 |---|---|---|
-| `code-analyzer` | `/dev:start-task` Step 5 | 코드베이스 탐색 → 4섹션 분석 반환 |
+| `code-analyzer` | `/dev:start-task` Step 2 | 코드베이스 탐색 → 4섹션 분석 반환 |
 | `test-app-api` | `/dev:continue-task` — app:api 변경 시 | 인수 테스트 작성 |
 | `test-app-batch` | `/dev:continue-task` — app:batch 변경 시 | 배치 잡 인수 테스트 작성 |
 | `test-core-domain` | `/dev:continue-task` — core:domain 변경 시 | 도메인 단위 테스트 작성 |
@@ -68,5 +67,4 @@ Claude Code 설정 파일. 커맨드·에이전트·스킬·템플릿으로 구�
 
 | 스킬 | 로드 파일 | 시점 |
 |---|---|---|
-| `workflow-guide` | `WORKFLOW-IMPL.md`, `WORKFLOW-VERIFY.md`, `WORKFLOW-SHIP.md` | 모든 개발 작업 시작 전 |
-| `coding-rules` | 해당 레이어 규칙 파일 선택 로드 | 코드 작업 시 |
+| `coding-rules` | 해당 레이어 규칙 파일 선택 로드 | 직접 코드 작업 시 (파이프라인 미사용) |

@@ -4,10 +4,10 @@
 
 ## 0. 작업 시작 — 이슈/요구사항 접수 시 가장 먼저 실행
 
-**모든 개발 작업 전에 아래 순서대로 실행한다.**
+**경로에 따라 아래 중 하나를 선택한다.**
 
-1. `coding-rules` 스킬 로드 — 코드 작업 시
-2. `docs/DOMAIN_ENCYCLOPEDIA.md` 해당 BC 섹션 읽기
+- **파이프라인 사용 시**: `/dev:start-task {issue_number}` — 라우팅·코드 분석·규칙 적용 자동 처리
+- **직접 코드 작업 시**: `coding-rules` 스킬 수동 로드 + `docs/DOMAIN_ENCYCLOPEDIA.md` 해당 BC 섹션 읽기
 
 ---
 
@@ -17,7 +17,8 @@
 2. **Business Layer**: `infra:*` 직접 주입 금지. Implement Layer(Reader/Manager) 경유
 3. **Domain**: 순수 POJO. Spring 어노테이션 금지. setter 금지. 상태 변경 = 새 인스턴스 반환
 4. **예외**: `CoreDomainException` 하위 + static factory. HTTP 의존 금지
-5. **구현 순서**: `core:domain` → `core:service` → `infra:storage` → `app:api`
+5. **AR 간 참조**: ID-only (`long` 타입). 다른 AR 객체 직접 참조 금지
+6. **구현 순서**: `core:domain` → `core:service` → `infra:storage` → `app:api`
 
 > 상세 규칙: `.claude/skills/coding-rules/` 참조
 
