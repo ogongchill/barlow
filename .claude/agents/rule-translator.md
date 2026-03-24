@@ -45,7 +45,7 @@ SCOPE_MD: .workspace/scope.md
 | 신규 예외 클래스 추가 | `ERROR_HANDLING.md` |
 | 어떤 유형이든 | `ARCHITECTURE.md` (항상) |
 
-선택된 파일만 `.claude/skills/coding-rules/` 경로에서 읽는다. 선택되지 않은 파일은 로드하지 않는다.
+선택된 파일만 `.claude/skills/coding-rules/resources/` 경로에서 읽는다. 선택되지 않은 파일은 로드하지 않는다.
 
 ### 3. 구현 순서 결정
 

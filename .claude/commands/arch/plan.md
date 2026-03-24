@@ -201,9 +201,9 @@ A → B 형태로 전체 열거 (import, 주입, 호출 포함)
 - 대상: {파일/클래스}
 - 변경: {내용}
 - 구현 전 하네스 가이드 로드:
-  - `.claude/skills/coding-rules/ARCHITECTURE.md`
-  - `.claude/skills/coding-rules/ERROR_HANDLING.md`
-  - `.claude/skills/coding-rules/TESTING.md`
+  - `.claude/skills/coding-rules/resources/ARCHITECTURE.md`
+  - `.claude/skills/coding-rules/resources/ERROR_HANDLING.md`
+  - `.claude/skills/coding-rules/resources/TESTING.md`
 - 하네스 체크포인트:
   - [ ] ...
 - 완료 조건: `/harness-check` FAIL 0개
@@ -226,10 +226,10 @@ A → B 형태로 전체 열거 (import, 주입, 호출 포함)
 >
 > ```
 > 1. docs/DOMAIN_ENCYCLOPEDIA.md          — 도메인 용어 확인
-> 2. .claude/skills/coding-rules/ARCHITECTURE.md
-> 3. .claude/skills/coding-rules/DOMAIN_RULES.md   (도메인 변경 포함 시)
-> 4. .claude/skills/coding-rules/SERVICE_RULES.md  (서비스 변경 포함 시)
-> 5. .claude/skills/coding-rules/ERROR_HANDLING.md (예외 추가 포함 시)
+> 2. .claude/skills/coding-rules/resources/ARCHITECTURE.md
+> 3. .claude/skills/coding-rules/resources/DOMAIN_RULES.md   (도메인 변경 포함 시)
+> 4. .claude/skills/coding-rules/resources/SERVICE_RULES.md  (서비스 변경 포함 시)
+> 5. .claude/skills/coding-rules/resources/ERROR_HANDLING.md (예외 추가 포함 시)
 > ```
 > Task 상세의 "하네스 체크포인트"를 확인해 해당 항목에 맞는 파일만 선택적으로 로드한다.
 
