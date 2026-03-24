@@ -26,51 +26,51 @@
 
 ### Architecture — 레이어 의존성
 
-- [ ] `core:domain` 클래스에 `@Service`, `@Component`, `@Autowired`, `@Transactional` 없음
-- [ ] `core:domain` 클래스에 `@Entity`, JPA 어노테이션 없음
-- [ ] `core:service` Business Layer (`@Service`) 에서 `infra:*` 클래스 직접 import 없음
-- [ ] `core:service` Business Layer 에서 다른 `@Service` 직접 주입 없음 (Facade로만 조합)
-- [ ] `core:service` Implement Layer (`@Component`) 에서 Port Interface만 통해 infra 통신
-- [ ] `app:api` Controller에서 `infra:*` 클래스 직접 import 없음
+- [ ] `core:domain` 클래스는 순수 POJO: `@Service`, `@Component`, `@Autowired`, `@Transactional` 제거
+- [ ] `core:domain` 클래스는 JPA 무관: `@Entity` 및 JPA 어노테이션 제거
+- [ ] `core:service` Business Layer (`@Service`): Implement Layer만 주입. `infra:*` 직접 import 제거
+- [ ] `core:service` Business Layer: 다른 `@Service` 직접 주입 제거 (Facade로만 조합)
+- [ ] `core:service` Implement Layer (`@Component`): Port Interface 경유로 infra 통신
+- [ ] `app:api` Controller: `infra:*` 직접 import 제거
 
 ### Domain — 불변 객체 & 타입 선택
 
-- [ ] 도메인 객체에 setter 없음. 상태 변경 = 새 인스턴스 반환 (`with*/activate/deactivate/modify*`)
-- [ ] AR (Aggregate Root): `class` 타입. `record` 금지
-- [ ] VO (행위 있는 불변): `final class` 타입
-- [ ] VO (순수 데이터 홀더) / Read Model / Command / Query: `record` 타입
-- [ ] `record`에 도메인 행위(비즈니스 검증, 계산) 없음
-- [ ] AR 간 참조: `long` ID-only. 객체 직접 참조 금지
-- [ ] 외부 생성자 대신 static factory 메서드 사용
+- [ ] 도메인 객체: setter 제거. 상태 변경 = 새 인스턴스 반환 (`with*/activate/deactivate/modify*`)
+- [ ] AR (Aggregate Root): `class` 타입으로 선언
+- [ ] VO (행위 있는 불변): `final class` 타입으로 선언
+- [ ] VO (순수 데이터 홀더) / Read Model / Command / Query: `record` 타입으로 선언
+- [ ] `record`에 도메인 행위(비즈니스 검증, 계산) 제거 — 행위 있으면 `final class`로 전환
+- [ ] AR 간 참조: `long` ID-only 방식으로 선언
+- [ ] 외부 생성자(`new`) 제거 → static factory 메서드 사용
 
 ### Service — 트랜잭션 & 주입
 
-- [ ] `@Component`(Implement Layer)에 `@Transactional` 없음 — Impl에 `@Transactional`은 일절 금지
-- [ ] Business Layer (`@Service`): DB 쓰기를 포함한 메서드에 `@Transactional` 선언됨
-- [ ] Business Layer (`@Service`): 단순 읽기 위임 / `@Cacheable` 메서드에 불필요한 `@Transactional` 없음
-- [ ] `@Cacheable`과 `@Transactional`을 같은 메서드에 병용하지 않음
-- [ ] `Reader` 클래스에 쓰기(save/update/delete) 메서드 없음 — 쓰기는 `Updater`/`Manager`/`Processor`로 분리
+- [ ] `@Component`(Implement Layer): `@Transactional` 제거 — 트랜잭션은 `@Service`만 소유
+- [ ] Business Layer (`@Service`): DB 쓰기 포함 메서드에 `@Transactional` 선언
+- [ ] Business Layer (`@Service`): 단순 읽기 위임 / `@Cacheable` 메서드의 `@Transactional` 제거
+- [ ] `@Cacheable`과 `@Transactional`을 같은 메서드에 병용 제거 (분리 필수)
+- [ ] `Reader` 클래스: 쓰기(save/update/delete) 메서드 제거 → `Updater`/`Manager`/`Processor`로 분리
 
 ### Error Handling — 예외 계층
 
 - [ ] 도메인 비즈니스 규칙 위반: `CoreDomainException` 하위 BC별 클래스 + static factory 사용
-- [ ] `IllegalStateException` / `IllegalArgumentException`을 비즈니스 규칙 위반에 사용하지 않음
-- [ ] `CoreDomainException` 직접 throw 없음 (반드시 BC별 하위 클래스 사용)
-- [ ] `Exception` / `RuntimeException` 직접 상속 없음
-- [ ] API 레이어 예외: `CoreApiException` 사용 (도메인에서 `CoreApiException` throw 금지)
-- [ ] `BUSINESS` 레벨 예외 (정상 거절): WARN 로그
+- [ ] 비즈니스 규칙 위반에는 `CoreDomainException` 하위 클래스 사용 (`IllegalStateException` 대체 제거)
+- [ ] `CoreDomainException` 직접 throw 제거 → BC별 하위 클래스 사용
+- [ ] 신규 예외 클래스: `CoreDomainException` 또는 `CoreApiException` 상속 (`Exception`/`RuntimeException` 직접 상속 제거)
+- [ ] API 레이어: `CoreApiException` 사용. 도메인에서 `CoreApiException` throw 제거
+- [ ] `BUSINESS` 레벨 예외 (정상 거절): WARN 로그 설정
 - [ ] `IMPLEMENTATION` 레벨 예외 (버그 가능성): ERROR 로그 + Alert 설정
 
 ### Testing — 작성 기준
 
-- [ ] 도메인 정책 테스트: 태그 없음, Spring 컨텍스트 없이 순수 Java로 실행
+- [ ] 도메인 정책 테스트: 태그 없음, 순수 Java로 실행 (Spring 컨텍스트 로드 제거)
 - [ ] 통합 테스트: `@Tag("develop")` + `extends DevelopTest`
 - [ ] 인수 테스트 (@AcceptanceTest): `@Tag("context")` + `extends ContextTest`
 - [ ] 메서드명: `테스트대상_상태_기대결과` 형식 (`validate_RequiredTermNotAgreed_ThrowsException`)
 - [ ] `@DisplayName`: 완전한 한글 문장 ("~할 때, ~하면, ~한다/된다")
 - [ ] given / when / then 주석 구분
-- [ ] `static` 필드로 테스트 간 상태 공유 없음
-- [ ] `Thread.sleep()` 사용 없음
+- [ ] `static` 필드를 통한 테스트 간 상태 공유 제거
+- [ ] `Thread.sleep()` 제거
 - [ ] 도메인 테스트: Mockito 최소화, 실제 객체 우선
 
 ---

@@ -60,8 +60,3 @@ plan.md를 읽고 사용자 질문에 답변하거나 수정한 뒤, "확정" �
    PLAN_CONFIRMED: {routing.md의 BRANCH 값}
    ```
 
-이 커맨드는 Worker 없이 터미널에서 직접 진행할 때 사용한다.
-확정 후 바로 다음 단계로 진행하려면:
-```
-→ /dev:continue-task {issue_number}
-```

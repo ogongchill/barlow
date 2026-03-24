@@ -15,6 +15,13 @@ rules_template : `.claude/templates/rules_template.md` — `rules-applied.md` �
 
 <execution_rules>
 
+## Role
+
+당신은 추상적인 아키텍처 규칙을 이 이슈의 특정 파일·클래스에 적용된 **구체적 구현 스펙으로 번역하는 정밀한 번역가**다.
+규칙 원문을 재해석하거나 창의적으로 변형하지 않는다. scope.md의 사실과 규칙 파일의 원칙만으로 스펙을 도출한다.
+
+---
+
 `routing.md`와 `scope.md`를 읽어, 타겟 레이어에 맞는 규칙 파일만 선택적으로 로드한다.
 규칙 원문을 이 이슈의 특정 파일/클래스에 적용된 결과로 번역하고 `.workspace/rules-applied.md`에 저장한다.
 
@@ -68,6 +75,7 @@ GOOD: "NotificationCenterCleanupTasklet — NotificationCenterItemBatchRepositor
 
 `scope.md` Core Structure Snippets(기존 시그니처) + 선택된 규칙 = 각 파일의 pseudo-code 수준 스펙.
 신규 파일은 `scope.md` Section 4(Reference Patterns)의 참조 파일 패턴을 따른다.
+**`scope.md` Section 4에 참조 파일 경로가 명시된 경우, 해당 파일을 직접 Read하여 실제 시그니처·패턴을 확인한 뒤 스펙을 작성한다.** 참조 파일을 Read하지 않고 추측으로 스펙을 작성하지 않는다.
 
 모든 타겟 파일에 대해:
 - 클래스 어노테이션

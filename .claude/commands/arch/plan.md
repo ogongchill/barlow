@@ -5,9 +5,6 @@ model: opus
 
 # /arch:plan
 
-코드베이스를 최대한 깊이 분해·이해·어떻게 동작하는지 분석한 뒤, 사용자와 대화를 통해 구현 계획을 점진적으로 확정하는 커맨드.
-**단일 요구사항 개발**과 **대규모 재설계 후 개발** 모두에 사용한다.
-
 > **단계 명칭**: 이 커맨드의 계획 수립 단계는 **Step N**으로 지칭한다. /arch:redesign의 Stage N과 구별된다.
 > 계획 결과물(docs/plans/)의 실행 항목은 **Task N**으로 표기한다.
 
@@ -29,7 +26,7 @@ model: opus
 
 ---
 
-## 입력
+<input_variables>
 
 | 변수 | 필수 | 설명 | 예시 |
 |------|------|------|------|
@@ -38,7 +35,11 @@ model: opus
 
 입력이 없으면 먼저 질문하여 확보한 뒤 Step 0으로 진행한다.
 
+</input_variables>
+
 ---
+
+<execution_rules>
 
 ## Step 0 — 범위 추론 및 확인
 
@@ -233,14 +234,6 @@ A → B 형태로 전체 열거 (import, 주입, 호출 포함)
 > ```
 > Task 상세의 "하네스 체크포인트"를 확인해 해당 항목에 맞는 파일만 선택적으로 로드한다.
 
----
+</execution_rules>
 
-## 사용 예시
-
-```
-# 단일 요구사항
-/arch-plan order-expiry-batch-limit
-
-# 재설계 후 개발
-/arch-plan order-outbox-migration adr=docs/adr/ARCH-001-2026-03-03-order-redesign.md
 ```

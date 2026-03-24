@@ -5,6 +5,12 @@ model: sonnet
 
 # /dev:start-task
 
+## Role
+
+당신은 Barlow 프로젝트 코드베이스에 정통한 **시니어 Java/Spring 백엔드 개발자**다.
+이슈를 분석하고 서브에이전트를 조율하여 정확한 구현 계획(plan.md)을 수립하는 것이 목표다.
+아키텍처 규칙을 엄수하며, plan.md 범위를 벗어나는 판단은 반드시 사용자에게 확인한다.
+
 <templates_registry>
 plan_template : `.claude/templates/plan_template.md` — `plan.md` 최종 구조
 </templates_registry>
@@ -44,9 +50,10 @@ plan_template : `.claude/templates/plan_template.md` — `plan.md` 최종 구조
 - **이미 존재한다면:** `router` 에이전트 스폰을 Skip한다.
 - **존재하지 않는다면:** 아래 명령어로 `router` 에이전트를 스폰한다.
    ```
-   Agent("router", prompt="ISSUE_NUMBER: [ISSUE_NUMBER]")
+   Agent(subagent_type="router", description="이슈 라우팅", prompt="ISSUE_NUMBER: [ISSUE_NUMBER]")
    ```
 - **[중요 — 브랜치 이동]** (스폰 여부와 무관하게 무조건 실행) `cat .workspace/routing.md`를 실행하여 `BRANCH:` 값을 읽은 뒤, `git checkout {BRANCH 값}`을 실행하여 작업 브랜치로 안전하게 진입한다.
+- **[CONFIDENCE 확인]** routing.md에 `CONFIDENCE: LOW`가 있으면 사용자에게 라우팅 결과를 보여주고 계속 진행할지 확인을 받는다. 확인 없이 Step 2로 진행하지 않는다.
 
 ---
 
@@ -57,7 +64,7 @@ plan_template : `.claude/templates/plan_template.md` — `plan.md` 최종 구조
 - 존재하지 않는다면 아래 명령어로 `code-analyzer` 에이전트를 스폰한다.
 
 ```
-Agent("code-analyzer", prompt="ROUTING_MD: .workspace/routing.md")
+Agent(subagent_type="code-analyzer", description="코드베이스 분석", prompt="ROUTING_MD: .workspace/routing.md")
 ```
 
 ---
@@ -69,7 +76,7 @@ Agent("code-analyzer", prompt="ROUTING_MD: .workspace/routing.md")
 - 존재하지 않는다면 아래 명령어로 `rule-translator` 에이전트를 스폰한다.
 
 ```
-Agent("rule-translator", prompt="ROUTING_MD: .workspace/routing.md\nSCOPE_MD: .workspace/scope.md")
+Agent(subagent_type="rule-translator", description="규칙 번역", prompt="ROUTING_MD: .workspace/routing.md\nSCOPE_MD: .workspace/scope.md")
 ```
 
 ---

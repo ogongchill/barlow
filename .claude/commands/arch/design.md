@@ -22,7 +22,7 @@ model: opus
 
 ---
 
-## Input Variables
+<input_variables>
 
 커맨드 실행 시 사용자로부터 아래를 확인한다.
 입력이 불완전하면 먼저 질문하여 확보한 뒤 Stage 0으로 진행한다.
@@ -33,7 +33,11 @@ model: opus
 | `[DOMAIN_BOUNDARIES]` | 설계 대상 BC(Bounded Context) 초안 | `Payment`, `Order`, `Inventory` |
 | `[EXTERNAL_DEPENDENCIES]` | 연동해야 할 외부 시스템 | "KakaoPay API, 레거시 주문 DB, 회원 서비스" |
 
+</input_variables>
+
 ---
+
+<execution_rules>
 
 ## Stage 0 — 도메인 경계 확정 (Context Map)
 
@@ -41,6 +45,8 @@ model: opus
 > 이 단계의 출력이 이후 모든 Stage의 기준선이 된다.
 >
 > **규칙**: 경계가 불명확하거나 사용자 확인이 없으면 Stage 1로 진행하지 않는다.
+>
+> **컨텍스트 단절 대비**: Stage 0 완료 후 Context Map 결과를 `docs/adr/.design-stage0-{topic}.tmp.md`에 저장한다. 대화가 단절되어도 이 파일에서 복원할 수 있다.
 
 `[DOMAIN_BOUNDARIES]`와 `[EXTERNAL_DEPENDENCIES]`를 기반으로 다음을 도출한다.
 
@@ -281,11 +287,5 @@ ADR이 생성되었습니다: docs/adr/ARCH-{NNN}-{YYYY-MM-DD}-{topic}.md
 
 ---
 
-## 사용 예시
+</execution_rules>
 
-```
-/arch-design
-→ [BUSINESS_GOAL]          선착순 1만 명 동시 결제, 이중 결제 0건, P99 레이턴시 2초 이내
-  [DOMAIN_BOUNDARIES]      Payment, Order, Inventory
-  [EXTERNAL_DEPENDENCIES]  KakaoPay API, 레거시 주문 DB, 회원 서비스
-```

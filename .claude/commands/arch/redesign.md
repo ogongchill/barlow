@@ -16,7 +16,7 @@ model: opus
 
 ---
 
-## Input Variables
+<input_variables>
 
 커맨드 실행 시 사용자로부터 아래 세 가지를 확인한다.
 입력이 불완전하면 먼저 질문하여 확보한 뒤 Stage 0으로 진행한다.
@@ -27,7 +27,11 @@ model: opus
 | `[AS_IS_SCOPE]` | 재설계 대상 파일/패키지 경로 | `business/order`, `domain/order` |
 | `[FROZEN_ZONE]` | 절대 변경 불가 항목 | "DB 스키마, POST /orders API 계약" |
 
+</input_variables>
+
 ---
+
+<execution_rules>
 
 ## Stage 0 — 전략 진단 (Strategy Diagnosis)
 
@@ -62,6 +66,10 @@ model: opus
 > **분석 깊이: 중** — 누락 없는 완전 열거가 목표다. 빠른 요약보다 정확한 목록이 우선.
 > Stage 1의 출력은 Stage 2·5·6의 **강제 입력**이다. 특히 엔티티 필드, 테이블 컬럼,
 > 인터페이스 시그니처를 명시적으로 기록해야 한다. 이 목록이 불완전하면 이후 Stage로 진행하지 않는다.
+>
+> **병렬 Read**: `[AS_IS_SCOPE]` 내 독립 파일은 동시에 Read한다. (예: AR·Service·Repository가 별개 파일이면 3개를 단일 응답에서 동시에 Read)
+>
+> **컨텍스트 단절 대비**: Stage 1 완료 후 분석 결과를 `docs/adr/.redesign-stage1-{topic}.tmp.md`에 저장한다. 대화가 단절되어도 이 파일에서 복원할 수 있다.
 
 `[AS_IS_SCOPE]` 내 모든 파일을 읽는다. 다음 항목을 도출한다:
 
@@ -266,13 +274,5 @@ ADR이 생성되었습니다: docs/adr/ARCH-{NNN}-{YYYY-MM-DD}-{topic}.md
 
 > ⚠️ ADR 승인 전까지 코드 작성을 시작하지 않는다.
 
----
+</execution_rules>
 
-## 사용 예시
-
-```
-/arch-redesign
-→ [BUSINESS_GOAL]  선착순 1만 명 동시 주문 처리, 결제 멱등성 100% 보장
-  [AS_IS_SCOPE]    src/main/java/com/kopang/business/order
-  [FROZEN_ZONE]    DB 스키마(order, payment 테이블), POST /orders API 계약
-```
