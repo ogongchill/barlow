@@ -132,6 +132,7 @@ Implement Layer는 반드시 `@Service`(Business Layer)에 의해서만 호출�
 
 만약 Implement Layer 클래스가 단독으로 트랜잭션을 필요로 하는 상황이라면, 그 클래스는 **Implement Layer가 아니라 Business Layer(`@Service`)로 승격해야 한다.**
 
+<example>
 ```java
 // BAD — @Component에 @Transactional
 @Component
@@ -155,6 +156,7 @@ public class ReactionProcessor {
     public void react(User user, Reaction reaction) { ... }
 }
 ```
+</example>
 
 ### 네이밍 컨벤션 — 역할과 허용 오퍼레이션
 
@@ -175,6 +177,7 @@ public class ReactionProcessor {
 
 **`Reader`에 쓰기 메서드를 넣으면 안 된다.** 쓰기가 추가된 순간 `Updater`, `Manager`, `Processor` 등으로 분리하거나 이동한다.
 
+<example>
 ```java
 // BAD — Reader에 쓰기 메서드
 @Component
@@ -190,6 +193,7 @@ public class BillPostReader {
 
 // 쓰기는 별도 Impl 클래스 또는 Service 메서드에서 처리
 ```
+</example>
 
 ---
 
@@ -278,24 +282,3 @@ public ApiResponse<MyAccountResponse> getMyAccount(Passport passport) {
     // ...
 }
 ```
-
----
-
-## 6. 위반 사례 (Service/Presentation 규칙)
-
-| 위반 패턴 | 올바른 방향 |
-|---|---|
-| `@Component`에 `@Transactional` 선언 | `@Transactional`은 `@Service`(Business Layer)에만. Impl에서 제거 |
-| DB 쓰기를 포함한 Service 메서드에 `@Transactional` 누락 | Business Layer 메서드에 `@Transactional` 선언 |
-| 단순 읽기 위임 Service 메서드에 불필요한 `@Transactional` | 트랜잭션 불필요 — 제거 |
-| `@Cacheable`과 `@Transactional`을 같은 메서드에 병용 | 둘을 분리. 캐시 메서드는 `@Transactional` 없음 |
-| `Reader` 클래스에 쓰기(update/save/delete) 메서드 추가 | `Updater`, `Manager`, `Processor` 등 별도 클래스로 분리 |
-| Implement Layer 클래스가 단독 트랜잭션이 필요한 경우 | `@Service`로 승격 — Implement Layer가 아님 |
-| Business Service에서 `infra:*` 클래스 직접 주입 | Implement Layer(Reader/Manager) 경유 |
-| Business Service 간 직접 주입 | Facade로 상위 레이어에서 조합 |
-| Implement Layer가 Business Layer를 알고 있음 | 역방향 참조 — 금지 |
-| Controller에서 Service를 거치지 않고 Reader 직접 호출 | Business Layer(Service) 경유 |
-| Controller에 Request 객체를 Service에 그대로 전달 | Request → Command 변환 후 전달 |
-| Request 검증 로직이 Service 내부에 있음 | Controller 진입 시점에 `validate()` 호출 |
-| UseCase 패키지를 `core:domain`에 정의 (`home/`) | `core:service`에 feature 패키지로 정의 |
-| 범용 서비스를 특정 UseCase 패키지 안에 가두어 재사용 불가 | 다른 UseCase에서도 쓰이면 Aggregate 패키지로 이동 |

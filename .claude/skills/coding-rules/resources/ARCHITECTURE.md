@@ -101,6 +101,7 @@ public class AccountCreateService {
 
 **규칙 4 — 동일 레이어 간 참조 금지. 단, Implement Layer는 예외.**
 Implement Layer 클래스들은 서로 협력하여 재사용성 높은 도구를 만들 수 있다.
+*(예외 이유: Business Layer 간 직접 호출은 트랜잭션 경계 오염과 순환 의존을 유발한다. Implement Layer 간 협력만 허용하는 이유는 Reader·Manager 등 도구를 조합하여 Business Layer의 중복 로직을 줄이기 위해서다.)*
 
 ```java
 // GOOD — Implement 간 협력 허용

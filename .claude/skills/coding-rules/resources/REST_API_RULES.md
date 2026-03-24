@@ -68,30 +68,10 @@ URL 경로 세그먼트는 소문자 케밥 케이스를 사용한다.
 | 구분 | 사용 시점 | 예시 |
 |---|---|---|
 | `@PathVariable` | 리소스를 **식별**하는 값 | `/{billId}`, `/{legislationType}` |
-| `@RequestParam` | **필터링·정렬·페이징** 조건 | `?page=0&size=20&sort=desc` |
+| `@RequestParam` | **필터링·정렬·페이징** 조건, `DELETE` 시 조건 | `?page=0&size=20`, `?targetType=X` |
 | `@RequestBody` | **상태 변경**에 필요한 데이터 | `{"active": true}`, `{"reactionType": "LIKE"}` |
 
-```java
-// 식별자 → PathVariable ✅
-@GetMapping("/{billId}")
-public ApiResponse<BillPostDetailResponse> getDetail(@PathVariable Long billId) { ... }
-
-// 필터 → RequestParam ✅
-@GetMapping
-public ApiResponse<List<BillPostResponse>> list(@RequestParam(required = false) String keyword) { ... }
-
-// 상태 변경 데이터 → RequestBody ✅
-@PostMapping("/{targetId}")
-@ResponseStatus(HttpStatus.CREATED)
-public ApiResponse<Void> react(@PathVariable String targetId, @RequestBody ReactionRequest request) { ... }
-
-// 삭제 시 필터 조건 → RequestParam ✅ (Body 사용 금지)
-@DeleteMapping("/{targetId}")
-public ApiResponse<Void> removeReaction(
-    @PathVariable String targetId,
-    @RequestParam("targetType") String targetType,
-    @RequestParam("reactionType") String reactionType) { ... }
-```
+`DELETE`는 `@RequestBody` 사용 금지 — 삭제 조건은 반드시 `@RequestParam`으로.
 
 ---
 

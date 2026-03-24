@@ -49,36 +49,22 @@ Repository 테스트도 별도로 작성하지 않는다 — AcceptanceTest가 D
 ```java
 // 단순 정책 — flat
 class TermsPolicyTest {
-
-    @Test
-    @DisplayName("필수 약관에 동의하지 않으면 RegistrationException이 발생한다.")
+    @Test @DisplayName("필수 약관에 동의하지 않으면 RegistrationException이 발생한다.")
     void validate_RequiredTermNotAgreed_ThrowsRegistrationException() { ... }
-
-    @Test
-    @DisplayName("모든 필수 약관에 동의하면 검증을 통과한다.")
-    void validate_AllRequiredTermsAgreed_NoException() { ... }
 }
 
-// 복잡한 정책 — @Nested BDD
+// 복잡한 정책 — @Nested BDD (Describe-Context-It)
 class SubscriptionTest {
-
-    @Nested
-    @DisplayName("deactivate — 구독 취소")
+    @Nested @DisplayName("deactivate — 구독 취소")
     class Deactivate {
-
-        @Nested
-        @DisplayName("구독 활성 상태일 때")
+        @Nested @DisplayName("구독 활성 상태일 때")
         class WhenActive {
-            @Test
-            @DisplayName("구독을 취소하면 isActive()가 false가 된다.")
+            @Test @DisplayName("구독을 취소하면 isActive()가 false가 된다.")
             void deactivate_ActiveSubscription_ReturnsFalseIsActive() { ... }
         }
-
-        @Nested
-        @DisplayName("이미 구독 취소 상태일 때")
+        @Nested @DisplayName("이미 구독 취소 상태일 때")
         class WhenAlreadyInactive {
-            @Test
-            @DisplayName("구독을 취소하면 SubscriptionDomainException이 발생한다.")
+            @Test @DisplayName("구독을 취소하면 SubscriptionDomainException이 발생한다.")
             void deactivate_InactiveSubscription_ThrowsSubscriptionDomainException() { ... }
         }
     }
@@ -312,21 +298,7 @@ public class SubscriptionFixture {
 
 ## 10. 금지 패턴
 
-```java
-// BAD — 테스트 간 상태 공유 (Independent 위반)
-static Subscription subscription = new Subscription(...);
-
-// BAD — Thread.sleep 사용 (Repeatable 위반)
-Thread.sleep(100);
-
-// BAD — 테스트 메서드 내 System.out.println (Self-Validating 위반)
-System.out.println(result);
-
-// BAD — 단일 테스트에 여러 시나리오 혼재 (Concise 위반)
-void testAll() {
-    // 구독 활성화 시나리오
-    // 구독 취소 시나리오
-    // 예외 시나리오
-    // 모두 한 메서드에 ...
-}
-```
+- `static` 필드로 테스트 간 데이터 공유 금지 (Independent 위반)
+- `Thread.sleep()` 사용 금지 (Repeatable 위반)
+- 테스트 메서드 내 `System.out.println` 금지 (Self-Validating 위반)
+- 단일 테스트 메서드에 여러 시나리오 혼재 금지 (Concise 위반) — 시나리오마다 별도 `@Test`로 분리

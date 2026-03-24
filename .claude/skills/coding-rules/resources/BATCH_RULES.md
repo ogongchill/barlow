@@ -75,6 +75,7 @@ public class {Bc}BatchJobConfig {
 
 - **기본**: `.tasklet(tasklet, transactionManager)` → `PROPAGATION_REQUIRED`
 - **알림 전송 Step**: `PROPAGATION_NEVER` 필수 (FCM 등 외부 호출은 트랜잭션 밖에서 실행)
+  - *이유: 외부 API 호출(FCM 등)을 DB 트랜잭션 안에 두면 외부 API 응답 대기 시간 동안 DB 커넥션이 점유된다. 또한 외부 호출 성공 후 DB 롤백이 발생해도 이미 발송된 알림을 되돌릴 수 없어 데이터 불일치가 생긴다. 외부 I/O는 반드시 트랜잭션 경계 밖에서 실행해야 한다.*
 
 ```java
 DefaultTransactionAttribute tx = new DefaultTransactionAttribute();

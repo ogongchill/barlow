@@ -72,6 +72,7 @@ public interface SubscriptionRepository {
 
 **주의: `record`에 도메인 행위를 넣지 않는다.**
 
+<example>
 ```java
 // BAD — record에 도메인 행위
 public record UserExternalAuth(Long userNo, List<ExternalPrincipal> principals) {
@@ -84,6 +85,7 @@ public class UserExternalAuth {
     public boolean has(AuthProvider authProvider) { ... }
 }
 ```
+</example>
 
 ---
 
@@ -152,6 +154,7 @@ new AccountDomainException("계정이 없음")
 
 비즈니스 규칙은 Service가 아닌 Domain 객체 내부에 위치한다.
 
+<example>
 ```java
 // BAD — 비즈니스 규칙이 Service에 있음 (Anemic Domain)
 @Service
@@ -174,6 +177,7 @@ public class Subscription {
     }
 }
 ```
+</example>
 
 ---
 
@@ -345,20 +349,3 @@ public class UserRepositoryAdapter implements UserRepository {
 | Adapter 구현체 (infra:storage) | `UserRepositoryAdapter` |
 | Spring Data JPA | `UserRepositoryJpaRepository` |
 | JPA Entity | `UserJpaEntity` |
-
----
-
-## 12. 위반 사례 (도메인 규칙)
-
-| 위반 패턴 | 올바른 방향 |
-|---|---|
-| `core:domain`에 `@Entity`, `@Service`, `@Transactional` 추가 | 순수 POJO 유지 |
-| Domain 객체에 setter로 상태 변경 | 새 인스턴스 반환 (`with/activate/deactivate/modify*`) |
-| `record`에 도메인 행위(비즈니스 검증, 계산) 추가 | `final class` 또는 `class`로 전환 |
-| AR 간 객체 직접 참조 | ID-only 참조 (`long` 타입) |
-| Command/Query를 `core:service`에 정의 | `core:domain`에 정의 (역방향 의존 원천 차단) |
-| 비즈니스 규칙을 Service에 위치 | Domain 객체 내부에 캡슐화 |
-| 도메인 패키지를 UseCase 기준으로 분류 | Aggregate 단위로 분류 |
-| 화면 단위 패키지를 `core:domain`에 정의 (`home/`) | `core:domain`은 Aggregate 단위만 |
-| 크로스 Aggregate Read Model을 `core:domain`에 정의 | `core:service` feature 패키지에 정의 |
-| `UserExternalAuth`를 record로 선언 (has() 행위 있음) | class로 선언 |

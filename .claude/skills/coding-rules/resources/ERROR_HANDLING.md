@@ -19,6 +19,7 @@
 - `@Entity`, `HttpStatus`, Spring Bean 등 HTTP·인프라 의존성 전혀 없음
 - `CoreDomainException`을 직접 throw하지 않는다. **BC별 하위 예외 클래스 + static factory 패턴.**
 
+<example>
 ```java
 // GOOD — BC별 예외 클래스 + static factory
 public class SubscriptionDomainException extends CoreDomainException {
@@ -53,6 +54,7 @@ throw new IllegalStateException("이미 구독 취소 상태");
 // BAD — API 레이어 예외를 도메인에서 사용
 throw new CoreApiException(CoreApiErrorType.CONFLICT, "...");
 ```
+</example>
 
 ---
 
@@ -207,13 +209,3 @@ UNPROCESSABLE(HttpStatus.UNPROCESSABLE_ENTITY, E422, "Request could not be proce
 // 4단계 — ControllerAdvice 변경 불필요.
 ```
 
----
-
-## 7. 위반 사례
-
-| 위반 패턴 | 올바른 방향 |
-|---|---|
-| `IMPLEMENTATION` 레벨인데 WARN 로그 | ERROR 로그 + Alert 필수 |
-| `Exception` 직접 throw | `CoreApiException` 또는 `CoreDomainException` 하위로 감싸서 throw |
-| 새 예외 클래스가 `Exception` / `RuntimeException` 직접 상속 | 반드시 `CoreDomainException` 또는 `CoreApiException` 상속 |
-| `CoreDomainException` 직접 throw | BC별 하위 예외 클래스 생성 후 사용 |
