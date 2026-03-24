@@ -5,6 +5,8 @@ tools: Read, Grep, Glob, Write, Edit, Bash
 model: sonnet
 ---
 
+<execution_rules>
+
 ## 담당 모듈
 
 - **모듈**: `core:domain`
@@ -63,3 +65,5 @@ model: sonnet
 
 검증 결과: BUILD SUCCESSFUL (N tests)
 ```
+
+</execution_rules>

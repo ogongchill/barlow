@@ -5,6 +5,8 @@ tools: Read, Grep, Glob, Write, Edit, Bash
 model: sonnet
 ---
 
+<execution_rules>
+
 ## 담당 모듈
 
 - **모듈**: `app:batch`
@@ -17,12 +19,10 @@ model: sonnet
 
 ## 배치 테스트 전략
 
-`app:batch` 테스트는 Spring Batch Test 프레임워크를 사용하여 Job 단위로 검증한다.
-
 - **블랙박스 테스트**: Job 실행 결과(ExitStatus, DB 상태)만 확인한다. Step 내부 구현에 의존하지 않는다.
-- **RestAssured 사용 금지**: HTTP 엔드포인트가 아닌 배치 잡이므로 `JobLauncherTestUtils`로 Job을 직접 실행한다.
-- **DB 상태 검증**: `JdbcTemplate`으로 배치 실행 전후의 DB 상태를 직접 확인한다.
-- **외부 클라이언트 격리**: 외부 API 클라이언트(국회 API 등)는 `@ActiveProfiles("local")`로 Fake/Stub으로 대체한다.
+- **`JobLauncherTestUtils`** 로 Job을 직접 실행한다 (RestAssured 사용 금지).
+- **DB 상태 검증**: `JdbcTemplate`으로 배치 실행 전후 DB 상태를 직접 확인한다.
+- **외부 클라이언트 격리**: `@ActiveProfiles("local")`로 Fake/Stub으로 대체된다 (BatchCoreContextTest에 선언됨).
 
 ---
 
@@ -38,18 +38,6 @@ model: sonnet
 
 ---
 
-## BatchCoreContextTest 구조
-
-```java
-// 위치: app/batch/src/test/java/com/barlow/app/batch/BatchCoreContextTest.java
-@ActiveProfiles("local")
-@Tag("context")
-@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-public abstract class BatchCoreContextTest {}
-```
-
----
-
 ## 테스트 작성 패턴
 
 ```java
@@ -57,28 +45,21 @@ public abstract class BatchCoreContextTest {}
 @SpringBootTest(classes = BatchCoreTestApplication.class)
 class SomeBatchJobTest extends BatchCoreContextTest {
 
-    @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    @Autowired JobLauncherTestUtils jobLauncherTestUtils;
+    @Autowired JdbcTemplate jdbcTemplate;
 
     @Test
     @DisplayName("배치 잡이 실행되면 대상 데이터가 처리된다.")
     void someJob_Success_ProcessesTargetData() throws Exception {
-        // given — DB에 사전 데이터 삽입
+        // given
         jdbcTemplate.update("INSERT INTO some_table ...");
-
-        // when — Job 실행
+        // when
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-
-        // then — ExitStatus 검증
+        // then — ExitStatus + DB 상태 검증
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-
-        // then — DB 상태 검증
-        Integer count = jdbcTemplate.queryForObject(
-            "SELECT COUNT(*) FROM some_table WHERE status = ?", Integer.class, "PROCESSED");
-        assertThat(count).isEqualTo(expectedCount);
+        assertThat(jdbcTemplate.queryForObject(
+            "SELECT COUNT(*) FROM some_table WHERE status = ?", Integer.class, "PROCESSED"))
+            .isEqualTo(expectedCount);
     }
 }
 ```
@@ -91,13 +72,8 @@ class SomeBatchJobTest extends BatchCoreContextTest {
 
 ### 배치 특화 금지 패턴
 
-```java
-// RestAssured 사용 금지 (배치 잡은 HTTP 엔드포인트 아님)
-RestAssured.given()...
-
-// 특정 Step만 테스트하는 단위 테스트 금지 (Job 단위 통합 검증)
-jobLauncherTestUtils.launchStep("specificStep");
-```
+- `RestAssured` 사용 금지 (배치 잡은 HTTP 엔드포인트 아님)
+- `jobLauncherTestUtils.launchStep(...)` 금지 (Job 단위 통합 검증)
 
 ---
 
@@ -114,3 +90,5 @@ jobLauncherTestUtils.launchStep("specificStep");
 
 검증 결과: BUILD SUCCESSFUL (N tests)
 ```
+
+</execution_rules>

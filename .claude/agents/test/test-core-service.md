@@ -5,6 +5,8 @@ tools: Read, Grep, Glob, Write, Edit, Bash
 model: sonnet
 ---
 
+<execution_rules>
+
 ## 담당 모듈
 
 - **모듈**: `core:service`
@@ -13,24 +15,6 @@ model: sonnet
 - **테스트 유형**: unitTest (태그 없음 — 순수 JUnit 5, CI 실행)
 - **베이스 클래스**: 없음. `extends` 불필요.
 - **검증 명령**: `./gradlew :core:service:unitTest`
-
----
-
-## 비즈니스 레이어 테스트 전략
-
-**`@Service`, `@Component` (Reader, Handler, Manager 등) 클래스는 Mock 단위 테스트로 검증하지 않는다.**
-
-비즈니스 레이어는 `app:api`의 `@AcceptanceTest`가 HTTP 레벨부터 DB까지 end-to-end로 한 번에 검증한다.
-Mock으로 Repository를 주입하는 방식의 서비스 단위 테스트는 작성하지 않는다.
-
-```java
-// BAD — 비즈니스 서비스를 Mock으로 고립 테스트 (작성하지 않음)
-class BillPostReaderTest extends DevelopTest {
-    private @Mock BillPostRepository billPostRepository;
-    private @InjectMocks BillPostReader billPostReader;
-    ...
-}
-```
 
 ---
 
@@ -60,30 +44,15 @@ class BillPostReaderTest extends DevelopTest {
 
 ## 아키텍처 제약
 
-- `core:service`는 `infra:*` 클래스를 **직접 import 금지**.
-- 테스트 코드도 infra 구현체를 import하지 않는다.
-
----
-
-## @Tag("develop") — 실험용 테스트
-
-비즈니스 로직이나 도구 동작을 로컬에서 빠르게 탐색하고 싶을 때 `@Tag("develop")`으로 작성한다.
-CI에서 실행되지 않으며, 검증 완료 후 `@Tag("context")` 로 승격하거나 삭제한다.
-
-```java
-// 학습 또는 실험 목적
-@Tag("develop")
-@ExtendWith(MockitoExtension.class)
-class SomeExperimentTest {
-    // 로컬 탐색용 — CI 미포함
-}
-```
+- `core:service` 테스트 코드도 `infra:*` 구현체를 import하지 않는다.
 
 ---
 
 ## TESTING.md 핵심 규칙
 
 `.claude/skills/coding-rules/resources/TESTING.md` 를 읽어 §2(비즈니스 레이어 테스트 전략)·§7(테스트 구조 규칙)·§10(금지 패턴)을 따른다.
+
+- 로컬 실험용 테스트는 `@Tag("develop")`으로 작성한다 (CI 미포함, 검증 완료 시 `@Tag("context")` 승격 또는 삭제).
 
 ---
 
@@ -98,7 +67,8 @@ class SomeExperimentTest {
 
 작성 파일:
 - core/service/src/test/java/com/barlow/core/service/{bc}/{ClassName}Test.java
-- ...
 
 검증 결과: BUILD SUCCESSFUL (N tests)
 ```
+
+</execution_rules>
