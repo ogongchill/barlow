@@ -159,41 +159,10 @@ acceptance/user.json
 
 ## TESTING.md 핵심 규칙
 
-### 메서드 네이밍: `테스트대상_상태_기대결과`
-```java
-void retrieveRecentBills_Success_ReturnsPaginatedResult()
-void subscribe_Unauthenticated_Returns401()
-void withdraw_Guest_DeletesUserAndDevice()
-```
+`.claude/skills/coding-rules/resources/TESTING.md` 를 읽어 §4(유스케이스 테스트)·§7(테스트 구조 규칙)·§8(테스트 대역)·§10(금지 패턴)을 따른다.
 
-### @DisplayName: 완전한 한글 비즈니스 명세 문장
-```java
-@DisplayName("최근 법안 목록을 조회하면 페이징된 결과를 반환한다.")
-@DisplayName("인증되지 않은 요청으로 구독하면 401을 반환한다.")
-@DisplayName("게스트 사용자가 탈퇴하면 사용자와 디바이스 정보가 삭제된다.")
-```
+### API 특화 금지 패턴
 
-### @Nested 사용 기준
-- 단순 시나리오 → flat
-- 복잡한 조건 분기 → `@Nested` BDD 스타일
-
-```java
-@AcceptanceTest("acceptance/user.json")
-class AccountControllerTest extends ContextTest {
-    @Nested @DisplayName("회원 탈퇴")
-    class Withdraw {
-        @Nested @DisplayName("GUEST 사용자일 때")
-        class WhenGuest { ... }
-
-        @Nested @DisplayName("MEMBER 사용자일 때")
-        class WhenMember { ... }
-    }
-}
-```
-
-### Given / When / Then 주석 필수
-
-### 금지 패턴
 ```java
 // DTO 클래스로 요청/응답 직접 매핑 금지 (블랙박스 원칙 위반)
 AccountResponse response = RestAssured.given()...extract().as(AccountResponse.class);
@@ -201,10 +170,6 @@ AccountResponse response = RestAssured.given()...extract().as(AccountResponse.cl
 // @MockBean 남용 금지 (컨텍스트 캐시 오염)
 @MockBean
 private SomeService someService;
-
-// Thread.sleep, sysout 금지
-Thread.sleep(100);
-System.out.println(result);
 ```
 
 ---

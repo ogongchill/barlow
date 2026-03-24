@@ -9,7 +9,7 @@
 
 | 파일 | 로드 조건 |
 |---|---|
-| `ARCHITECTURE.md` | 어떤 유형이든 — **항상** 로드 (Step 1에서도 로드) |
+| `ARCHITECTURE.md` | 어떤 유형이든 — **항상** 로드 |
 | `DOMAIN_RULES.md` | scope.md 타겟 파일에 `core:domain` 레이어 포함 시 |
 | `SERVICE_RULES.md` | scope.md 타겟 파일에 `core:service` 또는 `app:api` 레이어 포함 시 |
 | `REST_API_RULES.md` | scope.md 타겟 파일에 `app:api` 레이어 포함 시 |

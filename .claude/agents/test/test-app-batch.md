@@ -87,28 +87,13 @@ class SomeBatchJobTest extends BatchCoreContextTest {
 
 ## TESTING.md 핵심 규칙
 
-### 메서드 네이밍: `테스트대상_상태_기대결과`
-```java
-void notificationCenterCleanupJob_OldItemsExist_DeletesExpiredItems()
-void recentBillJob_ExternalApiReturnsData_SavesBillPosts()
-```
+`.claude/skills/coding-rules/resources/TESTING.md` 를 읽어 §7(테스트 구조 규칙)·§10(금지 패턴)을 따른다.
 
-### @DisplayName: 완전한 한글 비즈니스 명세 문장
-```java
-@DisplayName("7일 초과 알림센터 항목이 있으면 배치 실행 시 삭제된다.")
-@DisplayName("오늘 법안 데이터가 있으면 법안 포스트가 생성된다.")
-```
+### 배치 특화 금지 패턴
 
-### Given / When / Then 주석 필수
-
-### 금지 패턴
 ```java
 // RestAssured 사용 금지 (배치 잡은 HTTP 엔드포인트 아님)
 RestAssured.given()...
-
-// Thread.sleep, sysout 금지
-Thread.sleep(100);
-System.out.println(result);
 
 // 특정 Step만 테스트하는 단위 테스트 금지 (Job 단위 통합 검증)
 jobLauncherTestUtils.launchStep("specificStep");

@@ -83,36 +83,7 @@ class SomeExperimentTest {
 
 ## TESTING.md 핵심 규칙
 
-### 메서드 네이밍: `테스트대상_상태_기대결과`
-```java
-void allow_OfficialRelease_ReturnsTrue()
-void allow_UnofficialRelease_ReturnsFalse()
-```
-
-### @DisplayName: 완전한 한글 비즈니스 명세 문장
-```java
-@DisplayName("정식 릴리즈 버전을 허용하면 true를 반환한다.")
-@DisplayName("비정식 릴리즈 버전은 허용하지 않으면 false를 반환한다.")
-```
-
-### @Nested 사용 기준
-- 단순 정책 → flat
-- 복잡한 조건 분기 → `@Nested` BDD 스타일
-
-### Given / When / Then 주석 필수
-
-### 금지 패턴
-```java
-// 비즈니스 서비스/컴포넌트를 Mock으로 단위 테스트 금지
-private @Mock BillPostRepository billPostRepository;
-private @InjectMocks BillPostReader billPostReader;
-
-// 상태 공유 금지
-static SomeService service = new SomeService(...);
-
-Thread.sleep(100);
-System.out.println(result);
-```
+`.claude/skills/coding-rules/resources/TESTING.md` 를 읽어 §2(비즈니스 레이어 테스트 전략)·§7(테스트 구조 규칙)·§10(금지 패턴)을 따른다.
 
 ---
 
