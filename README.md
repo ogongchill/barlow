@@ -17,7 +17,6 @@ core:service     — 비즈니스 로직 (@Service · @Component)
 infra:storage          — JPA 영속성 (Repository 구현체 · 엔티티)
 infra:auth             — JWT 발급·검증 · OIDC 소셜 로그인 · Passport
 infra:notification     — FCM 푸시 알림 (iOS / Android)
-infra:post-view        — 법안 게시물 뷰 관련 인프라
 infra:clients:knal-api — 국회 공공 API 클라이언트 (OpenFeign)
 
 batch:batch-admin — 배치 어드민
@@ -47,7 +46,6 @@ graph LR
         infra_storage["infra:storage"]
         infra_auth["infra:auth"]
         infra_notification["infra:notification"]
-        infra_post_view["infra:post-view"]
         infra_knal["infra:clients:knal-api"]
     end
 
@@ -60,7 +58,6 @@ graph LR
     app_api --> core_service
     app_api --> core_domain
     app_api --> infra_auth
-    app_api --> infra_post_view
     app_api -.->|runtimeOnly| infra_storage
     app_api --> sup_log & sup_mon & sup_alert
 
