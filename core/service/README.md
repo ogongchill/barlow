@@ -21,108 +21,17 @@
 
 ## BC 구성
 
-### Account
-
-사용자 계정 생성·로그인·탈퇴를 담당합니다.
-
-**Business**
-- `AccountCreateService` — Guest/Member 신규 생성 (약관 검증, 알림 초기화)
-- `AccountLoginService` — 로그인 처리 (디바이스 갱신)
-- `AccountWithdrawalService` — 회원 탈퇴 진입점
-- `MemberRegisterService` — Guest → Member 전환 및 신규 Member 가입
-- `MyAccountRetrieveService` — 내 계정 정보 조회
-
-**Impl**
-- `UserCreator` / `UserReader` — 사용자 생성·조회
-- `DeviceReader` / `DeviceRefresher` — 기기 조회·토큰 갱신
-- `TermManager` — 약관 동의 처리
-- `UserWithdrawalOrchestrator` — Role별 탈퇴 전략 디스패치 (전략 패턴)
-- `GuestUserWithdrawalProcessor` / `MemberUserWithdrawalProcessor` — 탈퇴 구현체
-
-### Home
-
-홈 화면과 알림 센터 조회를 담당합니다.
-
-**Business**
-- `HomeRetrieveFacade` — 홈 화면 데이터 통합 (Facade 패턴)
-- `MyHomeInfoRetrieveService` — 구독 중인 입법기관 + 알림 도착 여부
-- `TodayBillPostThumbnailRetrieveService` — 오늘의 법안 썸네일
-- `NotificationCenterItemRetrieveService` — 알림 센터 항목
-
-**Impl**
-- `MyHomeInfoReader` — Repository 조회 조합
-- `NotificationCenterItemReader` — 알림 항목 조회
-
-### LegislationAccount
-
-입법기관 계정 조회와 구독 관리를 담당합니다.
-
-**Business**
-- `LegislationAccountRetrieveService` — 입법기관 프로필·법안·알림·구독 정보 조회
-- `LegislationAccountSubscribeService` — 구독·구독 해제
-
-**Impl**
-- `LegislationAccountReader` — 알림 설정·구독 정보 조합 조회
-- `LegislationAccountSubscriptionManager` — 구독 활성화 + 카운터 동기화
-- `LegislationAccountWithdrawalHandler` — 탈퇴 시 구독 정리
-
-### BillPost
-
-법안 게시물 조회와 조회수 추적을 담당합니다.
-
-**Business**
-- `BillPostRetrieveService` — 법안 목록·상세 조회 + 조회수 추적
-
-**Impl**
-- `BillPostReader` — 법안 검색
-- `BillPostCacheService` — Caffeine 캐시 적용 (상세 30분, 조회수 중복 제거 1시간)
-- `BillPostViewCountUpdater` — 조회수 업데이트
-
-### NotificationSetting
-
-사용자 알림 설정 관리를 담당합니다.
-
-**Business**
-- `NotificationSettingService` — 알림 설정 활성화·비활성화
-
-**Impl**
-- `NotificationSettingActivator` — 상태 변경 + 기본값 초기화
-- `NotificationSettingReader` — 알림 설정 조회
-- `NotificationWithdrawalHandler` — 탈퇴 시 알림 설정·센터 정리
-
-### Reaction
-
-반응(좋아요 등) 조회·생성·삭제를 담당합니다.
-
-**Business**
-- `ReactionService` — 반응 조회·추가·삭제
-
-**Impl**
-- `ReactionReader` — 반응 상태 조회
-- `ReactionProcessor` — 반응 상태 검증 및 처리
-
-### Subscribe
-
-구독 상태 관리를 담당합니다. Business 레이어 없이 impl만 존재하며 다른 BC에서 주입받아 사용합니다.
-
-- `SubscriptionActivator` — 구독 활성화·비활성화
-- `SubscriptionReader` — 구독 정보 조회
-- `SubscriptionWithdrawalHandler` — 탈퇴 시 구독 삭제
-
-### Menu
-
-알림 설정 메뉴 조회와 토글을 담당합니다.
-
-**Business**
-- `MenuFacade` — 알림 설정·메뉴 데이터 통합 (Facade 패턴)
-- `MenuService` — 알림 설정 메뉴 데이터 제공
-
-### Version
-
-클라이언트 버전 검증을 담당합니다.
-
-**Business**
-- `ClientVersionService` — `ClientVersionPolicy`를 사용해 버전 상태 반환
+| BC | 담당 |
+|----|------|
+| `account` | 계정 생성·로그인·탈퇴, Guest → Member 전환 |
+| `home` | 홈 화면 데이터 조합, 알림 센터 조회 |
+| `legislationaccount` | 입법기관 계정 조회, 구독·구독 해제 |
+| `billpost` | 법안 목록·상세 조회, 조회수 추적 |
+| `notificationsetting` | 알림 설정 활성화·비활성화 |
+| `reaction` | 반응 조회·추가·삭제 |
+| `subscribe` | 구독 상태 관리 (다른 BC에서 주입받아 사용) |
+| `menu` | 알림 설정 메뉴 조회·토글 |
+| `version` | 클라이언트 버전 상태 검증 |
 
 ---
 
@@ -130,38 +39,16 @@
 
 ### Facade
 
-여러 Service를 조합해 단일 진입점을 제공합니다.
+복수의 Service를 조합해 단일 진입점을 제공합니다.  
+`HomeRetrieveFacade`(홈 화면), `MenuFacade`(메뉴)가 이 패턴을 사용합니다.
 
-```
-HomeRetrieveFacade
-  → MyHomeInfoRetrieveService
-  → TodayBillPostThumbnailRetrieveService
-  → NotificationCenterItemRetrieveService
+### 전략 패턴
 
-MenuFacade
-  → NotificationSettingService
-  → MenuService
-```
+회원 탈퇴 흐름은 Role(Guest/Member)에 따라 다른 `UserWithdrawalProcessor` 구현체로 분기합니다.
 
-### 전략 패턴 (UserWithdrawalOrchestrator)
+### 캐싱
 
-`UserWithdrawalProcessor` 구현체를 Role로 매핑해 탈퇴 흐름을 분기합니다.
-
-```
-UserWithdrawalOrchestrator
-  → GUEST  → GuestUserWithdrawalProcessor  (User + Device 삭제)
-  → MEMBER → MemberUserWithdrawalProcessor (User + Device + Auth + 부수 정리)
-               → NotificationWithdrawalHandler
-               → SubscriptionWithdrawalHandler
-               → LegislationAccountWithdrawalHandler
-```
-
-### 캐싱 (BillPostCacheService)
-
-Caffeine 로컬 캐시를 데코레이터 형태로 적용합니다.
-
-- 법안 상세: `maximumSize=500`, `expireAfterWrite=30m`
-- 조회수 중복 제거: `maximumSize=10_000`, `expireAfterWrite=1h`
+자주 조회되는 법안 상세 데이터에 Caffeine 로컬 캐시를 적용합니다.
 
 ---
 
