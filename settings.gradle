@@ -11,8 +11,7 @@ include 'app:api', 'app:batch'
 
 include 'core:domain', 'core:service'
 
-include 'infra:storage', 'infra:auth', 'infra:notification', 'infra:post-view'
-include 'infra:clients:knal-api'
+include 'infra:storage', 'infra:auth', 'infra:notification', 'infra:clients:knal-api'
 
 include 'batch:batch-admin'
 
