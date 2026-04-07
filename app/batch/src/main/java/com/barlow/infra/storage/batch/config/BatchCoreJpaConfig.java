@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.barlow.infra.storage.BillPostJpaEntity;
 import com.barlow.infra.storage.LegislationAccountJpaEntity;
+import com.barlow.infra.storage.NotificationCenterItemJpaEntity;
 import com.barlow.infra.storage.NotificationConfigJpaEntity;
 
 import jakarta.persistence.EntityManagerFactory;
@@ -27,7 +28,7 @@ import jakarta.persistence.EntityManagerFactory;
 @Configuration
 @EnableTransactionManagement
 @EntityScan(basePackageClasses = {BillPostJpaEntity.class, LegislationAccountJpaEntity.class,
-	NotificationConfigJpaEntity.class})
+	NotificationConfigJpaEntity.class, NotificationCenterItemJpaEntity.class})
 @EnableJpaRepositories(basePackages = {"com.barlow.infra.storage.batch",
 	"com.barlow.infra.storage.notification"}, entityManagerFactoryRef = "batchCoreEntityManagerFactory", transactionManagerRef = "batchCoreTransactionManager")
 public class BatchCoreJpaConfig {
@@ -44,7 +45,8 @@ public class BatchCoreJpaConfig {
 		EntityManagerFactoryBuilder builder) {
 		return builder.dataSource(dataSource)
 			.packages("com.barlow.infra.storage.batch", "com.barlow.infra.storage.notification")
-			.packages(BillPostJpaEntity.class, LegislationAccountJpaEntity.class, NotificationConfigJpaEntity.class)
+			.packages(BillPostJpaEntity.class, LegislationAccountJpaEntity.class, NotificationConfigJpaEntity.class,
+				NotificationCenterItemJpaEntity.class)
 			.persistenceUnit("batch-core").properties(jpaProperties.properties).build();
 	}
 

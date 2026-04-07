@@ -36,6 +36,12 @@ tasks.register('copyResourcesConfig', Copy) {
 
 processResources.dependsOn('copyResourcesConfig')
 
+tasks.named('contextTest') {
+    systemProperty 'KNAL_OPEN_DATA_API_SERVICE_KEY', 'test-dummy-key'
+    systemProperty 'KNAL_OPEN_CONGRESS_API_SERVICE_KEY', 'test-dummy-key'
+    systemProperty 'SUPPORT_ALERT_SLACK_WEBHOOK_URL', 'https://hooks.slack.com/services/mock-test-url'
+}
+
 tasks.register('buildZip', Zip) {
     dependsOn('bootJar')
 
